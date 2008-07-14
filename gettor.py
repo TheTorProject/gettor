@@ -108,8 +108,8 @@ if __name__ == "__main__":
         # Reply with some help and bail out
         gettor_blacklist.blackList(replyTo, True)
         message = """
-        Sorry, You should send your request from a provider that implements DKIM:
-        http://www.dkim.org/
+        Sorry, You should send your request from a provider that implements DKIM.
+        This works with gmail and yahoo email. It is best done from an internet cafe.
         We've blocked your address for a temporary (less than a day) time to prevent abuse.
         """
         gettor_responses.sendHelp(message, srcEmail, replyTo)
@@ -132,11 +132,11 @@ if __name__ == "__main__":
             exit(0)
         else:
             message = "Hello, I'm a robot. " + \
-            "Your request was not understood. Please select one of the following package names: \n\n"
+            "Your request was not understood. Please select one of the following package names: \n"
 
             for key in packageList.keys():
                 message += key + " \n"
-            message += "\nPlease send me another email. It only needs a single package name anywhere in the body of your email.\n"
+            message += "Please send me another email. It only needs a single package name anywhere in the body of your email.\n"
             gettor_responses.sendHelp(message, srcEmail, replyTo)
             syslog.syslog("gettor: Signed messaged to gettor. We issued some help about proper email formatting.")
             exit(0)
