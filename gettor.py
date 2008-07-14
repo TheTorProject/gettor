@@ -32,6 +32,12 @@
  negatives. This isn't perfect but it is designed to be lightweight. It could 
  be fixed easily with a shared locking system but this isn't implemented yet.
 
+
+ To clean out the blacklist on a daily basis, install the following cronjob:
+
+     # m h  dom mon dow   command
+     * 1 * * * /bin/rm -rf /var/lib/gettor/bl/*
+
 """
 
 __program__ = 'gettor.py'
