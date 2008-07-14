@@ -76,8 +76,8 @@ if __name__ == "__main__":
     distDir = "/var/lib/gettor/pkg/"
     packageList = {
         "windows-bundle": distDir + "windows-bundle.z",
-        "macosx-bundle": distDir + "macosx-bundle.z",
-        "linux-bundle": distDir + "linux-bundle.z",
+        "macosx-panther-ppc-bundle": distDir + "macosx-panther-ppc-bundle.z",
+        "macosx-tiger-universal-bundle": distDir + "macosx-tiger-universal-bundle.z",
         "source-bundle": distDir + "source-bundle.z"
         }
 
