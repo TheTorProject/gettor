@@ -129,9 +129,10 @@ if __name__ == "__main__":
             gettor_responses.sendPackage(message, srcEmail, replyTo, packageList[package])  
             exit(0)
         else:
-            message = "Your request was misunderstood. Please select one of the " + \
-            "following packages: " + str(packageList.keys()) + \
-            "\n" +  "Please respond with a single package name."
+            message = "Hi, I'm a robot. " + \
+            "Your request was not understood. Please select one of the following package names: " + \
+            str(packageList.keys()) + "\n" + \
+            "Please send me another email. It only needs a single package name anywhere in the body of your email."
             gettor_responses.sendHelp(message, srcEmail, replyTo)
             syslog.syslog("gettor: Signed messaged to gettor. We issued some help about proper email formatting.")
             exit(0)
