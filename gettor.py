@@ -36,7 +36,7 @@
  To clean out the blacklist on a daily basis, install the following cronjob:
 
      # m h  dom mon dow   command
-     * 1 * * * /bin/rm -rf /var/lib/gettor/bl/*
+     1 1 * * * /bin/rm -rf /var/lib/gettor/bl/*
 
 """
 
