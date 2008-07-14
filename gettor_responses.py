@@ -21,7 +21,7 @@ def sendPackage(message, source, destination, filelist):
     """ Send a message with an attachment to the user interacting with us """
     package = constructMessage(message, source, destination, filelist)
     try:
-        status = sendMessage(package, destination)
+        status = sendMessage(package, source, destination)
     except:
         status = False
     return status
@@ -54,7 +54,7 @@ def constructMessage(messageText, ourAddress, recipient, fileList=None, fileName
     mime.lastpart()
     return message
 
-def sendMessage(message, dst, src="gettor@torproject.org", smtpserver="localhost:2700"):
+def sendMessage(message, src, dst, smtpserver="localhost:25"):
     try:
         smtp = smtplib.SMTP(smtpserver)
         smtp.sendmail(src, dst, message.getvalue())
