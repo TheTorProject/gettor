@@ -41,7 +41,7 @@
 """
 
 __program__ = 'gettor.py'
-__version__ = '20080713.01'
+__version__ = '20080714.00'
 __url__ = 'https://tor-svn.freehaven.net/svn/tor/trunk/contrib/gettor/'
 __author__ = 'Jacob Appelbaum <jacob@appelbaum.net>'
 __copyright__ = 'Copyright (c) 2008, Jacob Appelbaum'
@@ -129,10 +129,12 @@ if __name__ == "__main__":
             gettor_responses.sendPackage(message, srcEmail, replyTo, packageList[package])  
             exit(0)
         else:
-            message = "Hi, I'm a robot. " + \
-            "Your request was not understood. Please select one of the following package names: " + \
-            str(packageList.keys()) + "\n" + \
-            "Please send me another email. It only needs a single package name anywhere in the body of your email."
+            message = "Hello, I'm a robot. " + \
+            "Your request was not understood. Please select one of the following package names: \n\n"
+
+            for key in packageList.keys():
+                message += key + " \n"
+            message += "\nPlease send me another email. It only needs a single package name anywhere in the body of your email.\n"
             gettor_responses.sendHelp(message, srcEmail, replyTo)
             syslog.syslog("gettor: Signed messaged to gettor. We issued some help about proper email formatting.")
             exit(0)
