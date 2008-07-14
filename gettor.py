@@ -32,16 +32,18 @@
  negatives. This isn't perfect but it is designed to be lightweight. It could 
  be fixed easily with a shared locking system but this isn't implemented yet.
 
-
  To clean out the blacklist on a daily basis, install the following cronjob:
 
      # m h  dom mon dow   command
      1 1 * * * /bin/rm -rf /var/lib/gettor/bl/*
 
+ You'll probably want a directory structure like this owned by uid/gid 'gettor':
+    /var/lib/gettor/{bl,pkg}
+
 """
 
 __program__ = 'gettor.py'
-__version__ = '20080714.00'
+__version__ = '20080714.01'
 __url__ = 'https://tor-svn.freehaven.net/svn/tor/trunk/contrib/gettor/'
 __author__ = 'Jacob Appelbaum <jacob@appelbaum.net>'
 __copyright__ = 'Copyright (c) 2008, Jacob Appelbaum'
