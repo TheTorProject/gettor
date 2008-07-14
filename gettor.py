@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     if not parsedMessage:
         syslog.syslog("gettor: No parsed message. Dropping message.")
-        exit(1)
+        exit(0)
 
     signature = False
     signature = gettor_requests.verifySignature(rawMessage)
@@ -90,11 +90,11 @@ if __name__ == "__main__":
     
     if not replyTo:
         syslog.syslog("No help dispatched. Invalid reply address for user.")
-        exit(1)
+        exit(0)
 
     if not signature and previouslyHelped:
         syslog.syslog("gettor: Unsigned messaged to gettor by blacklisted user dropped.")
-        exit(1)
+        exit(0)
 
     if not signature and not previouslyHelped:
         # Reply with some help and bail out
