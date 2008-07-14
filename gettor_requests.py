@@ -47,8 +47,6 @@ def parseRequest(parsedMessage, packages):
     # It may be too unfriendly to our users
     for line in email.Iterators.body_line_iterator(parsedMessage):
         for package in packages.keys():
-            print "Line is: " + line
-            print "Package is " + package
             match = re.match(package, line)    
             if match: 
                 return package
@@ -58,10 +56,10 @@ def parseRequest(parsedMessage, packages):
 if __name__ == "__main__" :
     """ Give us an email to understand what we think of it. """
     packageList = { 
-        "windows-bundle": "/tmp/windows-bundle.z",
-        "macosx-bundle": "/tmp/macosx-bundle.z",
-        "linux-bundle": "/tmp/linux-bundle.z",
-        "source-bundle": "/tmp/source-bundle.z"
+        "windows-bundle": "/var/lib/gettor/pkg/windows-bundle.z",
+        "macosx-bundle": "/var/lib/gettor/pkg/macosx-bundle.z",
+        "linux-bundle": "/var/lib/gettor/pkg/linux-bundle.z",
+        "source-bundle": "/var/lib/gettor/pkg/source-bundle.z"
         }
 
     print "Fetching raw message."

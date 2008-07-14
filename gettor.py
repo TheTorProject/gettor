@@ -35,7 +35,7 @@
 """
 
 __program__ = 'gettor.py'
-__version__ = '20080713.00'
+__version__ = '20080713.01'
 __url__ = 'https://tor-svn.freehaven.net/svn/tor/trunk/contrib/gettor/'
 __author__ = 'Jacob Appelbaum <jacob@appelbaum.net>'
 __copyright__ = 'Copyright (c) 2008, Jacob Appelbaum'
@@ -58,27 +58,27 @@ if __name__ == "__main__":
 
     if not parsedMessage:
         syslog.syslog("gettor: No parsed message. Dropping message.")
-        print "gettor: No parsed message. Dropping message."
         exit(1)
 
     signature = False
     signature = gettor_requests.verifySignature(rawMessage)
-    print "Signature is : " + str(signature)
+    syslog.syslog("gettor: Signature is : " + str(signature))
     replyTo = False
     srcEmail = "gettor@torproject.org"
 
     # TODO XXX:
     # Make the zip files and ensure they match packageList
     # Make each zip file like so:
-    # zip -9 windows-bindle.z \
+    # zip -9 windows-bundle.z \
     #   vidalia-bundle-0.2.0.29-rc-0.1.6.exe \
     #   vidalia-bundle-0.2.0.29-rc-0.1.6.exe.asc
     #
+    distDir = "/var/lib/gettor/pkg/"
     packageList = {
-        "windows-bundle": "/tmp/windows-bundle.z",
-        "macosx-bundle": "/tmp/macosx-bundle.z",
-        "linux-bundle": "/tmp/linux-bundle.z",
-        "source-bundle": "/tmp/source-bundle.z"
+        "windows-bundle": distDir + "windows-bundle.z",
+        "macosx-bundle": distDir + "macosx-bundle.z",
+        "linux-bundle": distDir + "linux-bundle.z",
+        "source-bundle": distDir + "source-bundle.z"
         }
 
     # XXX TODO: Ensure we have a proper replyTO or bail out (majorly malformed mail).
@@ -90,52 +90,42 @@ if __name__ == "__main__":
     
     if not replyTo:
         syslog.syslog("No help dispatched. Invalid reply address for user.")
-        print "No help dispatched. Invalid reply address for user."
         exit(1)
 
     if not signature and previouslyHelped:
         syslog.syslog("gettor: Unsigned messaged to gettor by blacklisted user dropped.")
-        print "No help dispatched. Unsigned and unhelped for blacklisted user."
         exit(1)
 
     if not signature and not previouslyHelped:
         # Reply with some help and bail out
-        # Someday call blackList(replyTo)
+        gettor_blacklist.blackList(replyTo, True)
         message = """
-        You should try your request again with a provider that implements DKIM. Sorry.
+        Sorry, You should send your request from a provider that implements DKIM:
+        http://www.dkim.org/
+        We've blocked your address for a temporary (less than a day) time to prevent abuse.
         """
         gettor_responses.sendHelp(message, srcEmail, replyTo)
-        print "attempting to send email from: " + srcEmail + "The mail is sent to: " + replyTo
         syslog.syslog("gettor: Unsigned messaged to gettor. We issued some help about using DKIM.")
-        print "gettor: Unsigned messaged to gettor. We issued some help about using DKIM."
         exit(0)
 
     if signature:
         syslog.syslog("gettor: Signed messaged to gettor.")
-        print "gettor: Signed messaged to gettor."
         
         try:
-            print "gettor: Parsing now."
             package = gettor_requests.parseRequest(parsedMessage, packageList)
         except:
             package = None
 
-        if package == "windows-bundle":
-            print "gettor: " + package + " selected."
-            syslog.syslog("gettor: " + package + " selected.")
-            message = "Here's your requested software as a zip file. Please \
-            verify the signature."
-            print "attempting to send email from: " +
-            srcEmail + "The mail is sent to: " + replyTo
+        if package != None:
+            syslog.syslog("gettor: " + str(package) + " selected.")
+            message = "Here's your requested software as a zip file. Please " + \
+            "unzip the package and verify the signature."
             gettor_responses.sendPackage(message, srcEmail, replyTo, packageList[package])  
             exit(0)
         else:
-            print "Package request is unknown: " + package 
-            message = " Your request was misunderstood. Please select one of the \
-            following packages: " + packageList.keys()
-
+            message = "Your request was misunderstood. Please select one of the " + \
+            "following packages: " + str(packageList.keys()) + \
+            "\n" +  "Please respond with a single package name."
             gettor_responses.sendHelp(message, srcEmail, replyTo)
-            print "attempting to send email from: " + srcEmail + "The mail is sent to: " + replyTo
             syslog.syslog("gettor: Signed messaged to gettor. We issued some help about proper email formatting.")
-            print "gettor: Signed messaged to gettor. We issued some help about proper email formatting."
             exit(0)

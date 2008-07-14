@@ -6,7 +6,7 @@ This library implements all of the black listing features needed for gettor.
 import hashlib
 import os
 
-stateDir = "/tmp/gettor/"
+stateDir = "/var/lib/gettor/"
 blStateDir = stateDir + "bl/"
 
 def blackList(address, createEntry=False):
@@ -18,9 +18,11 @@ def blackList(address, createEntry=False):
     # XXX TODO: Eventually we may want to sort entries with netcom
     # style /tmp/gettor/2-digits-of-hash/2-more-digits/rest-of-hash files
 
+    prepBLStateDir()
+
     privateAddress = makeAddressPrivate(address)
     blackListed = lookupBlackListEntry(privateAddress)
-
+    
     if blackListed:
         return True
     elif createEntry:
@@ -28,7 +30,7 @@ def blackList(address, createEntry=False):
 
     return False
 
-def lookupBlackListEntry(privateAddress, stateDir="/tmp/gettor/bl/"):
+def lookupBlackListEntry(privateAddress, stateDir="/var/lib/gettor/bl/"):
     """ Check to see if we have a blacklist entry for the given address. """
     entry = stateDir + str(privateAddress)
     try:
@@ -37,7 +39,7 @@ def lookupBlackListEntry(privateAddress, stateDir="/tmp/gettor/bl/"):
         return False
     return True
 
-def createBlackListEntry(privateAddress, stateDir="/tmp/gettor/bl/"):
+def createBlackListEntry(privateAddress, stateDir="/var/lib/gettor/bl/"):
     """ Create a zero byte file that represents the address in our blacklist. """
     entry = stateDir + str(privateAddress)
     stat = None
@@ -49,12 +51,10 @@ def createBlackListEntry(privateAddress, stateDir="/tmp/gettor/bl/"):
             fd.close()
             return True
         except:
-            print "Entry not found. We were unable to create an entry."
             return False
-    print "It appears that we already had an entry."
     return False
 
-def removeBlackListEntry(privateAddress, stateDir="/tmp/gettor/bl/"):
+def removeBlackListEntry(privateAddress, stateDir="/var/lib/gettor/bl/"):
     """ Remove the zero byte file that represents an entry in our blacklist."""
     entry = stateDir + str(privateAddress)
     stat = None
@@ -70,20 +70,16 @@ def makeAddressPrivate(address):
     privateAddress = hash.hexdigest()
     return privateAddress
 
-def prepBLStateDir(stateDir = "/tmp/gettor/bl/"):
-    print "Preparing the state directory for gettor."
+def prepBLStateDir(stateDir = "/var/lib/gettor/"):
     stat = None
     try:
         stat = os.stat(stateDir)
-        print "We found a state directory"
         return True
     except OSError:
         try:
-            os.mkdir(stateDir)
-            print "No state directory was found, we created one"
+            os.makedirs(stateDir)
             return True
         except:
-            print "Unable to make a state directory"
             return False
 
 def blackListtests(address):

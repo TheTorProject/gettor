@@ -12,10 +12,8 @@ def sendHelp(message, source, destination):
     """ Send a helpful message to the user interacting with us """
     help = constructMessage(message, source, destination)
     try:
-        print "Attempting to send the following message: "
         status = sendMessage(help, source, destination)
     except:
-        print "Message sending failed."
         status = False
     return status
 
@@ -23,10 +21,8 @@ def sendPackage(message, source, destination, filelist):
     """ Send a message with an attachment to the user interacting with us """
     package = constructMessage(message, source, destination, filelist)
     try:
-        print "Attempting to send the following message: "
         status = sendMessage(package, destination)
     except:
-        print "Message sending failed."
         status = False
     return status
 
