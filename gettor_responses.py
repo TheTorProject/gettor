@@ -33,7 +33,7 @@ def constructMessage(messageText, ourAddress, recipient, fileList=None, fileName
     message = StringIO.StringIO()
     mime = MimeWriter.MimeWriter(message)
     mime.addheader('MIME-Version', '1.0')
-    mime.addheader('Subject', 'Your request has been processed')
+    mime.addheader('Subject', 'Re: Your "get tor" request')
     mime.addheader('To', recipient)
     mime.addheader('From', ourAddress)
     mime.startmultipartbody('mixed')
@@ -64,5 +64,4 @@ def sendMessage(message, src, dst, smtpserver="localhost:25"):
         return False
 
     return status
-
 

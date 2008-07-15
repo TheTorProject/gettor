@@ -108,9 +108,19 @@ if __name__ == "__main__":
         # Reply with some help and bail out
         gettor_blacklist.blackList(replyTo, True)
         message = """
-        Sorry, You should send your request from a provider that implements DKIM.
-        This works with gmail and yahoo email. It is best done from an internet cafe.
-        We've blocked your address for a temporary (less than a day) time to prevent abuse.
+Hello! This is the "get tor" robot.
+
+Unfortunately, we won't answer you at this address. We only process
+requests from email services that support "DKIM", which is an email
+feature that lets us verify that the address in the "From" line is
+actually the one who sent the mail.
+
+Gmail and Yahoo Mail both use DKIM. You will have better luck sending
+us mail from one of those.
+
+(We apologize if you didn't ask for this mail. Since your email is from
+a service that doesn't use DKIM, we're sending a short explanation,
+and then we'll ignore this email address for the next day or so.)
         """
         gettor_responses.sendHelp(message, srcEmail, replyTo)
         syslog.syslog("gettor: Unsigned messaged to gettor. We issued some help about using DKIM.")
