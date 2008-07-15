@@ -4,7 +4,7 @@
 
  gettor.py by Jacob Appelbaum <jacob@appelbaum.net>
  This program will hand out Tor via email to supported systems.
- This program is Free Software released under the GPLv3.
+ This program is Free Software, see LICENSE for details.
 
  It is intended to be used in a .forward file as part of a pipe like so:
 
