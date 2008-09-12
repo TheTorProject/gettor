@@ -1,0 +1,24 @@
+These are planned changes to the gettor system.
+
+User configuration without modification to the program itself:
+    - Put all configuration options in a config file (~/.gettorrc)
+        - We'll need a configuration file format and parser for this
+    - We should also ensure that by default, we create a .gettorrc if none is found
+        - Automatic "documentation!"
+
+Localization of gettor for local logging messages:
+    - Localize all log messages
+    - We'll want to read the default language from the config file
+        - We should fall back into English for now
+    - Make logging configurable
+        - Syslog or user suggested file
+            - An option (default) for no logging at all
+        - Any logging should make use of scrubbing functions.
+            - Hash private information (e.g. emailaddresses)
+
+Localization of gettor output for messages sent to users:
+    - Localize the language of outgoing mail messages
+        - We need a method of fetching the user's preference
+            - Perhaps for now a field that specifies a locale?
+    - Do we want to set a preference or make it per email?
+        - For now, lets set it per email
