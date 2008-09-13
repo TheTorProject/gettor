@@ -17,12 +17,13 @@ class gettorConf:
     missing. Our default file location is ~/.gettorrc for the current user.
     '''
 
-    stateDir    = "/var/lib/gettor/"
-    blStateDir  = stateDir + "bl/"
-    srcEmail    = "gettor@torproject.org"
-    distDir     = "/var/lib/gettor/pkg/"
-    locale        = "en"
+    stateDir = "/var/lib/gettor/"
+    blStateDir = stateDir + "bl/"
+    srcEmail = "gettor@torproject.org"
+    distDir = "/var/lib/gettor/pkg/"
+    locale = "en"
     configFile = "~/.gettorrc"
+    config = ConfigParser.ConfigParser()
 
     def __init__(self, path = os.path.expanduser(configFile)):
 
@@ -38,40 +39,42 @@ class gettorConf:
             readableConfigFile = False
 
         if readableConfigFile: 
-            self.config = ConfigParser.ConfigParser()
             try:
                 # It's likely that a user will make a mistake in their config
                 # If they make a mistake for now we'll ignore *everything* :-)
                 self.config.read(self.configFile)
-                if self.config.has_option("global", "stateDir"):
-                    self.stateDir = self.config.get("global", "stateDir")
-                else:
-                    self.config.set("global", "stateDir", self.stateDir)
-
-                if self.config.has_option("global", "blStateDir"):
-                    self.blStateDir = self.config.get("global", "blStateDir")
-                else:
-                    self.config.set("global", "blStateDir", self.blStateDir)
-
-                if self.config.has_option("global", "srcEmail"):
-                    self.srcEmail = self.config.get("global", "srcEmail")
-                else:
-                    self.config.set("global", "srcEmail", self.srcEmail)
-
-                if self.config.has_option("global", "distDir"):
-                    self.distDir = self.config.get("global", "distDir")
-                else:
-                    self.config.set("global", "distDir", self.distDir)
-
-                if self.config.has_option("global", "locale"):
-                    self.lang = self.config.get("global", "locale")
-                else:
-                    self.config.set("global", "locale", self.locale)
-
             except:
-                return None
+                self.config.add_section("global")
         else:
-            return None
+            self.config.add_section("global")
+
+        if self.config.has_option("global", "stateDir"):
+            self.stateDir = self.config.get("global", "stateDir")
+        else:
+            self.config.set("global", "stateDir", self.stateDir)
+
+        if self.config.has_option("global", "blStateDir"):
+            self.blStateDir = self.config.get("global", "blStateDir")
+        else:
+            self.config.set("global", "blStateDir", self.blStateDir)
+
+        if self.config.has_option("global", "srcEmail"):
+            self.srcEmail = self.config.get("global", "srcEmail")
+        else:
+            self.config.set("global", "srcEmail", self.srcEmail)
+
+        if self.config.has_option("global", "distDir"):
+            self.distDir = self.config.get("global", "distDir")
+        else:
+            self.config.set("global", "distDir", self.distDir)
+
+        if self.config.has_option("global", "locale"):
+            self.lang = self.config.get("global", "locale")
+        else:
+            self.config.set("global", "locale", self.locale)
+
+    def printConfiguration(self):
+        return self.config.write(sys.stdout)
 
     # All getter routines live below
     def getStateDir(self):
@@ -91,8 +94,5 @@ class gettorConf:
         
 if __name__ == "__main__" :
     c = gettorConf()
-    print "; This is a sample gettor configuration file. "
-    print "StateDir -> ", c.getStateDir()
-    print "BlStateDir -> ", c.getBlStateDir()
-    print "SrcEmail -> ", c.getSrcEmail()
-    print "DistDir -> ", c.getDistDir()
+    print "# This is a suitable default configuration. Tune to fit your needs."
+    c.printConfiguration()
