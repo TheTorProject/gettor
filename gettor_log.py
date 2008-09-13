@@ -9,6 +9,7 @@ The user can choose one of those four options in a configuration file.
 import os
 import sys
 #import threading
+from time import gmtime, strftime
 import ConfigParser
 import syslog
 from gettor_config import gettorConf
@@ -17,25 +18,27 @@ class gettorLogger:
     '''
     A configurable logging system for gettor.
     '''
-    config  = gettorConf()
-    logger  = config.getLogSubSystem()
-    logfile = config.getLogFile()
-    logfd   = None
+    config    = gettorConf()
+    logger    = config.getLogSubSystem()
+    logfile   = config.getLogFile()
+    logfd     = None
+    pid       = str(os.getpid())
+    logPrefix = "gettor (pid " + pid + ") "
+
     # We can't get real shm ipc with python currently :-(
     #sem     = BoundedSemaphore(1)
 
     def _init_(self):  
-        print "gettor logger: ", logger
         # parse the configuration file so we know how we're running 
         if logger == "file":
             try:
                 self.logfd = open(logfile, "w+")
             except:
-                print "Could not open logfile", logfile
                 self.logfd = None
-            print "Logging to file"
     
     def log(self, message):
+        now = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+        message = logPrefix + now + " : "+ message
         # Log the message
         if self.logger == "syslog":
             syslog.syslog(message)
