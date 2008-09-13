@@ -22,7 +22,7 @@ class gettorConf:
     srcEmail = "gettor@torproject.org"
     distDir = "/var/lib/gettor/pkg/"
     locale = "en"
-    logSubSystem = None
+    logSubSystem = "nothing"
     logFile = "/dev/null"
     configFile = "~/.gettorrc"
     config = ConfigParser.ConfigParser()
@@ -76,12 +76,12 @@ class gettorConf:
             self.config.set("global", "locale", self.locale)
 
         if self.config.has_option("global", "logSubSystem"):
-            self.lang = self.config.get("global", "logSubSystem")
+            self.logSubSystem = self.config.get("global", "logSubSystem")
         else:
             self.config.set("global", "logSubSystem", self.logSubSystem)
 
         if self.config.has_option("global", "logFile"):
-            self.lang = self.config.get("global", "logFile")
+            self.logFile = self.config.get("global", "logFile")
         else:
             self.config.set("global", "logFile", self.logFile)
 
