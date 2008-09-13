@@ -54,23 +54,26 @@ try:
 except ImportError:
     antigravity = None
 
-import syslog
 import gettor_blacklist
 import gettor_requests
 import gettor_responses
+from gettor_log import gettorLogger
+
+log = gettorLogger()
 
 if __name__ == "__main__":
+
 
     rawMessage = gettor_requests.getMessage()
     parsedMessage = gettor_requests.parseMessage(rawMessage)
 
     if not parsedMessage:
-        syslog.syslog("gettor: No parsed message. Dropping message.")
+        log.log("No parsed message. Dropping message.")
         exit(0)
 
     signature = False
     signature = gettor_requests.verifySignature(rawMessage)
-    syslog.syslog("gettor: Signature is : " + str(signature))
+    log.log("Signature is : " + str(signature))
     replyTo = False
     srcEmail = "gettor@torproject.org"
 
@@ -97,11 +100,11 @@ if __name__ == "__main__":
         previouslyHelped = gettor_blacklist.blackList(replyTo)
     
     if not replyTo:
-        syslog.syslog("No help dispatched. Invalid reply address for user.")
+        log.log("No help dispatched. Invalid reply address for user.")
         exit(0)
 
     if not signature and previouslyHelped:
-        syslog.syslog("gettor: Unsigned messaged to gettor by blacklisted user dropped.")
+        log.log("Unsigned messaged to gettor by blacklisted user dropped.")
         exit(0)
 
     if not signature and not previouslyHelped:
@@ -123,11 +126,11 @@ a service that doesn't use DKIM, we're sending a short explanation,
 and then we'll ignore this email address for the next day or so.)
         """
         gettor_responses.sendHelp(message, srcEmail, replyTo)
-        syslog.syslog("gettor: Unsigned messaged to gettor. We issued some help about using DKIM.")
+        log.log("Unsigned messaged to gettor. We issued some help about using DKIM.")
         exit(0)
 
     if signature:
-        syslog.syslog("gettor: Signed messaged to gettor.")
+        log.log("Signed messaged to gettor.")
         
         try:
             package = gettor_requests.parseRequest(parsedMessage, packageList)
@@ -135,7 +138,7 @@ and then we'll ignore this email address for the next day or so.)
             package = None
 
         if package != None:
-            syslog.syslog("gettor: " + str(package) + " selected.")
+            log.log("Package: " + str(package) + " selected.")
             message = "Here's your requested software as a zip file. Please " + \
             "unzip the package and verify the signature."
             gettor_responses.sendPackage(message, srcEmail, replyTo, packageList[package])  
@@ -148,5 +151,5 @@ and then we'll ignore this email address for the next day or so.)
                 message.append(key + "\n")
             message.append("Please send me another email. It only needs a single package name anywhere in the body of your email.\n")
             gettor_responses.sendHelp(''.join(message), srcEmail, replyTo)
-            syslog.syslog("gettor: Signed messaged to gettor. We issued some help about proper email formatting.")
+            log.log("Signed messaged to gettor. We issued some help about proper email formatting.")
             exit(0)
