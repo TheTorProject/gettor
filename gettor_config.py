@@ -22,6 +22,7 @@ class gettorConf:
     srcEmail = "gettor@torproject.org"
     distDir = "/var/lib/gettor/pkg/"
     locale = "en"
+    logSubSystem = None
     configFile = "~/.gettorrc"
     config = ConfigParser.ConfigParser()
 
@@ -73,6 +74,11 @@ class gettorConf:
         else:
             self.config.set("global", "locale", self.locale)
 
+        if self.config.has_option("global", "logSubSystem"):
+            self.lang = self.config.get("global", "logSubSystem")
+        else:
+            self.config.set("global", "logSubSystem", self.logSubSystem)
+
     def printConfiguration(self):
         return self.config.write(sys.stdout)
 
@@ -91,7 +97,10 @@ class gettorConf:
 
     def getLang(self):
         return self.lang
-        
+
+    def getLogSubSystem(self):
+        return self.logSubSystem
+
 if __name__ == "__main__" :
     c = gettorConf()
     print "# This is a suitable default configuration. Tune to fit your needs."
