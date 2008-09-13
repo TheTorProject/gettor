@@ -23,6 +23,7 @@ class gettorConf:
     distDir = "/var/lib/gettor/pkg/"
     locale = "en"
     logSubSystem = None
+    logFile = "/dev/null"
     configFile = "~/.gettorrc"
     config = ConfigParser.ConfigParser()
 
@@ -79,6 +80,11 @@ class gettorConf:
         else:
             self.config.set("global", "logSubSystem", self.logSubSystem)
 
+        if self.config.has_option("global", "logFile"):
+            self.lang = self.config.get("global", "logFile")
+        else:
+            self.config.set("global", "logFile", self.logFile)
+
     def printConfiguration(self):
         return self.config.write(sys.stdout)
 
@@ -100,6 +106,9 @@ class gettorConf:
 
     def getLogSubSystem(self):
         return self.logSubSystem
+
+    def getLogFile(self):
+        return self.logFile
 
 if __name__ == "__main__" :
     c = gettorConf()
