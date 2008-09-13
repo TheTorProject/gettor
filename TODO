@@ -4,6 +4,9 @@ Localization of gettor for local logging messages:
     - Localize all log messages
     - We'll want to read the default language from the config file
         - We should fall back into English for now
+
+
+Refactor logging:
     - Make logging configurable
         - Syslog or user suggested file
             - An option (default) for no logging at all
