@@ -4,7 +4,6 @@
 
 import smtplib
 import MimeWriter
-import syslog
 import StringIO
 import base64
 
