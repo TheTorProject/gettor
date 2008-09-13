@@ -1,11 +1,5 @@
 These are planned changes to the gettor system.
 
-User configuration without modification to the program itself:
-    - Put all configuration options in a config file (~/.gettorrc)
-        - We'll need a configuration file format and parser for this
-    - We should also ensure that by default, we create a .gettorrc if none is found
-        - Automatic "documentation!"
-
 Localization of gettor for local logging messages:
     - Localize all log messages
     - We'll want to read the default language from the config file
