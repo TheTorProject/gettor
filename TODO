@@ -6,10 +6,9 @@ Localization of gettor for local logging messages:
         - We should fall back into English for now
 
 
-Refactor logging:
-    - Make logging configurable
-        - Syslog or user suggested file
-            - An option (default) for no logging at all
+Fix file logging:
+        - Currently logging to a file isn't implemented
+            - python lacks a way to do proper semaphores (ipc fail)
         - Any logging should make use of scrubbing functions.
             - Hash private information (e.g. emailaddresses)
 
