@@ -32,23 +32,26 @@ class gettorLogger:
         # parse the configuration file so we know how we're running 
         if logger == "file":
             try:
-                self.logfd = open(logfile, "w+")
+                self.logfd = open(logfile, "a+")
             except:
                 self.logfd = None
     
     def log(self, message):
         now = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
-        message = logPrefix + now + " : "+ message
+        message = self.logPrefix + now + " : "+ message
+
         # Log the message
         if self.logger == "syslog":
             syslog.syslog(message)
-        #elif self.logger == "file":
+            
+        elif self.logger == "file":
             #sem.aquire()
-            #self.logfd.write(message)
+            self.logfd.write(message)
+            self.logfd.close()
             #sem.release()
+
         elif self.logger == "stdout":
             print message
-
 
 if __name__ == "__main__" :
     l = gettorLogger()
