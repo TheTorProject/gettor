@@ -54,28 +54,57 @@ try:
 except ImportError:
     antigravity = None
 
+import sys
+import getopt
+import gettext
 import gettor_blacklist
 import gettor_requests
 import gettor_responses
 from gettor_log import gettorLogger
+from gettor_config import gettorConf
 
-log = gettorLogger()
+
+def usage():
+    print "Usage: gettor.py [-c CONFIG|-h]"
+    print ""
 
 if __name__ == "__main__":
 
+    # Parse args
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'hc:', ['help', 'config='])
+    except getopt.GetoptError:
+        usage()
+        sys.exit(1)
+ 
+    config = None
+    for c, optarg in opts:
+        if c in ("-h", "--help"):
+            usage()
+            sys.exit(0)
+        if c in ("-c", "--config"):
+            config = optarg
 
+    if config != None:
+        conf = gettorConf(config)
+    else:
+        conf = gettorConf()
+    log  = gettorLogger()
+    locale = conf.getLocale()
+    trans = gettext.translation("gettor", "/usr/share/locale", [locale]) 
+    trans.install()
     rawMessage = gettor_requests.getMessage()
     parsedMessage = gettor_requests.parseMessage(rawMessage)
 
     if not parsedMessage:
-        log.log("No parsed message. Dropping message.")
+        log.log(_("No parsed message. Dropping message."))
         exit(0)
 
     signature = False
     signature = gettor_requests.verifySignature(rawMessage)
-    log.log("Signature is : " + str(signature))
+    log.log(_("Signature is: %s") % str(signature))
     replyTo = False
-    srcEmail = "gettor@torproject.org"
+    srcEmail = conf.getSrcEmail()
 
     # TODO XXX:
     # Make the zip files and ensure they match packageList
@@ -84,7 +113,7 @@ if __name__ == "__main__":
     #   vidalia-bundle-0.2.0.29-rc-0.1.6.exe \
     #   vidalia-bundle-0.2.0.29-rc-0.1.6.exe.asc
     #
-    distDir = "/var/lib/gettor/pkg/"
+    distDir = conf.getDistDir()
     packageList = {
         "windows-bundle": distDir + "windows-bundle.z",
         "macosx-panther-ppc-bundle": distDir + "macosx-panther-ppc-bundle.z",
@@ -100,17 +129,17 @@ if __name__ == "__main__":
         previouslyHelped = gettor_blacklist.blackList(replyTo)
     
     if not replyTo:
-        log.log("No help dispatched. Invalid reply address for user.")
+        log.log(_("No help dispatched. Invalid reply address for user."))
         exit(0)
 
     if not signature and previouslyHelped:
-        log.log("Unsigned messaged to gettor by blacklisted user dropped.")
+        log.log(_("Unsigned messaged to gettor by blacklisted user dropped."))
         exit(0)
 
     if not signature and not previouslyHelped:
         # Reply with some help and bail out
         gettor_blacklist.blackList(replyTo, True)
-        message = """
+        message = _("""
 Hello! This is the "get tor" robot.
 
 Unfortunately, we won't answer you at this address. We only process
@@ -123,14 +152,14 @@ us mail from one of those.
 
 (We apologize if you didn't ask for this mail. Since your email is from
 a service that doesn't use DKIM, we're sending a short explanation,
-and then we'll ignore this email address for the next day or so.)
-        """
+and then we'll ignore this email address for the next day or so.
+        """)
         gettor_responses.sendHelp(message, srcEmail, replyTo)
-        log.log("Unsigned messaged to gettor. We issued some help about using DKIM.")
+        log.log(_("Unsigned messaged to gettor. We issued some help about using DKIM."))
         exit(0)
 
     if signature:
-        log.log("Signed messaged to gettor.")
+        log.log(_("Signed messaged to gettor."))
         
         try:
             package = gettor_requests.parseRequest(parsedMessage, packageList)
@@ -138,18 +167,20 @@ and then we'll ignore this email address for the next day or so.)
             package = None
 
         if package != None:
-            log.log("Package: " + str(package) + " selected.")
-            message = "Here's your requested software as a zip file. Please " + \
-            "unzip the package and verify the signature."
+            log.log(_("Package: %s selected.") % str(package))
+            message = _("""
+Here's your requested software as a zip file. Please unzip the 
+package and verify the signature.
+            """)
             gettor_responses.sendPackage(message, srcEmail, replyTo, packageList[package])  
             exit(0)
         else:
-            message = ["Hello, I'm a robot. "]
-            message.append("Your request was not understood. Please select one of the following package names:\n")
+            message = [_("Hello, I'm a robot. ")]
+            message.append(_("Your request was not understood. Please select one of the following package names:\n"))
 
             for key in packageList.keys():
                 message.append(key + "\n")
-            message.append("Please send me another email. It only needs a single package name anywhere in the body of your email.\n")
+            message.append(_("Please send me another email. It only needs a single package name anywhere in the body of your email.\n"))
             gettor_responses.sendHelp(''.join(message), srcEmail, replyTo)
-            log.log("Signed messaged to gettor. We issued some help about proper email formatting.")
+            log.log(_("Signed messaged to gettor. We issued some help about proper email formatting."))
             exit(0)

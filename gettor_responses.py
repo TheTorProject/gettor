@@ -32,7 +32,7 @@ def constructMessage(messageText, ourAddress, recipient, fileList=None, fileName
     message = StringIO.StringIO()
     mime = MimeWriter.MimeWriter(message)
     mime.addheader('MIME-Version', '1.0')
-    mime.addheader('Subject', 'Re: Your "get tor" request')
+    mime.addheader('Subject', _('Re: Your "get tor" request'))
     mime.addheader('To', recipient)
     mime.addheader('From', ourAddress)
     mime.startmultipartbody('mixed')

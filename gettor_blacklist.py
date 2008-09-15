@@ -5,9 +5,11 @@ This library implements all of the black listing features needed for gettor.
 
 import hashlib
 import os
+from gettor_config import gettorConf
 
-stateDir = "/var/lib/gettor/"
-blStateDir = stateDir + "bl/"
+conf = gettorConf()
+stateDir = conf.getStateDir()
+blStateDir = conf.getBlStateDir()
 
 def blackList(address, createEntry=False):
     """ 
@@ -30,7 +32,7 @@ def blackList(address, createEntry=False):
 
     return False
 
-def lookupBlackListEntry(privateAddress, stateDir="/var/lib/gettor/bl/"):
+def lookupBlackListEntry(privateAddress):
     """ Check to see if we have a blacklist entry for the given address. """
     entry = stateDir + str(privateAddress)
     try:
@@ -39,9 +41,9 @@ def lookupBlackListEntry(privateAddress, stateDir="/var/lib/gettor/bl/"):
         return False
     return True
 
-def createBlackListEntry(privateAddress, stateDir="/var/lib/gettor/bl/"):
+def createBlackListEntry(privateAddress):
     """ Create a zero byte file that represents the address in our blacklist. """
-    entry = stateDir + str(privateAddress)
+    entry = blStateDir + str(privateAddress)
     stat = None
     try:
         stat = os.stat(entry)
@@ -54,9 +56,9 @@ def createBlackListEntry(privateAddress, stateDir="/var/lib/gettor/bl/"):
             return False
     return False
 
-def removeBlackListEntry(privateAddress, stateDir="/var/lib/gettor/bl/"):
+def removeBlackListEntry(privateAddress):
     """ Remove the zero byte file that represents an entry in our blacklist."""
-    entry = stateDir + str(privateAddress)
+    entry = blStateDir + str(privateAddress)
     stat = None
     try:
         entry = os.unlink(entry)
@@ -70,7 +72,7 @@ def makeAddressPrivate(address):
     privateAddress = hash.hexdigest()
     return privateAddress
 
-def prepBLStateDir(stateDir = "/var/lib/gettor/"):
+def prepBLStateDir():
     stat = None
     try:
         stat = os.stat(stateDir)

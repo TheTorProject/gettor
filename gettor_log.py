@@ -31,9 +31,18 @@ class gettorLogger:
                 self.logfd = open(logfile, "a+")
             except:
                 self.logfd = None
+
+    def _del_(self):
+        if logger == "file" and self.logfd == None:
+            self.logfd.close()
     
     def log(self, message):
-        now = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+        # Syslog does not need a timestamp
+        if self.logger == "syslog":
+            now = ""
+        else:
+            now = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+
         message = self.logPrefix + now + " : "+ message
 
         # By default, we'll just drop the message
@@ -46,7 +55,6 @@ class gettorLogger:
             
         elif self.logger == "file":
             self.logfd.write(message)
-            self.logfd.close()
 
         elif self.logger == "stdout":
             print message

@@ -71,7 +71,7 @@ class gettorConf:
             self.config.set("global", "distDir", self.distDir)
 
         if self.config.has_option("global", "locale"):
-            self.lang = self.config.get("global", "locale")
+            self.locale = self.config.get("global", "locale")
         else:
             self.config.set("global", "locale", self.locale)
 
@@ -101,8 +101,8 @@ class gettorConf:
     def getDistDir(self):
         return self.distDir
 
-    def getLang(self):
-        return self.lang
+    def getLocale(self):
+        return self.locale
 
     def getLogSubSystem(self):
         return self.logSubSystem

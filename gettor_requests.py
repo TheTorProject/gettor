@@ -62,23 +62,23 @@ if __name__ == "__main__" :
         "source-bundle": "/var/lib/gettor/pkg/source-bundle.z"
         }
 
-    print "Fetching raw message."
+    print _("Fetching raw message.")
     rawMessage = getMessage()
     # This doesn't work without DNS ( no wifi on board current airplane )
-    print "Verifying signature of message."
+    print _("Verifying signature of message.")
     signature = verifySignature(rawMessage)
-    print "Parsing Message."
+    print _("Parsing Message.")
     parsedMessage = parseMessage(rawMessage)
-    print "Parsing reply."
+    print _("Parsing reply.")
     parsedReply = parseReply(parsedMessage)
-    print "Parsing package request."
+    print _("Parsing package request.")
     package = parseRequest(parsedMessage, packageList)
     if package == None:
         package = "help"        
     else:
         package = packageList[package]
 
-    print "The signature status of the email is: " + str(signature)
-    print "The email requested the following reply address: " + parsedReply
-    print "It looks like the email requested the following package: " + package
-    print "We would select the following package file: " + package
+    print _("The signature status of the email is: %s") % str(signature)
+    print _("The email requested the following reply address: %s") % parsedReply
+    print _("It looks like the email requested the following package: %s") % package
+    print _("We would select the following package file: ") % package
