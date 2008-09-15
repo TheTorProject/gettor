@@ -8,7 +8,6 @@ The user can choose one of those four options in a configuration file.
 
 import os
 import sys
-#import threading
 from time import gmtime, strftime
 import ConfigParser
 import syslog
@@ -25,9 +24,6 @@ class gettorLogger:
     pid       = str(os.getpid())
     logPrefix = "gettor (pid " + pid + ") "
 
-    # We can't get real shm ipc with python currently :-(
-    #sem     = BoundedSemaphore(1)
-
     def _init_(self):  
         # parse the configuration file so we know how we're running 
         if logger == "file":
@@ -40,19 +36,24 @@ class gettorLogger:
         now = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
         message = self.logPrefix + now + " : "+ message
 
-        # Log the message
-        if self.logger == "syslog":
+        # By default, we'll just drop the message
+        if self.logger == "nothing":
+            return True
+
+        # Other options for logging the message follow
+        elif self.logger == "syslog":
             syslog.syslog(message)
             
         elif self.logger == "file":
-            #sem.aquire()
             self.logfd.write(message)
             self.logfd.close()
-            #sem.release()
 
         elif self.logger == "stdout":
             print message
 
 if __name__ == "__main__" :
     l = gettorLogger()
+    print "This is the logging module. You probably do not want to call it by hand."
+    print "We'll send a test logging message now with the following subsystem: " + \
+    str(l.logger)
     l.log("I'm a logger, logging!")

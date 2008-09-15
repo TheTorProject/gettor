@@ -109,4 +109,5 @@ def blackListtests(address):
     print "Please ensure the tests match what you would expect for your environment."
 
 if __name__ == "__main__" :
+    print "It appears that you're manually calling the blacklisting code. We'll run some tests..."
     blackListtests("requestingUser@example.com")

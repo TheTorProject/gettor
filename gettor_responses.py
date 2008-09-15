@@ -64,3 +64,6 @@ def sendMessage(message, src, dst, smtpserver="localhost:25"):
 
     return status
 
+if __name__ == "__main__" :
+    print "This is the response handling code. You probably do not want to call it by hand."
+

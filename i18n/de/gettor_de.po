@@ -1,0 +1,150 @@
+# gettor translation file for .de
+# Copyright (C) The Tor project
+# Christian Fromme <kaner@strace.org>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"POT-Creation-Date: 2008-09-14 16:24+CEST\n"
+"PO-Revision-Date: 2008-09-14 16:24+CEST\n"
+"Last-Translator: Christian Fromme <kaner@strace.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: gettor.py:75
+msgid "No parsed message. Dropping message."
+msgstr "Konnte die Nachricht nicht parsen. Loesche Nachricht."
+
+#: gettor.py:80
+msgid "Signature is: %s"
+msgstr "Die Signatur ist: %s"
+
+#: gettor.py:107
+msgid "No help dispatched. Invalid reply address for user."
+msgstr "Keine Hilfe versendet. Die Antwortadresse des Users ist ungueltig."
+
+#: gettor.py:111
+msgid "Unsigned messaged to gettor by blacklisted user dropped."
+msgstr "gettor: Unsignierte Nachricht an gettor von einem blacklisted User geloescht."
+
+#: gettor.py:117
+msgid ""
+"\n"
+"Hello! This is the \"get tor\" robot.\n"
+"\n"
+"Unfortunately, we won't answer you at this address. We only process\n"
+"requests from email services that support \"DKIM\", which is an email\n"
+"feature that lets us verify that the address in the \"From\" line is\n"
+"actually the one who sent the mail.\n"
+"\n"
+"Gmail and Yahoo Mail both use DKIM. You will have better luck sending\n"
+"us mail from one of those.\n"
+"\n"
+"(We apologize if you didn't ask for this mail. Since your email is from\n"
+"a service that doesn't use DKIM, we're sending a short explanation,\n"
+"and then we'll ignore this email address for the next day or so.\n"
+"        "
+msgstr ""
+"\n"
+"Hallo! Diese Nachricht kommt vom \"get tor\" robot.\n"
+"\n"
+"Leider koennen wir Ihnen auf diese Adresse nicht antworten. Wir koennen\n"
+"nur Requests von Email-Diensten verarbeiten, die den \"DKIM\"-Service\n"
+"unterstuetzen. DKIM ist ein Dienst, der uns ueberpruefen laesst, ob die\n"
+"Absenderadresse einer Email tatsaechlich von dort kommt, woher sie\n"
+"vorgibt zu kommen.\n"
+"\n"
+"(Bitte entschuldigen Sie, wenn diese Email Sie ohne ihr zutuen erreicht.\n"
+"Da diese Email ohnehin von einer Adresse kam, die kein DKIM unterstuetzt,\n"
+"senden wir nur diese kurze Erklaerung und ignorieren Ihre Adresse fuer\n"
+"den naechsten Tag.)\n"
+"        "
+
+#: gettor.py:133
+msgid "Unsigned messaged to gettor. We issued some help about using DKIM."
+msgstr "Unsignierte Nachricht. Hilfe zu DKIM versandt."
+
+#: gettor.py:137
+msgid "Signed messaged to gettor."
+msgstr "Signierte Nachricht empfangen."
+
+#: gettor.py:145
+msgid "Package: %s selected."
+msgstr "Paket: %s gewaehlt."
+
+#: gettor.py:146
+msgid ""
+"\n"
+"Here's your requested software as a zip file. Please unzip the \n"
+"package and verify the signature.\n"
+"            "
+msgstr ""
+"\n"
+"Hier ist die von Ihnen angeforderte Software als Zip-datei. Bitte\n"
+"entpacken Sie diese und verifizieren Sie die digitale Signatur.\n"
+"            "
+
+#: gettor.py:153
+msgid "Hello, I'm a robot. "
+msgstr "Hallo, Ich bin der automatische Mail-Versandt"
+
+#: gettor.py:154
+msgid ""
+"Your request was not understood. Please select one of the following package names:\n"
+msgstr ""
+"Ihre Anfrage war nicht zu verstehen. Bitte waehlen Sie eines der folgenden Paketnamen:\n"
+
+#: gettor.py:158
+msgid ""
+"Please send me another email. It only needs a single package name anywhere in the body of your email.\n"
+msgstr ""
+"Bitte senden Sie mir eine weitere Email. Schreiben Sie darin lediglich den Paketnamen.\n"
+
+#: gettor.py:160
+msgid "Signed messaged to gettor. We issued some help about proper email formatting."
+msgstr "Signierte Nachricht empfangen. Hilfe ueber das richtige formatieren von Email versandt."
+
+#: gettor_requests.py:65
+msgid "Fetching raw message."
+msgstr "Hole Nachricht im Raw-Format."
+
+#: gettor_requests.py:68
+msgid "Verifying signature of message."
+msgstr "Verifiziere Signatur der Nachricht."
+
+#: gettor_requests.py:70
+msgid "Parsing Message."
+msgstr "Verarbeite Nachricht."
+
+#: gettor_requests.py:72
+msgid "Parsing reply."
+msgstr "Verarbeite Antwort."
+
+#: gettor_requests.py:74
+msgid "Parsing package request."
+msgstr "Verarbeite Paketanfrage."
+
+#: gettor_requests.py:81
+msgid "The signature status of the email is: %s"
+msgstr "Der Signatur-Status dieser Email ist: %s"
+
+#: gettor_requests.py:82
+msgid "The email requested the following reply address: %s"
+msgstr "Die verlangte Email hat folgende Antwortadresse: %s"
+
+#: gettor_requests.py:83
+msgid "It looks like the email requested the following package: %s"
+msgstr "Es sieht aus als wuerde die Email folgendes Paket anfodern: %s"
+
+#: gettor_requests.py:84
+msgid "We would select the following package file: "
+msgstr "Folgendes Paket wird ausgeaehlt: "
+
+#: gettor_responses.py:35
+msgid "Re: Your \"get tor\" request"
+msgstr "Re: Ihre \"get tor\" Anfrage"
+
