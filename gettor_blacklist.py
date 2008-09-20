@@ -5,9 +5,9 @@ This library implements all of the black listing features needed for gettor.
 
 import hashlib
 import os
-from gettor_config import gettorConf
+import gettor_config
 
-conf = gettorConf()
+conf = gettor_config.gettorConf()
 stateDir = conf.getStateDir()
 blStateDir = conf.getBlStateDir()
 

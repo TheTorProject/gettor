@@ -53,6 +53,16 @@ def parseRequest(parsedMessage, packages):
     # If we get here, we didn't find a package we're currently serving
     return None
 
+def parseLocale(parsedMessage):
+    """Check if the user wants a reply in a certain language"""
+    pattern = re.compile("^Lang:\s+(.*)$")
+    for line in email.Iterators.body_line_iterator(parsedMessage):
+        match = pattern.match(line)
+        if match:
+            return match.group(1)
+    else:
+        return None
+
 if __name__ == "__main__" :
     """ Give us an email to understand what we think of it. """
     packageList = { 

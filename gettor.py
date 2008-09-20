@@ -55,50 +55,35 @@ except ImportError:
     antigravity = None
 
 import sys
-import getopt
+import os
 import gettext
 import gettor_blacklist
 import gettor_requests
 import gettor_responses
-from gettor_log import gettorLogger
-from gettor_config import gettorConf
+import gettor_log
+import gettor_config
+import gettor_opt
 
 
-def usage():
-    print "Usage: gettor.py [-c CONFIG|-h]"
-    print ""
+# Somewhat poor hack to get what we want: Use different languages for logging
+# and for reply mails
+def switchLocale(newlocale):
+    trans = gettext.translation("gettor", "/usr/share/locale", [newlocale])
+    trans.install()
 
 if __name__ == "__main__":
 
-    # Parse args
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hc:', ['help', 'config='])
-    except getopt.GetoptError:
-        usage()
-        sys.exit(1)
- 
-    config = None
-    for c, optarg in opts:
-        if c in ("-h", "--help"):
-            usage()
-            sys.exit(0)
-        if c in ("-c", "--config"):
-            config = optarg
-
-    if config != None:
-        conf = gettorConf(config)
-    else:
-        conf = gettorConf()
-    log  = gettorLogger()
-    locale = conf.getLocale()
-    trans = gettext.translation("gettor", "/usr/share/locale", [locale]) 
-    trans.install()
+    options, arguments = gettor_opt.parseOpts()
+    conf = gettor_config.gettorConf(options.configfile)
+    log  = gettor_log.gettorLogger()
+    logLang = conf.getLocale()
+    switchLocale(logLang)
     rawMessage = gettor_requests.getMessage()
     parsedMessage = gettor_requests.parseMessage(rawMessage)
 
     if not parsedMessage:
         log.log(_("No parsed message. Dropping message."))
-        exit(0)
+        exit(1)
 
     signature = False
     signature = gettor_requests.verifySignature(rawMessage)
@@ -114,6 +99,10 @@ if __name__ == "__main__":
     #   vidalia-bundle-0.2.0.29-rc-0.1.6.exe.asc
     #
     distDir = conf.getDistDir()
+    if not os.path.isdir(distDir):
+        log.log(_("Sorry, %s is not a directory.") % distDir)
+        exit(1)
+
     packageList = {
         "windows-bundle": distDir + "windows-bundle.z",
         "macosx-panther-ppc-bundle": distDir + "macosx-panther-ppc-bundle.z",
@@ -121,24 +110,40 @@ if __name__ == "__main__":
         "source-bundle": distDir + "source-bundle.z"
         }
 
+    # Check package list sanity
+    for key, val in packageList.items():
+        # Remove invalid packages
+        if not os.access(val, os.R_OK):
+            log.log(_("Warning: %s not accessable. Removing from list." % val))
+            del packageList[key]
+    if len(packageList) < 1:
+        log.log(_("Sorry, your package list is unusable."))
+        exit(1)
+
     # XXX TODO: Ensure we have a proper replyTO or bail out (majorly malformed mail).
     replyTo = gettor_requests.parseReply(parsedMessage)
-    
+
+    # Get disired reply language, if any
+    replyLang = gettor_requests.parseLocale(parsedMessage)
+    if not replyLang:
+        replyLang = logLang
+
     if not signature:
         # Check to see if we've helped them to understand that they need DKIM in the past
         previouslyHelped = gettor_blacklist.blackList(replyTo)
     
     if not replyTo:
         log.log(_("No help dispatched. Invalid reply address for user."))
-        exit(0)
+        exit(1)
 
     if not signature and previouslyHelped:
         log.log(_("Unsigned messaged to gettor by blacklisted user dropped."))
-        exit(0)
+        exit(1)
 
     if not signature and not previouslyHelped:
         # Reply with some help and bail out
         gettor_blacklist.blackList(replyTo, True)
+        switchLocale(replyLang)
         message = _("""
 Hello! This is the "get tor" robot.
 
@@ -154,6 +159,7 @@ us mail from one of those.
 a service that doesn't use DKIM, we're sending a short explanation,
 and then we'll ignore this email address for the next day or so.
         """)
+        switchLocale(logLang)
         gettor_responses.sendHelp(message, srcEmail, replyTo)
         log.log(_("Unsigned messaged to gettor. We issued some help about using DKIM."))
         exit(0)
@@ -175,12 +181,14 @@ package and verify the signature.
             gettor_responses.sendPackage(message, srcEmail, replyTo, packageList[package])  
             exit(0)
         else:
+            switchLocale(replyLang)
             message = [_("Hello, I'm a robot. ")]
             message.append(_("Your request was not understood. Please select one of the following package names:\n"))
 
             for key in packageList.keys():
                 message.append(key + "\n")
             message.append(_("Please send me another email. It only needs a single package name anywhere in the body of your email.\n"))
+            switchLocale(logLang)
             gettor_responses.sendHelp(''.join(message), srcEmail, replyTo)
             log.log(_("Signed messaged to gettor. We issued some help about proper email formatting."))
             exit(0)
