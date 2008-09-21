@@ -42,3 +42,8 @@ Create options that make gettor less ghetto:
         "--setup"
         - An alias for "--run-tests --fetch-packages --prep-packages \
             --generate-package-list --install-crontab"
+
+Create an explicit whitelist configuration option:
+    - We should ensure that we never block certain users
+        - Even without DKIM
+
