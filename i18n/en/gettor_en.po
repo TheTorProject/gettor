@@ -15,23 +15,35 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: gettor.py:75
+#: gettor.py:86
 msgid "No parsed message. Dropping message."
 msgstr ""
 
-#: gettor.py:80
+#: gettor.py:91
 msgid "Signature is: %s"
 msgstr ""
 
-#: gettor.py:107
+#: gettor.py:104
+msgid "Sorry, %s is not a directory."
+msgstr ""
+
+#: gettor.py:118
+msgid "Warning: %s not accessable. Removing from list."
+msgstr ""
+
+#: gettor.py:121
+msgid "Sorry, your package list is unusable."
+msgstr ""
+
+#: gettor.py:137
 msgid "No help dispatched. Invalid reply address for user."
 msgstr ""
 
-#: gettor.py:111
+#: gettor.py:141
 msgid "Unsigned messaged to gettor by blacklisted user dropped."
 msgstr ""
 
-#: gettor.py:117
+#: gettor.py:148
 msgid ""
 "\n"
 "Hello! This is the \"get tor\" robot.\n"
@@ -50,19 +62,19 @@ msgid ""
 "        "
 msgstr ""
 
-#: gettor.py:133
+#: gettor.py:165
 msgid "Unsigned messaged to gettor. We issued some help about using DKIM."
 msgstr ""
 
-#: gettor.py:137
+#: gettor.py:169
 msgid "Signed messaged to gettor."
 msgstr ""
 
-#: gettor.py:145
+#: gettor.py:177
 msgid "Package: %s selected."
 msgstr ""
 
-#: gettor.py:146
+#: gettor.py:178
 msgid ""
 "\n"
 "Here's your requested software as a zip file. Please unzip the \n"
@@ -70,57 +82,57 @@ msgid ""
 "            "
 msgstr ""
 
-#: gettor.py:153
+#: gettor.py:186
 msgid "Hello, I'm a robot. "
 msgstr ""
 
-#: gettor.py:154
+#: gettor.py:187
 msgid ""
 "Your request was not understood. Please select one of the following package names:\n"
 msgstr ""
 
-#: gettor.py:158
+#: gettor.py:191
 msgid ""
 "Please send me another email. It only needs a single package name anywhere in the body of your email.\n"
 msgstr ""
 
-#: gettor.py:160
+#: gettor.py:194
 msgid "Signed messaged to gettor. We issued some help about proper email formatting."
 msgstr ""
 
-#: gettor_requests.py:65
+#: gettor_requests.py:75
 msgid "Fetching raw message."
 msgstr ""
 
-#: gettor_requests.py:68
+#: gettor_requests.py:78
 msgid "Verifying signature of message."
 msgstr ""
 
-#: gettor_requests.py:70
+#: gettor_requests.py:80
 msgid "Parsing Message."
 msgstr ""
 
-#: gettor_requests.py:72
+#: gettor_requests.py:82
 msgid "Parsing reply."
 msgstr ""
 
-#: gettor_requests.py:74
+#: gettor_requests.py:84
 msgid "Parsing package request."
 msgstr ""
 
-#: gettor_requests.py:81
+#: gettor_requests.py:91
 msgid "The signature status of the email is: %s"
 msgstr ""
 
-#: gettor_requests.py:82
+#: gettor_requests.py:92
 msgid "The email requested the following reply address: %s"
 msgstr ""
 
-#: gettor_requests.py:83
+#: gettor_requests.py:93
 msgid "It looks like the email requested the following package: %s"
 msgstr ""
 
-#: gettor_requests.py:84
+#: gettor_requests.py:94
 msgid "We would select the following package file: "
 msgstr ""
 

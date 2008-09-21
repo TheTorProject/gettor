@@ -37,6 +37,7 @@
  logFile:       If 'file' logging is chosen, log to this file
  logSubSystem:  This has to be one of the following strings:
                 'nothing':  Nothing is logged anywhere (Recommended)
+                'stdout':   Log to stdout
                 'syslog':   Logmessages will be written to syslog
                 'file':     Logmessages will be written to a file (Not that 
                             this needs the 'logFile' option in the config file

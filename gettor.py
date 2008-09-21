@@ -75,19 +75,20 @@ if __name__ == "__main__":
 
     options, arguments = gettor_opt.parseOpts()
     conf = gettor_config.gettorConf(options.configfile)
-    log  = gettor_log.gettorLogger()
+    logger  = gettor_log.gettorLogger()
+    log = logger.getLogger()
     logLang = conf.getLocale()
     switchLocale(logLang)
     rawMessage = gettor_requests.getMessage()
     parsedMessage = gettor_requests.parseMessage(rawMessage)
 
     if not parsedMessage:
-        log.log(_("No parsed message. Dropping message."))
+        log.info(_("No parsed message. Dropping message."))
         exit(1)
 
     signature = False
     signature = gettor_requests.verifySignature(rawMessage)
-    log.log(_("Signature is: %s") % str(signature))
+    log.info(_("Signature is: %s") % str(signature))
     replyTo = False
     srcEmail = conf.getSrcEmail()
 
@@ -100,7 +101,7 @@ if __name__ == "__main__":
     #
     distDir = conf.getDistDir()
     if not os.path.isdir(distDir):
-        log.log(_("Sorry, %s is not a directory.") % distDir)
+        log.info(_("Sorry, %s is not a directory.") % distDir)
         exit(1)
 
     packageList = {
@@ -114,10 +115,10 @@ if __name__ == "__main__":
     for key, val in packageList.items():
         # Remove invalid packages
         if not os.access(val, os.R_OK):
-            log.log(_("Warning: %s not accessable. Removing from list." % val))
+            log.info(_("Warning: %s not accessable. Removing from list.") % val)
             del packageList[key]
     if len(packageList) < 1:
-        log.log(_("Sorry, your package list is unusable."))
+        log.info(_("Sorry, your package list is unusable."))
         exit(1)
 
     # XXX TODO: Ensure we have a proper replyTO or bail out (majorly malformed mail).
@@ -133,11 +134,11 @@ if __name__ == "__main__":
         previouslyHelped = gettor_blacklist.blackList(replyTo)
     
     if not replyTo:
-        log.log(_("No help dispatched. Invalid reply address for user."))
+        log.info(_("No help dispatched. Invalid reply address for user."))
         exit(1)
 
     if not signature and previouslyHelped:
-        log.log(_("Unsigned messaged to gettor by blacklisted user dropped."))
+        log.info(_("Unsigned messaged to gettor by blacklisted user dropped."))
         exit(1)
 
     if not signature and not previouslyHelped:
@@ -161,11 +162,11 @@ and then we'll ignore this email address for the next day or so.
         """)
         switchLocale(logLang)
         gettor_responses.sendHelp(message, srcEmail, replyTo)
-        log.log(_("Unsigned messaged to gettor. We issued some help about using DKIM."))
+        log.info(_("Unsigned messaged to gettor. We issued some help about using DKIM."))
         exit(0)
 
     if signature:
-        log.log(_("Signed messaged to gettor."))
+        log.info(_("Signed messaged to gettor."))
         
         try:
             package = gettor_requests.parseRequest(parsedMessage, packageList)
@@ -173,7 +174,7 @@ and then we'll ignore this email address for the next day or so.
             package = None
 
         if package != None:
-            log.log(_("Package: %s selected.") % str(package))
+            log.info(_("Package: %s selected.") % str(package))
             message = _("""
 Here's your requested software as a zip file. Please unzip the 
 package and verify the signature.
@@ -190,5 +191,5 @@ package and verify the signature.
             message.append(_("Please send me another email. It only needs a single package name anywhere in the body of your email.\n"))
             switchLocale(logLang)
             gettor_responses.sendHelp(''.join(message), srcEmail, replyTo)
-            log.log(_("Signed messaged to gettor. We issued some help about proper email formatting."))
+            log.info(_("Signed messaged to gettor. We issued some help about proper email formatting."))
             exit(0)
