@@ -15,128 +15,132 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: gettor.py:86
-msgid "No parsed message. Dropping message."
-msgstr ""
-
-#: gettor.py:91
-msgid "Signature is: %s"
-msgstr ""
-
-#: gettor.py:104
-msgid "Sorry, %s is not a directory."
-msgstr ""
-
-#: gettor.py:118
+#: gettor.py:106
 msgid "Warning: %s not accessable. Removing from list."
 msgstr ""
 
-#: gettor.py:121
+#: gettor.py:109
 msgid "Sorry, your package list is unusable."
 msgstr ""
 
-#: gettor.py:137
+#: gettor.py:116
+msgid "No raw message. Something went wrong."
+msgstr ""
+
+#: gettor.py:120
+msgid "No parsed message. Dropping message."
+msgstr ""
+
+#: gettor.py:125
 msgid "No help dispatched. Invalid reply address for user."
 msgstr ""
 
-#: gettor.py:141
+#: gettor.py:134
+msgid "Signature is: %s"
+msgstr ""
+
+#: gettor.py:140
 msgid "Unsigned messaged to gettor by blacklisted user dropped."
 msgstr ""
 
-#: gettor.py:148
-msgid ""
-"\n"
-"Hello! This is the \"get tor\" robot.\n"
-"\n"
-"Unfortunately, we won't answer you at this address. We only process\n"
-"requests from email services that support \"DKIM\", which is an email\n"
-"feature that lets us verify that the address in the \"From\" line is\n"
-"actually the one who sent the mail.\n"
-"\n"
-"Gmail and Yahoo Mail both use DKIM. You will have better luck sending\n"
-"us mail from one of those.\n"
-"\n"
-"(We apologize if you didn't ask for this mail. Since your email is from\n"
-"a service that doesn't use DKIM, we're sending a short explanation,\n"
-"and then we'll ignore this email address for the next day or so.\n"
-"        "
+#: gettor.py:146
+msgid "Unsigned messaged to gettor. We issued some help."
 msgstr ""
 
-#: gettor.py:165
-msgid "Unsigned messaged to gettor. We issued some help about using DKIM."
-msgstr ""
-
-#: gettor.py:169
+#: gettor.py:149
 msgid "Signed messaged to gettor."
 msgstr ""
 
-#: gettor.py:177
+#: gettor.py:152
 msgid "Package: %s selected."
 msgstr ""
 
-#: gettor.py:178
-msgid ""
-"\n"
-"Here's your requested software as a zip file. Please unzip the \n"
-"package and verify the signature.\n"
-"            "
+#: gettor.py:156
+msgid "We issued some help about proper email formatting."
 msgstr ""
 
-#: gettor.py:186
-msgid "Hello, I'm a robot. "
+#: gettor.py:170
+msgid "Sorry, %s is not a directory."
+msgstr ""
+
+#: gettor.py:177
+msgid "Syncing Tor packages failed."
+msgstr ""
+
+#: gettor.py:180
+msgid "Syncing Tor packages done."
+msgstr ""
+
+#: gettor.py:184
+msgid "Building packages failed."
 msgstr ""
 
 #: gettor.py:187
+msgid "Building packages done."
+msgstr ""
+
+#: gettor.py:191
+msgid "Tests failed."
+msgstr ""
+
+#: gettor.py:194
+msgid "Tests passed."
+msgstr ""
+
+#: gettor.py:198
+msgid "Installing cron failed"
+msgstr ""
+
+#: gettor.py:201
+msgid "Installing cron done."
+msgstr ""
+
+#: gettor.py:206
+msgid "Processing mail failed."
+msgstr ""
+
+#: gettor_responses.py:26
+msgid ""
+"\n"
+"    Hello! This is the \"get tor\" robot.\n"
+"\n"
+"    Unfortunately, we won't answer you at this address. We only process\n"
+"    requests from email services that support \"DKIM\", which is an email\n"
+"    feature that lets us verify that the address in the \"From\" line is\n"
+"    actually the one who sent the mail.\n"
+"\n"
+"    Gmail and Yahoo Mail both use DKIM. You will have better luck sending\n"
+"    us mail from one of those.\n"
+"\n"
+"    (We apologize if you didn't ask for this mail. Since your email is from\n"
+"    a service that doesn't use DKIM, we're sending a short explanation,\n"
+"    and then we'll ignore this email address for the next day or so.\n"
+"        "
+msgstr ""
+
+#: gettor_responses.py:53
+msgid "Hello, I'm a robot. "
+msgstr ""
+
+#: gettor_responses.py:54
 msgid ""
 "Your request was not understood. Please select one of the following package names:\n"
 msgstr ""
 
-#: gettor.py:191
+#: gettor_responses.py:58
 msgid ""
 "Please send me another email. It only needs a single package name anywhere in the body of your email.\n"
 msgstr ""
 
-#: gettor.py:194
-msgid "Signed messaged to gettor. We issued some help about proper email formatting."
+#: gettor_responses.py:71
+msgid ""
+"\n"
+"    Here's your requested software as a zip file. Please unzip the \n"
+"    package and verify the signature.\n"
+"        "
 msgstr ""
 
-#: gettor_requests.py:75
-msgid "Fetching raw message."
-msgstr ""
-
-#: gettor_requests.py:78
-msgid "Verifying signature of message."
-msgstr ""
-
-#: gettor_requests.py:80
-msgid "Parsing Message."
-msgstr ""
-
-#: gettor_requests.py:82
-msgid "Parsing reply."
-msgstr ""
-
-#: gettor_requests.py:84
-msgid "Parsing package request."
-msgstr ""
-
-#: gettor_requests.py:91
-msgid "The signature status of the email is: %s"
-msgstr ""
-
-#: gettor_requests.py:92
-msgid "The email requested the following reply address: %s"
-msgstr ""
-
-#: gettor_requests.py:93
-msgid "It looks like the email requested the following package: %s"
-msgstr ""
-
-#: gettor_requests.py:94
-msgid "We would select the following package file: "
-msgstr ""
-
-#: gettor_responses.py:35
+#: gettor_responses.py:92
 msgid "Re: Your \"get tor\" request"
 msgstr ""
 

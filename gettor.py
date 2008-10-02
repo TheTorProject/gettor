@@ -98,16 +98,6 @@ def installCron(mirror, distdir):
     return True
 
 def processMail(conf, log, logLang, packageList):
-    # Get message from stdin
-    rawMessage = gettor_requests.getMessage()
-    parsedMessage = gettor_requests.parseMessage(rawMessage)
-    if not parsedMessage:
-        log.info(_("No parsed message. Dropping message."))
-        exit(1)
-    signature = False
-    signature = gettor_requests.verifySignature(rawMessage)
-    log.info(_("Signature is: %s") % str(signature))
-    replyTo = False
     srcEmail = conf.getSrcEmail()
     # Check package list sanity
     for key, val in packageList.items():
@@ -119,80 +109,53 @@ def processMail(conf, log, logLang, packageList):
         log.info(_("Sorry, your package list is unusable."))
         return False
 
-    # XXX TODO: Ensure we have a proper replyTO or bail out (majorly malformed mail).
-    replyTo = gettor_requests.parseReply(parsedMessage)
-
-    # Get disired reply language, if any
-    replyLang = gettor_requests.parseLocale(parsedMessage)
+    # Receive mail
+    rmail = gettor_requests.requestMail(packageList)
+    rawMessage = rmail.getRawMessage()
+    if not rawMessage:
+        log.error(_("No raw message. Something went wrong."))
+        return False
+    parsedMessage = rmail.getParsedMessage()
+    if not parsedMessage:
+        log.error(_("No parsed message. Dropping message."))
+        return False
+    # XXX TODO: Ensure we have a proper replyTO or bail out
+    replyTo = rmail.getReplyTo()
+    if not replyTo:
+        log.error(_("No help dispatched. Invalid reply address for user."))
+        return False
+    # Get desired reply language, if any
+    replyLang = rmail.getLocale()
     if not replyLang:
         replyLang = logLang
-
+    # Initialize response
+    respmail = gettor_responses.gettorResponse(replyLang, logLang)
+    signature = rmail.hasVerifiedSignature()
+    log.info(_("Signature is: %s") % str(signature))
     if not signature:
-        # Check to see if we've helped them to understand that they need DKIM in the past
+        # Check to see if we've helped them to understand that they need DKIM
+        # in the past
         previouslyHelped = gettor_blacklist.blackList(replyTo)
-    
-    if not replyTo:
-        log.info(_("No help dispatched. Invalid reply address for user."))
-        return False
-
     if not signature and previouslyHelped:
         log.info(_("Unsigned messaged to gettor by blacklisted user dropped."))
         return False
-
     if not signature and not previouslyHelped:
         # Reply with some help and bail out
         gettor_blacklist.blackList(replyTo, True)
-        switchLocale(replyLang)
-        message = _("""
-Hello! This is the "get tor" robot.
-
-Unfortunately, we won't answer you at this address. We only process
-requests from email services that support "DKIM", which is an email
-feature that lets us verify that the address in the "From" line is
-actually the one who sent the mail.
-
-Gmail and Yahoo Mail both use DKIM. You will have better luck sending
-us mail from one of those.
-
-(We apologize if you didn't ask for this mail. Since your email is from
-a service that doesn't use DKIM, we're sending a short explanation,
-and then we'll ignore this email address for the next day or so.
-        """)
-        switchLocale(logLang)
-        gettor_responses.sendHelp(message, srcEmail, replyTo)
-        log.info(_("Unsigned messaged to gettor. We issued some help about using DKIM."))
+        respmail.sendHelp(srcEmail, replyTo)
+        log.info(_("Unsigned messaged to gettor. We issued some help."))
         return True
-
     if signature:
         log.info(_("Signed messaged to gettor."))
-        
-        try:
-            package = gettor_requests.parseRequest(parsedMessage, packageList)
-        except:
-            package = None
-
+        package = rmail.getPackage()
         if package != None:
             log.info(_("Package: %s selected.") % str(package))
-            switchLocale(replyLang)
-            message = _("""
-Here's your requested software as a zip file. Please unzip the 
-package and verify the signature.
-            """)
-            switchLocale(logLang)
-            gettor_responses.sendPackage(message, srcEmail, replyTo, packageList[package])  
-            return True
+            respmail.sendPackage(srcEmail, replyTo, packageList[package])  
         else:
-            switchLocale(replyLang)
-            message = [_("Hello, I'm a robot. ")]
-            message.append(_("Your request was not understood. Please select one of the following package names:\n"))
+            respmail.sendPackageHelp(packageList, srcEmail, replyTo)
+            log.info(_("We issued some help about proper email formatting."))
 
-            for key in packageList.keys():
-                message.append(key + "\n")
-            message.append(_("Please send me another email. It only needs a single package name anywhere in the body of your email.\n"))
-            switchLocale(logLang)
-            gettor_responses.sendHelp(''.join(message), srcEmail, replyTo)
-            log.info(_("Signed messaged to gettor. We issued some help about proper email formatting."))
-            return True
+    return True
 
 if __name__ == "__main__":
     # Parse command line, setup config, logging and language
