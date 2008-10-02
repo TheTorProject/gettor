@@ -78,7 +78,8 @@ class gettorConf:
         self.useConf = {"stateDir":     ("/var/lib/gettor/",        "global"),
                         "blStateDir":   ("/var/lib/gettor/bl/",     "global"),
                         "srcEmail":     ("gettor@torproject.org",   "global"),
-                        "distDir":      ("/var/lib/gettor/pkg/",    "global"),
+                        "distDir":      ("/var/lib/gettor/dist/",   "global"),
+                        "packDir":      ("/var/lib/gettor/pkg/",    "global"),
                         "locale":       ("en",                      "global"),
                         "logSubSystem": ("nothing",                 "global"),
                         "logFile":      ("/dev/null",               "global")}
@@ -150,6 +151,9 @@ class gettorConf:
 
     def getDistDir(self):
         return self.useConf["distDir"][0]
+
+    def getPackDir(self):
+        return self.useConf["packDir"][0]
 
     def getLocale(self):
         return self.useConf["locale"][0]

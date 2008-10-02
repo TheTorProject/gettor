@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 
- gettor.py by Jacob Appelbaum <jacob@appelbaum.net>
+ gettor.py by Jacob Appelbaum <jacob@appelbaum.net>,
+              Christian Fromme <kaner@strace.org>
  This program will hand out Tor via email to supported systems.
  This program is Free Software, see LICENSE for details.
 
@@ -45,8 +46,8 @@
 __program__ = 'gettor.py'
 __version__ = '20080914.01'
 __url__ = 'https://tor-svn.freehaven.net/svn/tor/trunk/contrib/gettor/'
-__author__ = 'Jacob Appelbaum <jacob@appelbaum.net>'
-__copyright__ = 'Copyright (c) 2008, Jacob Appelbaum'
+__author__ = 'Jacob Appelbaum <jacob@appelbaum.net>, Christian Fromme <kaner@strace.org>'
+__copyright__ = 'Copyright (c) 2008, Jacob Appelbaum, Christian Fromme'
 __license__ = 'See LICENSE for licensing information'
 
 try:
@@ -63,54 +64,51 @@ import gettor_responses
 import gettor_log
 import gettor_config
 import gettor_opt
+import gettor_packages
 
 
 # Somewhat poor hack to get what we want: Use different languages for logging
 # and for reply mails
+# XXX: Change to something more elegant
 def switchLocale(newlocale):
     trans = gettext.translation("gettor", "/usr/share/locale", [newlocale])
     trans.install()
 
-if __name__ == "__main__":
+def runTests():
+    # XXX 
+    return True
 
-    options, arguments = gettor_opt.parseOpts()
-    conf = gettor_config.gettorConf(options.configfile)
-    logger  = gettor_log.gettorLogger()
-    log = logger.getLogger()
-    logLang = conf.getLocale()
-    switchLocale(logLang)
+def installCron(mirror, distdir):
+    # XXX: TODO REDO THIS FUNCTION TO USE `crontab -e`
+    # XXX: We might want to install a cronjob file to /etc/cron.daily, on
+    # system that support it. Also, we should use the mirror from the command
+    # line or config file, as well as the distdir from the config to build 
+    # the command string
+    #comment="\n# Sync Tor software\n"
+    #command="0 3 * * * rsync -a rsync://" + mirror + "/tor/dist/current/" 
+    #            + distdir + "\n"
+    #try:
+    #    f = open("/etc/crontab", "a")
+    #    f.write(comment + command)
+    #    f.close
+    #except:
+    #    print "Installation failed. Are you root?"
+    #    return False
+    #print "Cronjob installed: Running every night at three after midnight"
+    return True
+
+def processMail(conf, log, logLang, packageList):
+    # Get message from stdin
     rawMessage = gettor_requests.getMessage()
     parsedMessage = gettor_requests.parseMessage(rawMessage)
-
     if not parsedMessage:
         log.info(_("No parsed message. Dropping message."))
         exit(1)
-
     signature = False
     signature = gettor_requests.verifySignature(rawMessage)
     log.info(_("Signature is: %s") % str(signature))
     replyTo = False
     srcEmail = conf.getSrcEmail()
-
-    # TODO XXX:
-    # Make the zip files and ensure they match packageList
-    # Make each zip file like so:
-    # zip -9 windows-bundle.z \
-    #   vidalia-bundle-0.2.0.29-rc-0.1.6.exe \
-    #   vidalia-bundle-0.2.0.29-rc-0.1.6.exe.asc
-    #
-    distDir = conf.getDistDir()
-    if not os.path.isdir(distDir):
-        log.info(_("Sorry, %s is not a directory.") % distDir)
-        exit(1)
-
-    packageList = {
-        "windows-bundle": distDir + "windows-bundle.z",
-        "macosx-panther-ppc-bundle": distDir + "macosx-panther-ppc-bundle.z",
-        "macosx-tiger-universal-bundle": distDir + "macosx-tiger-universal-bundle.z",
-        "source-bundle": distDir + "source-bundle.z"
-        }
-
     # Check package list sanity
     for key, val in packageList.items():
         # Remove invalid packages
@@ -119,7 +117,7 @@ if __name__ == "__main__":
             del packageList[key]
     if len(packageList) < 1:
         log.info(_("Sorry, your package list is unusable."))
-        exit(1)
+        return False
 
     # XXX TODO: Ensure we have a proper replyTO or bail out (majorly malformed mail).
     replyTo = gettor_requests.parseReply(parsedMessage)
@@ -135,11 +133,11 @@ if __name__ == "__main__":
     
     if not replyTo:
         log.info(_("No help dispatched. Invalid reply address for user."))
-        exit(1)
+        return False
 
     if not signature and previouslyHelped:
         log.info(_("Unsigned messaged to gettor by blacklisted user dropped."))
-        exit(1)
+        return False
 
     if not signature and not previouslyHelped:
         # Reply with some help and bail out
@@ -163,7 +161,7 @@ and then we'll ignore this email address for the next day or so.
         switchLocale(logLang)
         gettor_responses.sendHelp(message, srcEmail, replyTo)
         log.info(_("Unsigned messaged to gettor. We issued some help about using DKIM."))
-        exit(0)
+        return True
 
     if signature:
         log.info(_("Signed messaged to gettor."))
@@ -175,12 +173,14 @@ and then we'll ignore this email address for the next day or so.
 
         if package != None:
             log.info(_("Package: %s selected.") % str(package))
+            switchLocale(replyLang)
             message = _("""
 Here's your requested software as a zip file. Please unzip the 
 package and verify the signature.
             """)
+            switchLocale(logLang)
             gettor_responses.sendPackage(message, srcEmail, replyTo, packageList[package])  
-            exit(0)
+            return True
         else:
             switchLocale(replyLang)
             message = [_("Hello, I'm a robot. ")]
@@ -192,4 +192,55 @@ package and verify the signature.
             switchLocale(logLang)
             gettor_responses.sendHelp(''.join(message), srcEmail, replyTo)
             log.info(_("Signed messaged to gettor. We issued some help about proper email formatting."))
+            return True
+
+if __name__ == "__main__":
+    # Parse command line, setup config, logging and language
+    options, arguments = gettor_opt.parseOpts()
+    conf = gettor_config.gettorConf(options.configfile)
+    logger  = gettor_log.gettorLogger()
+    log = logger.getLogger()
+    logLang = conf.getLocale()
+    switchLocale(logLang)
+    distDir = conf.getDistDir()
+    if not os.path.isdir(distDir):
+        log.info(_("Sorry, %s is not a directory.") % distDir)
+        exit(1)
+
+    packs = gettor_packages.gettorPackages(options.mirror, conf)
+
+    if options.fetchpackages:
+        if packs.syncWithMirror() != 0:
+            log.error(_("Syncing Tor packages failed."))
+            exit(1)
+        else:
+            log.info(_("Syncing Tor packages done."))
             exit(0)
+    if options.preppackages:
+        if not packs.buildPackages():
+            log.error(_("Building packages failed."))
+            exit(1)
+        else:
+            log.info(_("Building packages done."))
+            exit(0)
+    if options.runtests:
+        if not runTests():
+            log.error(_("Tests failed."))
+            exit(1)
+        else:
+            log.info(_("Tests passed."))
+            exit(0)
+    if options.installcron:
+        if not installCron(options.mirror, distDir):
+            log.error(_("Installing cron failed"))
+            exit(1)
+        else:
+            log.info(_("Installing cron done."))
+            exit(0)
+    
+    # Main loop
+    if not processMail(conf, log, logLang, packs.getPackageList()):
+        log.error(_("Processing mail failed."))
+        exit(1)
+
+    exit(0)
