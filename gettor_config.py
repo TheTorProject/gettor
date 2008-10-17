@@ -58,6 +58,8 @@ import os
 import sys
 import ConfigParser
 
+__all__ = ["gettorConf"]
+
 class gettorConf:
     '''
     Initialize gettor with default values if one or more values are missing 

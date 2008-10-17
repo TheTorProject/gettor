@@ -14,6 +14,8 @@
 
 import optparse
 
+__all__ = ["parseOpts"]
+
 def parseOpts():
     cmdParser = optparse.OptionParser()
     cmdParser.add_option("-c", "--config", dest="configfile",
@@ -36,3 +38,6 @@ def parseOpts():
                         help="run some tests")
 
     return cmdParser.parse_args()
+
+if __name__ == "__main__":
+    print >> sys.stderr "You shouldn't run this directly."

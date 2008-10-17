@@ -57,6 +57,7 @@ except ImportError:
 
 import sys
 import os
+import subprocess
 import gettext
 import gettor_blacklist
 import gettor_requests
@@ -67,48 +68,29 @@ import gettor_opt
 import gettor_packages
 
 
-# Somewhat poor hack to get what we want: Use different languages for logging
-# and for reply mails
-# XXX: Change to something more elegant
+# Switch language to 'newlocale'. Return default if language is not supported.
+# XXX: There should be a more elegant way to switch languages during runtime.
 def switchLocale(newlocale):
-    trans = gettext.translation("gettor", "/usr/share/locale", [newlocale])
+    trans = gettext.translation("gettor", "/usr/share/locale", [newlocale], fallback=True)
     trans.install()
 
 def runTests():
     # XXX 
     return True
 
-def installCron(mirror, distdir):
-    # XXX: TODO REDO THIS FUNCTION TO USE `crontab -e`
-    # XXX: We might want to install a cronjob file to /etc/cron.daily, on
-    # system that support it. Also, we should use the mirror from the command
-    # line or config file, as well as the distdir from the config to build 
-    # the command string
-    #comment="\n# Sync Tor software\n"
-    #command="0 3 * * * rsync -a rsync://" + mirror + "/tor/dist/current/" 
-    #            + distdir + "\n"
-    #try:
-    #    f = open("/etc/crontab", "a")
-    #    f.write(comment + command)
-    #    f.close
-    #except:
-    #    print "Installation failed. Are you root?"
-    #    return False
-    #print "Cronjob installed: Running every night at three after midnight"
-    return True
+def installCron(rsync):
+    # XXX: Check if cron is installed and understands our syntax?
+    echoCmd = ['echo', '3 2 * * * ' + rsync]
+    cronCmd = ['crontab', '-']
+    echoProc = subprocess.Popen(echoCmd, stdout=subprocess.PIPE)
+    cronProc = subprocess.Popen(cronCmd, stdin=echoProc.stdout)
+    cronProc.communicate()[0]
+    return cronProc.returncode
 
 def processMail(conf, log, logLang, packageList):
-    srcEmail = conf.getSrcEmail()
-    # Check package list sanity
-    for key, val in packageList.items():
-        # Remove invalid packages
-        if not os.access(val, os.R_OK):
-            log.info(_("Warning: %s not accessable. Removing from list.") % val)
-            del packageList[key]
     if len(packageList) < 1:
-        log.info(_("Sorry, your package list is unusable."))
+        log.error(_("Sorry, your package list is unusable."))
         return False
-
     # Receive mail
     rmail = gettor_requests.requestMail(packageList)
     rawMessage = rmail.getRawMessage()
@@ -119,40 +101,41 @@ def processMail(conf, log, logLang, packageList):
     if not parsedMessage:
         log.error(_("No parsed message. Dropping message."))
         return False
-    # XXX TODO: Ensure we have a proper replyTO or bail out
+    # XXX: We should add a blacklist check here so that for exmaple ReplyTo can't be our own 
+    #      address (DoS) (in case we have DKIM) 
     replyTo = rmail.getReplyTo()
     if not replyTo:
         log.error(_("No help dispatched. Invalid reply address for user."))
         return False
-    # Get desired reply language, if any
     replyLang = rmail.getLocale()
     if not replyLang:
         replyLang = logLang
     # Initialize response
-    respmail = gettor_responses.gettorResponse(replyLang, logLang)
+    srcEmail = conf.getSrcEmail()
+    resp = gettor_responses.gettorResponse(replyLang, logLang)
     signature = rmail.hasVerifiedSignature()
     log.info(_("Signature is: %s") % str(signature))
     if not signature:
         # Check to see if we've helped them to understand that they need DKIM
         # in the past
         previouslyHelped = gettor_blacklist.blackList(replyTo)
-    if not signature and previouslyHelped:
-        log.info(_("Unsigned messaged to gettor by blacklisted user dropped."))
-        return False
-    if not signature and not previouslyHelped:
-        # Reply with some help and bail out
-        gettor_blacklist.blackList(replyTo, True)
-        respmail.sendHelp(srcEmail, replyTo)
-        log.info(_("Unsigned messaged to gettor. We issued some help."))
-        return True
-    if signature:
+        if previouslyHelped:
+            log.info(_("Unsigned messaged to gettor by blacklisted user dropped."))
+            return False
+        else:
+            # Reply with some help and bail out
+            gettor_blacklist.blackList(replyTo, True)
+            resp.sendHelp(srcEmail, replyTo)
+            log.info(_("Unsigned messaged to gettor. We issued some help."))
+            return True
+    else:
         log.info(_("Signed messaged to gettor."))
         package = rmail.getPackage()
         if package != None:
             log.info(_("Package: %s selected.") % str(package))
-            respmail.sendPackage(srcEmail, replyTo, packageList[package])  
+            resp.sendPackage(srcEmail, replyTo, packageList[package])  
         else:
-            respmail.sendPackageHelp(packageList, srcEmail, replyTo)
+            resp.sendPackageHelp(packageList, srcEmail, replyTo)
             log.info(_("We issued some help about proper email formatting."))
 
     return True
@@ -171,7 +154,7 @@ if __name__ == "__main__":
         exit(1)
 
     packs = gettor_packages.gettorPackages(options.mirror, conf)
-
+    # Action
     if options.fetchpackages:
         if packs.syncWithMirror() != 0:
             log.error(_("Syncing Tor packages failed."))
@@ -194,7 +177,7 @@ if __name__ == "__main__":
             log.info(_("Tests passed."))
             exit(0)
     if options.installcron:
-        if not installCron(options.mirror, distDir):
+        if installCron(packs.getCommandToStr()) != 0:
             log.error(_("Installing cron failed"))
             exit(1)
         else:

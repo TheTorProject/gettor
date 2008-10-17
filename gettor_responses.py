@@ -17,8 +17,9 @@ import StringIO
 import base64
 import gettext
 
+__all__ = ["gettorResponse"]
 
-class gettorResponse():
+class gettorResponse:
 
     def __init__(self, mailLang="en", logLang="en"):
         self.mailLang = mailLang

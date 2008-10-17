@@ -16,6 +16,8 @@ import email
 import dkim
 import re
 
+__all__ = ["requestMail"]
+
 class requestMail:
 
     defaultLang = "en"

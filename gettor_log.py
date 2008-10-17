@@ -25,13 +25,14 @@ import logging
 import gettor_config
 from logging import handlers
 
+__all__ = ["gettorLogger"]
+
 # Leave this to INFO for now
 loglevel = logging.INFO
 
 class gettorLogger:
-    '''
-    A configurable logging system for gettor.
-    '''
+    """A configurable logging system for gettor.
+    """
 
     format = '%(asctime)-15s (%(process)d) %(message)s'
 
@@ -61,7 +62,7 @@ class gettorLogger:
 
         # If anything went wrong or the user doesn't want to log
         if self.logSubSystem == "nothing":
-            handler = logging.FileHandler("/dev/null")
+            handler = logging.FileHandler(os.devnull)
 
         formatter = logging.Formatter(fmt=self.format)
         handler.setFormatter(formatter)
