@@ -47,3 +47,5 @@ Create an explicit whitelist configuration option:
     - We should ensure that we never block certain users
         - Even without DKIM
 
+Testing and proposals to better support users with limited email bandwidth 
+(multi-part download, etc.).
