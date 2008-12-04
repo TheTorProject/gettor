@@ -20,6 +20,8 @@ import re
 
 __all__ = ["gettorPackages"]
 
+log = gettor_log.getLogger()
+
 class gettorPackages:
 
     packageRegex = { "windows-bundle": "vidalia-bundle-.*.exe$",
@@ -44,8 +46,13 @@ class gettorPackages:
 
     def getPackageList(self):
         # Build dict like 'name': 'name.z'
-        for filename in os.listdir(self.packDir):
-            self.packageList[filename[:-2]] = self.packDir + "/" + filename
+        try:
+            for filename in os.listdir(self.packDir):
+                self.packageList[filename[:-2]] = self.packDir + "/" + filename
+        except OSError, (strerror):
+            log.error(_("Failed to build package list: %s") % strerror)
+            return None
+
         # Check sanity
         for key, val in self.packageList.items():
             # Remove invalid packages
@@ -82,10 +89,7 @@ class gettorPackages:
     def getCommandToStr(self):
         """This is useful for cronjob installations
         """
-        rsyncstr = ""
-        for i,v in enumerate(self.rsync):
-            rsyncstr += self.rsync[i] + " "
-        return rsyncstr
+        return ''.join(self.rsync)
 
 if __name__ == "__main__" :
     c = gettor_config.gettorConf()

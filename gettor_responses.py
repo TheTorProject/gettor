@@ -19,6 +19,7 @@ import gettext
 
 __all__ = ["gettorResponse"]
 
+
 class gettorResponse:
 
     def __init__(self, mailLang="en", logLang="en"):
@@ -27,8 +28,10 @@ class gettorResponse:
 
     def setLang(self, language):
         # XXX: Sorta hack, have nothing better on my mind right now
-        # On every entry to a translation-needing function, call this with lang=maillang
-        # On every exit of a translation-needing function, call this with lang=loglang
+        # On every entry to a translation-needing function, call this with 
+        # lang=maillang
+        # On every exit of a translation-needing function, call this with 
+        # lang=loglang
         # :-/
         trans = gettext.translation("gettor", "/usr/share/locale", [language])
         trans.install()

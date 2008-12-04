@@ -93,23 +93,11 @@ class gettorConf:
         # We're trying to be failsafe here
         self.outConf = ConfigParser.ConfigParser()
 
-        # See if config file is accessable
         try:
             if os.access(self.configFile, os.R_OK):
-                readableConfigFile = True
-            else:
-                readableConfigFile = False
-
-        except OSError:
-            readableConfigFile = False
-
-        if readableConfigFile: 
-            try:
-                # It's likely that a user will make a mistake in their config
-                # If they make a mistake for now we'll ignore *everything* :-)
                 self.config.read(self.configFile)
-            except:
-                pass
+        except:
+            pass
 
         # Main parser loop:
         # * Merge default values with those from the config file, if there are

@@ -23,7 +23,8 @@ def parseOpts():
                         help="set config file to FILE", metavar="FILE")
     cmdParser.add_option("-m", "--use-mirror", dest="mirror",
                         default="rsync.torproject.org",
-                        help="set Tor package mirror to MIRROR", metavar="MIRROR")
+                        help="set Tor package mirror to MIRROR", 
+                        metavar="MIRROR")
     cmdParser.add_option("-i", "--install-crontab", dest="installcron",
                         action="store_true", default=False,
                         help="install crontab to refresh packagelist")
@@ -36,8 +37,22 @@ def parseOpts():
     cmdParser.add_option("-t", "--run-tests", dest="runtests",
                         action="store_true", default=False,
                         help="run some tests")
+    cmdParser.add_option("-w", "--whitelist", dest="whitelist",
+                         default="",
+                         help="add an email address to the whitelist",
+                         metavar="WHITELIST")
+    cmdParser.add_option("-b", "--blacklist", dest="blacklist",
+                         default="",
+                         help="add an email address to the blacklist",
+                         metavar="BLACKLIST")
+    cmdParser.add_option("-x", "--clear-whitelist", dest="clearwl",
+                        action="store_true", default=False,
+                        help="clear all entrys in the whitelist")
+    cmdParser.add_option("-y", "--clear-blacklist", dest="clearbl",
+                        action="store_true", default=False,
+                        help="clear all entrys in the blacklist")
 
     return cmdParser.parse_args()
 
 if __name__ == "__main__":
-    print >> sys.stderr "You shouldn't run this directly."
+    print >> sys.stderr, "You shouldn't run this directly."
