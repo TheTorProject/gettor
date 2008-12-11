@@ -82,12 +82,22 @@ def runTests():
 
 def installCron(rsync):
     # XXX: Check if cron is installed and understands our syntax?
-    echoCmd = ['echo', '3 2 * * * ' + rsync]
+    currentCronTab = getCurrentCrontab()
+    newCronTab = currentCronTab + '\n' + '3 2 * * * ' + rsync
+    echoCmd = ['echo', newCronTab ] 
     cronCmd = ['crontab', '-']
     echoProc = subprocess.Popen(echoCmd, stdout=subprocess.PIPE)
     cronProc = subprocess.Popen(cronCmd, stdin=echoProc.stdout)
     cronProc.communicate()[0]
     return cronProc.returncode
+
+def getCurrentCrontab():
+    # This returns our current crontab
+    savedTab = "# This crontab has been tampered with by gettor.py"
+    currentTab = os.popen("crontab -l")
+    for line in currentTab:
+        savedTab += line
+    return savedTab
 
 def processMail(conf, log, logLang, packageList, blackList, whiteList):
     if packageList is None or len(packageList) < 1:
