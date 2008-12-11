@@ -1,6 +1,7 @@
 #!/usr/bin/python2.5
-"""
-This library implements all of the black listing features needed for gettor.
+"""This library implements all of the black listing features needed for gettor.
+Basically, it offers creation, removal and lookup of email addresses stored as
+SHA1 hashes in a dedicated directory on the filesystem.
 """
 
 import hashlib
@@ -18,9 +19,8 @@ class BWList:
     def __init__(self, listdir):
         self.listDir = listdir
         if not os.path.isdir(self.listDir):
-            log.error(_("Bad dir %s.") % self.listDir)
             # XXX Change this to something more appropriate
-            raise Exception
+            raise IOError("Bad dir: %s" % self.listDir)
 
     def lookupListEntry(self, address):
         """Check to see if we have a list entry for the given address."""
@@ -60,6 +60,15 @@ class BWList:
 
     def removeAll(self):
         print "Removing all entries from list!"
+        for root, dirs, files in os.walk(self.listDir):
+            for file in files:
+                try:
+                    rmfile = os.path.join(root, file)
+                    os.remove(rmfile)
+                except:
+                    log.error(_("Could not remove %s." % rmfile))
+                    return False
+        return True
 
 def blackListtests(address):
     """ This is a basic evaluation of our blacklist functionality """

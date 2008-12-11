@@ -105,8 +105,6 @@ def processMail(conf, log, logLang, packageList, blackList, whiteList):
     if not parsedMessage:
         log.error(_("No parsed message. Dropping message."))
         return False
-    # XXX: We should add a blacklist check here so that for exmaple ReplyTo 
-    # can't be our own address (DoS) (in case we have DKIM) 
     replyTo = rmail.getReplyTo()
     if not replyTo:
         log.error(_("No help dispatched. Invalid reply address for user."))
@@ -117,9 +115,15 @@ def processMail(conf, log, logLang, packageList, blackList, whiteList):
 
     # Initialize response
     srcEmail = conf.getSrcEmail()
+    # Bail out if someone tries to be funny
+    if (srcEmail == repluTo):
+        log.error(_("Won't send myself emails."))
+        return False
+
     resp = gettor_responses.gettorResponse(replyLang, logLang)
     signature = rmail.hasVerifiedSignature()
     log.info(_("Signature is: %s") % str(signature))
+    # Addresses from whitelist can pass without DKIM signature
     if not signature and not whiteList.lookupListEntry(replyTo):
         # Check to see if we've helped them to understand that they need DKIM
         # in the past
@@ -159,8 +163,12 @@ def main():
         log.error(_("Sorry, %s is not a directory.") % distDir)
         return False
     packs = gettor_packages.gettorPackages(options.mirror, conf)
-    whiteList = gettor_blacklist.BWList("/tmp/whitelist")
-    blackList = gettor_blacklist.BWList("/tmp/blacklist")
+    try:
+        whiteList = gettor_blacklist.BWList(conf.getWlStateDir())
+        blackList = gettor_blacklist.BWList(conf.getBlStateDir())
+    except IOError, e:
+        log.error(_("White/Black list error: %s") % e)
+        return False
 
     if options.fetchpackages:
         if packs.syncWithMirror() != 0:
@@ -204,17 +212,27 @@ def main():
         else:
             log.info(_("Creating blacklist entry ok."))
             success = True
+    if options.lookup:
+        if whiteList.lookupListEntry(options.lookup):
+            log.info(_("Present in whitelist."))
+            success = True
+        if blackList.lookupListEntry(options.lookup):
+            log.info(_("Present in blacklist."))
+            success = True
+        if not success:
+            log.info(_("Address neither in blacklist or whitelist."))
+            success = True
     if options.clearwl:
-        if not whiteList.clearAll():
+        if not whiteList.removeAll():
             log.error(_("Deleting whitelist failed."))
-            return false
+            return False
         else:
             log.info(_("Deleting whitelist done."))
             success = True
     if options.clearbl:
-        if not blackList.clearAll():
+        if not blackList.removeAll():
             log.error(_("Deleting blacklist failed."))
-            return false
+            return False
         else:
             log.info(_("Deleting blacklist done."))
             success = True

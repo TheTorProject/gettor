@@ -45,6 +45,10 @@ def parseOpts():
                          default="",
                          help="add an email address to the blacklist",
                          metavar="BLACKLIST")
+    cmdParser.add_option("-l", "--lookup", dest="lookup",
+                         default="",
+                         help="check black/white list presence of address",
+                         metavar="CHECKADDRESS")
     cmdParser.add_option("-x", "--clear-whitelist", dest="clearwl",
                         action="store_true", default=False,
                         help="clear all entrys in the whitelist")

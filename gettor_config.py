@@ -31,6 +31,7 @@
  Here is what each of them is used for individually:
 
  blStateDir:    Blacklisted (hashed) email addresses go here
+ wlStateDir:    Whitelisted (hashed) email addresses go here
  distDir:       Sent-out Tor packages are found here
  srcEmail:      The email containing the Tor package will use this as 'From:'
  locale:        Choose your default mail and log locale
@@ -79,6 +80,7 @@ class gettorConf:
         #               Variable name   |  Default value           | Section
         self.useConf = {"stateDir":     ("/var/lib/gettor/",        "global"),
                         "blStateDir":   ("/var/lib/gettor/bl/",     "global"),
+                        "wlStateDir":   ("/var/lib/gettor/wl/",     "global"),
                         "srcEmail":     ("gettor@torproject.org",   "global"),
                         "distDir":      ("/var/lib/gettor/dist/",   "global"),
                         "packDir":      ("/var/lib/gettor/pkg/",    "global"),
@@ -135,6 +137,9 @@ class gettorConf:
 
     def getBlStateDir(self):
         return self.useConf["blStateDir"][0]
+
+    def getWlStateDir(self):
+        return self.useConf["wlStateDir"][0]
 
     def getSrcEmail(self):
         return self.useConf["srcEmail"][0]
