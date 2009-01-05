@@ -1,0 +1,12 @@
+# Put this into the home directory of the user who runs gettor.py:
+# ~/.gettorrc
+#
+[global]
+stateDir    = /tmp/
+blstatedir  = /tmp/bl/
+wlstatedir  = /tmp/wl/
+distdir     = /tmp/distdir/
+packdir     = /tmp/packdir/
+locale        = en
+logSubSystem= stdout
+logFile     = /tmp/logfile
