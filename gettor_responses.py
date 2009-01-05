@@ -82,14 +82,14 @@ class gettorResponse:
 
         return status
 
-    def sendPackage(self, source, destination, filelist):
+    def sendPackage(self, source, destination, filelist, package):
         """ Send a message with an attachment to the user interacting with us """
         self.setLang(self.mailLang)
         message = _("""
     Here's your requested software as a zip file. Please unzip the 
     package and verify the signature.
         """)
-        package = self.constructMessage(source, destination, filelist)
+        package = self.constructMessage(message, source, destination, filelist, package)
         try:
             status = self.sendMessage(package, source, destination)
         except:
