@@ -69,9 +69,9 @@ import gettor_packages
 
 
 # Switch language to 'newlocale'. Return default if language is not supported.
-def switchLocale(newlocale):
+def switchLocale(newlocale, localedir):
     trans = gettext.translation("gettor", 
-                                "/usr/share/locale", 
+                                localedir,
                                 [newlocale], 
                                 fallback=True)
     trans.install()
@@ -169,7 +169,13 @@ def main():
     gettor_log.initialize()
     log = gettor_log.getLogger()
     logLang = conf.getLocale()
-    switchLocale(logLang)
+    localeDir = conf.getLocaleDir()
+    # Just check for the english .mo file, because that's the fallback
+    englishMoFile = localeDir + "/en/LC_MESSAGES/gettor.mo"
+    if not os.path.isfile(englishMoFile):
+        log.error("Sorry, %s is not a file we can access." % englishMoFile)
+        return False
+    switchLocale(logLang, localeDir)
     distDir = conf.getDistDir()
     if not os.path.isdir(distDir):
         log.error(_("Sorry, %s is not a directory.") % distDir)
@@ -267,7 +273,7 @@ def main():
 
 if __name__ == "__main__":
     if not main():
-        print >> sys.stderr, _("Main loop exited with errors.")
+        print >> sys.stderr, "Main loop exited with errors."
         exit(1)
     else:
         exit(0)

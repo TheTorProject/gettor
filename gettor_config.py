@@ -24,6 +24,7 @@
      locale = en
      logSubSystem = nothing
      logFile = /dev/null
+     localeDir = /usr/share/locale
 
  Note that you can set from none to any of these values in your config file.
  Values you dont provide will be taken from the defaults in 'useConf'.
@@ -43,6 +44,8 @@
                 'file':     Logmessages will be written to a file (Not that 
                             this needs the 'logFile' option in the config file
                             also set to something useful
+ localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or 
+                'whateverlang/LC_MESSAGES/gettor.mo' should go
 
  If no valid config file is provided to __init__, gettorConf will try to use
  '~/.gettorrc' as default config file. If that fails, the default values from
@@ -86,7 +89,8 @@ class gettorConf:
                         "packDir":      ("/var/lib/gettor/pkg/",    "global"),
                         "locale":       ("en",                      "global"),
                         "logSubSystem": ("nothing",                 "global"),
-                        "logFile":      ("/dev/null",               "global")}
+                        "logFile":      ("/dev/null",               "global"),
+                        "localeDir":    ("/usr/share/locale",       "global")}
 
         # One ConfigParser instance to read the actual values from config
         self.config = ConfigParser.ConfigParser()
@@ -158,6 +162,9 @@ class gettorConf:
 
     def getLogFile(self):
         return self.useConf["logFile"][0]
+
+    def getLocaleDir(self):
+        return self.useConf["localeDir"][0]
 
 if __name__ == "__main__" :
     c = gettorConf()
