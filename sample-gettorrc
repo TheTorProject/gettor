@@ -10,3 +10,4 @@ packdir     = /tmp/packdir/
 locale        = en
 logSubSystem= stdout
 logFile     = /tmp/logfile
+localdir    = /tmp/i18n/
