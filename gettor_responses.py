@@ -22,7 +22,7 @@ __all__ = ["gettorResponse"]
 
 class gettorResponse:
 
-    def __init__(self, mailLang="en", logLang="en", config):
+    def __init__(self, config, mailLang="en", logLang="en"):
         self.mailLang = mailLang
         self.logLang = logLang
         self.config = config
