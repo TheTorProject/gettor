@@ -132,7 +132,7 @@ def processMail(conf, log, logLang, packageList, blackList, whiteList):
         log.error(_("Won't send myself emails."))
         return False
 
-    resp = gettor_responses.gettorResponse(replyLang, logLang)
+    resp = gettor_responses.gettorResponse(replyLang, logLang, conf)
     signature = rmail.hasVerifiedSignature()
     log.info(_("Signature is: %s") % str(signature))
     # Addresses from whitelist can pass without DKIM signature

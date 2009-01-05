@@ -22,9 +22,10 @@ __all__ = ["gettorResponse"]
 
 class gettorResponse:
 
-    def __init__(self, mailLang="en", logLang="en"):
+    def __init__(self, mailLang="en", logLang="en", config):
         self.mailLang = mailLang
         self.logLang = logLang
+        self.config = config
 
     def setLang(self, language):
         # XXX: Sorta hack, have nothing better on my mind right now
@@ -33,7 +34,7 @@ class gettorResponse:
         # On every exit of a translation-needing function, call this with 
         # lang=loglang
         # :-/
-        trans = gettext.translation("gettor", "/usr/share/locale", [language])
+        trans = gettext.translation("gettor", self.config.getLocaleDir(), [language])
         trans.install()
 
     def sendHelp(self, source, destination):
