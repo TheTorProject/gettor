@@ -32,10 +32,15 @@ loglevel = logging.INFO
 format = '%(asctime)-15s (%(process)d) %(message)s'
 logger = None
 logSubSystem = None
+initialized = False
 
 def initialize():
     global logger
     global logSubSystem
+    global initialized
+    # Don't add handlers twice
+    if initialized == True:
+        return
     config = gettor_config.gettorConf() 
     logger = logging.getLogger('gettor')
     logger.setLevel(loglevel)
@@ -66,6 +71,7 @@ def initialize():
     formatter = logging.Formatter(fmt=format)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+    initialized = True
 
 def getLogSubSystem():
     global logSubSystem

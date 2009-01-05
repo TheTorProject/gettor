@@ -80,12 +80,13 @@ def runTests():
     # XXX 
     return True
 
-def installCron(rsync):
+def installCron():
     # XXX: Check if cron is installed and understands our syntax?
     currentCronTab = getCurrentCrontab()
-    newCronTab = currentCronTab + '\n' + '3 2 * * * ' + rsync
-    echoCmd = ['echo', newCronTab ] 
-    print newCronTab
+    gettorPath = os.getcwd() + "/" + os.path.basename(sys.argv[0])
+    gettorArgs = " --clear-blacklist --fetch-packages --prep-packages"
+    newCronTab = currentCronTab + '\n' + '3 2 * * * ' + gettorPath + gettorArgs
+    echoCmd = ['echo', newCronTab ]
     cronCmd = ['crontab', '-']
     echoProc = subprocess.Popen(echoCmd, stdout=subprocess.PIPE)
     cronProc = subprocess.Popen(cronCmd, stdin=echoProc.stdout)
@@ -207,7 +208,7 @@ def main():
             log.info(_("Tests passed."))
             success = True
     if options.installcron:
-        if installCron(packs.getCommandToStr()) != 0:
+        if installCron() != 0:
             log.error(_("Installing cron failed"))
             return False
         else:
