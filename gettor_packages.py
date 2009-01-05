@@ -34,7 +34,17 @@ class gettorPackages:
         self.mirror = mirror
         self.packageList = {}
         self.distDir = config.getDistDir()
+        try:
+            entry = os.stat(self.distDir)
+        except OSError, e:
+            log.error("Bad dist dir %s: %s" % (self.distDir, e))
+            raise IOError
         self.packDir = config.getPackDir()
+        try:
+            entry = os.stat(self.packDir)
+        except OSError, e:
+            log.error("Bad pack dir %s: %s" % (self.packDir, e))
+            raise IOError
         self.rsync = ["rsync"]
         self.rsync.append("-a")
         # Don't download dotdirs

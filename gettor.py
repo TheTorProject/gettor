@@ -85,6 +85,7 @@ def installCron(rsync):
     currentCronTab = getCurrentCrontab()
     newCronTab = currentCronTab + '\n' + '3 2 * * * ' + rsync
     echoCmd = ['echo', newCronTab ] 
+    print newCronTab
     cronCmd = ['crontab', '-']
     echoProc = subprocess.Popen(echoCmd, stdout=subprocess.PIPE)
     cronProc = subprocess.Popen(cronCmd, stdin=echoProc.stdout)
@@ -93,7 +94,7 @@ def installCron(rsync):
 
 def getCurrentCrontab():
     # This returns our current crontab
-    savedTab = "# This crontab has been tampered with by gettor.py"
+    savedTab = "# This crontab has been tampered with by gettor.py\n"
     currentTab = os.popen("crontab -l")
     for line in currentTab:
         savedTab += line
@@ -126,7 +127,7 @@ def processMail(conf, log, logLang, packageList, blackList, whiteList):
     # Initialize response
     srcEmail = conf.getSrcEmail()
     # Bail out if someone tries to be funny
-    if (srcEmail == repluTo):
+    if (srcEmail == replyTo):
         log.error(_("Won't send myself emails."))
         return False
 
@@ -172,7 +173,11 @@ def main():
     if not os.path.isdir(distDir):
         log.error(_("Sorry, %s is not a directory.") % distDir)
         return False
-    packs = gettor_packages.gettorPackages(options.mirror, conf)
+    try:
+        packs = gettor_packages.gettorPackages(options.mirror, conf)
+    except IOError:
+        log.error(_("Error initiating package list."))
+        return False
     try:
         whiteList = gettor_blacklist.BWList(conf.getWlStateDir())
         blackList = gettor_blacklist.BWList(conf.getBlStateDir())
