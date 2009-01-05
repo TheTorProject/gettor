@@ -1,0 +1,41 @@
+gettor is a program for serving Tor and Tor related files over SMTP.
+Users interface with gettor by sending it an email. The users must use a mail
+server that signs outgoing mail with DKIM. This is to prevent abuse.
+The following document explains how to setup gettor for a server admin.
+
+To use gettor, you'll want a machine that invokes .forward files for users.
+You'll also want to have python and rsync installed.
+
+As an example, for the user 'gettor' we have the following files:
+
+Your .forward file should look like this:
+
+    gettor@moria:~$ cat .forward 
+    "|/home/gettor/bin/gettor.py"
+
+These are the python files we need to run gettor.py:
+
+    gettor@moria:~/bin$ ls
+    dkim.py              gettor_log.py       gettor.py
+    gettor_blacklist.py  gettor_opt.py       gettor_requests.py
+    gettor_config.py     gettor_packages.py  gettor_responses.py
+
+Once you have everything installed, you'll want to initalize the file store:
+
+    gettor@moria:~/newbin$ ./gettor.py -f -p
+
+You should see an rsync and finally something like:
+
+    sent 1637 bytes  received 415792532 bytes  9558486.64 bytes/sec
+    total size is 415735925  speedup is 1.00
+    2009-01-05 16:49:29,226 (9222) Syncing Tor packages done.
+    2009-01-05 16:49:29,226 (9222) Syncing Tor packages done.
+    2009-01-05 16:49:30,155 (9222) Building packages done.
+    2009-01-05 16:49:30,155 (9222) Building packages done.
+
+Now you'll install the cronjob. This clears the blacklist and updates 
+packages daily:
+
+    gettor@moria:~/bin$ ./gettor.py -i
+
+Now gettor.py is installed, prepared and ready to serve files. Send it email!
