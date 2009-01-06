@@ -1,7 +1,10 @@
+OVERVIEW
+--------
 gettor is a program for serving Tor and Tor related files over SMTP.
 Users interface with gettor by sending it an email. The users must use a mail
-server that signs outgoing mail with DKIM. This is to prevent abuse.
-The following document explains how to setup gettor for a server admin.
+server that signs outgoing mail with DKIM or have their email address added 
+to the whitelist. This is to prevent abuse. The following document explains 
+how to setup gettor for a server admin.
 
 To use gettor, you'll want a machine that invokes .forward files for users.
 You'll also want to have python and rsync installed.
@@ -13,19 +16,19 @@ of mo files for each translation:
 
 As an example, for the user 'gettor' we will setup gettor.py like so:
 
-Configure the default .gettorrc file:
+Configure the default ~/.gettorrc file:
 
     gettor@moria:~$ cat .gettorrc 
     [global]
     stateDir    = /home/gettor/gettor/state/
-    blstatedir  = /home/gettor/gettor/bl/
-    wlstatedir  = /home/gettor/gettor/wl/
-    distdir     = /home/gettor/gettor/distdir/
-    packdir     = /home/gettor/gettor/packdir/
+    blStateDir  = /home/gettor/gettor/bl/
+    wlStateDir  = /home/gettor/gettor/wl/
+    distDir     = /home/gettor/gettor/distdir/
+    packDir     = /home/gettor/gettor/packdir/
     locale        = en
     logSubSystem= stdout
     logFile     = /home/gettor/gettor/logs/logfile
-    localedir   =  /home/gettor/gettor/i18n/
+    localeDir   =  /home/gettor/gettor/i18n/
 
 Your .forward file should look like this:
 
@@ -57,3 +60,64 @@ packages daily:
     2009-01-05 17:34:53,911 (16646) Installing cron done.
 
 Now gettor.py is installed, prepared and ready to serve files. Send it email!
+
+TRANSLATION FILES
+-----------------
+Currently, .mo files have to be build out of .po files by hand:
+
+   msgfmt -v gettor_en.po -o gettor.mo
+
+This will probably change in the near future. The .mo files are expected in the
+proper location, e.g. in
+
+    /usr/share/locale/en/LC_MESSAGES/gettor.mo
+
+You can also configure the .mo files to live in another place by telling gettor
+so in the config file, for example:
+
+    localeDir = /home/gettor/gettor/i18n
+
+This will result in gettor expected the english .mo file in the directory
+
+    /home/gettor/gettor/i18n/en/LC_MESSAGES/gettor.mo
+
+CONFIGURATION
+-------------
+A proper gettor configuration file is expected in the user's home directory 
+and should look like this:
+
+    [global]
+    stateDir    = /home/gettor/gettor/state/
+    blStateDir  = /home/gettor/gettor/bl/
+    wlStateDir  = /home/gettor/gettor/wl/
+    distDir     = /home/gettor/gettor/distdir/
+    packDir     = /home/gettor/gettor/packdir/
+    locale      = en
+    logSubSystem= stdout
+    logFile     = /home/gettor/gettor/logs/logfile
+    localeDir   =  /home/gettor/gettor/i18n/
+
+Note that you can set from none to any of these values in your config file.
+Values you dont provide will be taken from defaults.
+
+Here is what each of them is used for individually:
+
+blStateDir:    Blacklisted (hashed) email addresses go here
+wlStateDir:    Whitelisted (hashed) email addresses go here
+distDir:       Prestine Tor packages as downloaded by rsync will be found here
+packDir:       Processed Tor packages ready to be handed out to the user will
+               be found here
+srcEmail:      The email containing the Tor package will use this as 'From:'
+locale:        Choose your default mail and log locale
+logFile:       If 'file' logging is chosen, log to this file
+logSubSystem:  This has to be one of the following strings:
+               'nothing':  Nothing is logged anywhere (Recommended)
+               'stdout':   Log to stdout
+               'syslog':   Logmessages will be written to syslog
+               'file':     Logmessages will be written to a file (Not that 
+                           this needs the 'logFile' option in the config file
+                           also set to something useful
+localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or 
+               'whateverlang/LC_MESSAGES/gettor.mo' should go
+
+
