@@ -81,8 +81,8 @@ class gettorPackages:
                     # If .asc file is there, build Zip file
                     if os.access(ascfile, os.R_OK):
                         zip = zipfile.ZipFile(zipFileName, "w")
-                        zip.write(file)
-                        zip.write(ascfile)
+                        zip.write(file, os.path.basename(file))
+                        zip.write(ascfile, os.path.basename(ascfile))
                         zip.close()
                         self.packageList[pack] = zipFileName
                         break
