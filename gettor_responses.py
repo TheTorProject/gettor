@@ -11,6 +11,7 @@
  This library implements all of the email replying features needed for gettor. 
 """
 
+import os
 import smtplib
 import MimeWriter
 import StringIO
@@ -34,14 +35,15 @@ class gettorResponse:
         # On every exit of a translation-needing function, call this with 
         # lang=loglang
         # :-/
-        trans = gettext.translation("gettor", self.config.getLocaleDir(), [language])
-        trans.install()
+        if self.config:
+            trans = gettext.translation("gettor", self.config.getLocaleDir(), [language])
+            trans.install()
 
     def sendHelp(self, source, destination):
         """ Send a helpful message to the user interacting with us """
         self.setLang(self.mailLang)
         message = _("""
-    Hello! This is the "get tor" robot.
+    Hello! This is the "gettor" robot.
 
     Unfortunately, we won't answer you at this address. We only process
     requests from email services that support "DKIM", which is an email
@@ -82,14 +84,14 @@ class gettorResponse:
 
         return status
 
-    def sendPackage(self, source, destination, filelist, package):
+    def sendPackage(self, source, destination, filename):
         """ Send a message with an attachment to the user interacting with us """
         self.setLang(self.mailLang)
         message = _("""
     Here's your requested software as a zip file. Please unzip the 
     package and verify the signature.
         """)
-        package = self.constructMessage(message, source, destination, filelist, package)
+        package = self.constructMessage(message, source, destination, filename)
         try:
             status = self.sendMessage(package, source, destination)
         except:
@@ -98,15 +100,14 @@ class gettorResponse:
 
         return status
 
-    def constructMessage(self, messageText, ourAddress, recipient, fileList=None, 
-                         fileName="requested-files.z"):
+    def constructMessage(self, messageText, ourAddress, recipient, fileName):
         """ Construct a multi-part mime message, including only the first part
         with plaintext."""
 
         message = StringIO.StringIO()
         mime = MimeWriter.MimeWriter(message)
         mime.addheader('MIME-Version', '1.0')
-        mime.addheader('Subject', _('Re: Your "get tor" request'))
+        mime.addheader('Subject', _('Re: Your "gettor" request'))
         mime.addheader('To', recipient)
         mime.addheader('From', ourAddress)
         mime.startmultipartbody('mixed')
@@ -116,12 +117,12 @@ class gettorResponse:
         emailBody.write(messageText)
 
         # Add a file if we have one
-        if fileList:
+        if fileName:
             # XXX TODO: Iterate over each file eventually
             filePart = mime.nextpart()
             filePart.addheader('Content-Transfer-Encoding', 'base64')
-            emailBody = filePart.startbody('application/zip; name=%s' % fileName)
-            base64.encode(open(fileList, 'rb'), emailBody)
+            emailBody = filePart.startbody('application/zip; name=%s' % os.path.basename(fileName))
+            base64.encode(open(fileName, 'rb'), emailBody)
 
         # Now end the mime messsage
         mime.lastpart()
