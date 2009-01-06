@@ -100,7 +100,7 @@ class gettorResponse:
 
         return status
 
-    def constructMessage(self, messageText, ourAddress, recipient, fileName):
+    def constructMessage(self, messageText, ourAddress, recipient, fileName=None):
         """ Construct a multi-part mime message, including only the first part
         with plaintext."""
 

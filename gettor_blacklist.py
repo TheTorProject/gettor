@@ -6,6 +6,7 @@ SHA1 hashes in a dedicated directory on the filesystem.
 
 import hashlib
 import os
+import re
 import gettor_config
 import gettor_log
 
@@ -24,7 +25,8 @@ class BWList:
 
     def lookupListEntry(self, address):
         """Check to see if we have a list entry for the given address."""
-        entry = self.listDir + "/" + str(hashlib.sha1(address).hexdigest())
+        emailonly = self.stripEmail(address)
+        entry = self.listDir + "/" + str(hashlib.sha1(emailonly).hexdigest())
         try:
             entry = os.stat(entry)
         except OSError:
@@ -32,7 +34,8 @@ class BWList:
         return True
 
     def createListEntry(self, address):
-        entry = self.listDir + "/" + str(hashlib.sha1(address).hexdigest())
+        emailonly = self.stripEmail(address)
+        entry = self.listDir + "/" + str(hashlib.sha1(emailonly).hexdigest())
         if self.lookupListEntry(address) == False:
             try:
                 fd = open(entry, 'w')
@@ -46,7 +49,8 @@ class BWList:
             return False
 
     def removeListEntry(self, address):
-        entry = self.listDir + "/" + str(hashlib.sha1(address).hexdigest())
+        emailonly = self.stripEmail(address)
+        entry = self.listDir + "/" + str(hashlib.sha1(emailonly).hexdigest())
         if (self.lookupListEntry(address) == True):
             try:
                 os.unlink(entry)
@@ -69,6 +73,13 @@ class BWList:
                     log.error(_("Could not remove %s." % rmfile))
                     return False
         return True
+
+    def stripEmail(self, address):
+        '''Strip "Bart Foobar <bart@foobar.net>" to "<bart@foobar.net">'''
+        match = re.search('<.*?>', address)
+        if match is not None:
+            return match.group()
+        return address
 
 def blackListtests(address):
     """ This is a basic evaluation of our blacklist functionality """
