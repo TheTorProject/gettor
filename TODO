@@ -1,51 +1,11 @@
 These are planned changes to the gettor system.
 
-Localization of all message strings:
-    - We need to implement the gnu gettext _("") code for *all* print functions
-        - A user can explictly set their program to 'stdout' if they want to test
-
-Fix file logging:
-        - Currently logging to a file isn't implemented
-            - python lacks a way to do proper semaphores (ipc fail)
-        - Any logging should make use of scrubbing functions.
-            - Hash private information (e.g. emailaddresses)
-
-Localization of gettor output for messages sent to users:
-    - Localize the language of outgoing mail messages
-        - We need a method of fetching the user's preference
-            - Perhaps for now a field that specifies a locale?
-    - Do we want to set a preference or make it per email?
-        - For now, lets set it per email
-
-Allow for file/package configuration in the dotfile
-    - We should not hardcode the package names or files
-
-Create options that make gettor less ghetto:
-    - Add an option to allow selecting of a specific Tor mirror
-        "--use-mirror"
-    - Add proxy support for fetching
-    - Add an option to add a crontab to update a packages directory
-        "--install-crontab"
-        - Test that rsync and cron are enabled
-        - Ensure that this option selects a random time to rsync data
-    - Add an option to fetch packages from a given mirror
-        "--fetch-packages"
-    - Add an option to zip up all files in the packages directory
-        "--prep-packages"
-    - Automatically generate package list and create proper config stanza lines
-        - Currently blocked by our inability to configure package names
-        "--generate-package-list"
-    - Add an option that runs a series of tests confirming everything is OK
-        "--run-tests"
-        - Show the user all of the results
-    - Add an option that implements all of this in one easy step
-        "--setup"
-        - An alias for "--run-tests --fetch-packages --prep-packages \
-            --generate-package-list --install-crontab"
-
-Create an explicit whitelist configuration option:
-    - We should ensure that we never block certain users
-        - Even without DKIM
-
-Testing and proposals to better support users with limited email bandwidth 
-(multi-part download, etc.).
+- Testing and proposals to better support users with limited email bandwidth 
+  (multi-part download, etc.).
+- Write spec for how locale requests shall be formatted and parsed
+- Implement test (-t switch) functionality
+- Installer
+- Rename the library modules and move them to something like lib/ so that only
+  the gettor.py executable stays in the top-level dir
+- Enhance README file
+- Automatically parse .po files and move the .mo files to their proper place
