@@ -155,7 +155,7 @@ msgid ""
 "    package and verify the signature.\n"
 "        "
 msgstr "\n"
-"Hier ist die von Ihnen angeforderte Software als Zip-datei. Bitte\n"
+"Hier ist die von Ihnen angeforderte Software als Zip-Datei. Bitte\n"
 "entpacken Sie diese und verifizieren Sie die digitale Signatur.\n"
 "            "
 
