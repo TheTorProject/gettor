@@ -15,94 +15,184 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: gettor.py:106
-msgid "Warning: %s not accessable. Removing from list."
-msgstr "Warnung: %s nicht zugreifbar. Entferne es von der Liste."
+#: gettor_blacklist.py:45
+#, python-format
+msgid "Creating list entry %s failed."
+msgstr "Erzeugen des Eintrags %s in die Liste fehlgeschlagen"
 
-#: gettor.py:109
+#: gettor_blacklist.py:58
+#, python-format
+msgid "Could not unlink entry %s"
+msgstr "Konnte Eintrag %s nicht entfernen"
+
+#: gettor_blacklist.py:61
+#, python-format
+msgid "Requested removal of non-existing entry %s. Abord."
+msgstr "Entfernen des nicht-existierenden Eintrags %s nicht möglich. Abbruch."
+
+#: gettor_blacklist.py:73
+#, python-format
+msgid "Could not remove %s."
+msgstr "Konnte %s nicht entfernen."
+
+#: gettor_packages.py:63
+#, python-format
+msgid "Failed to build package list: %s"
+msgstr "Erzeugen der Paketliste fehlgeschlagen: %s"
+
+#: gettor_packages.py:70
+#, python-format
+msgid "Warning: %s not accessable. Removing from list."
+msgstr "Warnung: %s ist nicht verfügbar und wird von der Liste entfernt."
+
+#: gettor.py:106
 msgid "Sorry, your package list is unusable."
 msgstr "Ihre Paketliste ist leider unbenutzbar."
 
-#: gettor.py:116
+#: gettor.py:107
+msgid "Try running with --fetch-packages --prep-packages."
+msgstr "Möglicherweise fehlen die Optionen --fetch-packages und --prep-packages."
+
+#: gettor.py:114
 msgid "No raw message. Something went wrong."
 msgstr "Keine Email im urspruenglichen Format vorhanden. Irgendetwas muss schief gegangen sein."
 
-#: gettor.py:120
+#: gettor.py:118
 msgid "No parsed message. Dropping message."
 msgstr "Keine vorverarbeitete Email vorhanden. Verwerfe Paket."
 
-#: gettor.py:125
+#: gettor.py:122
 msgid "No help dispatched. Invalid reply address for user."
 msgstr "Keine Hilfe versandt. Ungueltige Antwortadresse des Users."
 
-#: gettor.py:134
+#: gettor.py:132
+msgid "Won't send myself emails."
+msgstr "Mail an mich selbst wird nicht verschickt."
+
+#: gettor.py:137
+#, python-format
 msgid "Signature is: %s"
 msgstr "Die Signatur ist: %s"
 
-#: gettor.py:140
+#: gettor.py:144
 msgid "Unsigned messaged to gettor by blacklisted user dropped."
 msgstr "Nicht signierte Nachricht an gettor von einem bereits auf der Blacklist befindlichen User verworfen."
 
-#: gettor.py:146
+#: gettor.py:150
 msgid "Unsigned messaged to gettor. We issued some help."
 msgstr "Nicht signierte Nachricht an gettor. Hilfe versandt."
 
-#: gettor.py:149
-msgid "Signed messaged to gettor."
-msgstr "Signierte Nachricht an gettor."
+#: gettor.py:153
+msgid "Good message to gettor."
+msgstr "Korrekte Nachricht an gettor."
 
-#: gettor.py:152
+#: gettor.py:156
+#, python-format
 msgid "Package: %s selected."
 msgstr "Paket %s ausgewaehlt."
 
-#: gettor.py:156
+#: gettor.py:160
 msgid "We issued some help about proper email formatting."
 msgstr "Hilfe zum richtigen Formatieren einer Anfrage-Mail versandt."
 
-#: gettor.py:170
+#: gettor.py:181
+#, python-format
 msgid "Sorry, %s is not a directory."
 msgstr "%s ist kein Verzeichnis."
 
-#: gettor.py:177
+#: gettor.py:186
+msgid "Error initiating package list."
+msgstr "Fehler beim Erstellen der Paketliste."
+
+#: gettor.py:192
+#, python-format
+msgid "White/Black list error: %s"
+msgstr "White/Blacklisten-Fehler: %s"
+
+#: gettor.py:197
 msgid "Syncing Tor packages failed."
 msgstr "Synchronisieren der Tor Pakete fehlgeschlagen."
 
-#: gettor.py:180
+#: gettor.py:200
 msgid "Syncing Tor packages done."
 msgstr "Synchronisieren der Tor Pakete erfolgreich."
 
-#: gettor.py:184
+#: gettor.py:204
 msgid "Building packages failed."
 msgstr "Vorbereiten der Pakete fehlgeschlagen."
 
-#: gettor.py:187
+#: gettor.py:207
 msgid "Building packages done."
 msgstr "Vorbereiten der Pakete erfolgreich."
 
-#: gettor.py:191
+#: gettor.py:211
 msgid "Tests failed."
 msgstr "Tests fehlgeschlagen."
 
-#: gettor.py:194
+#: gettor.py:214
 msgid "Tests passed."
 msgstr "Tests bestanden."
 
-#: gettor.py:198
+#: gettor.py:218
 msgid "Installing cron failed"
 msgstr "Installation von cron fehlgeschlagen."
 
-#: gettor.py:201
+#: gettor.py:221
 msgid "Installing cron done."
 msgstr "Installation von cron erfolgreich."
 
-#: gettor.py:206
+#: gettor.py:225
+msgid "Creating whitelist entry failed."
+msgstr "Erzeugen des Whitelist Eintrags fehlgeschlagen."
+
+#: gettor.py:228
+msgid "Creating whitelist entry ok."
+msgstr "Erzeugen des Whitelist Eintrags ok."
+
+#: gettor.py:232
+msgid "Creating blacklist entry failed."
+msgstr "Erzeugen des Blacklist Eintrags fehlgeschlagen."
+
+#: gettor.py:235
+msgid "Creating blacklist entry ok."
+msgstr "Erzeugen des Blacklist Eintrags ok."
+
+#: gettor.py:239
+msgid "Present in whitelist."
+msgstr "In Whitelist vorhanden."
+
+#: gettor.py:242
+msgid "Present in blacklist."
+msgstr "In Blacklist vorhanden."
+
+#: gettor.py:245
+msgid "Address neither in blacklist or whitelist."
+msgstr "Diese Adresse ist weder in der Blacklist noch in der Whitelist vorhanden."
+
+#: gettor.py:249
+msgid "Deleting whitelist failed."
+msgstr "Löschen der Whitelist fehlgeschlagen."
+
+#: gettor.py:252
+msgid "Deleting whitelist done."
+msgstr "Löschen der Whitelist gelungen."
+
+#: gettor.py:256
+msgid "Deleting blacklist failed."
+msgstr "Löschen der Blacklist fehlgeschlagen."
+
+#: gettor.py:259
+msgid "Deleting blacklist done."
+msgstr "Löschen der Blacklist gelungen."
+
+#: gettor.py:269
 msgid "Processing mail failed."
 msgstr "Verarbeitung der Email fehlgeschlagen."
 
-#: gettor_responses.py:26
+#: gettor_responses.py:45
 msgid ""
 "\n"
-"    Hello! This is the \"get tor\" robot.\n"
+"    Hello! This is the \"gettor\" robot.\n"
 "\n"
 "    Unfortunately, we won't answer you at this address. We only process\n"
 "    requests from email services that support \"DKIM\", which is an email\n"
@@ -118,7 +208,7 @@ msgid ""
 "        "
 msgstr ""
 "\n"
-"   Hallo! Diese Nachricht kommt vom \"get tor\" robot.\n"
+"   Hallo! Diese Nachricht kommt vom \"gettor\" robot.\n"
 "\n"
 "   Leider koennen wir Ihnen auf diese Adresse nicht antworten. Wir koennen\n"
 "   nur Requests von Email-Diensten verarbeiten, die den \"DKIM\"-Service\n"
@@ -132,23 +222,25 @@ msgstr ""
 "   den naechsten Tag.)\n"
 "        "
 
-#: gettor_responses.py:53
+#: gettor_responses.py:72
 msgid "Hello, I'm a robot. "
-msgstr "Hallo, ich bin der automatische Tor-Mailversandt."
+msgstr "Hallo, ich bin ein Mail-bot."
 
-#: gettor_responses.py:54
+#: gettor_responses.py:73
 msgid ""
-"Your request was not understood. Please select one of the following package names:\n"
-msgstr ""
-"Ihre Anfrage war nicht zu verstehen. Bitte waehlen Sie eines der folgenden Paketnamen:\n"
+"Your request was not understood. Please select one of the following package "
+"names:\n"
+msgstr "Ihr Request wurde nicht verstanden. Bitte wählen Sie eines der folgenden "
+"Pakete:\n"
 
-#: gettor_responses.py:58
+#: gettor_responses.py:77
 msgid ""
-"Please send me another email. It only needs a single package name anywhere in the body of your email.\n"
-msgstr ""
-"Bitte senden Sie mir eine weitere Email. Schreiben Sie darin lediglich den Paketnamen.\n"
+"Please send me another email. It only needs a single package name anywhere "
+"in the body of your email.\n"
+msgstr "Bitte senden Sie mir eine weitere Email. Der einzige Text, den diese Mail"
+"enthalten soll, ist der Name des gewünschten Pakets.\n"
 
-#: gettor_responses.py:71
+#: gettor_responses.py:90
 msgid ""
 "\n"
 "    Here's your requested software as a zip file. Please unzip the \n"
@@ -159,7 +251,7 @@ msgstr "\n"
 "entpacken Sie diese und verifizieren Sie die digitale Signatur.\n"
 "            "
 
-#: gettor_responses.py:92
-msgid "Re: Your \"get tor\" request"
-msgstr "Re: Ihre \"get tor\" Anfrage"
+#: gettor_responses.py:110
+msgid "Re: Your \"gettor\" request"
+msgstr "Re: Ihre \"gettor\" Anfrage"
 
