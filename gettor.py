@@ -94,15 +94,19 @@ def installMo(poFile, targetDir):
 
 def installTrans(config):
     hasDirs = None
-    localeSrcdir = "i18n"
+    localeSrcdir = "./i18n"
 
     if config is None:
         log.error("Bad arg.")
+        return False
+    if not os.path.isdir(localeSrcdir):
+        print >> sys.stderr, "Not a directory: ", localeSrcdir
         return False
     localeDir = config.getLocaleDir()
     if not os.path.isdir(localeDir):
         print >> sys.stderr, "Sorry, %s is not a directory." % distDir
         return False
+
     for root, dirs, files in os.walk(localeSrcdir):
         # XXX Python lacks 'depth' featue for os.walk()
         if root != localeSrcdir:
@@ -126,8 +130,9 @@ def installTrans(config):
                 print >> sys.stderr, "Error accessing translation files: ", e
                 return False
     if hasDirs is None:
-        print >> sys.stderr, "Empty locale dir: ", locale
+        print >> sys.stderr, "Empty locale dir: ", localeSrcdir
         return False
+
     return True
 
 def installCron():
