@@ -57,7 +57,11 @@ def parseOpts():
                         help="clear all entrys in the blacklist")
     cmdParser.add_option("-r", "--install-translations", dest="insttrans",
                         action="store_true", default=False,
-                        help="Compile and install translation files")
+                        help="Compile and install translation files [check -d]")
+    cmdParser.add_option("-d", "--i18n-dir", dest="i18ndir",
+                        default="./i18n",
+                        help="Set your locale src dir to DIR [default = %default]",
+                        metavar="DIR")
 
     return cmdParser.parse_args()
 

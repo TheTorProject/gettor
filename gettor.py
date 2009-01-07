@@ -92,9 +92,8 @@ def installMo(poFile, targetDir):
         return False
     return True
 
-def installTrans(config):
+def installTrans(config, localeSrcdir):
     hasDirs = None
-    localeSrcdir = "./i18n"
 
     if config is None:
         log.error("Bad arg.")
@@ -229,7 +228,7 @@ def main():
     localeDir = conf.getLocaleDir()
     # We need to do this first
     if options.insttrans:
-        if installTrans(conf):
+        if installTrans(conf, options.i18ndir):
             log.info("Installing translation files done.")
             success = True
         else:
