@@ -8,5 +8,4 @@ These are planned changes to the gettor system.
 - Rename the library modules and move them to something like lib/ so that only
   the gettor.py executable stays in the top-level dir
 - Enhance README file
-- Automatically parse .po files and move the .mo files to their proper place
 - Add more translations

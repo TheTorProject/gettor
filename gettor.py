@@ -80,6 +80,56 @@ def runTests():
     # XXX 
     return True
 
+def installMo(poFile, targetDir):
+    args = os.getcwd() + "/" + poFile + " -o " + targetDir + "/gettor.mo"
+    try:
+        ret = subprocess.call("msgfmt" + " " + args, shell=True)
+        if ret < 0:
+            print >> sys.stdout, "Error in msgfmt execution: ", ret
+            return False
+    except OSError, e:
+        print >> sys.stdout, "Comilation failed: ", e
+        return False
+    return True
+
+def installTrans(config):
+    hasDirs = None
+    localeSrcdir = "i18n"
+
+    if config is None:
+        log.error("Bad arg.")
+        return False
+    localeDir = config.getLocaleDir()
+    if not os.path.isdir(localeDir):
+        print >> sys.stderr, "Sorry, %s is not a directory." % distDir
+        return False
+    for root, dirs, files in os.walk(localeSrcdir):
+        # XXX Python lacks 'depth' featue for os.walk()
+        if root != localeSrcdir:
+            continue
+        for dir in dirs:
+            hasDirs = True
+            if dir.startswith("."):
+                continue
+            try:
+                poFile = os.path.join(root, dir) + "/gettor_" + dir + ".po"
+                # Construct target dir
+                targetDir = localeDir + "/" + dir + "/LC_MESSAGES"
+                if os.path.isdir(targetDir):
+                    if installMo(poFile, targetDir) == False:
+                        print >> sys.err, "Installing .mo files failed."
+                        return False
+                else:
+                    print >> sys.stderr, "Not a directory: ", targetDir
+                    return False
+            except Exception, e:
+                print >> sys.stderr, "Error accessing translation files: ", e
+                return False
+    if hasDirs is None:
+        print >> sys.stderr, "Empty locale dir: ", locale
+        return False
+    return True
+
 def installCron():
     # XXX: Check if cron is installed and understands our syntax?
     currentCronTab = getCurrentCrontab()
@@ -168,14 +218,25 @@ def main():
     conf = gettor_config.gettorConf(options.configfile)
     gettor_log.initialize()
     log = gettor_log.getLogger()
+
+    # Setup locale
     logLang = conf.getLocale()
     localeDir = conf.getLocaleDir()
+    # We need to do this first
+    if options.insttrans:
+        if installTrans(conf):
+            log.info("Installing translation files done.")
+            success = True
+        else:
+            log.error("Installing translation files failed.")
+            return False
     # Just check for the english .mo file, because that's the fallback
     englishMoFile = localeDir + "/en/LC_MESSAGES/gettor.mo"
     if not os.path.isfile(englishMoFile):
         log.error("Sorry, %s is not a file we can access." % englishMoFile)
         return False
     switchLocale(logLang, localeDir)
+
     distDir = conf.getDistDir()
     if not os.path.isdir(distDir):
         log.error(_("Sorry, %s is not a directory.") % distDir)

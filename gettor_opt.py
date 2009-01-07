@@ -55,6 +55,9 @@ def parseOpts():
     cmdParser.add_option("-y", "--clear-blacklist", dest="clearbl",
                         action="store_true", default=False,
                         help="clear all entrys in the blacklist")
+    cmdParser.add_option("-r", "--install-translations", dest="insttrans",
+                        action="store_true", default=False,
+                        help="Compile and install translation files")
 
     return cmdParser.parse_args()
 
