@@ -55,7 +55,7 @@ class gettorResponse:
 
     (We apologize if you didn't ask for this mail. Since your email is from
     a service that doesn't use DKIM, we're sending a short explanation,
-    and then we'll ignore this email address for the next day or so.
+    and then we'll ignore this email address for the next day or so.)
         """)
         help = self.constructMessage(message, source, destination)
         try:
@@ -69,12 +69,12 @@ class gettorResponse:
     def sendPackageHelp(self, packageList, source, destination):
         """ Send a helpful message to the user interacting with us """
         self.setLang(self.mailLang)
-        message = [_("Hello, I'm a robot. ")]
-        message.append(_("Your request was not understood. Please select one of the following package names:\n"))
+        message = [_('Hello, This is the "gettor" robot.\n\n')]
+        message.append(_("Your request was not understood. Please select one of the following package names:\n\n"))
 
         for key in packageList.keys():
             message.append(key + "\n")
-        message.append(_("Please send me another email. It only needs a single package name anywhere in the body of your email.\n"))
+        message.append(_("\nPlease send me another email.\nIt only needs a single package name anywhere in the body of your email.\n"))
         help = self.constructMessage(''.join(message), source, destination)
         try:
             status = self.sendMessage(help, source, destination)
