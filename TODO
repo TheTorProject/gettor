@@ -9,3 +9,5 @@ These are planned changes to the gettor system.
   the gettor.py executable stays in the top-level dir
 - Enhance README file
 - Add more translations
+- Split (at least) tiger bundle into several smaller archives to avoid ~20MB 
+  attachment
