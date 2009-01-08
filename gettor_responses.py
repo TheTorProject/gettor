@@ -93,14 +93,19 @@ class gettorResponse:
     Here's your requested software as a zip file. Please unzip the 
     package and verify the signature.
     
-    Hint: If you're on a machine with GnuPG installed, use the gpg
+    Hint: If your computer has GnuPG installed, use the gpg
     commandline tool as follows after unpacking the zip file:
         
-       gpg gpg --verify <packagename>.asc <packagename>
+       gpg --verify <packagename>.asc <packagename>
 
     The output should look somewhat like this:
 
        gpg: Good signature from "Roger Dingledine <arma@mit.edu>"
+
+    If you're not familiar with commandline tools, try looking for
+    a graphical user interface for GnuPG on this website:
+
+       http://www.gnupg.org/related_software/frontends.html
 
     Have fun.
         """)
