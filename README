@@ -16,10 +16,14 @@ that looks like the following in /etc/postfix/main.cf:
 
     message_size_limit = 30360000
 
-You will want to ensure that you have a properly configured set 
-of mo files for each translation:
+In Exim, the default message size is now 50MB, which should be sufficient. The
+value is also adaptable through the config file paramter 'message_size_limit'
+in case you need to.
 
-   msgfmt -v gettor_en.po -o gettor.mo
+You will want to ensure that you have a properly configured set 
+of mo files for each translation. Generate and install mo files as follows:
+
+   gettor.py -r
 
 As an example, for the user 'gettor' we will setup gettor.py like so:
 
