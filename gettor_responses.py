@@ -88,8 +88,21 @@ class gettorResponse:
         """ Send a message with an attachment to the user interacting with us """
         self.setLang(self.mailLang)
         message = _("""
+    Hello! This is the "gettor" robot.
+
     Here's your requested software as a zip file. Please unzip the 
     package and verify the signature.
+    
+    Hint: If you're on a machine with GnuPG installed, use the gpg
+    commandline tool as follows after unpacking the zip file:
+        
+       gpg gpg --verify <packagename>.asc <packagename>
+
+    The output should look somewhat like this:
+
+       gpg: Good signature from "Roger Dingledine <arma@mit.edu>"
+
+    Have fun.
         """)
         package = self.constructMessage(message, source, destination, filename)
         try:
