@@ -63,14 +63,11 @@ Now gettor.py is installed, prepared and ready to serve files. Send it email!
 
 TRANSLATION FILES
 -----------------
-Currently, .mo files have to be build out of .po files by hand:
+Provided there is a working locale environment, gettor will compile and setup
+locale files for you as follows:
 
-   msgfmt -v gettor_en.po -o gettor.mo
-
-This will probably change in the near future. The .mo files are expected in the
-proper location, e.g. in
-
-    /usr/share/locale/en/LC_MESSAGES/gettor.mo
+    gettor@moria:~/bin$ ./gettor.py -r
+    2009-01-08 12:18:09,041 (19287) Installing translation files done.
 
 You can also configure the .mo files to live in another place by telling gettor
 so in the config file, for example:
@@ -80,6 +77,16 @@ so in the config file, for example:
 This will result in gettor expected the english .mo file in the directory
 
     /home/gettor/gettor/i18n/en/LC_MESSAGES/gettor.mo
+
+Also, in case your .po files for some reason live in a different directory 
+than i18n/ (relative to gettor.py, as provided by gettor), you can tell this
+to gettor as follows:
+
+    gettor@moria:~/bin$ ./gettor.py -r -d /path/to/my/mofiles/directory
+
+Note that gettor will expect the same directory structure as provided under
+i18n/ in the gettor source package, e.g. 'i18n/en/gettor_en.po', 
+'i18n/de/gettor_de.po' and so on.
 
 CONFIGURATION
 -------------
