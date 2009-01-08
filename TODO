@@ -9,5 +9,8 @@ These are planned changes to the gettor system.
   the gettor.py executable stays in the top-level dir
 - Enhance README file
 - Add more translations
+    - Put po files into pootle for translation
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB 
   attachment
+- Add a follow up reply that describes an introduction to bridges
+- Add better support emails in responses for times when something goes wrong
