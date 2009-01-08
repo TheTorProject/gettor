@@ -9,6 +9,13 @@ how to setup gettor for a server admin.
 To use gettor, you'll want a machine that invokes .forward files for users.
 You'll also want to have python and rsync installed.
 
+There some limits with smtp software for outgoing email sizes. You should 
+check with your software to ensure that you can send files that are as large
+as the largest files Tor distributes. For postfix, you may want to have a line
+that looks like the following in /etc/postfix/main.cf:
+
+    message_size_limit = 30360000
+
 You will want to ensure that you have a properly configured set 
 of mo files for each translation:
 
