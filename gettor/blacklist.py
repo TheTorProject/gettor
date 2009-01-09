@@ -7,12 +7,12 @@ SHA1 hashes in a dedicated directory on the filesystem.
 import hashlib
 import os
 import re
-import gettor_config
-import gettor_log
+import gettor.config
+import gettor.gtlog
 
-log = gettor_log.getLogger()
+log = gettor.gtlog.getLogger()
 
-conf = gettor_config.gettorConf()
+conf = gettor.config.gettorConf()
 stateDir = conf.getStateDir()
 blStateDir = conf.getBlStateDir()
 

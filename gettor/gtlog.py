@@ -22,7 +22,7 @@ from time import gmtime, strftime
 import ConfigParser
 import syslog
 import logging
-import gettor_config
+import gettor.config
 from logging import handlers
 
 __all__ = ["initalize", "getLogger", "getLogSubSystem"]
@@ -41,16 +41,16 @@ def initialize():
     # Don't add handlers twice
     if initialized == True:
         return
-    config = gettor_config.gettorConf() 
+    conf = gettor.config.gettorConf() 
     logger = logging.getLogger('gettor')
     logger.setLevel(loglevel)
-    logSubSystem = config.getLogSubSystem()
+    logSubSystem = conf.getLogSubSystem()
 
     if logSubSystem == "stdout":
         handler = logging.StreamHandler()
     elif logSubSystem == "file":
         # Silently fail if things are misconfigured
-        logFile = config.getLogFile()
+        logFile = conf.getLogFile()
         try:
             if os.access(os.path.dirname(logFile), os.W_OK):
                 handler = logging.FileHandler(logFile)

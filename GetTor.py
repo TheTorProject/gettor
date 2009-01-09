@@ -59,13 +59,13 @@ import sys
 import os
 import subprocess
 import gettext
-import gettor_blacklist
-import gettor_requests
-import gettor_responses
-import gettor_log
-import gettor_config
-import gettor_opt
-import gettor_packages
+import gettor.blacklist
+import gettor.requests
+import gettor.responses
+import gettor.gtlog
+import gettor.config
+import gettor.opt
+import gettor.packages
 
 # Global logger
 log = None
@@ -168,7 +168,7 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
         return False
 
     # Receive mail from stdin
-    rmail = gettor_requests.requestMail(packageList)
+    rmail = gettor.requests.requestMail(packageList)
     rawMessage = rmail.getRawMessage()
     if not rawMessage:
         log.error(_("No raw message. Something went wrong."))
@@ -192,7 +192,7 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
         log.error(_("Won't send myself emails."))
         return False
 
-    resp = gettor_responses.gettorResponse(conf, replyLang, logLang)
+    resp = gettor.responses.gettorResponse(conf, replyLang, logLang)
     signature = rmail.hasVerifiedSignature()
     log.info(_("Signature is: %s") % str(signature))
     # Addresses from whitelist can pass without DKIM signature
@@ -226,10 +226,10 @@ def main():
     success = None
 
     # Parse command line, setup config, logging and language
-    options, arguments = gettor_opt.parseOpts()
-    conf = gettor_config.gettorConf(options.configfile)
-    gettor_log.initialize()
-    log = gettor_log.getLogger()
+    options, arguments = gettor.opt.parseOpts()
+    conf = gettor.config.gettorConf(options.configfile)
+    gettor.gtlog.initialize()
+    log = gettor.gtlog.getLogger()
 
     # Setup locale
     logLang = conf.getLocale()
@@ -254,13 +254,13 @@ def main():
         log.error(_("Sorry, %s is not a directory.") % distDir)
         return False
     try:
-        packs = gettor_packages.gettorPackages(options.mirror, conf)
+        packs = gettor.packages.gettorPackages(options.mirror, conf)
     except IOError:
         log.error(_("Error initiating package list."))
         return False
     try:
-        whiteList = gettor_blacklist.BWList(conf.getWlStateDir())
-        blackList = gettor_blacklist.BWList(conf.getBlStateDir())
+        whiteList = gettor.blacklist.BWList(conf.getWlStateDir())
+        blackList = gettor.blacklist.BWList(conf.getBlStateDir())
     except IOError, e:
         log.error(_("White/Black list error: %s") % e)
         return False

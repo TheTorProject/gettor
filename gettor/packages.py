@@ -14,13 +14,13 @@
 import os
 import zipfile
 import subprocess
-import gettor_log
-import gettor_config
+import gettor.gtlog
+import gettor.config
 import re
 
 __all__ = ["gettorPackages"]
 
-log = gettor_log.getLogger()
+log = gettor.gtlog.getLogger()
 
 class gettorPackages:
 
