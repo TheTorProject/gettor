@@ -56,6 +56,10 @@ class gettorResponse:
     (We apologize if you didn't ask for this mail. Since your email is from
     a service that doesn't use DKIM, we're sending a short explanation,
     and then we'll ignore this email address for the next day or so.)
+
+    If you require any additional help, please feel free to contact a human
+    at the following support email address: tor-assistants@torproject.org
+
         """)
         help = self.constructMessage(message, source, destination)
         try:
@@ -78,6 +82,10 @@ class gettorResponse:
     """ + "".join([ "\t%s\n" % key for key in packageList.keys()]) + """
     Please send me another email. It only needs a single package name anywhere 
     in the body of your email.
+
+    If you require any additional help, please feel free to contact a human
+    at the following support email address: tor-assistants@torproject.org
+
         """)
         help = self.constructMessage(message, source, destination)
         try:
@@ -111,7 +119,23 @@ class gettorResponse:
 
        http://www.gnupg.org/related_software/frontends.html
 
-    Have fun.
+    If your internet connection blocks access to the Tor network, please
+    consider using a bridge relay. Bridge relays (or "bridges" for short)
+    are Tor relays that aren't listed in the main directory. Since there
+    is no complete public list of them, even if your ISP is filtering
+    connections to all the known Tor relays, they probably won't be able
+    to block all the bridges.
+
+    You can acquire a bridge by sending an email that contains "get bridges"
+    in the body of the email to the following email address:
+    bridges@torproject.org
+
+    It is also possible to fetch bridges with a web browser at the following
+    url: https://bridges.torproject.org/
+
+    If you require any additional help, please feel free to contact a human
+    at the following support email address: tor-assistants@torproject.org
+
         """)
         package = self.constructMessage(message, source, destination, filename)
         try:

@@ -6,9 +6,7 @@ These are planned changes to the gettor system.
 - Implement test (-t switch) functionality
 - Installer
 - Enhance README file
+- Split (at least) tiger bundle into several smaller archives to avoid ~20MB 
 - Add more translations
     - Put po files into pootle for translation
-- Split (at least) tiger bundle into several smaller archives to avoid ~20MB 
-  attachment
-- Add a follow up reply that describes an introduction to bridges
-- Add better support emails in responses for times when something goes wrong
+    - Freeze messages for translation
