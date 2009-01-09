@@ -5,8 +5,6 @@ These are planned changes to the gettor system.
 - Write spec for how locale requests shall be formatted and parsed
 - Implement test (-t switch) functionality
 - Installer
-- Rename the library modules and move them to something like lib/ so that only
-  the gettor.py executable stays in the top-level dir
 - Enhance README file
 - Add more translations
     - Put po files into pootle for translation
