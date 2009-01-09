@@ -69,13 +69,17 @@ class gettorResponse:
     def sendPackageHelp(self, packageList, source, destination):
         """ Send a helpful message to the user interacting with us """
         self.setLang(self.mailLang)
-        message = [_('Hello, This is the "gettor" robot.\n\n')]
-        message.append(_("Your request was not understood. Please select one of the following package names:\n\n"))
+        message = _("""
+    Hello, This is the "gettor" robot.
+        
+    I am sorry, but your request was not understood. Please select one of the 
+    following package names:
 
-        for key in packageList.keys():
-            message.append(key + "\n")
-        message.append(_("\nPlease send me another email.\nIt only needs a single package name anywhere in the body of your email.\n"))
-        help = self.constructMessage(''.join(message), source, destination)
+    """ + "".join([ "\t%s\n" % key for key in packageList.keys()]) + """
+    Please send me another email. It only needs a single package name anywhere 
+    in the body of your email.
+        """)
+        help = self.constructMessage(message, source, destination)
         try:
             status = self.sendMessage(help, source, destination)
         except:
