@@ -140,7 +140,6 @@ class gettorResponse:
 
         # Add a file if we have one
         if fileName:
-            # XXX TODO: Iterate over each file eventually
             filePart = mime.nextpart()
             filePart.addheader('Content-Transfer-Encoding', 'base64')
             emailBody = filePart.startbody('application/zip; name=%s' % os.path.basename(fileName))

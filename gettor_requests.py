@@ -47,9 +47,6 @@ class requestMail:
         self.replytoAddress = self.parsedMessage["from"]
         # If no package name could be recognized, use 'None'
         self.returnPackage = None
-        # XXX TODO:
-        # Should we pick only the first line of the email body. Drop the rest?
-        # It may be too unfriendly to our users
         for line in email.Iterators.body_line_iterator(self.parsedMessage):
             for package in packages.keys():
                 match = re.match(package, line)    

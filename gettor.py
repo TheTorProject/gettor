@@ -67,6 +67,8 @@ import gettor_config
 import gettor_opt
 import gettor_packages
 
+# Global logger
+log = None
 
 # Switch language to 'newlocale'. Return default if language is not supported.
 def switchLocale(newlocale, localedir):
@@ -77,37 +79,39 @@ def switchLocale(newlocale, localedir):
     trans.install()
 
 def runTests():
-    # XXX 
+    # XXX: Implement me
     return True
 
 def installMo(poFile, targetDir):
+    global log
     args = os.getcwd() + "/" + poFile + " -o " + targetDir + "/gettor.mo"
     try:
         ret = subprocess.call("msgfmt" + " " + args, shell=True)
         if ret < 0:
-            print >> sys.stdout, "Error in msgfmt execution: ", ret
+            log.error("Error in msgfmt execution: %s" % ret)
             return False
     except OSError, e:
-        print >> sys.stdout, "Comilation failed: ", e
+        log.erro("Comilation failed: " % e)
         return False
     return True
 
 def installTrans(config, localeSrcdir):
+    global log
     hasDirs = None
 
     if config is None:
         log.error("Bad arg.")
         return False
     if not os.path.isdir(localeSrcdir):
-        print >> sys.stderr, "Not a directory: ", localeSrcdir
+        log.error("Not a directory: " % localeSrcdir)
         return False
     localeDir = config.getLocaleDir()
     if not os.path.isdir(localeDir):
-        print >> sys.stderr, "Sorry, %s is not a directory." % distDir
+        log.error("Sorry, %s is not a directory." % distDir)
         return False
 
     for root, dirs, files in os.walk(localeSrcdir):
-        # XXX Python lacks 'depth' featue for os.walk()
+        # Python lacks 'depth' featue for os.walk()
         if root != localeSrcdir:
             continue
         for dir in dirs:
@@ -120,16 +124,16 @@ def installTrans(config, localeSrcdir):
                 targetDir = localeDir + "/" + dir + "/LC_MESSAGES"
                 if os.path.isdir(targetDir):
                     if installMo(poFile, targetDir) == False:
-                        print >> sys.err, "Installing .mo files failed."
+                        log.error("Installing .mo files failed.")
                         return False
                 else:
-                    print >> sys.stderr, "Not a directory: ", targetDir
+                    log.error("Not a directory: " % targetDir)
                     return False
             except Exception, e:
-                print >> sys.stderr, "Error accessing translation files: ", e
+                log.error("Error accessing translation files: " % e)
                 return False
     if hasDirs is None:
-        print >> sys.stderr, "Empty locale dir: ", localeSrcdir
+        log.errpr("Empty locale dir: " % localeSrcdir)
         return False
 
     return True
@@ -155,7 +159,9 @@ def getCurrentCrontab():
         savedTab += line
     return savedTab
 
-def processMail(conf, log, logLang, packageList, blackList, whiteList):
+def processMail(conf, logLang, packageList, blackList, whiteList):
+    global log
+
     if packageList is None or len(packageList) < 1:
         log.error(_("Sorry, your package list is unusable."))
         log.error(_("Try running with --fetch-packages --prep-packages."))
@@ -216,7 +222,9 @@ def processMail(conf, log, logLang, packageList, blackList, whiteList):
     return True
 
 def main():
+    global log
     success = None
+
     # Parse command line, setup config, logging and language
     options, arguments = gettor_opt.parseOpts()
     conf = gettor_config.gettorConf(options.configfile)
@@ -329,7 +337,7 @@ def main():
         return success
     
     # Main loop
-    if not processMail(conf, log, logLang, packs.getPackageList(), blackList,
+    if not processMail(conf, logLang, packs.getPackageList(), blackList,
                        whiteList):
         log.error(_("Processing mail failed."))
         return False
