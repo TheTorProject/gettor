@@ -48,6 +48,9 @@ class requestMail:
         # If no package name could be recognized, use 'None'
         self.returnPackage = None
         for line in email.Iterators.body_line_iterator(self.parsedMessage):
+            # Remove comments
+            if line.startswith(">"):
+                continue
             for package in packages.keys():
                 match = re.match(package, line)    
                 if match: 
