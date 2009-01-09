@@ -14,3 +14,4 @@ These are planned changes to the gettor system.
   attachment
 - Add a follow up reply that describes an introduction to bridges
 - Add better support emails in responses for times when something goes wrong
+- Treat lines starting with ">" as data to ignore
