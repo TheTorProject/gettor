@@ -1,12 +1,12 @@
 These are planned changes to the gettor system.
 
-- Testing and proposals to better support users with limited email bandwidth 
+- Testing and proposals to better support users with limited email bandwidth
   (multi-part download, etc.).
 - Write spec for how locale requests shall be formatted and parsed
 - Implement test (-t switch) functionality
 - Installer
 - Enhance README file
-- Split (at least) tiger bundle into several smaller archives to avoid ~20MB 
+- Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Add more translations
     - Put po files into pootle for translation
     - Freeze messages for translation

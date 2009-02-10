@@ -2,14 +2,14 @@ OVERVIEW
 --------
 GetTor is a program for serving Tor and Tor related files over SMTP.
 Users interface with GetTor by sending it an email. The users must use a mail
-server that signs outgoing mail with DKIM or have their email address added 
-to the whitelist. This is to prevent abuse. The following document explains 
+server that signs outgoing mail with DKIM or have their email address added
+to the whitelist. This is to prevent abuse. The following document explains
 how to setup GetTor for a server admin.
 
 To use GetTor, you'll want a machine that invokes .forward files for users.
 You'll also want to have python and rsync installed.
 
-There some limits with smtp software for outgoing email sizes. You should 
+There some limits with smtp software for outgoing email sizes. You should
 check with your software to ensure that you can send files that are as large
 as the largest files Tor distributes. For postfix, you may want to have a line
 that looks like the following in /etc/postfix/main.cf:
@@ -20,7 +20,7 @@ In Exim, the default message size is now 50MB, which should be sufficient. The
 value is also adaptable through the config file paramter 'message_size_limit'
 in case you need to.
 
-You will want to ensure that you have a properly configured set 
+You will want to ensure that you have a properly configured set
 of mo files for each translation. Generate and install mo files as follows:
 
    GetTor.py -r
@@ -29,7 +29,7 @@ As an example, for the user 'gettor' we will setup GetTor.py like so:
 
 Configure the default ~/.gettorrc file:
 
-    gettor@moria:~$ cat .gettorrc 
+    gettor@moria:~$ cat .gettorrc
     [global]
     stateDir    = /home/gettor/gettor/state/
     blStateDir  = /home/gettor/gettor/bl/
@@ -43,7 +43,7 @@ Configure the default ~/.gettorrc file:
 
 Your .forward file should look like this:
 
-    gettor@moria:~$ cat .forward 
+    gettor@moria:~$ cat .forward
     "|/home/gettor/bin/GetTor.py"
 
 These are the python files we need to run GetTor.py:
@@ -64,7 +64,7 @@ You should see an rsync and finally something like:
     2009-01-05 16:49:29,226 (9222) Syncing Tor packages done.
     2009-01-05 16:49:30,155 (9222) Building packages done.
 
-Now you'll install the cronjob. This clears the blacklist and updates 
+Now you'll install the cronjob. This clears the blacklist and updates
 packages daily:
 
     gettor@moria:~/bin$ ./GetTor.py -i
@@ -89,19 +89,19 @@ This will result in GetTor expected the english .mo file in the directory
 
     /home/gettor/gettor/i18n/en/LC_MESSAGES/gettor.mo
 
-Also, in case your .po files for some reason live in a different directory 
+Also, in case your .po files for some reason live in a different directory
 than i18n/ (relative to GetTor.py, as provided by GetTor), you can tell this
 to GetTor as follows:
 
     gettor@moria:~/bin$ ./GetTor.py -r -d /path/to/my/mofiles/directory
 
 Note that GetTor will expect the same directory structure as provided under
-i18n/ in the GetTor source package, e.g. 'i18n/en/gettor_en.po', 
+i18n/ in the GetTor source package, e.g. 'i18n/en/gettor_en.po',
 'i18n/de/gettor_de.po' and so on.
 
 CONFIGURATION
 -------------
-A proper GetTor configuration file is expected in the user's home directory 
+A proper GetTor configuration file is expected in the user's home directory
 and should look like this:
 
     [global]
@@ -132,10 +132,10 @@ logSubSystem:  This has to be one of the following strings:
                'nothing':  Nothing is logged anywhere (Recommended)
                'stdout':   Log to stdout
                'syslog':   Logmessages will be written to syslog
-               'file':     Logmessages will be written to a file (Not that 
+               'file':     Logmessages will be written to a file (Not that
                            this needs the 'logFile' option in the config file
                            also set to something useful
-localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or 
+localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or
                'whateverlang/LC_MESSAGES/gettor.mo' should go
 
 
