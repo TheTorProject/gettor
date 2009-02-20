@@ -1,15 +1,12 @@
 OVERVIEW
 --------
-GetTor is a program for serving Tor and Tor related files over SMTP.
-Users interface with GetTor by sending it an email. The users must use
-a mail server that signs outgoing mail with DKIM or have their email
-address added to the whitelist, to prevent people from abusing gettor
-into mailbombing innocent email addresses.
+GetTor is a program for serving Tor and related files over SMTP. Users
+interact with GetTor by sending it an email.
 
 The following document explains how to setup GetTor for a server admin.
 
-To use GetTor, you'll want a machine that invokes .forward files for users.
-You'll also want to have python and rsync installed.
+To deploy GetTor, you'll want a machine that invokes .forward files
+for users. You'll also want to have python and rsync installed.
 
 There are some limits with smtp software for outgoing email sizes. You should
 check your software to ensure that you can send files that are as large
@@ -128,4 +125,36 @@ logSubSystem:  This has to be one of the following strings:
                            also set to something useful
 localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or
                'whateverlang/LC_MESSAGES/gettor.mo' should go
+
+WHAT'S DKIM / WHY DKIM?
+-----------------------
+
+People who send mail to gettor need to either use a mail provider that
+signs outgoing mail with DKIM, or have their email address or domain
+added to the whitelist.
+
+"DomainKeys Identified Mail", aka DKIM, is a mechanism that lets the mail
+provider prove that the mail is really coming from the domain and sender
+it claims to be from.
+
+Currently GMail and Yahoo both support DKIM, along with other more
+esoteric domains like paypal, AOL, earthlink, linkedin, etc. You can
+check if your mail provider uses DKIM by examining the headers of emails
+you send. If there's a "DomainKey-Signature:" header, then you're in
+good shape.
+
+If we didn't check the DKIM signature, people could abuse gettor into
+mailbombing innocent email addresses -- one short email resulting in a
+15MB attachment sent to an address of their choice is quite an attack
+multiplier.
+
+There are a few other alternative options (for example, Microsoft uses its
+own proprietary design called 'Sender ID'), but since GMail is already
+very common for users in blocked countries, we figured DKIM was a good
+starting point.
+
+And last, be aware that the set of domains that technically support
+DKIM is probably not exactly the same set that we should recommend for
+our users, due to other properties of each mail provider like their
+privacy policies.
 
