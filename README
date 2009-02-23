@@ -86,6 +86,16 @@ Note that GetTor will expect the same directory structure as provided under
 i18n/ in the GetTor source package, e.g. 'i18n/en/gettor_en.po',
 'i18n/de/gettor_de.po', and so on.
 
+To add a new language to GetTor, one must create a new .po file in subversion
+in the proper directory. For Korean, one would create i18n/ko/ and add the
+untranslated file (called gettor_ko.po) to that directory. This file should be
+translated but partial translations are allowed. Once this file has been
+created, the GetTor program does not need to be modified. It does however 
+require that one adds a configuration option indicating the newly desired
+locale (the default is English):
+	
+	locale = ko
+
 CONFIGURATION
 -------------
 A proper GetTor configuration file is expected in the user's home directory

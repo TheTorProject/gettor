@@ -7,7 +7,7 @@ from distutils.core import setup
 setup(name='GetTor',
       version='0.1',
       description='GetTor enables users to obtain Tor via email',
-      author='Jake Appelbaum, Christian Fromme',
+      author='Jacob Appelbaum, Christian Fromme',
       author_email='jacob at appelbaum dot net, kaner at strace dot org',
       url='https://www.torpeoject.org/gettor/',
       package_dir={'': '.'},
