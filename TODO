@@ -8,5 +8,5 @@ These are planned changes to the gettor system.
 - Enhance README file
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Add more translations
-    - Put po files into pootle for translation
     - Freeze messages for translation
+    - Put po files into pootle for translation

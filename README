@@ -168,3 +168,10 @@ DKIM is probably not exactly the same set that we should recommend for
 our users, due to other properties of each mail provider like their
 privacy policies.
 
+VALIDATION OF REQUESTED FILES
+-----------------------------
+
+When a user submits a successful request, GetTor will respond with an email
+that has one attachment. This attachment is a zip file with a .z file
+extension. The compressed file currently consists of two files: the requested
+tool and a gpg signature from the packager of the respective file.
