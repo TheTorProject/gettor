@@ -10,3 +10,4 @@ These are planned changes to the gettor system.
 - Add more translations
     - Freeze messages for translation
     - Put po files into pootle for translation
+- Add GetTor to GetTor and it will be able to distribute itself
