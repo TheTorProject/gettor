@@ -1,0 +1,63 @@
+OVERVIEW
+--------
+
+This document explains how GetTor handles locale parsing for both the operator
+and the end of user of GetTor. This allows non-English speaking users to
+operate GetTor in their language and to serve users in all other supported
+languages. It is currently a draft and will be reformatted, rewritten and
+changed until further notice.
+
+LOCALES FOR OPERATORS
+---------------------
+
+Operators should be able to configure GetTor by setting their locale in their
+local configuration file. This allows the GetTor operator to use a localized
+version of GetTor for their language. All error messages, log messages and so
+forth should be localized. This is of course dependent on a proper translation.
+This generally outside of the scope of this document.
+
+LOCALES FOR END USERS
+---------------------
+
+Users should be able to send an indicator that they wish to have a localized
+response. All responses will be localized and localized binaries will be sent.
+
+SUPPORTED LOCALES
+-----------------
+
+All supported locales will be advertised by gettor in all emails.
+
+LOW TECH LOCALE PARSING
+-----------------------
+
+If no locale is specified, GetTor will default to English in the locale 'en-US'
+for all output.
+
+If a user wishes, they may set the locale for all responses. The locale must be
+passed by the end user as a single line. The start of the line must begin with
+'Locale: ' and be followed by the desired locale. The locale must be at the end
+of the line. An example follows on the following line:
+Locale: de
+
+The first valid Locale line found in the message will designate the response
+locale.
+
+HIGH TECH LOCALE PARSING
+------------------------
+
+If a user is able to set custom mail headers, they may designate their desired
+locale by specifying it with an 'X-' header of 'X-LOCALE'. This must be
+seperated by a space and followed by the desired locale. An example follows:
+X-LOCALE: de
+
+AUTOMATED LOCALE PARSING
+------------------------
+
+If possible and supported by the server, GetTor will attempt to automatically
+parse the desired locale. The user should append the desired locale to the
+email address of the GetTor robot. An example for setting all responses into
+German (Locale: de) follows below:
+
+	gettor+de@torproject.org
+
+This will allow the user to interact without any knowledge of locales.

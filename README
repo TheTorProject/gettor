@@ -189,7 +189,7 @@ FILE SIZE ISSUES
 
 Some email providers may not be happy with the files GetTor sends.
 Gmail provides documentation of their incoming and outgoing file sizes. It is
-currently 20MB:
+currently 20MB (though we have sent around 21MB without issue):
 	http://mail.google.com/support/bin/answer.py?hl=en&answer=8770
 
 Other providers are not as transparent and this may cause failures.
