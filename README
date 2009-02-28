@@ -175,3 +175,14 @@ When a user submits a successful request, GetTor will respond with an email
 that has one attachment. This attachment is a zip file with a .z file
 extension. The compressed file currently consists of two files: the requested
 tool and a gpg signature from the packager of the respective file.
+
+FILE SIZE ISSUES
+----------------
+
+Some email providers may not be happy with the files GetTor sends.
+Gmail provides documentation of thier incoming and outgoing file sizes. It is
+currently 20MB:
+	http://mail.google.com/support/bin/answer.py?hl=en&answer=8770
+
+Other providers are not as transparent and this may cause failures.
+
