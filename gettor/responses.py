@@ -75,7 +75,7 @@ class gettorResponse:
         self.setLang(self.mailLang)
         message = _("""
     Hello, This is the "gettor" robot.
-        
+
     I am sorry, but your request was not understood. Please select one of the 
     following package names:
 
@@ -104,10 +104,10 @@ class gettorResponse:
 
     Here's your requested software as a zip file. Please unzip the 
     package and verify the signature.
-    
+
     Hint: If your computer has GnuPG installed, use the gpg
     commandline tool as follows after unpacking the zip file:
-        
+
        gpg --verify <packagename>.asc <packagename>
 
     The output should look somewhat like this:
