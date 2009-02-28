@@ -28,7 +28,8 @@ class gettorPackages:
                      "panther-bundle": "vidalia-bundle-.*-panther.dmg$",
                      "tiger-bundle": "vidalia-bundle-.*-tiger.dmg$",
                      "source-bundle": "tor-.*.tar.gz",
-                     "tor-browser-bundle": "tor-browser-.*_en.exe",
+                     "tor-browser-bundle": "tor-browser-.*_en-US.exe",
+                     "tor-im-browser-bundle": "tor-im-browser-.*_en-US.exe",
                    }
 
     def __init__(self, mirror, config, silent=False):
