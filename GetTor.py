@@ -214,7 +214,12 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
         package = rmail.getPackage()
         if package != None:
             log.info(_("Package: %s selected.") % str(package))
-            resp.sendPackage(srcEmail, replyTo, packageList[package])  
+            status = resp.sendPackage(srcEmail, replyTo, packageList[package])
+            if status != True:
+                log.info(_("Failed at attempt to send package: %s") % str(package))
+                return False
+            else:
+                log.info(_("Package sent: %s") % str(package))
         else:
             resp.sendPackageHelp(packageList, srcEmail, replyTo)
             log.info(_("We issued some help about proper email formatting."))
