@@ -54,9 +54,9 @@ AUTOMATED LOCALE PARSING
 ------------------------
 
 If possible and supported by the server, GetTor will attempt to automatically
-parse the desired locale. The user should append the desired locale to the
-email address of the GetTor robot. An example for setting all responses into
-German (Locale: de) follows below:
+parse the desired locale by using plus addressing. The user should append the
+desired locale to the email address of the GetTor robot. An example for setting
+all responses into German (Locale: de) follows below:
 
 	gettor+de@torproject.org
 
