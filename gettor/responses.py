@@ -139,10 +139,8 @@ class gettorResponse:
         """)
         package = self.constructMessage(message, source, destination, filename)
         try:
-            log.info(_("Attempting to send package: %s") % str(package))
             status = self.sendMessage(package, source, destination)
         except:
-            log.info(_("Failed at attempt to send package: %s") % str(package))
             status = False
         self.setLang(self.mailLang)
 
