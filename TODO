@@ -5,9 +5,14 @@ These are planned changes to the gettor system.
 - Write spec for how locale requests shall be formatted and parsed
 - Implement test (-t switch) functionality
 - Installer
-- Enhance README file
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Add more translations
     - Freeze messages for translation
     - Put po files into pootle for translation
 - Add GetTor to GetTor and it will be able to distribute itself
+- Better exception catching when the local SMTP rejects the email
+    - Perhaps we want to email the admin of GetTor with the error?
+    - Perhaps we want to respond to the user with a useful message?
+- Do we want to instantly email the user with a "please wait" message for large
+files that may take a while to arrive?
+    - Do we want to do it for every message?
