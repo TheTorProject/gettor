@@ -96,6 +96,14 @@ locale (the default is English):
 	
 	locale = ko
 
+However, if a user wished to add support in responses to users, they will need
+to modiy the 'requests.py' file like so:
+
+    defaultLang = "en"
+    supportedLangs = { "en": "English",·
+                       "ko": "Korean",·
+                       "de": "Deutsch" }
+
 CONFIGURATION
 -------------
 A proper GetTor configuration file is expected in the user's home directory
@@ -185,4 +193,3 @@ currently 20MB:
 	http://mail.google.com/support/bin/answer.py?hl=en&answer=8770
 
 Other providers are not as transparent and this may cause failures.
-
