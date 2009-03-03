@@ -188,10 +188,12 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
     # Initialize response
     srcEmail = conf.getSrcEmail()
     # Bail out if someone tries to be funny
+    # XXX TODO: Implement a blacklist check here
     if (srcEmail == replyTo):
         log.error(_("Won't send myself emails."))
         return False
 
+    delayAlert = conf.getDelayAlert()
     resp = gettor.responses.gettorResponse(conf, replyLang, logLang)
     signature = rmail.hasVerifiedSignature()
     log.info(_("Signature is: %s") % str(signature))
@@ -214,6 +216,24 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
         package = rmail.getPackage()
         if package != None:
             log.info(_("Package: %s selected.") % str(package))
+            log.info(_("Sending delay alert email: %s") % str(delayAlert))
+            if delayAlert == True:
+                message = _("""
+    Hello, This is the "gettor" robot.
+
+    Thank you for your request. It was sucessfully understood. Your request is
+    currently being processed. Your package should arrive within the next ten
+    minutes.
+
+    If you require any additional help, please feel free to contact a human
+    at the following support email address: tor-assistants@torproject.org
+
+        """)
+
+                status = resp.sendGenericMessage(srcEmail, replyTo, message)
+                if status != True:
+                    log.info(_("Failed to send delay alert")
+
             status = resp.sendPackage(srcEmail, replyTo, packageList[package])
             if status != True:
                 log.info(_("Failed at attempt to send package: %s") % str(package))

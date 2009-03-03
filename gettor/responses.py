@@ -96,6 +96,17 @@ class gettorResponse:
 
         return status
 
+    def sendGenericMessage(self, source, destination, message):
+        """ Send a helpful message of some sort """
+        self.setLang(self.mailLang)
+        help = self.constructMessage(message, source, destination)
+        try:
+            status = self.sendMessage(help, source, destination)
+        except:
+            status = False
+        self.setLang(self.logLang)
+        return status
+
     def sendPackage(self, source, destination, filename):
         """ Send a message with an attachment to the user interacting with us """
         self.setLang(self.mailLang)

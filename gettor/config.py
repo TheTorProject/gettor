@@ -25,6 +25,7 @@
      logSubSystem = nothing
      logFile = /dev/null
      localeDir = /usr/share/locale
+     delayAlert = True
 
  Note that you can set from none to any of these values in your config file.
  Values you dont provide will be taken from the defaults in 'useConf'.
@@ -46,6 +47,9 @@
                             also set to something useful
  localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or 
                 'whateverlang/LC_MESSAGES/gettor.mo' should go
+ delayAlert:    If set to True (the default), a message will be sent to any
+                user who has properly requested a package. The message confirms
+                that a package was selected and will be sent.
 
  If no valid config file is provided to __init__, gettorConf will try to use
  '~/.gettorrc' as default config file. If that fails, the default values from
@@ -90,7 +94,8 @@ class gettorConf:
                         "locale":       ("en",                      "global"),
                         "logSubSystem": ("nothing",                 "global"),
                         "logFile":      ("/dev/null",               "global"),
-                        "localeDir":    ("/usr/share/locale",       "global")}
+                        "localeDir":    ("/usr/share/locale",       "global"),
+                        "delayAlert":   (True,                    "global")}
 
         # One ConfigParser instance to read the actual values from config
         self.config = ConfigParser.ConfigParser()
@@ -165,6 +170,9 @@ class gettorConf:
 
     def getLocaleDir(self):
         return self.useConf["localeDir"][0]
+
+    def getDelayAlert(self):
+        return self.useConf["delayAlert"][0]
 
 if __name__ == "__main__" :
     c = gettorConf()
