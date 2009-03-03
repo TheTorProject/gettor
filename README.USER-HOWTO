@@ -1,11 +1,12 @@
-This is a document that explains how a user may request Tor or Tor related
+
+This document explains how a user may request Tor or Tor-related
 software via email with the GetTor program.
 
 FINDING GETTOR
 --------------
 
 It is assumed that a user has a method of finding a valid GetTor email robot.
-Currently the best known GetTor email is gettor @ torproject.org and it should
+Currently the best known GetTor email is gettor @ torproject.org. This should
 be the most current stable GetTor robot as it is operated by the Tor Project.
 
 
@@ -38,7 +39,7 @@ choices. An example reply to a request for help follows:
    Please send me another email. It only needs a single package name anywhere
    in the body of your email.
 
-An example, it is possible to fetch the most current Windows bundle. A user may
+For example, it is possible to fetch the most current Windows bundle. A user may
 send a request with only the word 'windows-bundle' in the body of the email. An
 example reply would look something like the following:
 
@@ -76,7 +77,7 @@ installs the bundle, they should verify the signature.
 
 Users should follow the most current instructions for signature verification
 as detailed by the Tor Project website:
-	https://www.torproject.org/verifying-signatures.html
+   https://www.torproject.org/verifying-signatures.html
 
 INSTALLING THE REQUESTED FILES
 ------------------------------
@@ -84,3 +85,4 @@ INSTALLING THE REQUESTED FILES
 After verifying that the file is valid, a user should simply run the program.
 If a user requested the source code to Tor, we assume that they're able to
 follow the build instructions contained within the source itself.
+
