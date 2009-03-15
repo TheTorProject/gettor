@@ -35,6 +35,8 @@ choices. An example reply to a request for help follows:
        source-bundle
        windows-bundle
        tiger-bundle
+       tor-browser-bundle
+       tor-im-browser-bundle
 
    Please send me another email. It only needs a single package name anywhere
    in the body of your email.
