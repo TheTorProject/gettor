@@ -107,7 +107,7 @@ def installTrans(config, localeSrcdir):
         return False
     localeDir = config.getLocaleDir()
     if not os.path.isdir(localeDir):
-        log.error("Sorry, %s is not a directory." % distDir)
+        log.error("Sorry, %s is not a directory." % localeDir)
         return False
 
     for root, dirs, files in os.walk(localeSrcdir):
@@ -127,10 +127,10 @@ def installTrans(config, localeSrcdir):
                         log.error("Installing .mo files failed.")
                         return False
                 else:
-                    log.error("Not a directory: " % targetDir)
+                    log.error("Not a directory: %s" % targetDir)
                     return False
-            except Exception, e:
-                log.error("Error accessing translation files: " % e)
+            except Exception:
+                log.error("Error accessing translation files.")
                 return False
     if hasDirs is None:
         log.errpr("Empty locale dir: " % localeSrcdir)
@@ -228,12 +228,10 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
     If you require any additional help, please feel free to contact a human
     at the following support email address: tor-assistants@torproject.org
 
-        """)
-
+            """)
                 status = resp.sendGenericMessage(srcEmail, replyTo, message)
                 if status != True:
                     log.info(_("Failed to send delay alert"))
-
             status = resp.sendPackage(srcEmail, replyTo, packageList[package])
             if status != True:
                 log.info(_("Failed at attempt to send package: %s") % str(package))
