@@ -232,7 +232,7 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
 
                 status = resp.sendGenericMessage(srcEmail, replyTo, message)
                 if status != True:
-                    log.info(_("Failed to send delay alert")
+                    log.info(_("Failed to send delay alert"))
 
             status = resp.sendPackage(srcEmail, replyTo, packageList[package])
             if status != True:

@@ -42,7 +42,7 @@ These are the python files we need to run GetTor.py:
 
 Once you have everything installed, you'll want to initialize the file store:
 
-    gettor@moria:~/newbin$ ./gettor.py -f -p
+    gettor@moria:~/newbin$ ./GetTor.py -f -p
 
 You should see an rsync and finally something like:
 
