@@ -13,3 +13,4 @@ These are planned changes to the gettor system.
 - Better exception catching when the local SMTP rejects the email
     - Perhaps we want to email the admin of GetTor with the error?
     - Perhaps we want to respond to the user with a useful message?
+- Add torbutton
