@@ -4,7 +4,7 @@ These are planned changes to the gettor system.
   (multi-part download, etc.).
 - Write spec for how locale requests shall be formatted and parsed
 - Implement test (-t switch) functionality
-- Installer
+- Installer (setup.py doesn't work properly)
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Add more translations
     - Freeze messages for translation
@@ -13,4 +13,4 @@ These are planned changes to the gettor system.
 - Better exception catching when the local SMTP rejects the email
     - Perhaps we want to email the admin of GetTor with the error?
     - Perhaps we want to respond to the user with a useful message?
-- Add torbutton
+- Add torbutton (Mike, please sign torbutton and populate a proper .asc)
