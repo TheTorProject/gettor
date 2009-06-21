@@ -14,3 +14,4 @@ These are planned changes to the gettor system.
     - Perhaps we want to email the admin of GetTor with the error?
     - Perhaps we want to respond to the user with a useful message?
 - Add torbutton (Mike, please sign torbutton and populate a proper .asc)
+- Update the README to fix the XXX issues

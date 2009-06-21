@@ -33,6 +33,7 @@ Your .forward file should look like this:
 
 Configure your ~/.gettorrc file (see "Configuration", below).
 
+XXX: This is totally incorrect, please fix it!
 These are the python files we need to run GetTor.py:
 
     gettor@moria:~/bin$ ls
