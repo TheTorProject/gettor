@@ -15,3 +15,5 @@ These are planned changes to the gettor system.
     - Perhaps we want to respond to the user with a useful message?
 - Add torbutton (Mike, please sign torbutton and populate a proper .asc)
 - Update the README to fix the XXX issues
+- Fix rsync to follow symlinks properly. We want the data not a link to data.
+- Add a nice little note about the size of the files users may request
