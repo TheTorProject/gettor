@@ -25,8 +25,8 @@ log = gettor.gtlog.getLogger()
 class gettorPackages:
 
     packageRegex = { "windows-bundle": "vidalia-bundle-.*.exe$",
-                     "panther-bundle": "vidalia-bundle-.*-panther.dmg$",
-                     "tiger-bundle": "vidalia-bundle-.*-tiger.dmg$",
+                     "panther-bundle": "vidalia-bundle-.*-ppc.dmg$",
+                     "tiger-bundle": "vidalia-bundle-.*-universal.dmg$",
                      "source-bundle": "tor-.*.tar.gz",
                      "tor-browser-bundle": "tor-browser-.*_en-US.exe",
                      "tor-im-browser-bundle": "tor-im-browser-.*_en-US.exe",
