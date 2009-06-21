@@ -31,6 +31,7 @@ class gettorPackages:
                      "source-bundle": "tor-.*.tar.gz",
                      "tor-browser-bundle": "tor-browser-.*_en-US.exe",
                      "tor-im-browser-bundle": "tor-im-browser-.*_en-US.exe",
+                     "tor-button": "torbutton-current.xpi$",
                    }
 
     def __init__(self, mirror, config, silent=False):
