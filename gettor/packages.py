@@ -31,7 +31,8 @@ class gettorPackages:
                      "source-bundle": "tor-.*.tar.gz",
                      "tor-browser-bundle": "tor-browser-.*_en-US.exe",
                      "tor-im-browser-bundle": "tor-im-browser-.*_en-US.exe",
-                     "torbutton": "torbutton-current.xpi$",
+                     # Mike won't sign Torbutton; He doesn't get gettor support
+                     #"torbutton": "torbutton-current.xpi$",
                    }
 
     def __init__(self, mirror, config, silent=False):
