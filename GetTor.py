@@ -44,7 +44,7 @@
 """
 
 __program__ = 'gettor.py'
-__version__ = '20080914.01'
+__version__ = '20090621.01'
 __url__ = 'https://tor-svn.freehaven.net/svn/tor/trunk/contrib/gettor/'
 __author__ = 'Jacob Appelbaum <jacob@appelbaum.net>, Christian Fromme <kaner@strace.org>'
 __copyright__ = 'Copyright (c) 2008, Jacob Appelbaum, Christian Fromme'
