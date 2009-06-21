@@ -4,7 +4,7 @@ These are planned changes to the gettor system.
   (multi-part download, etc.).
 - Write spec for how locale requests shall be formatted and parsed
 - Implement test (-t switch) functionality
-- Installer (setup.py doesn't work properly)
+- Fix setup.py installer!
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Add more translations
     - Freeze messages for translation

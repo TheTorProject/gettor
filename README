@@ -19,31 +19,39 @@ In Exim, the default message size is now 50MB, which should be sufficient. The
 value is also adaptable through the config file parameter 'message_size_limit'
 in case you need to.
 
-You will want to ensure that you have a properly configured set
+SETUP
+-----
+
+This setup descripton presumes that you have access to the latest gettor svn 
+trunk somewhere in your local file system.
+
+First, you will need to copy files over to your installation directory:
+
+    gettor@moria:~/src/trunk/$ cp GetTor.py /home/gettor/bin
+    gettor@moria:~/src/trunk/$ cp -r gettor /home/gettor/bin
+    gettor@moria:~/src/trunk/$ cp -r i18n /home/gettor/bin
+
+Here is a list of all files you'll need in place:
+
+
+
+This is somewhat cumbersome, but until setup.py is fixed, this is ok as a 
+temporary solution.
+
+After that, you will want to ensure that you have a properly configured set
 of mo files for each translation. Generate and install mo files as follows:
 
-   GetTor.py -r
+    gettor@moria:~/bin$ ./GetTor.py -r
 
-As an example, for the user 'gettor' we will setup GetTor.py like so:
+You'll see something like this upon success:
 
-Your .forward file should look like this:
+    2009-06-21 20:06:01,324 (6136) Installing translation files done.
 
-    gettor@moria:~$ cat .forward
-    "|/home/gettor/bin/GetTor.py"
-
-Configure your ~/.gettorrc file (see "Configuration", below).
-
-XXX: This is totally incorrect, please fix it!
-These are the python files we need to run GetTor.py:
-
-    gettor@moria:~/bin$ ls
-    dkim.py              gettor_log.py       gettor.py
-    gettor_blacklist.py  gettor_opt.py       gettor_requests.py
-    gettor_config.py     gettor_packages.py  gettor_responses.py
+Next, configure your ~/.gettorrc file (see "Configuration", below).
 
 Once you have everything installed, you'll want to initialize the file store:
 
-    gettor@moria:~/newbin$ ./GetTor.py -f -p
+    gettor@moria:~/bin$ ./GetTor.py -f -p
 
 You should see an rsync and finally something like:
 
@@ -57,6 +65,11 @@ packages daily:
 
     gettor@moria:~/bin$ ./GetTor.py -i
     2009-01-05 17:34:53,911 (16646) Installing cron done.
+
+Finally, you need to setup email forwarding to the GetTor bot like so:
+
+    gettor@moria:~$ cat .forward
+    "|/home/gettor/bin/GetTor.py"
 
 Now GetTor.py is installed, prepared and ready to serve files. Send it email!
 
