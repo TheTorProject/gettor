@@ -370,10 +370,13 @@ def main():
 if __name__ == "__main__":
     if not main():
         generalerror = """
-     An error occured while processing your request to GetTor.
-     Most likely this happened because we are too busy at the moment.
+     An error occured while processing your request to GetTor.  Most likely 
+     this happened because we are too busy at the moment.
 
      Please try again later, sorry for the inconvenience.
+
+     Please note that currently, we can't process HTML emails. You will need 
+     to send plain text.
 
      Best,
      Your GetTor robot

@@ -63,6 +63,8 @@ class gettorResponse:
     If you require any additional help, please feel free to contact a human
     at the following support email address: tor-assistants@torproject.org
 
+    Please note that currently, we can't process HTML emails. You will need 
+    to send plain text.
         """)
         help = self.constructMessage(message, source, destination)
         try:
@@ -86,6 +88,9 @@ class gettorResponse:
     """ + "".join([ "\t%s\n" % key for key in packageList.keys()]) + """
     Please send me another email. It only needs a single package name anywhere 
     in the body of your email.
+
+    Please note that currently, we can't process HTML emails. You will need to
+    send plain text.
 
     If you require any additional help, please feel free to contact a human
     at the following support email address: tor-assistants@torproject.org
