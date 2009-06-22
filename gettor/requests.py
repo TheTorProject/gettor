@@ -16,7 +16,11 @@ import email
 import dkim
 import re
 
+import gettor.gtlog
+
 __all__ = ["requestMail"]
+
+log = gettor.gtlog.getLogger()
 
 class requestMail:
 
@@ -55,6 +59,7 @@ class requestMail:
                 match = re.match(package, line)    
                 if match: 
                     self.returnPackage = package
+                    log.info(_("User requested package %s") % self.returnPackage)
 
         self.replyLocale = None
         pattern = re.compile("^Lang:\s+(.*)$")
@@ -62,11 +67,13 @@ class requestMail:
             match = pattern.match(line)
             if match:
                 self.replyLocale = match.group(1)
+                log.info(_("User requested locale %s") % self.replyLocale)
 
         for (key, lang) in self.supportedLangs.items():
             if self.replyLocale == key:
                 break
         else:
+            log.info(_("Requested language %s not supported. Falling back to %s") % (self.replyLocale, self.defaultLang))
             self.replyLocale = self.defaultLang
 
     def getRawMessage(self):

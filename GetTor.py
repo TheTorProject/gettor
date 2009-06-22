@@ -369,7 +369,27 @@ def main():
 
 if __name__ == "__main__":
     if not main():
-        print >> sys.stderr, "Main loop exited with errors."
+        generalerror = """
+     An error occured while processing your request to GetTor.
+     Most likely this happened because we are too busy at the moment.
+
+     Please try again later, sorry for the inconvenience.
+
+     Best,
+     Your GetTor robot
+     """
+        # XXX This is a heavy cludge to prevent the mail user to see
+        # "Main loop exited with errors." when something bad happened.
+        # Instead, 'generalerror' is send back to the user. 
+        # If GetTor runs from the command line (indicator: args are present),
+        # we presume the "Main loop exited with errors." is more 
+        # appropriate. However, this should go soon and be replaced by real 
+        # error handling (and mail user informing)
+        #   -- kaner
+        if len(sys.argv) == 1:
+            print >> sys.stderr, generalerror
+        else:
+            print >> sys.stderr, "Main loop exited with errors."
         exit(1)
     else:
         exit(0)

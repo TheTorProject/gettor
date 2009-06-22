@@ -18,8 +18,11 @@ import StringIO
 import base64
 import gettext
 
+import gettor.gtlog
+
 __all__ = ["gettorResponse"]
 
+log = gettor.gtlog.getLogger()
 
 class gettorResponse:
 
@@ -65,6 +68,7 @@ class gettorResponse:
         try:
             status = self.sendMessage(help, source, destination)
         except:
+            log.error(_("Could not send help message to user"))
             status = False
         self.setLang(self.logLang)
 
@@ -92,6 +96,7 @@ class gettorResponse:
             status = self.sendMessage(help, source, destination)
         except:
             status = False
+            log.error(_("Could not send package help message to user"))
         self.setLang(self.logLang)
 
         return status
@@ -103,6 +108,7 @@ class gettorResponse:
         try:
             status = self.sendMessage(help, source, destination)
         except:
+            log.error(_("Could not send generic help message to user"))
             status = False
         self.setLang(self.logLang)
         return status
@@ -152,6 +158,7 @@ class gettorResponse:
         try:
             status = self.sendMessage(package, source, destination)
         except:
+            log.error(_("Could not send package to user"))
             status = False
         self.setLang(self.mailLang)
 
@@ -190,7 +197,35 @@ class gettorResponse:
             smtp.sendmail(src, dst, message.getvalue())
             smtp.quit()
             status = True
+        except smtplib.SMTPAuthenticationError:
+            log.error(_("SMTP authentication error"))
+            return False
+        except smtplib.SMTPHeloError:
+            log.error(_("SMTP HELO error"))
+            return False
+        except smtplib.SMTPConnectError:
+            log.error(_("SMTP connection error"))
+            return False
+        except smtplib.SMTPDataError:
+            log.error(_("SMTP data error"))
+            return False
+        except smtplib.SMTPRecipientsRefused:
+            log.error(_("SMTP refused to send to recipients"))
+            return False
+        except smtplib.SMTPSenderRefused:
+            log.error(_("SMTP sender address refused"))
+            return False
+        except smtplib.SMTPResponseException:
+            log.error(_("SMTP response exception received"))
+            return False
+        except smtplib.SMTPServerDisconnected:
+            log.error(_("SMTP server disconnect exception received"))
+            return False
+        except smtplib.SMTPException:
+            log.error(_("General SMTP error caught"))
+            return False
         except:
+            log.error(_("Unknown SMTP error while trying to send via local MTA"))
             return False
 
         return status

@@ -94,6 +94,7 @@ class gettorPackages:
         if len(self.packageList) > 0:
             return True
         else:
+            log.error(_("Failed at building packages"))
             return False
 
     def syncWithMirror(self):
