@@ -17,3 +17,5 @@ These are planned changes to the gettor system.
 - Fix rsync to follow symlinks properly. We want the data not a link to data.
 - Add a nice little note about the size of the files users may request
 - Strip HTML mails (!)
+- Remove 'localhost:25' to send mail and use '/usr/bin/sendmail' instead
+  (suggested by weasel)
