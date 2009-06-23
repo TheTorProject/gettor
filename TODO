@@ -19,3 +19,5 @@ These are planned changes to the gettor system.
 - Strip HTML mails (!)
 - Remove 'localhost:25' to send mail and use '/usr/bin/sendmail' instead
   (suggested by weasel)
+- Think about adding a mail queue for outgoing mails that got a SMTP error
+  while trying to be sent. This way no mail gets lost
