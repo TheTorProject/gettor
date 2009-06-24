@@ -53,17 +53,17 @@ class gettorResponse:
     feature that lets us verify that the address in the "From" line is
     actually the one who sent the mail.
 
-    Gmail and Yahoo Mail both use DKIM. You will have better luck sending
+    Gmail.com and Yahoo.com both use DKIM. You will have better luck sending
     us mail from one of those.
 
     (We apologize if you didn't ask for this mail. Since your email is from
     a service that doesn't use DKIM, we're sending a short explanation,
     and then we'll ignore this email address for the next day or so.)
 
-    If you require any additional help, please feel free to contact a human
-    at the following support email address: tor-assistants@torproject.org
+    If you have any questions or it doesn't work, you can contact a
+    human at this support email address: tor-assistants@torproject.org
 
-    Please note that currently, we can't process HTML emails. You will need 
+    Please note that currently, we can't process HTML emails. You will need
     to send plain text.
         """)
         help = self.constructMessage(message, source, destination)
@@ -86,14 +86,14 @@ class gettorResponse:
     following package names:
 
     """ + "".join([ "\t%s\n" % key for key in packageList.keys()]) + """
-    Please send me another email. It only needs a single package name anywhere 
-    in the body of your email.
+    Please send another mail to gettor@torproject.org. It only needs a
+    single package name anywhere in the body of your email.
 
     Please note that currently, we can't process HTML emails. You will need to
     send plain text.
 
-    If you require any additional help, please feel free to contact a human
-    at the following support email address: tor-assistants@torproject.org
+    If you have any questions or it doesn't work, you can contact a
+    human at this support email address: tor-assistants@torproject.org
 
         """)
         help = self.constructMessage(message, source, destination)
@@ -141,7 +141,7 @@ class gettorResponse:
 
        http://www.gnupg.org/related_software/frontends.html
 
-    If your internet connection blocks access to the Tor network, please
+    If your Internet connection blocks access to the Tor network, please
     consider using a bridge relay. Bridge relays (or "bridges" for short)
     are Tor relays that aren't listed in the main directory. Since there
     is no complete public list of them, even if your ISP is filtering
@@ -155,8 +155,8 @@ class gettorResponse:
     It is also possible to fetch bridges with a web browser at the following
     url: https://bridges.torproject.org/
 
-    If you require any additional help, please feel free to contact a human
-    at the following support email address: tor-assistants@torproject.org
+    If you have any questions or it doesn't work, you can contact a
+    human at this support email address: tor-assistants@torproject.org
 
         """)
         package = self.constructMessage(message, source, destination, filename)

@@ -221,12 +221,12 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
                 message = _("""
     Hello, This is the "gettor" robot.
 
-    Thank you for your request. It was sucessfully understood. Your request is
+    Thank you for your request. It was successfully understood. Your request is
     currently being processed. Your package should arrive within the next ten
     minutes.
 
-    If you require any additional help, please feel free to contact a human
-    at the following support email address: tor-assistants@torproject.org
+    If you have any questions or it doesn't work, you can contact a
+    human at this support email address: tor-assistants@torproject.org
 
             """)
                 status = resp.sendGenericMessage(srcEmail, replyTo, message)
