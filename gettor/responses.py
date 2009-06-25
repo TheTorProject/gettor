@@ -53,8 +53,8 @@ class gettorResponse:
     feature that lets us verify that the address in the "From" line is
     actually the one who sent the mail.
 
-    Gmail.com and Yahoo.com (but not yahoo.com.cn yet) both use DKIM. You
-    will have better luck sending us mail from one of those.
+    Gmail.com uses DKIM: you will have better luck sending us mail from
+    your gmail account.
 
     (We apologize if you didn't ask for this mail. Since your email is from
     a service that doesn't use DKIM, we're sending a short explanation,
