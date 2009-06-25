@@ -13,7 +13,7 @@ check your software to ensure that you can send files that are as large
 as the largest files Tor distributes. For postfix, you may want to have a line
 that looks like the following in /etc/postfix/main.cf:
 
-    message_size_limit = 30360000
+    message_size_limit = 50360000
 
 In Exim, the default message size is now 50MB, which should be sufficient. The
 value is also adaptable through the config file parameter 'message_size_limit'
