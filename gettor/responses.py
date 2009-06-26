@@ -48,23 +48,23 @@ class gettorResponse:
         message = _("""
     Hello! This is the "gettor" robot.
 
-    Unfortunately, we won't answer you at this address. We only process
-    requests from email services that support "DKIM", which is an email
-    feature that lets us verify that the address in the "From" line is
-    actually the one who sent the mail.
+    Unfortunately, we won't answer you at this address. You should make
+    an account with GMAIL.COM or YAHOO.CN and send the mail from
+    one of those.
 
-    Gmail.com and Yahoo.cn use DKIM: you will have better luck sending
-    us mail from one of those.
+    We only process requests from email services that support "DKIM",
+    which is an email feature that lets us verify that the address in the
+    "From" line is actually the one who sent the mail.
 
     (We apologize if you didn't ask for this mail. Since your email is from
     a service that doesn't use DKIM, we're sending a short explanation,
     and then we'll ignore this email address for the next day or so.)
 
+    Please note that currently, we can't process HTML emails or base 64
+    mails. You will need to send plain text.
+
     If you have any questions or it doesn't work, you can contact a
     human at this support email address: tor-assistants@torproject.org
-
-    Please note that currently, we can't process HTML emails. You will need
-    to send plain text.
         """)
         help = self.constructMessage(message, source, destination)
         try:
@@ -89,8 +89,8 @@ class gettorResponse:
         message = _("""
     Hello, This is the "gettor" robot.
 
-    I am sorry, but your request was not understood. Please select one of the
-    following package names:
+    I will mail you a Tor package, if you tell me which one you want.
+    Please select one of the following package names:
 
         tor-browser-bundle
         macosx-universal-bundle
@@ -98,11 +98,11 @@ class gettorResponse:
         tor-im-browser-bundle
         source-bundle
 
-    Please send another mail to gettor@torproject.org. It only needs a
-    single package name anywhere in the body of your email.
+    Please reply to this mail (to gettor@torproject.org), and tell me
+    a single package name anywhere in the body of your email.
 
-    Please note that currently, we can't process HTML emails. You will need to
-    send plain text.
+    Please note that currently we can't process HTML emails or base64
+    emails. You will need to send plain text.
 
     If you have any questions or it doesn't work, you can contact a
     human at this support email address: tor-assistants@torproject.org
@@ -136,7 +136,7 @@ class gettorResponse:
         message = _("""
     Hello! This is the "gettor" robot.
 
-    Here's your requested software as a zip file. Please unzip the 
+    Here's your requested software as a zip file. Please unzip the
     package and verify the signature.
 
     Hint: If your computer has GnuPG installed, use the gpg
@@ -153,8 +153,8 @@ class gettorResponse:
 
        http://www.gnupg.org/related_software/frontends.html
 
-    If your Internet connection blocks access to the Tor network, please
-    consider using a bridge relay. Bridge relays (or "bridges" for short)
+    If your Internet connection blocks access to the Tor network, you
+    may need a bridge relay. Bridge relays (or "bridges" for short)
     are Tor relays that aren't listed in the main directory. Since there
     is no complete public list of them, even if your ISP is filtering
     connections to all the known Tor relays, they probably won't be able
