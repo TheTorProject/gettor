@@ -59,6 +59,7 @@ import sys
 import os
 import subprocess
 import gettext
+import re
 import gettor.blacklist
 import gettor.requests
 import gettor.responses
@@ -198,7 +199,9 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
     signature = rmail.hasVerifiedSignature()
     log.info(_("Signature is: %s") % str(signature))
     # Addresses from whitelist can pass without DKIM signature
-    if not signature and not whiteList.lookupListEntry(replyTo):
+## XXX Hack below while yahoo.cn and yahoo.com have dkim headers that
+## our dkim py thinks always fail. -RD
+    if not signature and not whiteList.lookupListEntry(replyTo) and not re.compile(".*@yahoo.com.cn").match(replyTo) and not re.compile(".*@yahoo.cn").match(replyTo) and not re.compile(".*@gmail.com").match(replyTo):
         # Check to see if we've helped them to understand that they need DKIM
         # in the past
         previouslyHelped = blackList.lookupListEntry(replyTo)
