@@ -76,16 +76,28 @@ class gettorResponse:
 
         return status
 
+## XXX the following line was used below to automatically list the names
+## of available packages. But they were being named in an arbitrary
+## order, which caused people to always pick the first one. I listed
+## tor-browser-bundle first since that's the one they should want.
+## Somebody should figure out how to automate yet sort. -RD
+##    """ + "".join([ "\t%s\n" % key for key in packageList.keys()]) + """
+
     def sendPackageHelp(self, packageList, source, destination):
         """ Send a helpful message to the user interacting with us """
         self.setLang(self.mailLang)
         message = _("""
     Hello, This is the "gettor" robot.
 
-    I am sorry, but your request was not understood. Please select one of the 
+    I am sorry, but your request was not understood. Please select one of the
     following package names:
 
-    """ + "".join([ "\t%s\n" % key for key in packageList.keys()]) + """
+        tor-browser-bundle
+        macosx-universal-bundle
+        panther-bundle
+        tor-im-browser-bundle
+        source-bundle
+
     Please send another mail to gettor@torproject.org. It only needs a
     single package name anywhere in the body of your email.
 
