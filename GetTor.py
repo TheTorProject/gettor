@@ -226,7 +226,9 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
     minutes.
 
     If it doesn't arrive, the package might be too big for your mail provider.
-    Try resending the mail from a gmail.com or yahoo.cn account.
+    Try resending the mail from a gmail.com or yahoo.cn account. Also,
+    try asking for tor-browser-bundle rather than tor-im-browser-bundle,
+    since it's smaller.
 
     If you have any questions or it doesn't work, you can contact a
     human at this support email address: tor-assistants@torproject.org
