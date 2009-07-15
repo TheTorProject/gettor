@@ -61,3 +61,12 @@ all responses into German (Locale: de) follows below:
 	gettor+de@torproject.org
 
 This will allow the user to interact without any knowledge of locales.
+
+GENERATING .po/.pot FILES
+-------------------------
+
+In the top level directory of the gettor source, run the following command:
+
+	gettext setup.py GetTor.py gettor/*.py \
+	-d gettor -o i18n/templates/gettor.pot
+
