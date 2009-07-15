@@ -1,0 +1,407 @@
+# GetTor pot file
+# Copyright (C) 2009
+# This file is distributed under the same license as the GetTor package.
+# Jacob Appelbaum <jacob@appelbaum.net>, 2009
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-15 14:55-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+
+#: GetTor.py:167
+msgid "Sorry, your package list is unusable."
+msgstr ""
+
+#: GetTor.py:168
+msgid "Try running with --fetch-packages --prep-packages."
+msgstr ""
+
+#: GetTor.py:175
+msgid "No raw message. Something went wrong."
+msgstr ""
+
+#: GetTor.py:179
+msgid "No parsed message. Dropping message."
+msgstr ""
+
+#: GetTor.py:183
+msgid "No help dispatched. Invalid reply address for user."
+msgstr ""
+
+#: GetTor.py:194
+msgid "Won't send myself emails."
+msgstr ""
+
+#: GetTor.py:200
+#, python-format
+msgid "Signature is: %s"
+msgstr ""
+
+#: GetTor.py:209
+msgid "Unsigned messaged to gettor by blacklisted user dropped."
+msgstr ""
+
+#: GetTor.py:215
+msgid "Unsigned messaged to gettor. We issued some help."
+msgstr ""
+
+#: GetTor.py:218
+msgid "Good message to gettor."
+msgstr ""
+
+#: GetTor.py:221
+#, python-format
+msgid "Package: %s selected."
+msgstr ""
+
+#: GetTor.py:222
+#, python-format
+msgid "Sending delay alert email: %s"
+msgstr ""
+
+#: GetTor.py:224
+msgid ""
+"\n"
+"    Hello, This is the \"gettor\" robot.\n"
+"\n"
+"    Thank you for your request. It was successfully understood. Your request "
+"is\n"
+"    currently being processed. Your package should arrive within the next "
+"ten\n"
+"    minutes.\n"
+"\n"
+"    If it doesn't arrive, the package might be too big for your mail "
+"provider.\n"
+"    Try resending the mail from a gmail.com or yahoo.cn account. Also,\n"
+"    try asking for tor-browser-bundle rather than tor-im-browser-bundle,\n"
+"    since it's smaller.\n"
+"\n"
+"    If you have any questions or it doesn't work, you can contact a\n"
+"    human at this support email address: tor-assistants@torproject.org\n"
+"\n"
+"            "
+msgstr ""
+
+#: GetTor.py:242
+msgid "Failed to send delay alert"
+msgstr ""
+
+#: GetTor.py:245
+#, python-format
+msgid "Failed at attempt to send package: %s"
+msgstr ""
+
+#: GetTor.py:248
+#, python-format
+msgid "Package sent: %s"
+msgstr ""
+
+#: GetTor.py:251
+msgid "We issued some help about proper email formatting."
+msgstr ""
+
+#: GetTor.py:285
+#, python-format
+msgid "Sorry, %s is not a directory."
+msgstr ""
+
+#: GetTor.py:290
+msgid "Error initiating package list."
+msgstr ""
+
+#: GetTor.py:296
+#, python-format
+msgid "White/Black list error: %s"
+msgstr ""
+
+#: GetTor.py:301
+msgid "Syncing Tor packages failed."
+msgstr ""
+
+#: GetTor.py:304
+msgid "Syncing Tor packages done."
+msgstr ""
+
+#: GetTor.py:308
+msgid "Building packages failed."
+msgstr ""
+
+#: GetTor.py:311
+msgid "Building packages done."
+msgstr ""
+
+#: GetTor.py:315
+msgid "Tests failed."
+msgstr ""
+
+#: GetTor.py:318
+msgid "Tests passed."
+msgstr ""
+
+#: GetTor.py:322
+msgid "Installing cron failed"
+msgstr ""
+
+#: GetTor.py:325
+msgid "Installing cron done."
+msgstr ""
+
+#: GetTor.py:329
+msgid "Creating whitelist entry failed."
+msgstr ""
+
+#: GetTor.py:332
+msgid "Creating whitelist entry ok."
+msgstr ""
+
+#: GetTor.py:336
+msgid "Creating blacklist entry failed."
+msgstr ""
+
+#: GetTor.py:339
+msgid "Creating blacklist entry ok."
+msgstr ""
+
+#: GetTor.py:343
+msgid "Present in whitelist."
+msgstr ""
+
+#: GetTor.py:346
+msgid "Present in blacklist."
+msgstr ""
+
+#: GetTor.py:349
+msgid "Address neither in blacklist or whitelist."
+msgstr ""
+
+#: GetTor.py:353
+msgid "Deleting whitelist failed."
+msgstr ""
+
+#: GetTor.py:356
+msgid "Deleting whitelist done."
+msgstr ""
+
+#: GetTor.py:360
+msgid "Deleting blacklist failed."
+msgstr ""
+
+#: GetTor.py:363
+msgid "Deleting blacklist done."
+msgstr ""
+
+#: GetTor.py:373
+msgid "Processing mail failed."
+msgstr ""
+
+#: gettor/blacklist.py:45
+#, python-format
+msgid "Creating list entry %s failed."
+msgstr ""
+
+#: gettor/blacklist.py:58
+#, python-format
+msgid "Could not unlink entry %s"
+msgstr ""
+
+#: gettor/blacklist.py:61
+#, python-format
+msgid "Requested removal of non-existing entry %s. Abord."
+msgstr ""
+
+#: gettor/blacklist.py:73
+#, python-format
+msgid "Could not remove %s."
+msgstr ""
+
+#: gettor/packages.py:67
+#, python-format
+msgid "Failed to build package list: %s"
+msgstr ""
+
+#: gettor/packages.py:74
+#, python-format
+msgid "Warning: %s not accessable. Removing from list."
+msgstr ""
+
+#: gettor/packages.py:96
+msgid "Failed at building packages"
+msgstr ""
+
+#: gettor/requests.py:62
+#, python-format
+msgid "User requested package %s"
+msgstr ""
+
+#: gettor/requests.py:70
+#, python-format
+msgid "User requested locale %s"
+msgstr ""
+
+#: gettor/requests.py:76
+#, python-format
+msgid "Requested language %s not supported. Falling back to %s"
+msgstr ""
+
+#: gettor/responses.py:48
+msgid ""
+"\n"
+"    Hello! This is the \"gettor\" robot.\n"
+"\n"
+"    Unfortunately, we won't answer you at this address. You should make\n"
+"    an account with GMAIL.COM or YAHOO.CN and send the mail from\n"
+"    one of those.\n"
+"\n"
+"    We only process requests from email services that support \"DKIM\",\n"
+"    which is an email feature that lets us verify that the address in the\n"
+"    \"From\" line is actually the one who sent the mail.\n"
+"\n"
+"    (We apologize if you didn't ask for this mail. Since your email is from\n"
+"    a service that doesn't use DKIM, we're sending a short explanation,\n"
+"    and then we'll ignore this email address for the next day or so.)\n"
+"\n"
+"    Please note that currently, we can't process HTML emails or base 64\n"
+"    mails. You will need to send plain text.\n"
+"\n"
+"    If you have any questions or it doesn't work, you can contact a\n"
+"    human at this support email address: tor-assistants@torproject.org\n"
+"        "
+msgstr ""
+
+#: gettor/responses.py:73
+msgid "Could not send help message to user"
+msgstr ""
+
+#: gettor/responses.py:89
+msgid ""
+"\n"
+"    Hello, This is the \"gettor\" robot.\n"
+"\n"
+"    I will mail you a Tor package, if you tell me which one you want.\n"
+"    Please select one of the following package names:\n"
+"\n"
+"        tor-browser-bundle\n"
+"        macosx-universal-bundle\n"
+"        panther-bundle\n"
+"        tor-im-browser-bundle\n"
+"        source-bundle\n"
+"\n"
+"    Please reply to this mail (to gettor@torproject.org), and tell me\n"
+"    a single package name anywhere in the body of your email.\n"
+"\n"
+"    Please note that currently we can't process HTML emails or base64\n"
+"    emails. You will need to send plain text.\n"
+"\n"
+"    If you have any questions or it doesn't work, you can contact a\n"
+"    human at this support email address: tor-assistants@torproject.org\n"
+"\n"
+"        "
+msgstr ""
+
+#: gettor/responses.py:116
+msgid "Could not send package help message to user"
+msgstr ""
+
+#: gettor/responses.py:128
+msgid "Could not send generic help message to user"
+msgstr ""
+
+#: gettor/responses.py:136
+msgid ""
+"\n"
+"    Hello! This is the \"gettor\" robot.\n"
+"\n"
+"    Here's your requested software as a zip file. Please unzip the\n"
+"    package and verify the signature.\n"
+"\n"
+"    Hint: If your computer has GnuPG installed, use the gpg\n"
+"    commandline tool as follows after unpacking the zip file:\n"
+"\n"
+"       gpg --verify <packagename>.asc <packagename>\n"
+"\n"
+"    The output should look somewhat like this:\n"
+"\n"
+"       gpg: Good signature from \"Roger Dingledine <arma@mit.edu>\"\n"
+"\n"
+"    If you're not familiar with commandline tools, try looking for\n"
+"    a graphical user interface for GnuPG on this website:\n"
+"\n"
+"       http://www.gnupg.org/related_software/frontends.html\n"
+"\n"
+"    If your Internet connection blocks access to the Tor network, you\n"
+"    may need a bridge relay. Bridge relays (or \"bridges\" for short)\n"
+"    are Tor relays that aren't listed in the main directory. Since there\n"
+"    is no complete public list of them, even if your ISP is filtering\n"
+"    connections to all the known Tor relays, they probably won't be able\n"
+"    to block all the bridges.\n"
+"\n"
+"    You can acquire a bridge by sending an email that contains \"get bridges"
+"\"\n"
+"    in the body of the email to the following email address:\n"
+"    bridges@torproject.org\n"
+"\n"
+"    It is also possible to fetch bridges with a web browser at the "
+"following\n"
+"    url: https://bridges.torproject.org/\n"
+"\n"
+"    If you have any questions or it doesn't work, you can contact a\n"
+"    human at this support email address: tor-assistants@torproject.org\n"
+"\n"
+"        "
+msgstr ""
+
+#: gettor/responses.py:178
+msgid "Could not send package to user"
+msgstr ""
+
+#: gettor/responses.py:191
+msgid "Re: Your \"gettor\" request"
+msgstr ""
+
+#: gettor/responses.py:218
+msgid "SMTP authentication error"
+msgstr ""
+
+#: gettor/responses.py:221
+msgid "SMTP HELO error"
+msgstr ""
+
+#: gettor/responses.py:224
+msgid "SMTP connection error"
+msgstr ""
+
+#: gettor/responses.py:227
+msgid "SMTP data error"
+msgstr ""
+
+#: gettor/responses.py:230
+msgid "SMTP refused to send to recipients"
+msgstr ""
+
+#: gettor/responses.py:233
+msgid "SMTP sender address refused"
+msgstr ""
+
+#: gettor/responses.py:236
+msgid "SMTP response exception received"
+msgstr ""
+
+#: gettor/responses.py:239
+msgid "SMTP server disconnect exception received"
+msgstr ""
+
+#: gettor/responses.py:242
+msgid "General SMTP error caught"
+msgstr ""
+
+#: gettor/responses.py:245
+msgid "Unknown SMTP error while trying to send via local MTA"
+msgstr ""
