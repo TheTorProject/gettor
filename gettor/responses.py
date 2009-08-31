@@ -181,14 +181,17 @@ class gettorResponse:
 
         return status
 
-    def constructMessage(self, messageText, ourAddress, recipient, fileName=None):
+    def sendSplitPackage(self, source, destination, filename):
+    def sendPackage(
+
+    def constructMessage(self, messageText, ourAddress, recipient, fileName=None, subj=_('Re: Your "gettor" request')):
         """ Construct a multi-part mime message, including only the first part
         with plaintext."""
 
         message = StringIO.StringIO()
         mime = MimeWriter.MimeWriter(message)
         mime.addheader('MIME-Version', '1.0')
-        mime.addheader('Subject', _('Re: Your "gettor" request'))
+        mime.addheader('Subject', subj)
         mime.addheader('To', recipient)
         mime.addheader('From', ourAddress)
         mime.startmultipartbody('mixed')

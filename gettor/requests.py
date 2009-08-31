@@ -51,6 +51,8 @@ class requestMail:
         self.replytoAddress = self.parsedMessage["from"]
         # If no package name could be recognized, use 'None'
         self.returnPackage = None
+        self.splitDelivery = False
+        # Parse line by line
         for line in email.Iterators.body_line_iterator(self.parsedMessage):
             # Remove comments
             if line.startswith(">"):
@@ -60,6 +62,12 @@ class requestMail:
                 if match: 
                     self.returnPackage = package
                     log.info(_("User requested package %s") % self.returnPackage)
+            # If we find 'split' somewhere in the mail, we assume that the user wants
+            # a split delivery
+            match = re.match(".*split.*", line)
+            if match:
+                log.info(_("User requested a split delivery"))
+                self.splitDelivery = True
 
         self.replyLocale = None
         pattern = re.compile("^Lang:\s+(.*)$")
@@ -93,6 +101,9 @@ class requestMail:
 
     def getLocale(self):
         return self.replyLocale
+
+    def getSplitDelivery(self):
+        return self.splitDelivery
 
 if __name__ == "__main__" :
     """ Give us an email to understand what we think of it. """

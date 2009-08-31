@@ -71,6 +71,16 @@ import gettor.packages
 # Global logger
 log = None
 
+# XXX Move this into a utils class or something
+def createDir(path):
+    try:
+        log.info("Creating directory %s.." % path)
+        os.makedirs(path)
+    except OSError, e:
+        log.error("Failed to create directory %s: %s" % (path, e))
+        return False
+    return True
+
 # Switch language to 'newlocale'. Return default if language is not supported.
 def switchLocale(newlocale, localedir):
     trans = gettext.translation("gettor", 
@@ -92,7 +102,7 @@ def installMo(poFile, targetDir):
             log.error("Error in msgfmt execution: %s" % ret)
             return False
     except OSError, e:
-        log.erro("Comilation failed: " % e)
+        log.error("Comilation failed: " % e)
         return False
     return True
 
@@ -104,31 +114,39 @@ def installTrans(config, localeSrcdir):
         log.error("Bad arg.")
         return False
     if not os.path.isdir(localeSrcdir):
-        log.error("Not a directory: " % localeSrcdir)
-        return False
+        log.info("Not a directory: %s" % localeSrcdir)
+        if not createDir(localeSrcdir):
+            log.error(_("Giving up on %s" % localeSrcdir))
+            return False
     localeDir = config.getLocaleDir()
     if not os.path.isdir(localeDir):
-        log.error("Sorry, %s is not a directory." % localeDir)
-        return False
+        log.info("Not a directory: %s" % localeDir)
+        if not createDir(localeDir):
+            log.error(_("Giving up on %s" % localeDir))
+            return False
 
     for root, dirs, files in os.walk(localeSrcdir):
-        # Python lacks 'depth' featue for os.walk()
+        # Python lacks 'depth' feature for os.walk()
         if root != localeSrcdir:
             continue
         for dir in dirs:
             hasDirs = True
             if dir.startswith("."):
                 continue
+            # We ignore the templates dir for now
+            if dir.startswith("templates"):
+                continue
             try:
-                poFile = os.path.join(root, dir) + "/gettor_" + dir + ".po"
+                poFile = os.path.join(root, dir) + "/gettor.po"
                 # Construct target dir
                 targetDir = localeDir + "/" + dir + "/LC_MESSAGES"
-                if os.path.isdir(targetDir):
-                    if installMo(poFile, targetDir) == False:
-                        log.error("Installing .mo files failed.")
+                if not os.path.isdir(targetDir):
+                    log.info("Not a directory: %s" % targetDir)
+                    if not createDir(targetDir):
+                        log.error(_("Giving up on %s" % targetDir))
                         return False
-                else:
-                    log.error("Not a directory: %s" % targetDir)
+                if installMo(poFile, targetDir) == False:
+                    log.error("Installing .mo files failed.")
                     return False
             except Exception:
                 log.error("Error accessing translation files.")
@@ -282,8 +300,10 @@ def main():
 
     distDir = conf.getDistDir()
     if not os.path.isdir(distDir):
-        log.error(_("Sorry, %s is not a directory.") % distDir)
-        return False
+        log.info(_("Sorry, %s is not a directory.") % distDir)
+        if not createDir(distDir):
+            log.error(_("Giving up on %s", distDir))
+            return False
     try:
         packs = gettor.packages.gettorPackages(options.mirror, conf)
     except IOError:

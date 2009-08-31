@@ -16,12 +16,23 @@ conf = gettor.config.gettorConf()
 stateDir = conf.getStateDir()
 blStateDir = conf.getBlStateDir()
 
+# XXX
+def createDir(path):
+    try:
+        log.info("Creating directory %s.." % path)
+        os.makedirs(path)
+    except OSError, e:
+        log.error("Failed to create directory %s: %s" % (path, e))
+        return False
+    return True
+
 class BWList:
     def __init__(self, listdir):
         self.listDir = listdir
         if not os.path.isdir(self.listDir):
-            # XXX Change this to something more appropriate
-            raise IOError("Bad dir: %s" % self.listDir)
+            if not createDir(self.listDir):
+                # XXX Change this to something more appropriate
+                raise IOError("Bad dir: %s" % self.listDir)
 
     def lookupListEntry(self, address):
         """Check to see if we have a list entry for the given address."""
