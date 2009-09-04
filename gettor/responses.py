@@ -66,7 +66,7 @@ class gettorResponse:
     If you have any questions or it doesn't work, you can contact a
     human at this support email address: tor-assistants@torproject.org
         """)
-        help = self.constructMessage(message, source, destination)
+        help = self.constructMessage(message, source, destination, "")
         try:
             status = self.sendMessage(help, source, destination)
         except:
@@ -108,7 +108,7 @@ class gettorResponse:
     human at this support email address: tor-assistants@torproject.org
 
         """)
-        help = self.constructMessage(message, source, destination)
+        help = self.constructMessage(message, source, destination, "")
         try:
             status = self.sendMessage(help, source, destination)
         except:
@@ -121,7 +121,7 @@ class gettorResponse:
     def sendGenericMessage(self, source, destination, message):
         """ Send a helpful message of some sort """
         self.setLang(self.mailLang)
-        help = self.constructMessage(message, source, destination)
+        help = self.constructMessage(message, source, destination, "")
         try:
             status = self.sendMessage(help, source, destination)
         except:
@@ -171,7 +171,7 @@ class gettorResponse:
     human at this support email address: tor-assistants@torproject.org
 
         """)
-        package = self.constructMessage(message, source, destination, filename)
+        package = self.constructMessage(message, source, destination, "", filename)
         try:
             status = self.sendMessage(package, source, destination)
         except:
@@ -181,13 +181,88 @@ class gettorResponse:
 
         return status
 
-    def sendSplitPackage(self, source, destination, filename):
-    def sendPackage(
+    def sendSplitPackage(self, source, destination, splitdir):
+        message = _("""
+    Hello! This is the "gettor" robot.
 
-    def constructMessage(self, messageText, ourAddress, recipient, fileName=None, subj=_('Re: Your "gettor" request')):
+    Here's your requested software as a zip file. Please unzip the
+    package and verify the signature.
+
+    IMPORTANT NOTE:
+    Since this is part of a split-file request, you need to wait for 
+    all split files to be received by you before you can save them all
+    into the same directory and unpack them by double-clicking the 
+    first file. 
+
+    Packages might come out of order! Please make sure you received
+    all packages before you attempt to unpack them!
+
+    Hint: If your computer has GnuPG installed, use the gpg
+    commandline tool as follows after unpacking the zip file:
+
+       gpg --verify <packagename>.asc <packagename>
+
+    The output should look somewhat like this:
+
+       gpg: Good signature from "Roger Dingledine <arma@mit.edu>"
+
+    If you're not familiar with commandline tools, try looking for
+    a graphical user interface for GnuPG on this website:
+
+       http://www.gnupg.org/related_software/frontends.html
+
+    If your Internet connection blocks access to the Tor network, you
+    may need a bridge relay. Bridge relays (or "bridges" for short)
+    are Tor relays that aren't listed in the main directory. Since there
+    is no complete public list of them, even if your ISP is filtering
+    connections to all the known Tor relays, they probably won't be able
+    to block all the bridges.
+
+    You can acquire a bridge by sending an email that contains "get bridges"
+    in the body of the email to the following email address:
+    bridges@torproject.org
+
+    It is also possible to fetch bridges with a web browser at the following
+    url: https://bridges.torproject.org/
+
+    If you have any questions or it doesn't work, you can contact a
+    human at this support email address: tor-assistants@torproject.org
+
+        """)
+        print splitdir
+        try:
+            entry = os.stat(splitdir)
+        except OSError, e:
+            log.error(_("Not a valid directory: %s" % splitdir))
+            return False
+        files = os.listdir(splitdir)
+        # Sort the files, so we can send 01 before 02 and so on..
+        files.sort()
+        nFiles = len(files)
+        num = 0
+        for filename in files:
+            fullPath = splitdir + "/" + filename
+            num = num + 1
+            subj = "[gettor] Split package [%02d / %02d] " % (num, nFiles) 
+            package = self.constructMessage(message, source, destination, subj, fullPath)
+            try:
+                status = self.sendMessage(package, source, destination)
+            except:
+                log.error(_("Could not send package %s to user" % filename))
+                # XXX What now? Keep on sending? Bail out? Use might have 
+                # already received 10 out of 12 packages..
+                status = False
+        self.setLang(self.mailLang)
+
+        return status
+            
+
+    def constructMessage(self, messageText, ourAddress, recipient, subj, fileName=None):
         """ Construct a multi-part mime message, including only the first part
         with plaintext."""
 
+        if subj == "":
+            subj =_('Re: Your "gettor" request')
         message = StringIO.StringIO()
         mime = MimeWriter.MimeWriter(message)
         mime.addheader('MIME-Version', '1.0')

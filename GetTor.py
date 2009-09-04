@@ -178,9 +178,10 @@ def getCurrentCrontab():
         savedTab += line
     return savedTab
 
-def processMail(conf, logLang, packageList, blackList, whiteList):
+def processMail(conf, logLang, packs, blackList, whiteList):
     global log
 
+    packageList = packs.getPackageList()
     if packageList is None or len(packageList) < 1:
         log.error(_("Sorry, your package list is unusable."))
         log.error(_("Try running with --fetch-packages --prep-packages."))
@@ -258,7 +259,10 @@ def processMail(conf, logLang, packageList, blackList, whiteList):
                 status = resp.sendGenericMessage(srcEmail, replyTo, message)
                 if status != True:
                     log.info(_("Failed to send delay alert"))
-            status = resp.sendPackage(srcEmail, replyTo, packageList[package])
+            if (rmail.getSplitDelivery()):
+                status = resp.sendSplitPackage(srcEmail, replyTo, conf.getPackDir() + "/" + package + ".split")
+            else:
+                status = resp.sendPackage(srcEmail, replyTo, packageList[package])
             if status != True:
                 log.info(_("Failed at attempt to send package: %s") % str(package))
                 return False
@@ -388,7 +392,7 @@ def main():
         return success
     
     # Main loop
-    if not processMail(conf, logLang, packs.getPackageList(), blackList,
+    if not processMail(conf, logLang, packs, blackList,
                        whiteList):
         log.error(_("Processing mail failed."))
         return False

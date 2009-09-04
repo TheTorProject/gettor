@@ -58,7 +58,8 @@ class requestMail:
             if line.startswith(">"):
                 continue
             for package in packages.keys():
-                match = re.match(package, line)    
+                matchme = ".*" + package + ".*"
+                match = re.match(matchme, line)    
                 if match: 
                     self.returnPackage = package
                     log.info(_("User requested package %s") % self.returnPackage)

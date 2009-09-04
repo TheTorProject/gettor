@@ -34,12 +34,12 @@ def createDir(path):
 
 class gettorPackages:
     #                "bundle name": ("single file regex", "split file regex")
-    packageRegex = { "windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split$"),
-                     "panther-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split$"),
-                     "macosx-universal-bundle": ("vidalia-bundle-.*-universal.dmg$", "vidalia-bundle-.*-universal_split$"),
-                     "source-bundle": ("tor-.*.tar.gz$", "none"),
-                     "tor-browser-bundle": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split$"),
-                     "tor-im-browser-bundle": ("tor-im-browser-.*_en-US.exe$", "tor-im-browser-.*_en-US_split$"),
+    packageRegex = { "windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
+                     "panther-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
+                     "macosx-universal-bundle": ("vidalia-bundle-.*-universal.dmg$", "vidalia-bundle-.*-universal_split"),
+                     "source-bundle": ("tor-.*.tar.gz$", "Now to something completely different"),
+                     "tor-browser-bundle": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"),
+                     "tor-im-browser-bundle": ("tor-im-browser-.*_en-US.exe$", "tor-im-browser-.*_en-US_split"),
                      # Mike won't sign Torbutton; He doesn't get gettor support
                      #"torbutton": "torbutton-current.xpi$",
                    }
