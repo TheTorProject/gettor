@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
- gettor_packages.py: Package related stuff
+ packages.py: Package related stuff
 
  Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
                      Christian Fromme <kaner@strace.org>
@@ -18,7 +18,7 @@ import gettor.gtlog
 import gettor.config
 import re
 
-__all__ = ["gettorPackages"]
+__all__ = ["Packages"]
 
 log = gettor.gtlog.getLogger()
 
@@ -32,7 +32,7 @@ def createDir(path):
         return False
     return True
 
-class gettorPackages:
+class Packages:
     #                "bundle name": ("single file regex", "split file regex")
     packageRegex = { "windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
                      "panther-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
@@ -44,14 +44,13 @@ class gettorPackages:
                      #"torbutton": "torbutton-current.xpi$",
                    }
 
-    def __init__(self, mirror, config, silent=False):
-        self.mirror = mirror
+    def __init__(self, config):
         self.packageList = {}
         self.distDir = config.getDistDir()
         try:
             entry = os.stat(self.distDir)
         except OSError, e:
-            if not createDir(self.Distdir):
+            if not createDir(self.distDir):
                 log.error("Bad dist dir %s: %s" % (self.distDir, e))
                 raise IOError
         self.packDir = config.getPackDir()
@@ -61,14 +60,6 @@ class gettorPackages:
             if not createDir(self.packDir):
                 log.error("Bad pack dir %s: %s" % (self.packDir, e))
                 raise IOError
-        self.rsync = ["rsync"]
-        self.rsync.append("-a")
-        # Don't download dotdirs
-        self.rsync.append("--exclude='.*'")
-        if not silent:
-            self.rsync.append("--progress")
-        self.rsync.append("rsync://%s/tor/dist/current/" % self.mirror)
-        self.rsync.append(self.distDir)
 
     def getPackageList(self):
         # Build dict like 'name': 'name.z'
@@ -76,14 +67,15 @@ class gettorPackages:
             for filename in os.listdir(self.packDir):
                 self.packageList[filename[:-2]] = self.packDir + "/" + filename
         except OSError, (strerror):
-            log.error(_("Failed to build package list: %s") % strerror)
+            log.error("Failed to build package list: %s" % strerror)
             return None
 
         # Check sanity
         for key, val in self.packageList.items():
             # Remove invalid packages
             if not os.access(val, os.R_OK):
-                log.info(_("Warning: %s not accessable. Removing from list.") % val)
+                log.info("Warning: %s not accessable. Removing from list." \
+                            % val)
                 del self.packageList[key]
         return self.packageList
 
@@ -98,13 +90,17 @@ class gettorPackages:
                         if not os.access(packSplitDir, os.R_OK):
                             os.mkdir(packSplitDir)
                     except OSError, e:
-                        log.error(_("Could not create dir %s: %s" % (packSplitDir, e)))
-                    # Loop through split dir, look if every partXX.ZZZ has a matching signature,
-                    # pack them together in a .z
+                        log.error("Could not create dir %s: %s" \
+                                        % (packSplitDir, e))
+                    # Loop through split dir, look if every partXX.ZZZ has a 
+                    # matching signature, pack them together in a .z
                     splitdir = self.distDir + "/" + filename
                     for splitfile in os.listdir(splitdir):
+                        # Skip signature files
+                        if splitfile.endswith(".asc"):
+                            continue
                         if re.compile(".*split.part.*").match(splitfile):
-                            ascfile = splitdir + "/signatures/" + splitfile + ".asc"
+                            ascfile = splitdir + "/" + splitfile + ".asc"
                             file = splitdir + "/" + splitfile
                             zipFileName = packSplitDir + "/" + splitfile + ".z"
                             if os.access(ascfile, os.R_OK) and os.access(file, os.R_OK):
@@ -114,7 +110,7 @@ class gettorPackages:
                                 zip.write(ascfile, os.path.basename(ascfile))
                                 zip.close()
                             else:
-                                log.error(_("Uhm, no signature for %s found" % splitfile))
+                                log.error("Uhm, expected signature file for %s to be: %s" % (file, ascfile))
                                 return False
                 if re.compile(regex_single).match(filename):
                     file = self.distDir + "/" + filename
@@ -131,21 +127,37 @@ class gettorPackages:
         if len(self.packageList) > 0:
             return True
         else:
-            log.error(_("Failed at building packages"))
+            log.error("Failed to build packages")
             return False
 
-    def syncWithMirror(self):
-        process = subprocess.Popen(self.rsync)
+    def syncWithMirror(self, mirror, silent):
+        rsync = ["rsync"]
+        rsync.append("-a")
+        # Don't download dotdirs
+        rsync.append("--exclude='.*'")
+        if not silent:
+            rsync.append("--progress")
+        rsync.append("rsync://%s/tor/dist/current/" % mirror)
+        rsync.append(self.distDir)
+        process = subprocess.Popen(rsync)
         process.wait()
         return process.returncode
 
-    def getCommandToStr(self):
+    def getCommandToStr(self, mirror, silent):
         """This is useful for cronjob installations
         """
+        rsync = ["rsync"]
+        rsync.append("-a")
+        # Don't download dotdirs
+        rsync.append("--exclude='.*'")
+        if not silent:
+            rsync.append("--progress")
+        rsync.append("rsync://%s/tor/dist/current/" % mirror)
+        rsync.append(self.distDir)
         return ''.join(self.rsync)
 
 if __name__ == "__main__" :
-    c = gettor_config.gettorConf()
+    c = gettor_config.Config()
     p = gettorPackages("rsync.torproject.org", c)
     print "Building packagelist.."
     if p.syncwithMirror() != 0:

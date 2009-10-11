@@ -41,7 +41,7 @@ def initialize():
     # Don't add handlers twice
     if initialized == True:
         return
-    conf = gettor.config.gettorConf() 
+    conf = gettor.config.Config() 
     logger = logging.getLogger('gettor')
     logger.setLevel(loglevel)
     logSubSystem = conf.getLogSubSystem()

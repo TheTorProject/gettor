@@ -17,6 +17,7 @@ import dkim
 import re
 
 import gettor.gtlog
+import gettor.packages
 
 __all__ = ["requestMail"]
 
@@ -25,12 +26,12 @@ log = gettor.gtlog.getLogger()
 class requestMail:
 
     defaultLang = "en"
+    # XXX
     supportedLangs = { "en": "English", 
                        "de": "Deutsch" }
 
-    def __init__(self, packages):
-        """
-        Read message from stdin, parse all the stuff we want to know
+    def __init__(self, config):
+        """ Read message from stdin, parse all the stuff we want to know
         """
         self.rawMessage = sys.stdin.read()
         self.parsedMessage = email.message_from_string(self.rawMessage)
@@ -47,43 +48,51 @@ class requestMail:
 
         # TODO XXX: 
         # Scrub this data
-        self.replyToAddress = None
         self.replytoAddress = self.parsedMessage["from"]
         # If no package name could be recognized, use 'None'
         self.returnPackage = None
         self.splitDelivery = False
+        self.replyLocale = "en"
+        packager = gettor.packages.Packages(config)
+        self.packages = packager.getPackageList()
+
+    def parseMail(self):
         # Parse line by line
         for line in email.Iterators.body_line_iterator(self.parsedMessage):
-            # Remove comments
+            # Remove quotes
             if line.startswith(">"):
                 continue
-            for package in packages.keys():
+            # XXX This is a bit clumsy, but i cant think of a better way
+            # currently. A map also doesnt really help i think. -kaner
+            for package in self.packages.keys():
                 matchme = ".*" + package + ".*"
                 match = re.match(matchme, line)    
                 if match: 
                     self.returnPackage = package
-                    log.info(_("User requested package %s") % self.returnPackage)
-            # If we find 'split' somewhere in the mail, we assume that the user wants
-            # a split delivery
+                    log.info("User requested package %s" % self.returnPackage)
+            # If we find 'split' somewhere in the mail, we assume that the user 
+            # wants a split delivery
             match = re.match(".*split.*", line)
             if match:
-                log.info(_("User requested a split delivery"))
                 self.splitDelivery = True
-
-        self.replyLocale = None
-        pattern = re.compile("^Lang:\s+(.*)$")
-        for line in email.Iterators.body_line_iterator(self.parsedMessage):
-            match = pattern.match(line)
+                log.info("User requested a split delivery")
+            # Default locale is english
+            match = re.match(".*[Ll]ang:\s+(.*)$", line)
             if match:
                 self.replyLocale = match.group(1)
-                log.info(_("User requested locale %s") % self.replyLocale)
+                log.info("User requested locale %s" % self.replyLocale)
 
+        # Actually use a map here later XXX
         for (key, lang) in self.supportedLangs.items():
             if self.replyLocale == key:
                 break
         else:
-            log.info(_("Requested language %s not supported. Falling back to %s") % (self.replyLocale, self.defaultLang))
+            log.info("Requested language %s not supported. Falling back to %s" \
+                        % (self.replyLocale, self.defaultLang))
             self.replyLocale = self.defaultLang
+
+        return (self.replytoAddress, self.replyLocale, \
+                self.returnPackage, self.splitDelivery, self.signature)
 
     def getRawMessage(self):
         return self.rawMessage
@@ -106,33 +115,6 @@ class requestMail:
     def getSplitDelivery(self):
         return self.splitDelivery
 
-if __name__ == "__main__" :
-    """ Give us an email to understand what we think of it. """
-    packageList = { 
-        "windows-bundle": "/var/lib/gettor/pkg/windows-bundle.z",
-        "macosx-bundle": "/var/lib/gettor/pkg/macosx-bundle.z",
-        "linux-bundle": "/var/lib/gettor/pkg/linux-bundle.z",
-        "source-bundle": "/var/lib/gettor/pkg/source-bundle.z"
-        }
-
-    rmail = requestMail(packageList)
-    print "Fetching raw message."
-    rawMessage = rmail.getRawMessage()
-    # This doesn't work without DNS ( no wifi on board current airplane )
-    print "Verifying signature of message."
-    signature = rmail.hasVerifiedSignature()
-    print "Parsing Message."
-    parsedMessage = rmail.getParsedMessage()
-    print "Parsing reply."
-    parsedReply = rmail.getReplyTo()
-    print "Parsing package request."
-    package = rmail.getRequestPackage()
-    if package == None:
-        packageFile = "help"        
-    else:
-        packageFile = packageList[package]
-
-    print "The signature status of the email is: %s" % str(signature)
-    print "The email requested the following reply address: %s" % parsedReply
-    print "It looks like the email requested the following package: %s" % package
-    print "We would select the following package file: %s" % packageFile
+    def getAll(self):
+        return (self.replytoAddress, self.replyLocale, \
+                self.returnPackage, self.splitDelivery, self.signature)

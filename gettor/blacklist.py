@@ -12,7 +12,7 @@ import gettor.gtlog
 
 log = gettor.gtlog.getLogger()
 
-conf = gettor.config.gettorConf()
+conf = gettor.config.Config()
 stateDir = conf.getStateDir()
 blStateDir = conf.getBlStateDir()
 

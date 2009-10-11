@@ -66,9 +66,9 @@ import os
 import sys
 import ConfigParser
 
-__all__ = ["gettorConf"]
+__all__ = ["Config"]
 
-class gettorConf:
+class Config:
     '''
     Initialize gettor with default values if one or more values are missing 
     from the config file. This will return entirely default values if the 
@@ -175,6 +175,6 @@ class gettorConf:
         return self.useConf["delayAlert"][0]
 
 if __name__ == "__main__" :
-    c = gettorConf()
+    c = Config()
     print "# This is a suitable default configuration. Tune to fit your needs."
     c.printConfiguration()
