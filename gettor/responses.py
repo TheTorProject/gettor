@@ -124,31 +124,12 @@ class Response:
     def sendDelayAlert(self):
         """ Send a delay notification """
         log.info("Sending delay alert to %s" % self.replyTo)
-        message = gettor.constants.delayalertmsg
-        help = self.constructMessage(message, "")
-        try:
-            status = self.sendMessage(help)
-        except:
-            status = False
-            log.error("Could not send delay alert message to user")
-
-        log.info("Send status: %s" % status)
-        return status
-
+        return self.sendGenericMessage(gettor.constants.delayalertmsg)
             
     def sendHelp(self):
         """ Send a helpful message to the user interacting with us """
         log.info("Sending out help message to %s" % self.replyTo)
-        message = gettor.constants.helpmsg
-        help = self.constructMessage(message, "")
-        try:
-            status = self.sendMessage(help)
-        except:
-            log.error("Could not send help message to user")
-            status = False
-
-        log.info("Send status: %s" % status)
-        return status
+        return self.sendGenericMessage(gettor.constants.helpmsg)
 
 ## XXX the following line was used below to automatically list the names
 ## of available packages. But they were being named in an arbitrary
@@ -160,25 +141,18 @@ class Response:
     def sendPackageHelp(self):
         """ Send a helpful message to the user interacting with us """
         log.info("Sending package help to %s" % self.replyTo)
-        message = gettor.constants.packagehelpmsg
-        help = self.constructMessage(message, "")
+        return self.sendGenericMessage(gettor.constants.packagehelpmsg)
+
+    def sendGenericMessage(self, text):
+        """ Send a message of some sort """
+        message = self.constructMessage(text, "")
         try:
-            status = self.sendMessage(help)
+            status = self.sendMessage(message)
         except:
+            log.error("Could not send message to user %s" % self.replyTo)
             status = False
-            log.error("Could not send package help message to user")
 
         log.info("Send status: %s" % status)
-        return status
-
-    def sendGenericMessage(self, message):
-        """ Send a helpful message of some sort """
-        help = self.constructMessage(message, "")
-        try:
-            status = self.sendMessage(help)
-        except:
-            log.error("Could not send generic help message to user")
-            status = False
         return status
 
     def constructMessage(self, messageText, subj, fileName=None):

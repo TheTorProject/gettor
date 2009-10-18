@@ -43,11 +43,14 @@ def processMail(conf):
     # Ok, information aquired. Initiate reply sequence
     try:
         reply = gettor.responses.Response(conf, replyTo, lang, pack, split, sig)
+    except:
+        log.error("Parsing the request failed.")
+        log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
+    try:
         reply.sendReply()
     except:
-        log.error("Sending the reply failed. See previous errors for reasons.")
-        # XXX Error handling???
-        raise
+        log.error("Sending the reply failed.")
+        log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
 
 def processOptions(options, conf):
     """Do everything that's not part of parsing a mail. Prepare GetTor usage,
