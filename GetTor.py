@@ -34,23 +34,28 @@ def processMail(conf):
         
     log.info("Processing mail..")
     # Retrieve request from stdin
-    request = gettor.requests.requestMail(conf)
-    replyTo, lang, pack, split, sig = request.parseMail()
-    log.info("Request from %s package %s, lang %s, split %s" \
-                % (replyTo, pack, lang, split))
-    log.info("Signature is %s" % sig)
+    try:
+        request = gettor.requests.requestMail(conf)
+        replyTo, lang, pack, split, sig = request.parseMail()
+        log.info("Request from %s package %s, lang %s, split %s" \
+                    % (replyTo, pack, lang, split))
+        log.info("Signature is %s" % sig)
+    except Exception, e:
+        log.error("Parsing the request failed.")
+        log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
+        log.error("Detail: %s" % e) 
+        return False
 
     # Ok, information aquired. Initiate reply sequence
     try:
         reply = gettor.responses.Response(conf, replyTo, lang, pack, split, sig)
-    except:
-        log.error("Parsing the request failed.")
-        log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
-    try:
         reply.sendReply()
-    except:
+        return True
+    except Exception, e:
         log.error("Sending the reply failed.")
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
+        log.error("Detail: %s" %e)
+        return False
 
 def processOptions(options, conf):
     """Do everything that's not part of parsing a mail. Prepare GetTor usage,
@@ -88,7 +93,10 @@ def main():
         processOptions(options, config)
     else:
         # We've got mail
-        processMail(config)
+        if processMail(config):
+            log.info("Processing mail finished")
+        else:
+            log.error("Processing mail failed")
 
     log.info("Done.")
 

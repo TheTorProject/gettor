@@ -49,6 +49,7 @@ class requestMail:
         # TODO XXX: 
         # Scrub this data
         self.replytoAddress = self.parsedMessage["from"]
+        assert self.replytoAddress is not None, "Replyto address is None"
         # If no package name could be recognized, use 'None'
         self.returnPackage = None
         self.splitDelivery = False

@@ -8,7 +8,6 @@
 
  This is Free Software. See LICENSE for license information.
 
- This library implements all of the email replying features needed for gettor. 
 """
 
 import gettext

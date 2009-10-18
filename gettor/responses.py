@@ -33,11 +33,16 @@ class Response:
         self.config = config
         self.srcEmail = "GetTor <gettor@torproject.org>"
         self.replyTo = replyto
+        if self.replyTo is None:
+            log.error("Empty replyto address.")
+            # XXX Raise something self-defined
+            raise Exception("Empty reply to address")
         self.mailLang = lang
         self.package = package
         self.splitsend = split
         self.signature = signature
         self.whiteList = gettor.blacklist.BWList(config.getWlStateDir())
+        self.blackList = gettor.blacklist.BWList(config.getBlStateDir())
         try:
             trans = gettext.translation("gettor", config.getLocaleDir(), [lang])
             trans.install()
@@ -53,13 +58,13 @@ class Response:
            and not re.compile(".*@yahoo.com.cn").match(self.replyTo) \
            and not re.compile(".*@yahoo.cn").match(self.replyTo) \
            and not re.compile(".*@gmail.com").match(self.replyTo):
-            blackListed = blackList.lookupListEntry(self.replyTo)
+            blackListed = self.blackList.lookupListEntry(self.replyTo)
             if blackListed:
                 log.info("Unsigned messaged to gettor by blacklisted user dropped.")
                 return False
             else:
                 # Reply with some help and bail out
-                blackList.createListEntry(self.replyTo)
+                self.blackList.createListEntry(self.replyTo)
                 log.info("Unsigned messaged to gettor. We will issue help.")
                 return self.sendHelp()
         else:
