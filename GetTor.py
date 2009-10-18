@@ -84,8 +84,6 @@ def processOptions(options, conf):
         gettor.utils.clearBlacklist(conf)
     if options.cmdpass:
         gettor.utils.setCmdPassword(conf, options.cmdpass)
-        test = "haha"
-        gettor.utils.verifyPassword(conf, test)
 
 def main():
     # Parse command line, setup config and logging
