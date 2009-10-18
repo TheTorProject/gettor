@@ -12,6 +12,7 @@
 '''
 
 import os
+import subprocess
 
 import gettor.gtlog
 import gettor.blacklist
@@ -29,7 +30,7 @@ def createDir(path):
         return False
     return True
 
-def installTrans(conf, dir):
+def installTranslations(conf, localeSrcdir):
     """Install all translation files to 'dir'"""
     log.info("Installing translation files..")
     hasDirs = None
@@ -68,7 +69,7 @@ def installTrans(conf, dir):
                 if not os.path.isdir(targetDir):
                     log.info("Not a directory: %s" % targetDir)
                     if not createDir(targetDir):
-                        log.error(_("Giving up on %s" % targetDir))
+                        log.error("Giving up on %s" % targetDir)
                         return False
                 if installMo(poFile, targetDir) == False:
                     log.error("Installing .mo files failed.")
@@ -126,35 +127,35 @@ def installCron():
     cronProc.communicate()[0]
     return cronProc.returncode
 
-def addWhitelistEntry(address):
+def addWhitelistEntry(conf, address):
     log.info("Adding address to whitelist: %s" % address)
     try:
         whiteList = gettor.blacklist.BWList(conf.getWlStateDir())
     except IOError, e:
         log.error("Whitelist error: %s" % e)
         return False
-    if not whiteList.createListEntry(options.whitelist):
+    if not whiteList.createListEntry(address):
         log.error("Creating whitelist entry failed.")
         return False
     else:
         log.info("Creating whitelist entry ok.")
         return True
 
-def addBlacklistEntry(address):
+def addBlacklistEntry(conf, address):
     log.info("Adding address to blacklist: %s" % address)
     try:
         blackList = gettor.blacklist.BWList(conf.getBlStateDir())
     except IOError, e:
         log.error("Blacklist error: %s" % e)
         return False
-    if not blackList.createListEntry(options.whitelist):
+    if not blackList.createListEntry(address):
         log.error("Creating blacklist entry failed.")
         return False
     else:
         log.info("Creating whitelist entry ok.")
         return True
 
-def lookupAddress(address):
+def lookupAddress(conf, address):
     log.info("Lookup address: %s" % address)
     found = False
     try:
@@ -169,13 +170,14 @@ def lookupAddress(address):
     if blackList.lookupListEntry(address):
         log.info("Address '%s' is present in the blacklist." % address)
         found = True
-    if not success:
+    if not found:
         log.info("Address '%s' neither in blacklist or whitelist." % address)
         found = True
 
+    # Always True
     return found
 
-def clearWhitelist():
+def clearWhitelist(conf):
     try:
         whiteList = gettor.blacklist.BWList(conf.getWlStateDir())
     except IOError, e:
@@ -189,7 +191,7 @@ def clearWhitelist():
         log.info("Deleting whitelist done.")
         return True
 
-def clearBlacklist():
+def clearBlacklist(conf):
     log.info("Clearing blacklist..")
     try:
         blackList = gettor.blacklist.BWList(conf.getBlStateDir())

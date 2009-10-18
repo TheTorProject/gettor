@@ -55,7 +55,7 @@ def processOptions(options, conf):
     print "Options: ", options
     # Order matters!
     if options.insttrans:
-        gettor.utils.installTrans(conf, options.i18ndir)
+        m = gettor.utils.installTranslations(conf, options.i18ndir)
     if options.fetchpackages:
         gettor.utils.fetchPackages(conf, options.mirror)
     if options.preppackages:
@@ -63,15 +63,15 @@ def processOptions(options, conf):
     if options.installcron:
         gettor.utils.installCron()
     if options.whitelist:
-        gettor.utils.addWhitelistEntry(options.whitelist)
+        gettor.utils.addWhitelistEntry(conf, options.whitelist)
     if options.blacklist:
-        gettor.utils.addBlacklistEntry(options.blacklist)
+        gettor.utils.addBlacklistEntry(conf, options.blacklist)
     if options.lookup:
-        gettor.utils.lookupAddress(options.lookup)
+        gettor.utils.lookupAddress(conf, options.lookup)
     if options.clearwl:
-        gettor.utils.clearWhitelist()
+        gettor.utils.clearWhitelist(conf)
     if options.clearbl:
-        gettor.utils.clearBlacklist()
+        gettor.utils.clearBlacklist(conf)
 
 def main():
     # Parse command line, setup config and logging
