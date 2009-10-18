@@ -13,6 +13,7 @@
 
 import os
 import subprocess
+import hashlib
 
 import gettor.gtlog
 import gettor.blacklist
@@ -204,6 +205,36 @@ def clearBlacklist(conf):
     else:
         log.info("Deleting blacklist done.")
         return True
+
+def setCmdPassword(conf, password):
+    log.info("Setting command password")
+    passwordHash = str(hashlib.sha1(password).hexdigest())
+    cmdPassFile = conf.getCmdPassFile()
+    try:
+        fd = open(cmdPassFile, 'w')
+        fd.write(passwordHash)
+        fd.close
+        return True
+    except Exception, e:
+        log.error("Creating list entry %s failed: %s" % (entry, e))
+        return False
+
+def verifyPassword(conf, password):
+    candidateHash = str(hashlib.sha1(password).hexdigest())
+    cmdPassFile = conf.getCmdPassFile()
+    try:
+        fd = open(cmdPassFile, 'r')
+        passwordHash = fd.read()
+        fd.close
+        if candidateHash == passwordHash:
+            log.info("Verification succeeded")
+            return True
+        else:
+            log.info("Verification failed")
+            return False
+    except Exception, e:
+        log.error("Verifying password failed: %s" % e)
+        return False
 
 # Helper routines go here ####################################################
 

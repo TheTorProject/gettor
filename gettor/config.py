@@ -95,6 +95,7 @@ class Config:
                         "logSubSystem": ("nothing",                 "global"),
                         "logFile":      ("/dev/null",               "global"),
                         "localeDir":    ("/usr/share/locale",       "global"),
+                        "cmdPassFile":  ("/var/lib/gettor/cmdpass", "global"),
                         "delayAlert":   (True,                    "global")}
 
         # One ConfigParser instance to read the actual values from config
@@ -170,6 +171,9 @@ class Config:
 
     def getLocaleDir(self):
         return self.useConf["localeDir"][0]
+
+    def getCmdPassFile(self):
+        return self.useConf["cmdPassFile"][0]
 
     def getDelayAlert(self):
         return self.useConf["delayAlert"][0]

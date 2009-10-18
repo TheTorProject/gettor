@@ -15,7 +15,7 @@ import gettext
 _ = gettext.gettext
 
 helpmsg = _("""
-    Hello! This is the "gettor" robot.
+    Hello! This is the "GetTor" robot.
 
     Unfortunately, we won't answer you at this address. You should make
     an account with GMAIL.COM or YAHOO.CN and send the mail from
@@ -37,7 +37,7 @@ helpmsg = _("""
         """)
 
 packagehelpmsg = _("""
-    Hello, This is the "gettor" robot.
+    Hello, This is the "GetTor" robot.
 
     I will mail you a Tor package, if you tell me which one you want.
     Please select one of the following package names:
@@ -60,7 +60,7 @@ packagehelpmsg = _("""
         """)
 
 packagemsg = _("""
-    Hello! This is the "gettor" robot.
+    Hello! This is the "GetTor" robot.
 
     Here's your requested software as a zip file. Please unzip the
     package and verify the signature.
@@ -99,7 +99,7 @@ packagemsg = _("""
         """)
 
 splitpackagemsg = _("""
-    Hello! This is the "gettor" robot.
+    Hello! This is the "GetTor" robot.
 
     Here's your requested software as a zip file. Please unzip the
     package and verify the signature.
@@ -147,7 +147,7 @@ splitpackagemsg = _("""
         """)
 
 delayalertmsg = _("""
-    Hello, This is the "gettor" robot.
+    Hello, This is the "GetTor" robot.
 
     Thank you for your request. It was successfully understood. Your request is
     currently being processed. Your package should arrive within the next ten

@@ -36,9 +36,9 @@ def processMail(conf):
     # Retrieve request from stdin
     try:
         request = gettor.requests.requestMail(conf)
-        replyTo, lang, pack, split, sig = request.parseMail()
-        log.info("Request from %s package %s, lang %s, split %s" \
-                    % (replyTo, pack, lang, split))
+        replyTo, lang, pack, split, sig, cmdAddr = request.parseMail()
+        log.info("Request from %s package %s, lang %s, split %s, cmdaddr %s" \
+                    % (replyTo, pack, lang, split, cmdAddr))
         log.info("Signature is %s" % sig)
     except Exception, e:
         log.error("Parsing the request failed.")
@@ -48,13 +48,15 @@ def processMail(conf):
 
     # Ok, information aquired. Initiate reply sequence
     try:
-        reply = gettor.responses.Response(conf, replyTo, lang, pack, split, sig)
+        reply = gettor.responses.Response(conf, replyTo, lang, pack, split, \
+                                            sig, cmdAddr)
         reply.sendReply()
         return True
     except Exception, e:
         log.error("Sending the reply failed.")
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
         log.error("Detail: %s" %e)
+        raise
         return False
 
 def processOptions(options, conf):
@@ -80,6 +82,10 @@ def processOptions(options, conf):
         gettor.utils.clearWhitelist(conf)
     if options.clearbl:
         gettor.utils.clearBlacklist(conf)
+    if options.cmdpass:
+        gettor.utils.setCmdPassword(conf, options.cmdpass)
+        test = "haha"
+        gettor.utils.verifyPassword(conf, test)
 
 def main():
     # Parse command line, setup config and logging

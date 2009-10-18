@@ -29,18 +29,22 @@ log = gettor.gtlog.getLogger()
 
 class Response:
 
-    def __init__(self, config, replyto, lang, package, split, signature):
+    def __init__(self, config, replyto, lang, package, split, signature, caddr):
         self.config = config
         self.srcEmail = "GetTor <gettor@torproject.org>"
         self.replyTo = replyto
-        if self.replyTo is None:
-            log.error("Empty replyto address.")
-            # XXX Raise something self-defined
-            raise Exception("Empty reply to address")
+        assert self.replyTo is not None, "Empty replyto address."
         self.mailLang = lang
         self.package = package
         self.splitsend = split
         self.signature = signature
+        self.cmdAddr = caddr
+        # If cmdAddr is set, we are forwarding mail rather than sending a 
+        # reply to someone
+        if self.cmdAddr is not None:
+            self.sendTo = self.cmdAddr
+        else:
+            self.sendTo = self.replyTo
         self.whiteList = gettor.blacklist.BWList(config.getWlStateDir())
         self.blackList = gettor.blacklist.BWList(config.getBlStateDir())
         try:
@@ -53,7 +57,7 @@ class Response:
     def sendReply(self):
         """All routing decisions take place here."""
         # Check we're happy with sending this user a package
-        if not self.signature \
+        if not self.signature and not self.cmdAddr \
            and not self.whiteList.lookupListEntry(self.replyTo) \
            and not re.compile(".*@yahoo.com.cn").match(self.replyTo) \
            and not re.compile(".*@yahoo.cn").match(self.replyTo) \
@@ -68,6 +72,12 @@ class Response:
                 log.info("Unsigned messaged to gettor. We will issue help.")
                 return self.sendHelp()
         else:
+            if self.cmdAddr is not None:
+                success = self.sendPackage()
+                if not success:
+                    log.error("Failed to forward mail to '%s'" % self.cmdAddr)
+                return self.sendForwardReply(success)
+                
             if self.package is None:
                 return self.sendPackageHelp()
             delayAlert = self.config.getDelayAlert()
@@ -82,7 +92,7 @@ class Response:
 
     def sendPackage(self):
         """ Send a message with an attachment to the user"""
-        log.info("Sending out %s to %s." % (self.package, self.replyTo))
+        log.info("Sending out %s to %s." % (self.package, self.sendTo))
         packages = gettor.packages.Packages(self.config)
         packageList = packages.getPackageList()
         filename = packageList[self.package]
@@ -128,12 +138,12 @@ class Response:
 
     def sendDelayAlert(self):
         """ Send a delay notification """
-        log.info("Sending delay alert to %s" % self.replyTo)
+        log.info("Sending delay alert to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.delayalertmsg)
             
     def sendHelp(self):
         """ Send a helpful message to the user interacting with us """
-        log.info("Sending out help message to %s" % self.replyTo)
+        log.info("Sending out help message to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.helpmsg)
 
 ## XXX the following line was used below to automatically list the names
@@ -145,8 +155,16 @@ class Response:
 
     def sendPackageHelp(self):
         """ Send a helpful message to the user interacting with us """
-        log.info("Sending package help to %s" % self.replyTo)
+        log.info("Sending package help to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.packagehelpmsg)
+
+    def sendForwardReply(self, status):
+        " Send a message to the user that issued the forward command """
+        log.info("Sending reply to forwarder '%s'" % self.replyTo)
+        message = "Forwarding mail to '%s' status: %s" % (self.sendTo, status)
+        # Magic: We're now returning to the original issuer
+        self.sendTo = self.replyTo
+        return self.sendGenericMessage(message)
 
     def sendGenericMessage(self, text):
         """ Send a message of some sort """
@@ -154,7 +172,7 @@ class Response:
         try:
             status = self.sendMessage(message)
         except:
-            log.error("Could not send message to user %s" % self.replyTo)
+            log.error("Could not send message to user %s" % self.sendTo)
             status = False
 
         log.info("Send status: %s" % status)
@@ -170,7 +188,7 @@ class Response:
         mime = MimeWriter.MimeWriter(message)
         mime.addheader('MIME-Version', '1.0')
         mime.addheader('Subject', subj)
-        mime.addheader('To', self.replyTo)
+        mime.addheader('To', self.sendTo)
         mime.addheader('From', self.srcEmail)
         mime.startmultipartbody('mixed')
 
@@ -192,7 +210,7 @@ class Response:
     def sendMessage(self, message, smtpserver="localhost:25"):
         try:
             smtp = smtplib.SMTP(smtpserver)
-            smtp.sendmail(self.srcEmail, self.replyTo, message.getvalue())
+            smtp.sendmail(self.srcEmail, self.sendTo, message.getvalue())
             smtp.quit()
             status = True
         except smtplib.SMTPAuthenticationError:

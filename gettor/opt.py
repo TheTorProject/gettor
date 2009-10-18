@@ -58,6 +58,10 @@ def parseOpts():
     cmdParser.add_option("-r", "--install-translations", dest="insttrans",
                         action="store_true", default=False,
                         help="Compile and install translation files [check -d]")
+    cmdParser.add_option("-s", "--set-cmdpassword", dest="cmdpass",
+                        default="",
+                        help="Set the password for mail commands",
+                        metavar="CMDPASS")
     cmdParser.add_option("-d", "--i18n-dir", dest="i18ndir",
                         default="./i18n",
                         help="Set your locale src dir to DIR [default = %default]",
