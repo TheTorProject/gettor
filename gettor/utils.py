@@ -41,13 +41,13 @@ def installTranslations(conf, localeSrcdir):
     if not os.path.isdir(localeSrcdir):
         log.info("Not a directory: %s" % localeSrcdir)
         if not createDir(localeSrcdir):
-            log.error(_("Giving up on %s" % localeSrcdir))
+            log.error("Giving up on %s" % localeSrcdir)
             return False
     localeDir = conf.getLocaleDir()
     if not os.path.isdir(localeDir):
         log.info("Not a directory: %s" % localeDir)
         if not createDir(localeDir):
-            log.error(_("Giving up on %s" % localeDir))
+            log.error("Giving up on %s" % localeDir)
             return False
 
     # XXX: Warn if there is no translation files anywhere..
@@ -230,13 +230,13 @@ def installTrans(config, localeSrcdir):
     if not os.path.isdir(localeSrcdir):
         log.info("Not a directory: %s" % localeSrcdir)
         if not createDir(localeSrcdir):
-            log.error(_("Giving up on %s" % localeSrcdir))
+            log.error("Giving up on %s" % localeSrcdir)
             return False
     localeDir = config.getLocaleDir()
     if not os.path.isdir(localeDir):
         log.info("Not a directory: %s" % localeDir)
         if not createDir(localeDir):
-            log.error(_("Giving up on %s" % localeDir))
+            log.error("Giving up on %s" % localeDir)
             return False
 
 def getCurrentCrontab():

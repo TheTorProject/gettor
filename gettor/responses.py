@@ -47,6 +47,7 @@ class Response:
 
     def sendReply(self):
         """All routing decisions take place here."""
+        # Check we're happy with sending this user a package
         if not self.signature \
            and not self.whiteList.lookupListEntry(self.replyTo) \
            and not re.compile(".*@yahoo.com.cn").match(self.replyTo) \
@@ -59,21 +60,24 @@ class Response:
             else:
                 # Reply with some help and bail out
                 blackList.createListEntry(self.replyTo)
-                sendHelp()
-                log.info("Unsigned messaged to gettor. We issued some help.")
-                return True
+                log.info("Unsigned messaged to gettor. We will issue help.")
+                return self.sendHelp()
         else:
-            print "Sending mail.."
+            if self.package is None:
+                return self.sendPackageHelp()
             delayAlert = self.config.getDelayAlert()
+            if delayAlert:
+                ret = self.sendDelayAlert()
+                if ret != True:
+                    log.error("Failed to sent delay alert.")
             if self.splitsend:
-                print "Sending split packages"
-                self.sendSplitPackage()
+                return self.sendSplitPackage()
             else:
-                print "Sending non-split package"
-                self.sendPackage()
+                return self.sendPackage()
 
     def sendPackage(self):
         """ Send a message with an attachment to the user"""
+        log.info("Sending out %s to %s." % (self.package, self.replyTo))
         packages = gettor.packages.Packages(self.config)
         packageList = packages.getPackageList()
         filename = packageList[self.package]
@@ -85,6 +89,7 @@ class Response:
             log.error("Could not send package to user")
             status = False
 
+        log.info("Send status: %s" % status)
         return status
 
     def sendSplitPackage(self):
@@ -115,17 +120,34 @@ class Response:
                 status = False
 
         return status
+
+    def sendDelayAlert(self):
+        """ Send a delay notification """
+        log.info("Sending delay alert to %s" % self.replyTo)
+        message = gettor.constants.delayalertmsg
+        help = self.constructMessage(message, "")
+        try:
+            status = self.sendMessage(help)
+        except:
+            status = False
+            log.error("Could not send delay alert message to user")
+
+        log.info("Send status: %s" % status)
+        return status
+
             
     def sendHelp(self):
         """ Send a helpful message to the user interacting with us """
+        log.info("Sending out help message to %s" % self.replyTo)
         message = gettor.constants.helpmsg
         help = self.constructMessage(message, "")
         try:
             status = self.sendMessage(help)
         except:
-            log.error(_("Could not send help message to user"))
+            log.error("Could not send help message to user")
             status = False
 
+        log.info("Send status: %s" % status)
         return status
 
 ## XXX the following line was used below to automatically list the names
@@ -135,16 +157,18 @@ class Response:
 ## Somebody should figure out how to automate yet sort. -RD
 ##    """ + "".join([ "\t%s\n" % key for key in packageList.keys()]) + """
 
-    def sendPackageHelp(self, packageList):
+    def sendPackageHelp(self):
         """ Send a helpful message to the user interacting with us """
+        log.info("Sending package help to %s" % self.replyTo)
         message = gettor.constants.packagehelpmsg
         help = self.constructMessage(message, "")
         try:
             status = self.sendMessage(help)
         except:
             status = False
-            log.error(_("Could not send package help message to user"))
+            log.error("Could not send package help message to user")
 
+        log.info("Send status: %s" % status)
         return status
 
     def sendGenericMessage(self, message):
@@ -193,34 +217,34 @@ class Response:
             smtp.quit()
             status = True
         except smtplib.SMTPAuthenticationError:
-            log.error(_("SMTP authentication error"))
+            log.error("SMTP authentication error")
             return False
         except smtplib.SMTPHeloError:
-            log.error(_("SMTP HELO error"))
+            log.error("SMTP HELO error")
             return False
         except smtplib.SMTPConnectError:
-            log.error(_("SMTP connection error"))
+            log.error("SMTP connection error")
             return False
         except smtplib.SMTPDataError:
-            log.error(_("SMTP data error"))
+            log.error("SMTP data error")
             return False
         except smtplib.SMTPRecipientsRefused:
-            log.error(_("SMTP refused to send to recipients"))
+            log.error("SMTP refused to send to recipients")
             return False
         except smtplib.SMTPSenderRefused:
-            log.error(_("SMTP sender address refused"))
+            log.error("SMTP sender address refused")
             return False
         except smtplib.SMTPResponseException:
-            log.error(_("SMTP response exception received"))
+            log.error("SMTP response exception received")
             return False
         except smtplib.SMTPServerDisconnected:
-            log.error(_("SMTP server disconnect exception received"))
+            log.error("SMTP server disconnect exception received")
             return False
         except smtplib.SMTPException:
-            log.error(_("General SMTP error caught"))
+            log.error("General SMTP error caught")
             return False
         except:
-            log.error(_("Unknown SMTP error while trying to send via local MTA"))
+            log.error("Unknown SMTP error while trying to send via local MTA")
             return False
 
         return status
