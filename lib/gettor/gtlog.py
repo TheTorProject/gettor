@@ -52,11 +52,13 @@ def initialize():
         # Silently fail if things are misconfigured
         logFile = conf.getLogFile()
         try:
-            if os.access(os.path.dirname(logFile), os.W_OK):
-                handler = logging.FileHandler(logFile)
-            else:
-                logSubSystem = "nothing"
-        except:
+            logDir = os.path.dirname(logFile)
+            if not os.access(logDir, os.W_OK):
+                os.makedirs(logDir)
+            handler = logging.FileHandler(logFile)
+        except Exception, e:
+            err = "Caught an exception while trying to setup logging: %s" %e
+            sys.stderr.write(err)
             logSubSystem = "nothing"
     elif logSubSystem == "syslog":
         handler = logging.handlers.SysLogHandler(address="/dev/log")

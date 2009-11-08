@@ -79,8 +79,10 @@ def installTranslations(conf, localeSrcdir):
                 log.error("Error accessing translation files.")
                 return False
     if hasDirs is None:
-        log.errpr("Empty locale dir: " % localeSrcdir)
+        log.error("Empty locale dir: " % localeSrcdir)
         return False
+
+    log.info("Installing translation files done.")
 
     return True
 
@@ -214,6 +216,8 @@ def setCmdPassword(conf, password):
         fd = open(cmdPassFile, 'w')
         fd.write(passwordHash)
         fd.close
+        # Be secretive
+        os.chmod(cmdPassFile, 0400)
         return True
     except Exception, e:
         log.error("Creating list entry %s failed: %s" % (entry, e))

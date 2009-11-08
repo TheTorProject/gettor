@@ -62,7 +62,6 @@ def processMail(conf):
 def processOptions(options, conf):
     """Do everything that's not part of parsing a mail. Prepare GetTor usage,
     install files, fetch packages, do some black/whitelist voodoo and so on""" 
-    print "Options: ", options
     # Order matters!
     if options.insttrans:
         m = gettor.utils.installTranslations(conf, options.i18ndir)

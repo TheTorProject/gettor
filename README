@@ -5,6 +5,9 @@ interact with GetTor by sending it an email.
 
 The following document explains how to setup GetTor for a server admin.
 
+PREREQUISITES
+-------------
+
 To deploy GetTor, you'll want a machine that invokes .forward files
 for users. You'll also want to have python and rsync installed.
 
@@ -25,33 +28,30 @@ SETUP
 This setup descripton presumes that you have access to the latest gettor svn 
 trunk somewhere in your local file system.
 
-First, you will need to copy files over to your installation directory:
+    svn co https://freehaven.net/svn/projects/gettor gettor
 
-    gettor@moria:~/src/trunk/$ cp GetTor.py /home/gettor/bin
-    gettor@moria:~/src/trunk/$ cp -r gettor /home/gettor/bin
-    gettor@moria:~/src/trunk/$ cp -r i18n /home/gettor/bin
+After checking out the GetTor source code, you will need to install everything
+as follows:
 
-Here is a list of all files you'll need in place:
+    cd gettor/
+    python setup.py install
 
+This will copy necessary files to ~/opt/gettor.
 
-
-This is somewhat cumbersome, but until setup.py is fixed, this is ok as a 
-temporary solution.
+Next, configure your ~/.gettorrc file (see "Configuration", below).
 
 After that, you will want to ensure that you have a properly configured set
 of mo files for each translation. Generate and install mo files as follows:
 
-    gettor@moria:~/bin$ ./GetTor.py -r
+    gettor@moria:~/opt/gettor$ ./GetTor.py -r
 
 You'll see something like this upon success:
 
     2009-06-21 20:06:01,324 (6136) Installing translation files done.
 
-Next, configure your ~/.gettorrc file (see "Configuration", below).
-
 Once you have everything installed, you'll want to initialize the file store:
 
-    gettor@moria:~/bin$ ./GetTor.py -f -p
+    gettor@moria:~/opt/gettor$ ./GetTor.py -fp
 
 You should see an rsync and finally something like:
 
@@ -63,13 +63,18 @@ You should see an rsync and finally something like:
 Now you'll install the cronjob. This clears the blacklist and updates
 packages daily:
 
-    gettor@moria:~/bin$ ./GetTor.py -i
-    2009-01-05 17:34:53,911 (16646) Installing cron done.
+    gettor@moria:~/opt/gettor$ ./GetTor.py -i
+    2009-01-05 17:34:53,911 (16646) Installing cron donee
+
+Set up a password for package forwarding commands if you wish to use that 
+feature:
+
+    gettor@moria:~/opt/gettor$ ./GetTor.py -s seCreTpAssworD
 
 Finally, you need to setup email forwarding to the GetTor bot like so:
 
     gettor@moria:~$ cat .forward
-    "|/home/gettor/bin/GetTor.py"
+    "|/home/gettor/opt/gettor/GetTor.py"
 
 Now GetTor.py is installed, prepared and ready to serve files. Send it email!
 
@@ -78,7 +83,7 @@ TRANSLATION FILES
 Provided there is a working locale environment, GetTor will compile and setup
 locale files for you as follows:
 
-    gettor@moria:~/bin$ ./GetTor.py -r
+    gettor@moria:~/opt/gettor$ ./GetTor.py -r
     2009-01-08 12:18:09,041 (19287) Installing translation files done.
 
 You can also configure the .mo files to live in another place by telling GetTor
@@ -88,13 +93,13 @@ so in the config file, for example:
 
 This will result in GetTor expecting the English .mo file in the directory
 
-    /home/gettor/gettor/i18n/en/LC_MESSAGES/gettor.mo
+    /home/gettor/gettor/i18n/en/gettor.mo
 
 Also, in case your .po files for some reason live in a different directory
 than i18n/ (relative to GetTor.py, as provided by GetTor), you can tell this
 to GetTor as follows:
 
-    gettor@moria:~/bin$ ./GetTor.py -r -d /path/to/my/mofiles/directory
+    gettor@moria:~/opt/gettor$ ./GetTor.py -r -d /path/to/my/mofiles/directory
 
 Note that GetTor will expect the same directory structure as provided under
 i18n/ in the GetTor source package, e.g. 'i18n/en/gettor_en.po',
@@ -125,15 +130,16 @@ and should look like this:
 
     gettor@moria:~$ cat .gettorrc
     [global]
-    stateDir    = /home/gettor/gettor/state/
-    blStateDir  = /home/gettor/gettor/bl/
-    wlStateDir  = /home/gettor/gettor/wl/
-    distDir     = /home/gettor/gettor/distdir/
-    packDir     = /home/gettor/gettor/packdir/
-    locale      = en
-    logSubSystem= stdout
-    logFile     = /home/gettor/gettor/logs/logfile
-    localeDir   =  /home/gettor/gettor/i18n/
+    stateDir        = /home/gettor/gettor/state/
+    blStateDir      = /home/gettor/gettor/bl/
+    wlStateDir      = /home/gettor/gettor/wl/
+    distDir         = /home/gettor/gettor/distdir/
+    packDir         = /home/gettor/gettor/packdir/
+    locale          = en
+    logSubSystem    = stdout
+    logFile         = /home/gettor/gettor/logs/logfile
+    localeDir       =  /home/gettor/gettor/i18n/
+    cmdPassFile     = /home/gettor/gettor/pass
 
 You can leave any of these lines out, and it will choose a suitable
 default.
@@ -157,6 +163,7 @@ logSubSystem:  This has to be one of the following strings:
                            also set to something useful
 localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or
                'whateverlang/LC_MESSAGES/gettor.mo' should go
+cmdPassFile:   The file containing the hashed command password
 
 WHAT'S DKIM / WHY DKIM?
 -----------------------
