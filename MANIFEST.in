@@ -1,1 +1,2 @@
-include README TODO
+include README TODO README.USER-HOWTO README.locale-spec-draft
+recursive-include i18n *

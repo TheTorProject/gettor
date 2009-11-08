@@ -3,8 +3,23 @@
 # GetTor installer & packer
 
 import glob
+import os
+import sys
 
 from distutils.core import setup
+
+TRANSLATION_DIR='i18n'
+data_files = dict()
+for filename in os.listdir(TRANSLATION_DIR):
+    if filename.endswith('.svn'):
+        continue
+    dir = os.path.join(TRANSLATION_DIR, filename)
+    if dir.endswith('templates'):
+        file = "gettor.pot"
+    else:
+        file = "gettor.po"
+    pofile = os.path.join(dir, file)
+    data_files[dir] = [pofile]
 
 setup(name='GetTor',
       version='0.1',
@@ -14,6 +29,7 @@ setup(name='GetTor',
       url='https://www.torproject.org/gettor/',
       package_dir={'': 'lib'},
       packages=['gettor'],
+      data_files = data_files.items(),
       scripts = ["GetTor.py"],
       py_modules=['GetTor'],
       long_description = """Really long text here."""
