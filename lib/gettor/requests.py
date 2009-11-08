@@ -34,8 +34,7 @@ class requestMail:
         """ Read message from stdin, parse all the stuff we want to know
         """
         self.rawMessage = sys.stdin.read()
-        self.strippedMessage = self.stripTags(self.rawMessage)
-        self.parsedMessage = email.message_from_string(self.strippedMessage)
+        self.parsedMessage = email.message_from_string(self.rawMessage)
         self.signature = False
         self.config = config
         # TODO XXX:
@@ -67,6 +66,10 @@ class requestMail:
             # Remove quotes
             if line.startswith(">"):
                 continue
+            # Strip HTML from line
+            # XXX: Actually we should rather read the whole body into a string
+            #      and strip that. -kaner
+            line = self.stripTags(line)
             # XXX This is a bit clumsy, but i cant think of a better way
             # currently. A map also doesnt really help i think. -kaner
             for package in self.packages.keys():
@@ -118,9 +121,9 @@ class requestMail:
         return (self.replytoAddress, self.replyLocale, self.returnPackage, \
                 self.splitDelivery, self.signature, self.commandaddress)
 
-    def stripTags(self, message):
+    def stripTags(self, string):
         """Simple HTML stripper"""
-        return re.sub(r'<[^>]*?>', '', message)
+        return re.sub(r'<[^>]*?>', '', string)
 
     def getRawMessage(self):
         return self.rawMessage

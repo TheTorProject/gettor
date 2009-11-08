@@ -44,6 +44,7 @@ def processMail(conf):
       it on to the reply class/method to decide what to do."""
         
     rawMessage = ""
+    replyTo = ""
     log.info("Processing mail..")
     # Retrieve request from stdin
     try:
