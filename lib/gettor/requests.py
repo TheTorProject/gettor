@@ -34,7 +34,8 @@ class requestMail:
         """ Read message from stdin, parse all the stuff we want to know
         """
         self.rawMessage = sys.stdin.read()
-        self.parsedMessage = email.message_from_string(self.rawMessage)
+        self.strippedMessage = self.stripTags(self.rawMessage)
+        self.parsedMessage = email.message_from_string(self.strippedMessage)
         self.signature = False
         self.config = config
         # TODO XXX:
@@ -116,6 +117,10 @@ class requestMail:
 
         return (self.replytoAddress, self.replyLocale, self.returnPackage, \
                 self.splitDelivery, self.signature, self.commandaddress)
+
+    def stripTags(self, message):
+        """Simple HTML stripper"""
+        return re.sub(r'<[^>]*?>', '', message)
 
     def getRawMessage(self):
         return self.rawMessage
