@@ -28,13 +28,13 @@ SETUP
 This setup descripton presumes that you have access to the latest gettor svn 
 trunk somewhere in your local file system.
 
-    svn co https://freehaven.net/svn/projects/gettor gettor
+    gettor@moria:~/tmp$ svn co https://freehaven.net/svn/projects/gettor gettor
 
 After checking out the GetTor source code, you will need to install everything
 as follows:
 
-    cd gettor/
-    python setup.py install
+    gettor@moria:~/tmp$ cd gettor/
+    gettor@moria:~/tmp/gettor$ python setup.py install
 
 This will copy necessary files to ~/opt/gettor.
 
@@ -43,6 +43,7 @@ Next, configure your ~/.gettorrc file (see "Configuration", below).
 After that, you will want to ensure that you have a properly configured set
 of mo files for each translation. Generate and install mo files as follows:
 
+    gettor@moria:~/tmp/gettor$ cd ~/opt/gettor
     gettor@moria:~/opt/gettor$ ./GetTor.py -r
 
 You'll see something like this upon success:
