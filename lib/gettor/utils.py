@@ -14,6 +14,7 @@
 import os
 import subprocess
 import hashlib
+import datetime
 
 import gettor.gtlog
 import gettor.blacklist
@@ -30,6 +31,27 @@ def createDir(path):
         log.error("Failed to create directory %s: %s" % (path, e))
         return False
     return True
+
+def dumpMessage(conf, message):
+    """Dump a message to our dumpfile"""
+    dumpFile = conf.getDumpFile()
+    # Be nice: Create dir if it's not there
+    dumpDir = os.path.dirname(dumpFile)
+    if not os.access(dumpDir, os.W_OK):
+        if not createDir(dumpDir):
+            log.error("Could not create dump dir")
+            return False
+    try:
+        fd = open(dumpFile, 'a')
+        now = datetime.datetime.now()
+        prefix = "Failed mail at %s:\n" % now.strftime("%Y-%m-%d %H:%M:%S")
+        fd.write(prefix)
+        fd.write(message)
+        fd.close
+        return True
+    except Exception, e:
+        log.error("Creating dump entry failed: %s" % e)
+        return False
 
 def installTranslations(conf, localeSrcdir):
     """Install all translation files to 'dir'"""
@@ -212,6 +234,12 @@ def setCmdPassword(conf, password):
     log.info("Setting command password")
     passwordHash = str(hashlib.sha1(password).hexdigest())
     cmdPassFile = conf.getCmdPassFile()
+    # Be nice: Create dir if it's not there
+    passDir = os.path.dirname(cmdPassFile)
+    if not os.access(passDir, os.W_OK):
+        if not createDir(passDir):
+            log.error("Could not create pass dir")
+            return False
     try:
         fd = open(cmdPassFile, 'w')
         fd.write(passwordHash)

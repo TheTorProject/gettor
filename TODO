@@ -4,20 +4,16 @@ These are planned changes to the gettor system.
   (multi-part download, etc.).
 - Write spec for how locale requests shall be formatted and parsed
 - Implement test (-t switch) functionality
-- Fix setup.py installer!
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Add more translations
     - Freeze messages for translation
     - Put po files into pootle for translation
 - Add GetTor to GetTor and it will be able to distribute itself
-- Better exception catching when the local SMTP rejects the email
-    - Perhaps we want to email the admin of GetTor with the error?
-    - Perhaps we want to respond to the user with a useful message?
 - Add torbutton (Mike, please sign torbutton and populate a proper .asc)
 - Fix rsync to follow symlinks properly. We want the data not a link to data.
-- Add a nice little note about the size of the files users may request
 - Strip HTML mails (!)
 - Remove 'localhost:25' to send mail and use '/usr/bin/sendmail' instead
   (suggested by weasel)
-- Think about adding a mail queue for outgoing mails that got a SMTP error
-  while trying to be sent. This way no mail gets lost
+- Package names that are sent out to the user are currently hard-coded. Return
+  to a more dynamic approach, also: Add a nice little note about the size of 
+  the files users may request

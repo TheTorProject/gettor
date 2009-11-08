@@ -32,10 +32,12 @@ def processMail(conf):
     - Send reply. Use all information gathered from the request and pass
       it on to the reply class/method to decide what to do."""
         
+    rawMessage = ""
     log.info("Processing mail..")
     # Retrieve request from stdin
     try:
         request = gettor.requests.requestMail(conf)
+        rawMessage = request.getRawMessage()
         replyTo, lang, pack, split, sig, cmdAddr = request.parseMail()
         log.info("Request from %s package %s, lang %s, split %s, cmdaddr %s" \
                     % (replyTo, pack, lang, split, cmdAddr))
@@ -44,18 +46,25 @@ def processMail(conf):
         log.error("Parsing the request failed.")
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
         log.error("Detail: %s" % e) 
+        # Keep a copy of the failed email for later reference
+        gettor.utils.dumpMessage(conf, rawMessage)
         return False
 
     # Ok, information aquired. Initiate reply sequence
     try:
         reply = gettor.responses.Response(conf, replyTo, lang, pack, split, \
                                             sig, cmdAddr)
-        reply.sendReply()
+        if not reply.sendReply():
+            log.error("Sending reply failed. We'll keep a record of this mail")
+            gettor.utils.dumpMessage(conf, rawMessage)
+            return False
         return True
     except Exception, e:
         log.error("Sending the reply failed.")
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
         log.error("Detail: %s" %e)
+        # Keep a copy of the failed email for later reference
+        gettor.utils.dumpMessage(conf, rawMessage)
         raise
         return False
 

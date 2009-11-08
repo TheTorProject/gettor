@@ -2,13 +2,15 @@
 # ~/.gettorrc
 #
 [global]
-stateDir    = /tmp/
-blstatedir  = /tmp/bl/
-wlstatedir  = /tmp/wl/
-distdir     = /tmp/distdir/
-packdir     = /tmp/packdir/
-locale      = en
-delayalert  = True
-logSubSystem= stdout
-logFile     = /tmp/logfile
-localDir    = /tmp/i18n/
+stateDir        = /tmp/gettor
+blstatedir      = /tmp/gettor/bl/
+wlstatedir      = /tmp/gettor/wl/
+distdir         = /tmp/gettor/distdir/
+packdir         = /tmp/gettor/packdir/
+locale          = en
+delayalert      = True
+logSubSystem    = stdout
+logFile         = /tmp/gettor/logfile
+localDir        = /tmp/gettor/i18n/
+cmdPassFile     = /tmp/gettor/pass
+dumpFile        = /tmp/gettor/dumpfile

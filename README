@@ -141,6 +141,7 @@ and should look like this:
     logFile         = /home/gettor/gettor/logs/logfile
     localeDir       =  /home/gettor/gettor/i18n/
     cmdPassFile     = /home/gettor/gettor/pass
+    dumpFile        = /home/gettor/gettor/failedmails
 
 You can leave any of these lines out, and it will choose a suitable
 default.
@@ -165,6 +166,7 @@ logSubSystem:  This has to be one of the following strings:
 localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or
                'whateverlang/LC_MESSAGES/gettor.mo' should go
 cmdPassFile:   The file containing the hashed command password
+dumpFile:      All failed mails are recorded here
 
 WHAT'S DKIM / WHY DKIM?
 -----------------------

@@ -16,21 +16,12 @@ import zipfile
 import subprocess
 import gettor.gtlog
 import gettor.config
+import gettor.utils
 import re
 
 __all__ = ["Packages"]
 
 log = gettor.gtlog.getLogger()
-
-# XXX
-def createDir(path):
-    try:
-        log.info("Creating directory %s.." % path)
-        os.makedirs(path)
-    except OSError, e:
-        log.error("Failed to create directory %s: %s" % (path, e))
-        return False
-    return True
 
 class Packages:
     #                "bundle name": ("single file regex", "split file regex")
@@ -50,14 +41,14 @@ class Packages:
         try:
             entry = os.stat(self.distDir)
         except OSError, e:
-            if not createDir(self.distDir):
+            if not gettor.utils.createDir(self.distDir):
                 log.error("Bad dist dir %s: %s" % (self.distDir, e))
                 raise IOError
         self.packDir = config.getPackDir()
         try:
             entry = os.stat(self.packDir)
         except OSError, e:
-            if not createDir(self.packDir):
+            if not gettor.utils.createDir(self.packDir):
                 log.error("Bad pack dir %s: %s" % (self.packDir, e))
                 raise IOError
 

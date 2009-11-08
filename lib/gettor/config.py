@@ -26,6 +26,8 @@
      logFile = /dev/null
      localeDir = /usr/share/locale
      delayAlert = True
+     cmdPassFile = /var/lib/gettor/pass
+     dumpFile = /var/lib/gettor/dump
 
  Note that you can set from none to any of these values in your config file.
  Values you dont provide will be taken from the defaults in 'useConf'.
@@ -50,6 +52,8 @@
  delayAlert:    If set to True (the default), a message will be sent to any
                 user who has properly requested a package. The message confirms
                 that a package was selected and will be sent.
+ cmdPassFile:   Where our forward command password resides
+ dumpFile:      Where failed mails get stored
 
  If no valid config file is provided to __init__, gettorConf will try to use
  '~/.gettorrc' as default config file. If that fails, the default values from
@@ -96,6 +100,7 @@ class Config:
                         "logFile":      ("/dev/null",               "global"),
                         "localeDir":    ("/usr/share/locale",       "global"),
                         "cmdPassFile":  ("/var/lib/gettor/cmdpass", "global"),
+                        "dumpFile":     ("/var/lib/gettor/dump",    "global"),
                         "delayAlert":   (True,                    "global")}
 
         # One ConfigParser instance to read the actual values from config
@@ -177,6 +182,9 @@ class Config:
 
     def getDelayAlert(self):
         return self.useConf["delayAlert"][0]
+
+    def getDumpFile(self):
+        return self.useConf["dumpFile"][0]
 
 if __name__ == "__main__" :
     c = Config()
