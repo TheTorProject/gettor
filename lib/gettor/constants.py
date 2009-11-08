@@ -162,3 +162,14 @@ delayalertmsg = _("""
     human at this support email address: tor-assistants@torproject.org
 
             """)
+
+mailfailmsg = _("""
+    Hello, This is the "GetTor" robot.
+
+    Thank you for your request.
+
+    Unfortunatly we are currently experiencing problems and we can't fulfill
+    your request right now. Please be patient as we try to resolve this issue.
+
+        """)
+    

@@ -23,6 +23,17 @@ import gettor.utils
 
 log = gettor.gtlog.getLogger()
 
+def processFail(conf, rawMessage, sendTo):
+    """This routine gets called when something went wrong with the processing"""
+    # Keep a copy of the failed email for later reference
+    log.info("We'll keep a record of this mail.")
+    gettor.utils.dumpMessage(conf, rawMessage)
+    # Send out notification to user, if possible
+    if not gettor.responses.sendNotification(conf, sendTo):
+        log.error("Also failed to send the user a proper notification. :-/")
+    else:
+        log.info("Failure notification sent to user %s" % sendTo)
+
 def processMail(conf):
     """All mail processing happens here. Processing goes as follows:
     - Parse request. This means: Find out everything we need to reply in 
@@ -46,8 +57,7 @@ def processMail(conf):
         log.error("Parsing the request failed.")
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
         log.error("Detail: %s" % e) 
-        # Keep a copy of the failed email for later reference
-        gettor.utils.dumpMessage(conf, rawMessage)
+        processFail(conf, rawMessage, replyTo)
         return False
 
     # Ok, information aquired. Initiate reply sequence
@@ -55,16 +65,15 @@ def processMail(conf):
         reply = gettor.responses.Response(conf, replyTo, lang, pack, split, \
                                             sig, cmdAddr)
         if not reply.sendReply():
-            log.error("Sending reply failed. We'll keep a record of this mail")
-            gettor.utils.dumpMessage(conf, rawMessage)
+            log.error("Sending reply failed.")
+            processFail(conf, rawMessage, replyTo)
             return False
         return True
     except Exception, e:
         log.error("Sending the reply failed.")
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
         log.error("Detail: %s" %e)
-        # Keep a copy of the failed email for later reference
-        gettor.utils.dumpMessage(conf, rawMessage)
+        processFail(conf, rawMessage, replyTo)
         raise
         return False
 

@@ -2,17 +2,16 @@ These are planned changes to the gettor system.
 
 - Testing and proposals to better support users with limited email bandwidth
   (multi-part download, etc.).
-- Write spec for how locale requests shall be formatted and parsed
-- Implement test (-t switch) functionality
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Add more translations
     - Freeze messages for translation
     - Put po files into pootle for translation
-- Add GetTor to GetTor and it will be able to distribute itself
-- Add torbutton (Mike, please sign torbutton and populate a proper .asc)
-- Fix rsync to follow symlinks properly. We want the data not a link to data.
-- Remove 'localhost:25' to send mail and use '/usr/bin/sendmail' instead
-  (suggested by weasel)
 - Package names that are sent out to the user are currently hard-coded. Return
   to a more dynamic approach, also: Add a nice little note about the size of 
   the files users may request
+- Fix rsync to follow symlinks properly. We want the data not a link to data.
+- Remove 'localhost:25' to send mail and use '/usr/bin/sendmail' instead
+  (suggested by weasel)
+- Implement test (-t switch) functionality
+- Add torbutton (Mike, please sign torbutton and populate a proper .asc)
+- Add GetTor to GetTor and it will be able to distribute itself

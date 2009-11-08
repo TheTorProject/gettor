@@ -27,6 +27,12 @@ __all__ = ["Response"]
 
 log = gettor.gtlog.getLogger()
 
+def sendNotification(config, sendTo):
+    """Send notification to user"""
+    response = Response(config, sendTo, "en", "", False, True, "")
+    message = gettor.constants.mailfailmsg
+    return response.sendGenericMessage(message)
+
 class Response:
 
     def __init__(self, config, replyto, lang, package, split, signature, caddr):
