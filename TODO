@@ -1,11 +1,16 @@
 These are planned changes to the gettor system.
 
+- Investigate the usage of gettor+lang@torproject.org email addresses for 
+  letting users choose a reply and tor package language
 - Testing and proposals to better support users with limited email bandwidth
   (multi-part download, etc.).
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Add more translations
     - Freeze messages for translation
     - Put po files into pootle for translation
+- Write instructions on the website on how to use GetTor. Put that site into
+  pootle for translation so for example chinese and iranian users have a
+  reference for help
 - Package names that are sent out to the user are currently hard-coded. Return
   to a more dynamic approach, also: Add a nice little note about the size of 
   the files users may request
