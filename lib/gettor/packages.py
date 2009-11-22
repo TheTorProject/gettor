@@ -25,12 +25,34 @@ log = gettor.gtlog.getLogger()
 
 class Packages:
     #                "bundle name": ("single file regex", "split file regex")
-    packageRegex = { "windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
-                     "panther-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
-                     "macosx-universal-bundle": ("vidalia-bundle-.*-universal.dmg$", "vidalia-bundle-.*-universal_split"),
+    packageRegex = { "tor-browser-bundle_en-US": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"),
+                     "tor-im-browser-bundle_en-US": ("tor-im-browser-.*_en-US.exe$", "tor-im-browser-.*_en-US_split"),
+                     "tor-browser-bundle_de": ("tor-browser-.*_de.exe$", "tor-browser-.*_de_split"),
+                     "tor-im-browser-bundle_de": ("tor-im-browser-.*_de.exe$", "tor-im-browser-.*_de_split"),
+                     "tor-browser-bundle_ar": ("tor-browser-.*_ar.exe$", "tor-browser-.*_ar_split"),
+                     "tor-im-browser-bundle_ar": ("tor-im-browser-.*_ar.exe$", "tor-im-browser-.*_ar_split"),
+                     "tor-browser-bundle_es-ES": ("tor-browser-.*_es-ES.exe$", "tor-browser-.*_es-ES_split"),
+                     "tor-im-browser-bundle_es-ES": ("tor-im-browser-.*_es-ES.exe$", "tor-im-browser-.*_es-ES_split"),
+                     "tor-browser-bundle_fa-IR": ("tor-browser-.*_fa-IR.exe$", "tor-browser-.*_fa-IR_split"),
+                     "tor-im-browser-bundle_fa-IR": ("tor-im-browser-.*_fa-IR.exe$", "tor-im-browser-.*_fa-IR_split"),
+                     "tor-browser-bundle_fr": ("tor-browser-.*_fr.exe$", "tor-browser-.*_fr_split"),
+                     "tor-im-browser-bundle_fr": ("tor-im-browser-.*_fr.exe$", "tor-im-browser-.*_fr_split"),
+                     "tor-browser-bundle_it": ("tor-browser-.*_it.exe$", "tor-browser-.*_it_split"),
+                     "tor-im-browser-bundle_it": ("tor-im-browser-.*_it.exe$", "tor-im-browser-.*_it_split"),
+                     "tor-browser-bundle_nl": ("tor-browser-.*_nl.exe$", "tor-browser-.*_nl_split"),
+                     "tor-im-browser-bundle_nl": ("tor-im-browser-.*_nl.exe$", "tor-im-browser-.*_nl_split"),
+                     "tor-browser-bundle_pl": ("tor-browser-.*_pl.exe$", "tor-browser-.*_pl_split"),
+                     "tor-im-browser-bundle_pl": ("tor-im-browser-.*_pl.exe$", "tor-im-browser-.*_pl_split"),
+                     "tor-browser-bundle_pt": ("tor-browser-.*_pt.exe$", "tor-browser-.*_pt_split"),
+                     "tor-im-browser-bundle_pt": ("tor-im-browser-.*_pt.exe$", "tor-im-browser-.*_pt_split"),
+                     "tor-browser-bundle_ru": ("tor-browser-.*_ru.exe$", "tor-browser-.*_ru_split"),
+                     "tor-im-browser-bundle_ru": ("tor-im-browser-.*_ru.exe$", "tor-im-browser-.*_ru_split"),
+                     "tor-browser-bundle_zh-CN": ("tor-browser-.*_zh-CN.exe$", "tor-browser-.*_zh-CN_split"),
+                     "tor-im-browser-bundle_zh-CN": ("tor-im-browser-.*_zh-CN.exe$", "tor-im-browser-.*_zh-CN_split"),
                      "source-bundle": ("tor-.*.tar.gz$", "Now to something completely different"),
-                     "tor-browser-bundle": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"),
-                     "tor-im-browser-bundle": ("tor-im-browser-.*_en-US.exe$", "tor-im-browser-.*_en-US_split"),
+                     #"windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
+                     #"panther-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
+                     #"macosx-universal-bundle": ("vidalia-bundle-.*-universal.dmg$", "vidalia-bundle-.*-universal_split"),
                      # Mike won't sign Torbutton; He doesn't get gettor support
                      #"torbutton": "torbutton-current.xpi$",
                    }
@@ -91,7 +113,7 @@ class Packages:
                         if splitfile.endswith(".asc"):
                             continue
                         if re.compile(".*split.part.*").match(splitfile):
-                            ascfile = splitdir + "/" + splitfile + ".asc"
+                            ascfile = splitdir + "/signatures/" + splitfile + ".asc"
                             file = splitdir + "/" + splitfile
                             zipFileName = packSplitDir + "/" + splitfile + ".z"
                             if os.access(ascfile, os.R_OK) and os.access(file, os.R_OK):
@@ -124,11 +146,16 @@ class Packages:
     def syncWithMirror(self, mirror, silent):
         rsync = ["rsync"]
         rsync.append("-a")
-        # Don't download dotdirs
-        rsync.append("--exclude='.*'")
+        # Exclude stuff we don't need
+        rsync.append("--exclude=*current*")
+        rsync.append("--exclude=*osx*")
+        rsync.append("--exclude=*rpm*")
+        rsync.append("--exclude=*privoxy*")
+        rsync.append("--exclude=*alpha*")
         if not silent:
             rsync.append("--progress")
-        rsync.append("rsync://%s/tor/dist/current/" % mirror)
+        rsync.append("rsync://%s/tor/dist/" % mirror)
+        rsync.append("rsync://%s/tor/torbrowser/dist/" % mirror)
         rsync.append(self.distDir)
         process = subprocess.Popen(rsync)
         process.wait()
@@ -139,8 +166,11 @@ class Packages:
         """
         rsync = ["rsync"]
         rsync.append("-a")
-        # Don't download dotdirs
-        rsync.append("--exclude='.*'")
+        rsync.append("--exclude=*current*")
+        rsync.append("--exclude=*osx*")
+        rsync.append("--exclude=*rpm*")
+        rsync.append("--exclude=*privoxy*")
+        rsync.append("--exclude=*alpha*")
         if not silent:
             rsync.append("--progress")
         rsync.append("rsync://%s/tor/dist/current/" % mirror)

@@ -40,7 +40,14 @@ class Response:
         self.srcEmail = "GetTor <gettor@torproject.org>"
         self.replyTo = replyto
         assert self.replyTo is not None, "Empty replyto address."
+        # Default lang to en_US
+        if lang is None:
+            lang = "en-US"
         self.mailLang = lang
+        # XXX If someone wants one of the localizable packages, add language 
+        # suffix
+        if package == "tor-browser-bundle" or package == "tor-im-browser-bundle":
+            package = package + "_" + lang
         self.package = package
         self.splitsend = split
         self.signature = signature

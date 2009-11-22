@@ -51,8 +51,43 @@ packagehelpmsg = _("""
     Please reply to this mail (to gettor@torproject.org), and tell me
     a single package name anywhere in the body of your email.
 
-    Please note that currently we can't process HTML emails or base64
-    emails. You will need to send plain text.
+    Please note that GetTor can send out localized versions of Tor.
+    In your mail to us, please add a line containing "Lang:" followed by
+    the language abbreviation like so:
+
+    Lang: language
+
+    For example if you want the tor-browser-bundle for in chinese, write
+    us an email with the following text:
+
+    ---
+    tor-browser-bundle
+    Lang: zh-CN
+    ---
+
+    Or, if you want the tor-browser-bundle in farsi, write us an email
+    with the following text:
+
+    ---
+    tor-browser-bundle
+    Lang: fa-IR
+    ---
+
+    Here is a list of all available languages:
+
+    ar:     Arabic
+    de:     German
+    en-US:  English
+    es-ES:  Spanish
+    fa-IR:  Farsi (Iran)
+    fr:     French
+    it:     Italian
+    nl:     Dutch
+    pl:     Polish
+    ru:     Russian
+    zh-CN:  Chinese
+
+    If you select no language, you will receive the english version.
 
     If you have any questions or it doesn't work, you can contact a
     human at this support email address: tor-assistants@torproject.org

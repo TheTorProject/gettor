@@ -7,15 +7,6 @@ operate GetTor in their language and to serve users in all other supported
 languages. It is currently a draft and will be reformatted, rewritten and
 changed until further notice.
 
-LOCALES FOR OPERATORS
----------------------
-
-Operators should be able to configure GetTor by setting their locale in their
-local configuration file. This allows the GetTor operator to use a localized
-version of GetTor for their language. All error messages, log messages and so
-forth should be localized. This is of course dependent on a proper translation.
-This generally outside of the scope of this document.
-
 LOCALES FOR END USERS
 ---------------------
 

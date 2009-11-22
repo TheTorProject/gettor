@@ -23,8 +23,10 @@ import gettor.utils
 
 log = gettor.gtlog.getLogger()
 
-def processFail(conf, rawMessage, sendTo):
+def processFail(conf, rawMessage, sendTo, e):
     """This routine gets called when something went wrong with the processing"""
+    log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
+    log.error("Detail: %s" %e)
     # Keep a copy of the failed email for later reference
     log.info("We'll keep a record of this mail.")
     gettor.utils.dumpMessage(conf, rawMessage)
@@ -56,9 +58,7 @@ def processMail(conf):
         log.info("Signature is %s" % sig)
     except Exception, e:
         log.error("Parsing the request failed.")
-        log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
-        log.error("Detail: %s" % e) 
-        processFail(conf, rawMessage, replyTo)
+        processFail(conf, rawMessage, replyTo, e)
         return False
 
     # Ok, information aquired. Initiate reply sequence
@@ -72,9 +72,7 @@ def processMail(conf):
         return True
     except Exception, e:
         log.error("Sending the reply failed.")
-        log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
-        log.error("Detail: %s" %e)
-        processFail(conf, rawMessage, replyTo)
+        processFail(conf, rawMessage, replyTo, e)
         raise
         return False
 
