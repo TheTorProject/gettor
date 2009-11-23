@@ -55,7 +55,7 @@ class requestMail:
         self.returnPackage = None
         self.splitDelivery = False
         self.commandaddress = None
-        self.replyLocale = "en"
+        self.replyLocale = "en-US"
         packager = gettor.packages.Packages(config)
         self.packages = packager.getPackageList()
         assert len(self.packages) > 0, "Empty package list"
