@@ -25,9 +25,9 @@ log = gettor.gtlog.getLogger()
 
 class requestMail:
 
-    defaultLang = "en"
+    defaultLang = "en-US"
     # XXX
-    supportedLangs = { "en": "English", 
+    supportedLangs = { "en-US": "English", 
                        "de": "Deutsch" }
 
     def __init__(self, config):
