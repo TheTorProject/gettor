@@ -113,7 +113,7 @@ class Packages:
                         if splitfile.endswith(".asc"):
                             continue
                         if re.compile(".*split.part.*").match(splitfile):
-                            ascfile = splitdir + "/" + splitfile + ".asc"
+                            ascfile = splitdir + "/signatures/" + splitfile + ".asc"
                             file = splitdir + "/" + splitfile
                             zipFileName = packSplitDir + "/" + splitfile + ".z"
                             if os.access(ascfile, os.R_OK) and os.access(file, os.R_OK):
