@@ -155,9 +155,22 @@ class Packages:
         if not silent:
             rsync.append("--progress")
         rsync.append("rsync://%s/tor/dist/" % mirror)
-        rsync.append("rsync://%s/tor/torbrowser/dist/" % mirror)
+        rsync2 = ["rsync"]
+        rsync2.append("-a")
+        # Exclude stuff we don't need
+        rsync2.append("--exclude=*current*")
+        rsync2.append("--exclude=*osx*")
+        rsync2.append("--exclude=*rpm*")
+        rsync2.append("--exclude=*privoxy*")
+        rsync2.append("--exclude=*alpha*")
+        if not silent:
+            rsync2.append("--progress")
+        rsync2.append("rsync://%s/tor/torbrowser/dist/" % mirror)
+        rsync2.append(self.distDir)
         rsync.append(self.distDir)
         process = subprocess.Popen(rsync)
+        process.wait()
+        process = subprocess.Popen(rsync2)
         process.wait()
         return process.returncode
 
