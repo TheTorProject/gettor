@@ -47,6 +47,9 @@ class requestMail:
         except:
             pass
 
+        # We want to parse, log and act on the "To" field
+        self.toAddress = self.parsedMessage["to"]
+        log.info("User made request to %s" % self.toAddress)
         # TODO XXX: 
         # Scrub this data
         self.replytoAddress = self.parsedMessage["from"]
