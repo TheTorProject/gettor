@@ -28,6 +28,7 @@ class requestMail:
     defaultLang = "en-US"
     # XXX
     supportedLangs = { "en-US": "English", 
+                       "fa": "Farsi",
                        "de": "Deutsch" }
 
     def __init__(self, config):
@@ -47,9 +48,15 @@ class requestMail:
         except:
             pass
 
+        self.replyLocale = "en-US"
         # We want to parse, log and act on the "To" field
         self.toAddress = self.parsedMessage["to"]
         log.info("User made request to %s" % self.toAddress)
+        # Check if we got a '+' address
+        match = re.search('(?<=\+)\w+', self.toAddress)
+        if match:
+            self.replyLocale = match.group(0)
+            log.info("User requested language %s" % self.replyLocale)
         # TODO XXX: 
         # Scrub this data
         self.replytoAddress = self.parsedMessage["from"]
@@ -58,7 +65,6 @@ class requestMail:
         self.returnPackage = None
         self.splitDelivery = False
         self.commandaddress = None
-        self.replyLocale = "en-US"
         packager = gettor.packages.Packages(config)
         self.packages = packager.getPackageList()
         assert len(self.packages) > 0, "Empty package list"
@@ -88,11 +94,12 @@ class requestMail:
             if match:
                 self.splitDelivery = True
                 log.info("User requested a split delivery")
-            # Default locale is english
-            match = re.match(".*[Ll]ang:\s+(.*)$", line)
-            if match:
-                self.replyLocale = match.group(1)
-                log.info("User requested locale %s" % self.replyLocale)
+            # Change locale only if none is set so far
+            if self.replyLocale is not None:
+                match = re.match(".*[Ll]ang:\s+(.*)$", line)
+                if match:
+                    self.replyLocale = match.group(1)
+                    log.info("User requested locale %s" % self.replyLocale)
             # Check if this is a command
             match = re.match(".*[Cc]ommand:\s+(.*)$", line)
             if match:
