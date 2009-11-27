@@ -25,16 +25,16 @@ log = gettor.gtlog.getLogger()
 
 class Packages:
     #                "bundle name": ("single file regex", "split file regex")
-    packageRegex = { "tor-browser-bundle_en-US": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"),
-                     "tor-im-browser-bundle_en-US": ("tor-im-browser-.*_en-US.exe$", "tor-im-browser-.*_en-US_split"),
+    packageRegex = { "tor-browser-bundle_en": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"),
+                     "tor-im-browser-bundle_en": ("tor-im-browser-.*_en-US.exe$", "tor-im-browser-.*_en-US_split"),
                      "tor-browser-bundle_de": ("tor-browser-.*_de.exe$", "tor-browser-.*_de_split"),
                      "tor-im-browser-bundle_de": ("tor-im-browser-.*_de.exe$", "tor-im-browser-.*_de_split"),
                      "tor-browser-bundle_ar": ("tor-browser-.*_ar.exe$", "tor-browser-.*_ar_split"),
                      "tor-im-browser-bundle_ar": ("tor-im-browser-.*_ar.exe$", "tor-im-browser-.*_ar_split"),
-                     "tor-browser-bundle_es-ES": ("tor-browser-.*_es-ES.exe$", "tor-browser-.*_es-ES_split"),
-                     "tor-im-browser-bundle_es-ES": ("tor-im-browser-.*_es-ES.exe$", "tor-im-browser-.*_es-ES_split"),
-                     "tor-browser-bundle_fa-IR": ("tor-browser-.*_fa-IR.exe$", "tor-browser-.*_fa-IR_split"),
-                     "tor-im-browser-bundle_fa-IR": ("tor-im-browser-.*_fa-IR.exe$", "tor-im-browser-.*_fa-IR_split"),
+                     "tor-browser-bundle_es": ("tor-browser-.*_es-ES.exe$", "tor-browser-.*_es-ES_split"),
+                     "tor-im-browser-bundle_es": ("tor-im-browser-.*_es-ES.exe$", "tor-im-browser-.*_es-ES_split"),
+                     "tor-browser-bundle_fa": ("tor-browser-.*_fa-IR.exe$", "tor-browser-.*_fa-IR_split"),
+                     "tor-im-browser-bundle_fa": ("tor-im-browser-.*_fa-IR.exe$", "tor-im-browser-.*_fa-IR_split"),
                      "tor-browser-bundle_fr": ("tor-browser-.*_fr.exe$", "tor-browser-.*_fr_split"),
                      "tor-im-browser-bundle_fr": ("tor-im-browser-.*_fr.exe$", "tor-im-browser-.*_fr_split"),
                      "tor-browser-bundle_it": ("tor-browser-.*_it.exe$", "tor-browser-.*_it_split"),

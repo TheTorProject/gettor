@@ -29,7 +29,7 @@ log = gettor.gtlog.getLogger()
 
 def sendNotification(config, sendTo):
     """Send notification to user"""
-    response = Response(config, sendTo, "en", "", False, True, "")
+    response = Response(config, sendTo, None, "", False, True, "")
     message = gettor.constants.mailfailmsg
     return response.sendGenericMessage(message)
 
@@ -40,9 +40,9 @@ class Response:
         self.srcEmail = "GetTor <gettor@torproject.org>"
         self.replyTo = replyto
         assert self.replyTo is not None, "Empty replyto address."
-        # Default lang to en_US
+        # Default lang is en
         if lang is None:
-            lang = "en-US"
+            lang = "en"
         self.mailLang = lang
         # XXX If someone wants one of the localizable packages, add language 
         # suffix

@@ -25,11 +25,19 @@ log = gettor.gtlog.getLogger()
 
 class requestMail:
 
-    defaultLang = "en-US"
-    # XXX
-    supportedLangs = { "en-US": "English", 
+    defaultLang = "en"
+    # XXX Change this or remove this
+    supportedLangs = { "en": "English", 
                        "fa": "Farsi",
-                       "de": "Deutsch" }
+                       "de": "Deutsch",
+                       "ar": "Arabic",
+                       "es": "Spanish",
+                       "fr": "French",
+                       "it": "Italian",
+                       "nl": "Dutch",
+                       "pl": "Polish",
+                       "ru": "Russian",
+                       "zh-CN": "Chinese"  }
 
     def __init__(self, config):
         """ Read message from stdin, parse all the stuff we want to know
@@ -48,14 +56,19 @@ class requestMail:
         except:
             pass
 
-        self.replyLocale = "en-US"
+        self.replyLocale = self.defaultLang
         # We want to parse, log and act on the "To" field
         self.toAddress = self.parsedMessage["to"]
         log.info("User made request to %s" % self.toAddress)
         # Check if we got a '+' address
         match = re.search('(?<=\+)\w+', self.toAddress)
         if match:
-            self.replyLocale = match.group(0)
+            # Cut back and front
+            splitFrontPart = self.toAddress.split('@')
+            assert len(splitFrontPart) > 0, "Splitting To: address failed"
+            splitLang = splitFrontPart[0].rsplit('+')
+            assert len(splitLang) > 1, "Splitting for language failed"
+            self.replyLocale = splitLang[1]
             log.info("User requested language %s" % self.replyLocale)
         # TODO XXX: 
         # Scrub this data
