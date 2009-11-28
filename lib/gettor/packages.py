@@ -50,9 +50,9 @@ class Packages:
                      "tor-browser-bundle_zh-CN": ("tor-browser-.*_zh-CN.exe$", "tor-browser-.*_zh-CN_split"),
                      "tor-im-browser-bundle_zh-CN": ("tor-im-browser-.*_zh-CN.exe$", "tor-im-browser-.*_zh-CN_split"),
                      "source-bundle": ("tor-.*.tar.gz$", "Now to something completely different"),
-                     #"windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
-                     #"panther-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
-                     #"macosx-universal-bundle": ("vidalia-bundle-.*-universal.dmg$", "vidalia-bundle-.*-universal_split"),
+                     "windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
+                     "panther-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
+                     "macosx-i386-bundle": ("vidalia-bundle-.*-i386.dmg$", "vidalia-bundle-.*-universal_split"),
                      # Mike won't sign Torbutton; He doesn't get gettor support
                      #"torbutton": "torbutton-current.xpi$",
                    }
@@ -152,9 +152,11 @@ class Packages:
         rsync.append("--exclude=*rpm*")
         rsync.append("--exclude=*privoxy*")
         rsync.append("--exclude=*alpha*")
+        rsync.append("--exclude=*vidalia-bundles*")
         if not silent:
             rsync.append("--progress")
         rsync.append("rsync://%s/tor/dist/" % mirror)
+        # XXX HACK :) will be fixed soon
         rsync2 = ["rsync"]
         rsync2.append("-a")
         # Exclude stuff we don't need
@@ -163,14 +165,24 @@ class Packages:
         rsync2.append("--exclude=*rpm*")
         rsync2.append("--exclude=*privoxy*")
         rsync2.append("--exclude=*alpha*")
+        rsync2.append("--exclude=*vidalia-bundles*")
         if not silent:
             rsync2.append("--progress")
         rsync2.append("rsync://%s/tor/torbrowser/dist/" % mirror)
         rsync2.append(self.distDir)
+        rsync3 = ["rsync"]
+        rsync3.append("-a")
+        rsync3.append("--exclude=*alpha*")
+        if not silent:
+            rsync3.append("--progress")
+        rsync3.append("rsync://%s/tor/dist/vidalia-bundles/" % mirror)
+        rsync3.append(self.distDir)
         rsync.append(self.distDir)
         process = subprocess.Popen(rsync)
         process.wait()
         process = subprocess.Popen(rsync2)
+        process.wait()
+        process = subprocess.Popen(rsync3)
         process.wait()
         return process.returncode
 
@@ -184,6 +196,7 @@ class Packages:
         rsync.append("--exclude=*rpm*")
         rsync.append("--exclude=*privoxy*")
         rsync.append("--exclude=*alpha*")
+        rsync.append("--exclude=*vidalia-bundles*")
         if not silent:
             rsync.append("--progress")
         rsync.append("rsync://%s/tor/dist/current/" % mirror)

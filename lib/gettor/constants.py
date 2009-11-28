@@ -43,7 +43,7 @@ packagehelpmsg = _("""
     Please select one of the following package names:
 
         tor-browser-bundle
-        macosx-universal-bundle
+        macosx-i386-bundle
         panther-bundle
         tor-im-browser-bundle
         source-bundle
@@ -51,35 +51,55 @@ packagehelpmsg = _("""
     Please reply to this mail (to gettor@torproject.org), and tell me
     a single package name anywhere in the body of your email.
 
+    OBTAINING LOCALIZED VERSIONS OF TOR
+    ===================================
+
     Please note that GetTor can send out localized versions of Tor.
+
+    Obtaining localized Tor via 'plus' addresses:
+    --------------------------------------------
+
+    There are two ways how to receive localized versions of Tor. The 
+    first and easiest is to send us email to a 'plus' address like so:
+
+        gettor+zh_CN@torproject.org
+
+    This will for exmaple give you the requested package in a localized
+    version for chinese. Check below for a list of supported language 
+    codes.
+
+    Obtaining localized Tor via 'Lang' code:
+    ---------------------------------------
+
+    The other way to receive a localized Tor package is the following:
+
     In your mail to us, please add a line containing "Lang:" followed by
     the language abbreviation like so:
 
-    Lang: language
+        Lang: language
 
     For example if you want the tor-browser-bundle for in chinese, write
     us an email with the following text:
 
-    ---
-    tor-browser-bundle
-    Lang: zh-CN
-    ---
+        tor-browser-bundle
+        Lang: zh-CN
 
     Or, if you want the tor-browser-bundle in farsi, write us an email
     with the following text:
 
-    ---
-    tor-browser-bundle
-    Lang: fa-IR
-    ---
+        tor-browser-bundle
+        Lang: fa
+
+    List of supported locales:
+    -------------------------
 
     Here is a list of all available languages:
 
     ar:     Arabic
     de:     German
-    en-US:  English
-    es-ES:  Spanish
-    fa-IR:  Farsi (Iran)
+    en:     English
+    es:     Spanish
+    fa:     Farsi (Iran)
     fr:     French
     it:     Italian
     nl:     Dutch
@@ -88,6 +108,9 @@ packagehelpmsg = _("""
     zh-CN:  Chinese
 
     If you select no language, you will receive the english version.
+
+    SUPPORT
+    =======
 
     If you have any questions or it doesn't work, you can contact a
     human at this support email address: tor-assistants@torproject.org
