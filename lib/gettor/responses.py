@@ -46,7 +46,10 @@ class Response:
         self.mailLang = lang
         # XXX If someone wants one of the localizable packages, add language 
         # suffix
+        # Attention though: This needs to correspond to the  packages in 
+        # packages.py
         if package == "tor-browser-bundle" or package == "tor-im-browser-bundle":
+            # "tor-browser-bundle" => "tor-browser-bundle_de"
             package = package + "_" + lang
         self.package = package
         self.splitsend = split

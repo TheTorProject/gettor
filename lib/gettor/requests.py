@@ -46,6 +46,7 @@ class requestMail:
         self.parsedMessage = email.message_from_string(self.rawMessage)
         self.signature = False
         self.config = config
+        self.gotPlusReq = False
         # TODO XXX:
         # This should catch DNS exceptions and fail to verify if we have a 
         # dns timeout
@@ -69,7 +70,12 @@ class requestMail:
             splitLang = splitFrontPart[0].rsplit('+')
             assert len(splitLang) > 1, "Splitting for language failed"
             self.replyLocale = splitLang[1]
+            # Mark this request so that we might be able to take decisions 
+            # later
+            self.gotPlusReq = True
             log.info("User requested language %s" % self.replyLocale)
+        else:
+            log.info("Not a 'plus' address")
         # TODO XXX: 
         # Scrub this data
         self.replytoAddress = self.parsedMessage["from"]
@@ -108,7 +114,7 @@ class requestMail:
                 self.splitDelivery = True
                 log.info("User requested a split delivery")
             # Change locale only if none is set so far
-            if self.replyLocale is not None:
+            if not self.gotPlusReq:
                 match = re.match(".*[Ll]ang:\s+(.*)$", line)
                 if match:
                     self.replyLocale = match.group(1)
