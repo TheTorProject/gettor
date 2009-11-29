@@ -44,7 +44,7 @@ packagehelpmsg = _("""
 
         tor-browser-bundle
         macosx-i386-bundle
-        panther-bundle
+        macosx-ppc-bundle
         tor-im-browser-bundle
         source-bundle
 

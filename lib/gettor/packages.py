@@ -51,7 +51,7 @@ class Packages:
                      "tor-im-browser-bundle_zh-CN": ("tor-im-browser-.*_zh-CN.exe$", "tor-im-browser-.*_zh-CN_split"),
                      "source-bundle": ("tor-.*.tar.gz$", "Now to something completely different"),
                      "windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
-                     "panther-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
+                     "macosx-ppc-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
                      "macosx-i386-bundle": ("vidalia-bundle-.*-i386.dmg$", "vidalia-bundle-.*-universal_split"),
                      # Mike won't sign Torbutton; He doesn't get gettor support
                      #"torbutton": "torbutton-current.xpi$",
