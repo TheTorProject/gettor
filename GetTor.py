@@ -73,7 +73,6 @@ def processMail(conf):
     except Exception, e:
         log.error("Sending the reply failed.")
         processFail(conf, rawMessage, replyTo, e)
-        raise
         return False
 
 def processOptions(options, conf):

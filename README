@@ -1,7 +1,7 @@
 OVERVIEW
 --------
-GetTor is a program for serving Tor and related files over SMTP. Users
-interact with GetTor by sending it an email.
+GetTor is a program for serving Tor and related files over SMTP. Users interact
+with GetTor by sending it email.
 
 The following document explains how to setup GetTor for a server admin.
 
@@ -9,7 +9,7 @@ PREREQUISITES
 -------------
 
 To deploy GetTor, you'll want a machine that invokes .forward files
-for users. You'll also want to have python and rsync installed.
+for users. You'll also want to have python (>= 2.5) and rsync installed.
 
 There are some limits with smtp software for outgoing email sizes. You should
 check your software to ensure that you can send files that are as large
@@ -61,8 +61,8 @@ You should see an rsync and finally something like:
     2009-01-05 16:49:29,226 (9222) Syncing Tor packages done.
     2009-01-05 16:49:30,155 (9222) Building packages done.
 
-Now you'll install the cronjob. This clears the blacklist and updates
-packages daily:
+Now you'll install the cronjob. This clears the blacklist and updates packages 
+daily:
 
     gettor@moria:~/opt/gettor$ ./GetTor.py -i
     2009-01-05 17:34:53,911 (16646) Installing cron donee
@@ -74,8 +74,7 @@ feature:
 
 Finally, you need to setup email forwarding to the GetTor bot like so:
 
-    gettor@moria:~$ cat .forward
-    "|/home/gettor/opt/gettor/GetTor.py"
+    gettor@moria:~$ echo "|/home/gettor/opt/gettor/GetTor.py" > ~/.forward
 
 Now GetTor.py is installed, prepared and ready to serve files. Send it email!
 
@@ -100,21 +99,17 @@ Also, in case your .po files for some reason live in a different directory
 than i18n/ (relative to GetTor.py, as provided by GetTor), you can tell this
 to GetTor as follows:
 
-    gettor@moria:~/opt/gettor$ ./GetTor.py -r -d /path/to/my/mofiles/directory
+    gettor@moria:~/opt/gettor$ ./GetTor.py -r -d /path/to/my/pofiles/directory
 
 Note that GetTor will expect the same directory structure as provided under
-i18n/ in the GetTor source package, e.g. 'i18n/en/gettor_en.po',
-'i18n/de/gettor_de.po', and so on.
+i18n/ in the GetTor source package, e.g. 'i18n/en/gettor.po',
+'i18n/de/gettor.po', and so on.
 
 To add a new language to GetTor, one must create a new .po file in subversion
 in the proper directory. For Korean, one would create i18n/ko/ and add the
-untranslated file (called gettor_ko.po) to that directory. This file should be
+untranslated file (called gettor.po) to that directory. This file should be
 translated but partial translations are allowed. Once this file has been
-created, the GetTor program does not need to be modified. It does however 
-require that one adds a configuration option indicating the newly desired
-locale (the default is English):
-	
-	locale = ko
+created, the GetTor program does not need to be modified.
 
 However, if a user wished to add support in responses to users, they will need
 to modiy the 'requests.py' file like so:
@@ -154,7 +149,7 @@ distDir:       Pristine Tor packages as downloaded by rsync will be found here
 packDir:       Processed Tor packages ready to be handed out to the user will
                be found here
 srcEmail:      The email containing the Tor package will use this as 'From:'
-locale:        Choose your default mail and log locale
+locale:        Choose your default mail locale
 logFile:       If 'file' logging is chosen, log to this file
 logSubSystem:  This has to be one of the following strings:
                'nothing':  Nothing is logged anywhere (Recommended)
@@ -214,6 +209,7 @@ FILE SIZE ISSUES
 Some email providers may not be happy with the files GetTor sends.
 Gmail provides documentation of their incoming and outgoing file sizes. It is
 currently 20MB (though we have sent around 21MB without issue):
+
 	http://mail.google.com/support/bin/answer.py?hl=en&answer=8770
 
 Other providers are not as transparent and this may cause failures.

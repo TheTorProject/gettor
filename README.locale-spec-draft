@@ -26,20 +26,13 @@ for all output.
 
 If a user wishes, they may set the locale for all responses. The locale must be
 passed by the end user as a single line. The start of the line must begin with
-'Locale: ' and be followed by the desired locale. The locale must be at the end
+'Lang: ' and be followed by the desired locale. The locale must be at the end
 of the line. An example follows on the following line:
-Locale: de
+    
+    Lang: de
 
 The first valid Locale line found in the message will designate the response
 locale.
-
-HIGH TECH LOCALE PARSING
-------------------------
-
-If a user is able to set custom mail headers, they may designate their desired
-locale by specifying it with an 'X-' header of 'X-LOCALE'. This must be
-seperated by a space and followed by the desired locale. An example follows:
-X-LOCALE: de
 
 AUTOMATED LOCALE PARSING
 ------------------------

@@ -1,7 +1,5 @@
 These are planned changes to the gettor system.
 
-- Investigate the usage of gettor+lang@torproject.org email addresses for 
-  letting users choose a reply and tor package language
 - Testing and proposals to better support users with limited email bandwidth
   (multi-part download, etc.).
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
@@ -24,7 +22,6 @@ These are planned changes to the gettor system.
 - Package names that are sent out to the user are currently hard-coded. Return
   to a more dynamic approach, also: Add a nice little note about the size of 
   the files users may request
-- Fix rsync to follow symlinks properly. We want the data not a link to data.
 - Remove 'localhost:25' to send mail and use '/usr/bin/sendmail' instead
   (suggested by weasel)
 - Implement test (-t switch) functionality
