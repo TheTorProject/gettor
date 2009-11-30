@@ -25,8 +25,9 @@ log = gettor.gtlog.getLogger()
 
 def processFail(conf, rawMessage, sendTo, e):
     """This routine gets called when something went wrong with the processing"""
-    log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
-    log.error("Detail: %s" %e)
+    if e is not None:
+        log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
+        log.error("Detail: %s" %e)
     # Keep a copy of the failed email for later reference
     log.info("We'll keep a record of this mail.")
     gettor.utils.dumpMessage(conf, rawMessage)
@@ -67,7 +68,7 @@ def processMail(conf):
                                             sig, cmdAddr)
         if not reply.sendReply():
             log.error("Sending reply failed.")
-            processFail(conf, rawMessage, replyTo)
+            processFail(conf, rawMessage, replyTo, None)
             return False
         return True
     except Exception, e:
