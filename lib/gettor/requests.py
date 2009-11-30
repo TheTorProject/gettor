@@ -37,7 +37,7 @@ class requestMail:
                        "nl": "Dutch",
                        "pl": "Polish",
                        "ru": "Russian",
-                       "zh-CN": "Chinese"  }
+                       "zh_CN": "Chinese"  }
 
     def __init__(self, config):
         """ Read message from stdin, parse all the stuff we want to know
@@ -76,6 +76,10 @@ class requestMail:
         assert len(self.packages) > 0, "Empty package list"
 
     def parseMail(self):
+    	# First of all, check what language the user wants
+        if not self.gotPlusReq:
+	    self.findOutLang()
+        self.checkLang()
         # Parse line by line
         for line in email.Iterators.body_line_iterator(self.parsedMessage):
             # Skip quotes
@@ -89,22 +93,31 @@ class requestMail:
             self.matchPackage(line)
             # Check for split delivery in line
             self.matchSplit(line)
-            # Change locale only if none is set so far
-            if not self.gotPlusReq:
-                self.matchLang(line)
             # Check if this is a command
             self.matchCommand(line)
 
-        self.checkLang()
+	# XXX HACK
+	self.torSpecialPackageExpansion()
     
         if self.returnPackage is None:
             log.info("User didn't select any packages")
-        else:
-            # This should go sometime XXX
-            self.torSpecialPackageExpansion()
 
         return (self.replytoAddress, self.replyLocale, self.returnPackage, \
                 self.splitDelivery, self.signature, self.commandaddress)
+
+    def findOutLang(self):
+        # Parse line by line
+        for line in email.Iterators.body_line_iterator(self.parsedMessage):
+            # Skip quotes
+            if line.startswith(">"):
+                continue
+            # Strip HTML from line
+            # XXX: Actually we should rather read the whole body into a string
+            #      and strip that. -kaner
+            line = self.stripTags(line)
+	    # Check to see if we got a language request with 'Lang:'
+	    self.matchLang(line)
+        
 
     def matchPlusAddress(self):
         match = re.search('(?<=\+)\w+', self.toAddress)
@@ -164,6 +177,15 @@ class requestMail:
                     % self.replytoAddress
             self.commandaddress = address
 
+    def torSpecialPackageExpansion(self):
+        # If someone wants one of the localizable packages, add language 
+        # suffix. This isn't nice because we're hard-coding package names here
+        # Attention: This needs to correspond to the  packages in packages.py
+        if self.returnPackage == "tor-browser-bundle" \
+                               or self.returnPackage == "tor-im-browser-bundle":
+            # "tor-browser-bundle" => "tor-browser-bundle_de"
+	    self.returnPackage = self.returnPackage + "_" + self.replyLocale 
+
     def checkLang(self):
         # Actually use a map here later XXX
         for (key, lang) in self.supportedLangs.items():
@@ -174,15 +196,6 @@ class requestMail:
             log.info("Requested language %s not supported. Falling back to %s" \
                         % (self.replyLocale, self.defaultLang))
             self.replyLocale = self.defaultLang
-
-    def torSpecialPackageExpansion(self):
-        # If someone wants one of the localizable packages, add language 
-        # suffix. This isn't nice because we're hard-coding package names here
-        # Attention: This needs to correspond to the  packages in packages.py
-        if self.returnPackage == "tor-browser-bundle" \
-                               or self.returnPackage == "tor-im-browser-bundle":
-            # "tor-browser-bundle" => "tor-browser-bundle_de"
-            self.returnPackage = self.returnPackage + "_" + self.replyLocale 
 
     def stripTags(self, string):
         """Simple HTML stripper"""

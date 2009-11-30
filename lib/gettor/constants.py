@@ -82,7 +82,7 @@ packagehelpmsg = _("""
     us an email with the following text:
 
         tor-browser-bundle
-        Lang: zh-CN
+        Lang: zh_CN
 
     Or, if you want the tor-browser-bundle in farsi, write us an email
     with the following text:
@@ -105,7 +105,7 @@ packagehelpmsg = _("""
     nl:     Dutch
     pl:     Polish
     ru:     Russian
-    zh-CN:  Chinese
+    zh_CN:  Chinese
 
     If you select no language, you will receive the english version.
 

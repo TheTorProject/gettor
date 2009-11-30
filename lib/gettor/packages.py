@@ -25,7 +25,9 @@ log = gettor.gtlog.getLogger()
 
 class Packages:
     #                "bundle name": ("single file regex", "split file regex")
-    packageRegex = { "tor-browser-bundle_en": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"),
+    packageRegex = { "tor-browser-bundle": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"),
+                     "tor-im-browser-bundle": ("tor-im-browser-.*_en-US.exe$", "tor-im-browser-.*_en-US_split"),
+                     "tor-browser-bundle_en": ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"),
                      "tor-im-browser-bundle_en": ("tor-im-browser-.*_en-US.exe$", "tor-im-browser-.*_en-US_split"),
                      "tor-browser-bundle_de": ("tor-browser-.*_de.exe$", "tor-browser-.*_de_split"),
                      "tor-im-browser-bundle_de": ("tor-im-browser-.*_de.exe$", "tor-im-browser-.*_de_split"),
@@ -47,8 +49,8 @@ class Packages:
                      "tor-im-browser-bundle_pt": ("tor-im-browser-.*_pt.exe$", "tor-im-browser-.*_pt_split"),
                      "tor-browser-bundle_ru": ("tor-browser-.*_ru.exe$", "tor-browser-.*_ru_split"),
                      "tor-im-browser-bundle_ru": ("tor-im-browser-.*_ru.exe$", "tor-im-browser-.*_ru_split"),
-                     "tor-browser-bundle_zh-CN": ("tor-browser-.*_zh-CN.exe$", "tor-browser-.*_zh-CN_split"),
-                     "tor-im-browser-bundle_zh-CN": ("tor-im-browser-.*_zh-CN.exe$", "tor-im-browser-.*_zh-CN_split"),
+                     "tor-browser-bundle_zh_CN": ("tor-browser-.*_zh-CN.exe$", "tor-browser-.*_zh-CN_split"),
+                     "tor-im-browser-bundle_zh_CN": ("tor-im-browser-.*_zh-CN.exe$", "tor-im-browser-.*_zh-CN_split"),
                      "source-bundle": ("tor-.*.tar.gz$", "Now to something completely different"),
                      "windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
                      "macosx-ppc-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
@@ -93,8 +95,9 @@ class Packages:
         return self.packageList
 
     def buildPackages(self):
-        for filename in os.listdir(self.distDir):
-            for (pack, (regex_single, regex_split)) in self.packageRegex.items():
+        # Reverse this: Loop through package regex and look for match 
+        for (pack, (regex_single, regex_split)) in self.packageRegex.items():
+            for filename in os.listdir(self.distDir):
                 # Splitfile hacks. XXX: Refactor
                 if re.compile(regex_split).match(filename):
                     packSplitDir = None
@@ -131,6 +134,7 @@ class Packages:
                     zipFileName  = self.packDir + "/" + pack + ".z"
                     # If .asc file is there, build Zip file
                     if os.access(ascfile, os.R_OK):
+		    	print "ok: ", zipFileName
                         zip = zipfile.ZipFile(zipFileName, "w")
                         zip.write(file, os.path.basename(file))
                         zip.write(ascfile, os.path.basename(ascfile))
