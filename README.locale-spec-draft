@@ -51,6 +51,5 @@ GENERATING .po/.pot FILES
 
 In the top level directory of the gettor source, run the following command:
 
-	xgettext setup.py GetTor.py gettor/*.py \
-	-d gettor -o i18n/templates/gettor.pot
+    xgettext lib/gettor/constants.py -d gettor -o i18n/templates/gettor.pot
 
