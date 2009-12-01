@@ -54,58 +54,31 @@ packagehelpmsg = _("""
     OBTAINING LOCALIZED VERSIONS OF TOR
     ===================================
 
-    Please note that GetTor can send out localized versions of Tor.
+    To get a version of Tor translated into your language, specify the
+    language you want in the address you send the mail to:
 
-    Obtaining localized Tor via 'plus' addresses:
-    --------------------------------------------
+        gettor+zh@torproject.org
 
-    There are two ways how to receive localized versions of Tor. The
-    first and easiest is to send us email to a 'plus' address like so:
-
-        gettor+zh_CN@torproject.org
-
-    This will for example give you the requested package in a localized
+    This example will give you the requested package in a localized
     version for Chinese. Check below for a list of supported language
     codes.
-
-    Obtaining localized Tor via 'Lang' code:
-    ---------------------------------------
-
-    The other way to receive a localized Tor package is the following:
-
-    In your mail to us, please add a line containing "Lang:" followed by
-    the language abbreviation like so:
-
-        Lang: language
-
-    For example if you want the tor-browser-bundle in Chinese, write
-    us an email with the following text:
-
-        tor-browser-bundle
-        Lang: zh_CN
-
-    Or, if you want the tor-browser-bundle in Farsi, write us an email
-    with the following text:
-
-        tor-browser-bundle
-        Lang: fa
 
     List of supported locales:
     -------------------------
 
     Here is a list of all available languages:
 
-    ar:     Arabic
-    de:     German
-    en:     English
-    es:     Spanish
-    fa:     Farsi (Iran)
-    fr:     French
-    it:     Italian
-    nl:     Dutch
-    pl:     Polish
-    ru:     Russian
-    zh_CN:  Chinese
+    gettor+ar@torproject.org:     Arabic
+    gettor+de@torproject.org:     German
+    gettor+en@torproject.org:     English
+    gettor+es@torproject.org:     Spanish
+    gettor+fa@torproject.org:     Farsi (Iran)
+    gettor+fr@torproject.org:     French
+    gettor+it@torproject.org:     Italian
+    gettor+nl@torproject.org:     Dutch
+    gettor+pl@torproject.org:     Polish
+    gettor+ru@torproject.org:     Russian
+    gettor+zh@torproject.org:     Chinese
 
     If you select no language, you will receive the English version.
 
