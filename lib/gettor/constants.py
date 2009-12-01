@@ -57,7 +57,7 @@ packagehelpmsg = _("""
     To get a version of Tor translated into your language, specify the
     language you want in the address you send the mail to:
 
-        gettor+zh@torproject.org
+        gettor+zh_cn@torproject.org
 
     This example will give you the requested package in a localized
     version for Chinese. Check below for a list of supported language
@@ -78,7 +78,7 @@ packagehelpmsg = _("""
     gettor+nl@torproject.org:     Dutch
     gettor+pl@torproject.org:     Polish
     gettor+ru@torproject.org:     Russian
-    gettor+zh@torproject.org:     Chinese
+    gettor+zh_cn@torproject.org:  Chinese
 
     If you select no language, you will receive the English version.
 
