@@ -64,8 +64,8 @@ packagehelpmsg = _("""
 
         gettor+zh_CN@torproject.org
 
-    This will for exmaple give you the requested package in a localized
-    version for chinese. Check below for a list of supported language
+    This will for example give you the requested package in a localized
+    version for Chinese. Check below for a list of supported language
     codes.
 
     Obtaining localized Tor via 'Lang' code:
@@ -78,13 +78,13 @@ packagehelpmsg = _("""
 
         Lang: language
 
-    For example if you want the tor-browser-bundle for in chinese, write
+    For example if you want the tor-browser-bundle in Chinese, write
     us an email with the following text:
 
         tor-browser-bundle
         Lang: zh_CN
 
-    Or, if you want the tor-browser-bundle in farsi, write us an email
+    Or, if you want the tor-browser-bundle in Farsi, write us an email
     with the following text:
 
         tor-browser-bundle
@@ -107,7 +107,7 @@ packagehelpmsg = _("""
     ru:     Russian
     zh_CN:  Chinese
 
-    If you select no language, you will receive the english version.
+    If you select no language, you will receive the English version.
 
     SUPPORT
     =======
@@ -226,7 +226,7 @@ mailfailmsg = _("""
 
     Thank you for your request.
 
-    Unfortunatly we are currently experiencing problems and we can't fulfill
+    Unfortunately we are currently experiencing problems and we can't fulfill
     your request right now. Please be patient as we try to resolve this issue.
 
         """)
