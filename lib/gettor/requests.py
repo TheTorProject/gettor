@@ -63,6 +63,9 @@ class requestMail:
         log.info("User made request to %s" % self.toAddress)
         # Check if we got a '+' address
         self.matchPlusAddress()
+        # If we got a '+' address, add an ugly mapping hack
+        if self.gotPlusReq:
+            self.doUglyHack()
         # TODO XXX: 
         # Scrub this data
         self.replytoAddress = self.parsedMessage["from"]
@@ -225,3 +228,9 @@ class requestMail:
     def getAll(self):
         return (self.replytoAddress, self.replyLocale, \
                 self.returnPackage, self.splitDelivery, self.signature)
+
+    def doUglyHack(self):
+        # Here be dragons
+        if self.replyLocale == "zh" or self.replyLocale == "chinese" \
+                             or self.repyLocale == "___":
+            self.replyLocale = "zh_CN"
