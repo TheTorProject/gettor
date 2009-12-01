@@ -3,7 +3,7 @@
 """
  constants.py
 
- Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
+ Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>,
                      Christian Fromme <kaner@strace.org>
 
  This is Free Software. See LICENSE for license information.
@@ -59,13 +59,13 @@ packagehelpmsg = _("""
     Obtaining localized Tor via 'plus' addresses:
     --------------------------------------------
 
-    There are two ways how to receive localized versions of Tor. The 
+    There are two ways how to receive localized versions of Tor. The
     first and easiest is to send us email to a 'plus' address like so:
 
         gettor+zh_CN@torproject.org
 
     This will for exmaple give you the requested package in a localized
-    version for chinese. Check below for a list of supported language 
+    version for chinese. Check below for a list of supported language
     codes.
 
     Obtaining localized Tor via 'Lang' code:
@@ -163,10 +163,10 @@ splitpackagemsg = _("""
     package and verify the signature.
 
     IMPORTANT NOTE:
-    Since this is part of a split-file request, you need to wait for 
+    Since this is part of a split-file request, you need to wait for
     all split files to be received by you before you can save them all
-    into the same directory and unpack them by double-clicking the 
-    first file. 
+    into the same directory and unpack them by double-clicking the
+    first file.
 
     Packages might come out of order! Please make sure you received
     all packages before you attempt to unpack them!
@@ -230,4 +230,4 @@ mailfailmsg = _("""
     your request right now. Please be patient as we try to resolve this issue.
 
         """)
-    
+
