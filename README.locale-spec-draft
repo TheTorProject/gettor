@@ -28,7 +28,7 @@ If a user wishes, they may set the locale for all responses. The locale must be
 passed by the end user as a single line. The start of the line must begin with
 'Lang: ' and be followed by the desired locale. The locale must be at the end
 of the line. An example follows on the following line:
-    
+
     Lang: de
 
 The first valid Locale line found in the message will designate the response
@@ -42,7 +42,7 @@ parse the desired locale by using plus addressing. The user should append the
 desired locale to the email address of the GetTor robot. An example for setting
 all responses into German (Locale: de) follows below:
 
-	gettor+de@torproject.org
+        gettor+de@torproject.org
 
 This will allow the user to interact without any knowledge of locales.
 
@@ -52,4 +52,10 @@ GENERATING .po/.pot FILES
 In the top level directory of the gettor source, run the following command:
 
     xgettext lib/gettor/constants.py -d gettor -o i18n/templates/gettor.pot
+
+Commit your pot file. Then log into the pootle server, commit any
+outstanding changes in ~/gettor/, and do an svn update. Then log into the
+pootle web interface, choose gettor, choose 'admin', click each check box
+(ugh), click 'update languages' at the bottom. Then log into the pootle
+server and do an svn commit of all the new po files.
 
