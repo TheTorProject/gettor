@@ -231,6 +231,5 @@ class requestMail:
 
     def doUglyHack(self):
         # Here be dragons
-        if self.replyLocale == "zh" or self.replyLocale == "chinese" \
-                             or self.repyLocale == "___":
+        if self.replyLocale == "zh" or self.replyLocale == "chinese":
             self.replyLocale = "zh_CN"
