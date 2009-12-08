@@ -99,13 +99,14 @@ class requestMail:
             # Check if this is a command
             self.matchCommand(line)
 
-	# XXX HACK
-	self.torSpecialPackageExpansion()
+        # XXX HACK
+        self.torSpecialPackageExpansion()
     
         if self.returnPackage is None:
             log.info("User didn't select any packages")
 
-        return (self.replytoAddress, self.replyLocale, self.returnPackage, \
+        return (self.toAddress, self.replytoAddress, self.replyLocale, \
+                self.returnPackage, \
                 self.splitDelivery, self.signature, self.commandaddress)
 
     def findOutLang(self):

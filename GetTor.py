@@ -23,7 +23,7 @@ import gettor.utils
 
 log = gettor.gtlog.getLogger()
 
-def processFail(conf, rawMessage, sendTo, e):
+def processFail(conf, rawMessage, sendFr, sendTo, e):
     """This routine gets called when something went wrong with the processing"""
     if e is not None:
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
@@ -32,7 +32,7 @@ def processFail(conf, rawMessage, sendTo, e):
     log.info("We'll keep a record of this mail.")
     gettor.utils.dumpMessage(conf, rawMessage)
     # Send out notification to user, if possible
-    if not gettor.responses.sendNotification(conf, sendTo):
+    if not gettor.responses.sendNotification(conf, sendFr, sendTo):
         log.error("Also failed to send the user a proper notification. :-/")
     else:
         log.info("Failure notification sent to user %s" % sendTo)
@@ -53,19 +53,20 @@ def processMail(conf):
     try:
         request = gettor.requests.requestMail(conf)
         rawMessage = request.getRawMessage()
-        replyTo, lang, pack, split, sig, cmdAddr = request.parseMail()
+        sendFr, replyTo, lang, pack, split, sig, cmdAddr = request.parseMail()
         log.info("Request from %s package %s, lang %s, split %s, cmdaddr %s" \
                     % (replyTo, pack, lang, split, cmdAddr))
         log.info("Signature is %s" % sig)
+        log.info("Mail was sent to %s" % sendFr)
     except Exception, e:
         log.error("Parsing the request failed.")
-        processFail(conf, rawMessage, replyTo, e)
+        processFail(conf, rawMessage, sendFr, replyTo, e)
         return False
 
     # Ok, information aquired. Initiate reply sequence
     try:
-        reply = gettor.responses.Response(conf, replyTo, lang, pack, split, \
-                                            sig, cmdAddr)
+        reply = gettor.responses.Response(conf, sendFr, replyTo, lang, pack, \
+					  split, sig, cmdAddr)
         if not reply.sendReply():
             log.error("Sending reply failed.")
             processFail(conf, rawMessage, replyTo, None)
@@ -73,7 +74,7 @@ def processMail(conf):
         return True
     except Exception, e:
         log.error("Sending the reply failed.")
-        processFail(conf, rawMessage, replyTo, e)
+        processFail(conf, rawMessage, sendFr, replyTo, e)
         return False
 
 def processOptions(options, conf):
