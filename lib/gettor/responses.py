@@ -14,18 +14,23 @@
 import os
 import smtplib
 import MimeWriter
-import StringIO
+import mimetools
+import cStringIO
 import base64
 import gettext
 import re
+import sys
 
 import gettor.gtlog
 import gettor.blacklist
-import gettor.constants
+
+
 
 __all__ = ["Response"]
 
 log = gettor.gtlog.getLogger()
+
+trans = None
 
 def sendNotification(config, sendTo):
     """Send notification to user"""
@@ -54,14 +59,18 @@ class Response:
             self.sendTo = self.cmdAddr
         else:
             self.sendTo = self.replyTo
-        self.whiteList = gettor.blacklist.BWList(config.getWlStateDir())
-        self.blackList = gettor.blacklist.BWList(config.getBlStateDir())
+
         try:
             trans = gettext.translation("gettor", config.getLocaleDir(), [lang])
             trans.install()
+            # OMG TEH HACK!!
+            import gettor.constants
+
         except IOError:
             log.error("Translation fail. Trying running with -r.")
             raise
+        self.whiteList = gettor.blacklist.BWList(config.getWlStateDir())
+        self.blackList = gettor.blacklist.BWList(config.getBlStateDir())
 
     def sendReply(self):
         """All routing decisions take place here."""
@@ -193,17 +202,21 @@ class Response:
 
         if subj == "":
             subj =_('[GetTor] Your request')
-        message = StringIO.StringIO()
+        message = cStringIO.StringIO()
+	utf8text = unicode(messageText, 'utf-8')
+	text = cStringIO.StringIO(utf8text.encode('utf8'))
         mime = MimeWriter.MimeWriter(message)
         mime.addheader('MIME-Version', '1.0')
         mime.addheader('Subject', subj)
         mime.addheader('To', self.sendTo)
         mime.addheader('From', self.srcEmail)
         mime.startmultipartbody('mixed')
+	mime.flushheaders()
 
         firstPart = mime.nextpart()
-        emailBody = firstPart.startbody('text/plain')
-        emailBody.write(messageText)
+        emailBody = firstPart.startbody('text/plain', [("charset", 'utf-8')])
+	mimetools.encode(text, emailBody, '8bit')
+        text.close()
 
         # Add a file if we have one
         if fileName:
@@ -249,8 +262,11 @@ class Response:
         except smtplib.SMTPException:
             log.error("General SMTP error caught")
             return False
-        except:
-            log.error("Unknown SMTP error while trying to send via local MTA")
+        except Exception, e:
+            log.error("Unknown SMTP error while trying to send through local MTA")
+            log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
+            log.error("Detail: %s" %e)
+
             return False
 
         return status

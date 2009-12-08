@@ -10,10 +10,6 @@
 
 """
 
-import gettext
-
-_ = gettext.gettext
-
 helpmsg = _("""
     Hello! This is the "GetTor" robot.
 
