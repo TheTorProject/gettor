@@ -32,17 +32,20 @@ log = gettor.gtlog.getLogger()
 
 trans = None
 
-def sendNotification(config, sendTo):
+def sendNotification(config, sendFr, sendTo):
     """Send notification to user"""
-    response = Response(config, sendTo, None, "", False, True, "")
+    response = Response(config, sendFr, sendTo, None, "", False, True, "")
     message = gettor.constants.mailfailmsg
     return response.sendGenericMessage(message)
 
 class Response:
 
-    def __init__(self, config, replyto, lang, package, split, signature, caddr):
+    def __init__(self, config, sendFr, replyto, lang, package, split, signature, caddr):
         self.config = config
-        self.srcEmail = "GetTor <gettor@torproject.org>"
+        if sendFr is None:
+            self.srcEmail = "GetTor <gettor@torproject.org>"
+        else:
+            self.srcEmail = sendFr
         self.replyTo = replyto
         assert self.replyTo is not None, "Empty reply address."
         # Default lang is en
