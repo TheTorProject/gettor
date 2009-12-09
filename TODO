@@ -3,9 +3,6 @@ These are planned changes to the gettor system.
 - Testing and proposals to better support users with limited email bandwidth
   (multi-part download, etc.).
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
-- Add more translations
-    - Freeze messages for translation
-    - Put po files into pootle for translation
 - Think about opening up GetTor to non-DKIM users because Gmail & co are 
   blocked in Iran:
     - One option would be to use a "3 way handshake" to send out packages:
@@ -15,6 +12,7 @@ These are planned changes to the gettor system.
     - Just send out packages to everyone without asking (Potential DoS of moria
       and every Inbox around the globe)
     - ???
+- Remove deprecated 'MimeWriter' and use python email module instead
 - Clean distdir and packdir on each fetching/packaging run
 - Write instructions on the website on how to use GetTor. Put that site into
   pootle for translation so for example chinese and iranian users have a

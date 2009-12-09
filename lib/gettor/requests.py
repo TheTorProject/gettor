@@ -84,7 +84,7 @@ class requestMail:
 	    self.findOutLang()
         self.checkLang()
         # Parse line by line
-        for line in email.Iterators.body_line_iterator(self.parsedMessage):
+        for line in email.Iterators.body_line_iterator(self.parsedMessage, decode=1):
             # Skip quotes
             if line.startswith(">"):
                 continue
