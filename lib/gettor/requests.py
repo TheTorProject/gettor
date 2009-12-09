@@ -92,8 +92,9 @@ class requestMail:
             # XXX: Actually we should rather read the whole body into a string
             #      and strip that. -kaner
             line = self.stripTags(line)
-            # Check for package name in line
-            self.matchPackage(line)
+            # Check for package name in line only if we have none yet
+            if self.returnPackage is Nonw:
+                self.matchPackage(line)
             # Check for split delivery in line
             self.matchSplit(line)
             # Check if this is a command
