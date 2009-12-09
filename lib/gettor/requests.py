@@ -93,7 +93,7 @@ class requestMail:
             #      and strip that. -kaner
             line = self.stripTags(line)
             # Check for package name in line only if we have none yet
-            if self.returnPackage is Nonw:
+            if self.returnPackage is None:
                 self.matchPackage(line)
             # Check for split delivery in line
             self.matchSplit(line)
