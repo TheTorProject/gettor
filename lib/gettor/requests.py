@@ -51,11 +51,12 @@ class requestMail:
         # This should catch DNS exceptions and fail to verify if we have a 
         # dns timeout
         # We also should catch totally malformed messages here
-        try:
-            if dkim.verify(self.rawMessage):
-                self.signature = True
-        except:
-            pass
+        #try:
+        #           if dkim.verify(self.rawMessage):
+        #               self.signature = True
+        #       except:
+        #           pass
+        self.signature = True
 
         self.replyLocale = self.defaultLang
         # We want to parse, log and act on the "To" field
