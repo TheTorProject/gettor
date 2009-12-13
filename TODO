@@ -1,5 +1,7 @@
 These are planned changes to the gettor system.
 
+- Split constants.py text into smaller strings, also update the text to reflect
+  split-file download instructions
 - Testing and proposals to better support users with limited email bandwidth
   (multi-part download, etc.).
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
