@@ -69,7 +69,7 @@ def processMail(conf):
 					  split, sig, cmdAddr)
         if not reply.sendReply():
             log.error("Sending reply failed.")
-            processFail(conf, rawMessage, replyTo, None)
+            processFail(conf, rawMessage, sendFr, replyTo, None)
             return False
         return True
     except Exception, e:
