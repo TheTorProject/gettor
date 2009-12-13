@@ -12,6 +12,7 @@
 '''
 
 import os
+import sys
 import subprocess
 import hashlib
 import datetime
@@ -112,11 +113,11 @@ def fetchPackages(conf, mirror):
     """Fetch Tor packages from a mirror"""
     log.info("Fetching package files..")
     try:
-        packs = gettor.packages.Packages(conf)
+        packs = gettor.packages.Packages(conf, mirror, False)
     except IOError:
         log.error("Error initiating package list.")
         return False
-    if packs.syncWithMirror(mirror, False) != 0:
+    if packs.syncWithMirror() != 0:
         log.error("Syncing Tor packages failed.")
         return False
     else:

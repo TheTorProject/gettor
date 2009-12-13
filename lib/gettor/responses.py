@@ -149,6 +149,8 @@ class Response:
             package = self.constructMessage(message, subj, fullPath)
             try:
                 status = self.sendMessage(package)
+                log.info("Sent out split package [%02d / %02d]. Status: %s" \
+                        % (num, nFiles, status))
             except:
                 log.error("Could not send package %s to user" % filename)
                 # XXX What now? Keep on sending? Bail out? Use might have 
