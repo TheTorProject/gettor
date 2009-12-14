@@ -71,6 +71,16 @@ class requestMail:
         # Scrub this data
         self.replytoAddress = self.parsedMessage["from"]
         assert self.replytoAddress is not None, "No 'from' field in mail"
+
+        # Make sure we drop bounce mails
+        retpath = self.parsedMessage["Return-Path"]
+        #log.info("Return-path: \"%s\"" % retpath)
+        self.bounce = False
+        if retpath == "<>":
+                log.info("We've received a bounce")
+                self.bounce = True
+        assert self.bounce is not True, "We've got a bounce. Bye."
+
         # If no package name could be recognized, use 'None'
         self.returnPackage = None
         self.splitDelivery = False
