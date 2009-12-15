@@ -32,10 +32,11 @@ def processFail(conf, rawMessage, sendFr, sendTo, e):
     log.info("We'll keep a record of this mail.")
     gettor.utils.dumpMessage(conf, rawMessage)
     # Send out notification to user, if possible
-    if not gettor.responses.sendNotification(conf, sendFr, sendTo):
-        log.error("Also failed to send the user a proper notification. :-/")
-    else:
-        log.info("Failure notification sent to user %s" % sendTo)
+    if sendFr != "" and sendTo != "":
+        if not gettor.responses.sendNotification(conf, sendFr, sendTo):
+            log.error("Also failed to send the user a proper notification. :-/")
+        else:
+            log.info("Failure notification sent to user %s" % sendTo)
 
 def processMail(conf):
     """All mail processing happens here. Processing goes as follows:
@@ -47,6 +48,8 @@ def processMail(conf):
       it on to the reply class/method to decide what to do."""
         
     rawMessage = ""
+    replyTo = ""
+    sendFr = ""
     replyTo = ""
     log.info("Processing mail..")
     # Retrieve request from stdin
