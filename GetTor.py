@@ -32,7 +32,7 @@ def processFail(conf, rawMessage, sendFr, sendTo, e):
     log.info("We'll keep a record of this mail.")
     gettor.utils.dumpMessage(conf, rawMessage)
     # Send out notification to user, if possible
-    if sendFr != "" and sendTo != "":
+    if sendFr != "" or sendTo != "":
         if not gettor.responses.sendNotification(conf, sendFr, sendTo):
             log.error("Also failed to send the user a proper notification. :-/")
         else:
