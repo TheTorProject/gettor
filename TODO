@@ -2,18 +2,9 @@ These are planned changes to the gettor system.
 
 - Split constants.py text into smaller strings, also update the text to reflect
   split-file download instructions
-- Testing and proposals to better support users with limited email bandwidth
-  (multi-part download, etc.).
-- Split (at least) tiger bundle into several smaller archives to avoid ~20MB
-- Think about opening up GetTor to non-DKIM users because Gmail & co are 
-  blocked in Iran:
-    - One option would be to use a "3 way handshake" to send out packages:
-        1. User sends in request
-        2. We send them a 'did you really want this package?' mail
-        3. User replies to that mail and we send out the package
-    - Just send out packages to everyone without asking (Potential DoS of moria
-      and every Inbox around the globe)
-    - ???
+- Finalize split downloads:
+    - Rename the .exe file for split downloads to .ex_RENAME
+    - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - Remove deprecated 'MimeWriter' and use python email module instead
 - Clean distdir and packdir on each fetching/packaging run
 - Write instructions on the website on how to use GetTor. Put that site into
