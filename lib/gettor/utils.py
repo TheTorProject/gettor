@@ -13,6 +13,7 @@
 
 import os
 import sys
+import re
 import subprocess
 import hashlib
 import datetime
@@ -268,6 +269,22 @@ def verifyPassword(conf, password):
     except Exception, e:
         log.error("Verifying password failed: %s" % e)
         return False
+
+def hasExe(filename):
+    if re.compile(".*.exe.*").match(filename):
+        return True
+    else:
+        return False
+
+def renameExe(filename):
+    if not os.access(filename, os.R_OK):
+        log.error("Could not access file %s" % filename)
+        raise OSError
+
+    newfilename = filename.replace(".exe", ".ex_RENAME", 1)
+    os.rename(filename, newfilename)
+
+    return newfilename
 
 # Helper routines go here ####################################################
 

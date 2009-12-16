@@ -213,11 +213,27 @@ class Packages:
                 continue
             if re.compile(".*split.part.*").match(splitfile):
                 ascfile = splitdir + "/signatures/" + splitfile + ".asc"
+                # Rename .exe if needed
+                if gettor.utils.hasExe(ascfile):
+                    try:
+                        ascfile = gettor.utils.renameExe(ascfile)
+                    except:
+                        log.error("Could not rename exe file")
                 file = splitdir + "/" + splitfile
+                if gettor.utils.hasExe(file):
+                    try:
+                        file = gettor.utils.renameExe(file)
+                    except:
+                        log.error("Could not rename exe file")
                 zipFileName = packSplitDir + "/" + splitfile + ".z"
+                if gettor.utils.hasExe(file):
+                    try:
+                        zipFileName = gettor.utils.renameExe(zipFileName)
+                    except:
+                        log.error("Could not rename exe file")
                 if os.access(ascfile, os.R_OK) and os.access(file, os.R_OK):
                     zip = zipfile.ZipFile(zipFileName, "w")
-                    zip.write(splitdir + "/" + splitfile, os.path.basename(file))
+                    zip.write(file, os.path.basename(file))
                     zip.write(ascfile, os.path.basename(ascfile))
                     zip.close()
                 else:
@@ -226,17 +242,3 @@ class Packages:
 
         log.info("Done.")
         return True
-
-if __name__ == "__main__" :
-    c = gettor_config.Config()
-    p = gettorPackages("rsync.torproject.org", c)
-    print "Building packagelist.."
-    if p.syncwithMirror() != 0:
-        print "Failed."
-        exit(1)
-    if not p.buildPackageList():
-        print "Failed."
-        exit(1)
-    print "Done."
-    for (pack, file) in p.getPackageList().items():
-        print "Bundle is mapped to file: ", pack, file
