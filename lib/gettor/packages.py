@@ -214,23 +214,23 @@ class Packages:
             if re.compile(".*split.part.*").match(splitfile):
                 ascfile = splitdir + "/signatures/" + splitfile + ".asc"
                 # Rename .exe if needed
-                if gettor.utils.hasExe(ascfile):
-                    try:
-                        ascfile = gettor.utils.renameExe(ascfile)
-                    except:
-                        log.error("Could not rename exe file")
+                #if gettor.utils.hasExe(ascfile):
+                #    try:
+                #        ascfile = gettor.utils.renameExe(ascfile)
+                #    except:
+                #        log.error("Could not rename exe file")
                 file = splitdir + "/" + splitfile
-                if gettor.utils.hasExe(file):
-                    try:
-                        file = gettor.utils.renameExe(file)
-                    except:
-                        log.error("Could not rename exe file")
+                #if gettor.utils.hasExe(file):
+                #    try:
+                #        file = gettor.utils.renameExe(file)
+                #    except:
+                #        log.error("Could not rename exe file")
                 zipFileName = packSplitDir + "/" + splitfile + ".z"
-                if gettor.utils.hasExe(file):
-                    try:
-                        zipFileName = gettor.utils.renameExe(zipFileName)
-                    except:
-                        log.error("Could not rename exe file")
+                #if gettor.utils.hasExe(file):
+                #    try:
+                #        zipFileName = gettor.utils.renameExe(zipFileName)
+                #    except:
+                #        log.error("Could not rename exe file")
                 if os.access(ascfile, os.R_OK) and os.access(file, os.R_OK):
                     zip = zipfile.ZipFile(zipFileName, "w")
                     zip.write(file, os.path.basename(file))
