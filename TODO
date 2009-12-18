@@ -2,10 +2,10 @@ These are planned changes to the gettor system.
 
 - Split constants.py text into smaller strings, also update the text to reflect
   split-file download instructions
-- Finalize split downloads:
-    - Rename the .exe file for split downloads to .ex_RENAME
-    - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
-- Remove deprecated 'MimeWriter' and use python email module instead
+- Split (at least) tiger bundle into several smaller archives to avoid ~20MB
+- React in some way if the user requested a split download but no split 
+  downloads are available for that specific package (maybe send out the non-
+  split version of the package?)
 - Clean distdir and packdir on each fetching/packaging run
 - Write instructions on the website on how to use GetTor. Put that site into
   pootle for translation so for example chinese and iranian users have a

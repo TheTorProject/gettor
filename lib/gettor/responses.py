@@ -135,7 +135,6 @@ class Response:
         return status
 
     def sendSplitPackage(self):
-        """XXX XXX XXX alpha state XXX XXX XXX"""
         splitdir = self.config.getPackDir() + "/" + self.package + ".split"
         try:
             entry = os.stat(splitdir)
