@@ -124,7 +124,7 @@ class Response:
         packageList = packages.getPackageList()
         filename = packageList[self.package]
         message = gettor.constants.packagemsg
-        package = self.constructMessage(message, "", filename)
+        package = self.constructMessage(message, fileName=filename)
         try:
             status = self.sendMessage(package)
         except:
@@ -197,7 +197,7 @@ class Response:
 
     def sendGenericMessage(self, text):
         """ Send a message of some sort """
-        message = self.constructMessage(text, "")
+        message = self.constructMessage(text)
         try:
             status = self.sendMessage(message)
         except:
