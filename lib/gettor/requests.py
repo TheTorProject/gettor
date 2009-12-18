@@ -88,7 +88,7 @@ class requestMail:
                     # We found a text part, parse it
                     self.parseTextPart(part.get_payload(decode=1))
         else:
-            self.parseTextPart(part.get_payload(decode=1))
+            self.parseTextPart(self.parsedMessage.get_payload(decode=1))
 
         if self.returnPackage is None:
             log.info("User didn't select any packages")
