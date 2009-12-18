@@ -226,7 +226,7 @@ class Packages:
                     except:
                         log.error("Could not rename exe file")
                 zipFileName = packSplitDir + "/" + splitfile + ".z"
-                if gettor.utils.hasExe(file):
+                if gettor.utils.hasExe(zipFileName):
                     try:
                         zipFileName = gettor.utils.renameExe(zipFileName)
                     except:
