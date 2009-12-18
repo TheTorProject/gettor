@@ -102,11 +102,17 @@ class requestMail:
         if not self.gotPlusReq:
             self.matchLang(text)
         self.checkLang()
-        self.torSpecialPackageExpansion()
     
-        self.matchPackage(text)
-        self.matchSplit(text)
-        self.matchCommand(text)
+        lines = text.split('\n')
+        for line in lines:
+            if self.returnPackage is None:
+                self.matchPackage(line)
+            if self.splitDelivery is False:
+                self.matchSplit(line)
+            if self.commandAddress is None:
+                self.matchCommand(line)
+
+        self.torSpecialPackageExpansion()
 
     def matchPlusAddress(self):
         regexPlus = '.*(<)?(\w+\+(\w+)@\w+(?:\.\w+)+)(?(1)>)'
@@ -126,7 +132,7 @@ class requestMail:
             if match: 
                 self.returnPackage = package
                 log.info("User requested package %s" % self.returnPackage)
-                break
+                return
 
     def matchSplit(self, line):
         # If we find 'split' somewhere we assume that the user wants a split 
