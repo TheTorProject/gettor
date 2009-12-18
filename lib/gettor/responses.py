@@ -12,14 +12,14 @@
 """
 
 import os
-import smtplib
-import MimeWriter
-import mimetools
-import cStringIO
-import base64
-import gettext
 import re
 import sys
+import smtplib
+import gettext
+from email import encoders
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
 
 import gettor.gtlog
 import gettor.blacklist
@@ -207,43 +207,35 @@ class Response:
         log.info("Send status: %s" % status)
         return status
 
-    def constructMessage(self, messageText, subj, fileName=None):
+    def constructMessage(self, messageText, subj="[GetTor] Your Request", fileName=None):
         """ Construct a multi-part mime message, including only the first part
         with plaintext."""
 
-        if subj == "":
-            subj =_('[GetTor] Your request')
-        message = cStringIO.StringIO()
-	utf8text = unicode(messageText, 'utf-8')
-	text = cStringIO.StringIO(utf8text.encode('utf8'))
-        mime = MimeWriter.MimeWriter(message)
-        mime.addheader('MIME-Version', '1.0')
-        mime.addheader('Subject', subj)
-        mime.addheader('To', self.sendTo)
-        mime.addheader('From', self.srcEmail)
-        mime.startmultipartbody('mixed')
-	mime.flushheaders()
-
-        firstPart = mime.nextpart()
-        emailBody = firstPart.startbody('text/plain', [("charset", 'utf-8')])
-	mimetools.encode(text, emailBody, '8bit')
-        text.close()
+        message = MIMEMultipart()
+        message['Subject'] = subj
+        message['To'] = self.sendTo
+        message['From'] = self.srcEmail
+        
+        text = MIMEText(messageText, _subtype="plain", _charset="utf-8")
+        # Add text part
+        message.attach(text)
 
         # Add a file if we have one
         if fileName:
-            filePart = mime.nextpart()
-            filePart.addheader('Content-Transfer-Encoding', 'base64')
-            emailBody = filePart.startbody('application/zip; name=%s' % os.path.basename(fileName))
-            base64.encode(open(fileName, 'rb'), emailBody)
+            filePart = MIMEBase("application", "octet-stream")
+            fp = open(fileName, 'rb')
+            filePart.set_payload(fp.read())
+            fp.close()
+            encoders.encode_base64(filePart)
+            # Add file part
+            message.attach(filePart)
 
-        # Now end the mime messsage
-        mime.lastpart()
         return message
 
     def sendMessage(self, message, smtpserver="localhost:25"):
         try:
             smtp = smtplib.SMTP(smtpserver)
-            smtp.sendmail(self.srcEmail, self.sendTo, message.getvalue())
+            smtp.sendmail(self.srcEmail, self.sendTo, message.as_string())
             smtp.quit()
             status = True
         except smtplib.SMTPAuthenticationError:
