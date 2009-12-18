@@ -227,7 +227,7 @@ class Response:
             fp.close()
             encoders.encode_base64(filePart)
             # Add file part
-            filePart.add_header('Content-Disposition', 'attachment', filename=os .path.basename(fileName))
+            filePart.add_header('Content-Disposition', 'attachment', filename=os.path.basename(fileName))
             message.attach(filePart)
 
         return message
