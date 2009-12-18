@@ -74,10 +74,15 @@ class Response:
             raise
         self.whiteList = gettor.blacklist.BWList(config.getWlStateDir())
         self.blackList = gettor.blacklist.BWList(config.getBlStateDir())
+        # Check blacklist & Drop if necessary
+        blacklisted = self.blackList.lookupListEntry(self.replyTo)
+        assert blacklisted is not True, \
+            "Mail from blacklisted user %s" % self.replyTo 
 
     def sendReply(self):
         """All routing decisions take place here."""
         # Check we're happy with sending this user a package
+        # XXX This is currently useless since we set self.signature = True
         if not self.signature and not self.cmdAddr \
            and not self.whiteList.lookupListEntry(self.replyTo) \
            and not re.compile(".*@yahoo.com.cn").match(self.replyTo) \
@@ -93,6 +98,7 @@ class Response:
                 log.info("Unsigned messaged to gettor. We will issue help.")
                 return self.sendHelp()
         else:
+                
             if self.cmdAddr is not None:
                 success = self.sendPackage()
                 if not success:

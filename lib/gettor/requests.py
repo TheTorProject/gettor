@@ -27,26 +27,50 @@ class requestMail:
 
     defaultLang = "en"
     # XXX Move this to the config file
-    supportedLangs = { "en": "English", 
-                       "fa": "Farsi",
-                       "de": "Deutsch",
-                       "ar": "Arabic",
-                       "es": "Spanish",
-                       "fr": "French",
-                       "it": "Italian",
-                       "nl": "Dutch",
-                       "pl": "Polish",
-                       "ru": "Russian",
-                       "zh_CN": "Chinese"  }
+    #                  LANG: ALIASE
+    supportedLangs = { "en": ("english", ),
+                       "fa": ("farsi", ),
+                       "de": ("deutsch", ),
+                       "ar": ("arabic", ),
+                       "es": ("spanish", ),
+                       "fr": ("french", ),
+                       "it": ("italian", ),
+                       "nl": ("dutch", ),
+                       "pl": ("polish", ),
+                       "ru": ("russian", ),
+                       "zh_CN": ("chinese", "zh",) }
 
     def __init__(self, config):
         """ Read message from stdin, parse all the stuff we want to know
         """
+        # Read email from stdin
         self.rawMessage = sys.stdin.read()
         self.parsedMessage = email.message_from_string(self.rawMessage)
-        self.signature = False
+
+        # WARNING WARNING *** This next line whitelists all ***
+        self.signature = True
         self.config = config
         self.gotPlusReq = False
+        self.returnPackage = None
+        self.splitDelivery = False
+        self.commandAddress = None
+        self.replyLocale = self.defaultLang
+        self.replytoAddress = self.parsedMessage["Return-Path"]
+        self.bounce = False
+        
+        # Filter rough edges
+        self.doEarlyFilter()
+
+        # We want to parse, log and act on the "To" field
+        self.toAddress = self.parsedMessage["to"]
+        log.info("User %s made request to %s" % \
+                (self.replytoAddress, self.toAddress))
+        self.gotPlusReq = self.matchPlusAddress()
+
+        packager = gettor.packages.Packages(config)
+        self.packages = packager.getPackageList()
+        assert len(self.packages) > 0, "Empty package list"
+
         # TODO XXX:
         # This should catch DNS exceptions and fail to verify if we have a 
         # dns timeout
@@ -56,107 +80,49 @@ class requestMail:
         #               self.signature = True
         #       except:
         #           pass
-        self.signature = True
-
-        self.replyLocale = self.defaultLang
-        # We want to parse, log and act on the "To" field
-        self.toAddress = self.parsedMessage["to"]
-        log.info("User made request to %s" % self.toAddress)
-        # Check if we got a '+' address
-        self.matchPlusAddress()
-        # If we got a '+' address, add an ugly mapping hack
-        if self.gotPlusReq:
-            self.doUglyHack()
-        # TODO XXX: 
-        # Scrub this data
-        self.replytoAddress = self.parsedMessage["from"]
-        assert self.replytoAddress is not None, "No 'from' field in mail"
-
-        # Make sure we drop bounce mails
-        retpath = self.parsedMessage["Return-Path"]
-        #log.info("Return-path: \"%s\"" % retpath)
-        self.bounce = False
-        if retpath == "<>":
-                log.info("We've received a bounce")
-                self.bounce = True
-        assert self.bounce is not True, "We've got a bounce. Bye."
-
-        # If no package name could be recognized, use 'None'
-        self.returnPackage = None
-        self.splitDelivery = False
-        self.commandaddress = None
-        packager = gettor.packages.Packages(config)
-        self.packages = packager.getPackageList()
-        assert len(self.packages) > 0, "Empty package list"
 
     def parseMail(self):
-    	# First of all, check what language the user wants
-        if not self.gotPlusReq:
-	    self.findOutLang()
-        self.checkLang()
-        # Parse line by line
-        for line in email.Iterators.body_line_iterator(self.parsedMessage, decode=1):
-            # Skip quotes
-            if line.startswith(">"):
-                continue
-            # Strip HTML from line
-            # XXX: Actually we should rather read the whole body into a string
-            #      and strip that. -kaner
-            line = self.stripTags(line)
-            # Check for package name in line only if we have none yet
-            if self.returnPackage is None:
-                self.matchPackage(line)
-            # Check for split delivery in line
-            self.matchSplit(line)
-            # Check if this is a command
-            self.matchCommand(line)
+        if self.parsedMessage.is_multipart():
+            for part in self.parsedMessage.walk():
+                if part.get_content_maintype() == "text":
+                    # We found a text part, parse it
+                    self.parseTextPart(part.get_payload(decode=1))
+        else:
+            self.parseTextPart(part.get_payload(decode=1))
 
-        # XXX HACK
-        self.torSpecialPackageExpansion()
-    
         if self.returnPackage is None:
             log.info("User didn't select any packages")
 
         return (self.toAddress, self.replytoAddress, self.replyLocale, \
                 self.returnPackage, \
-                self.splitDelivery, self.signature, self.commandaddress)
+                self.splitDelivery, self.signature, self.commandAddress)
 
-    def findOutLang(self):
-        # Parse line by line
-        for line in email.Iterators.body_line_iterator(self.parsedMessage):
-            # Skip quotes
-            if line.startswith(">"):
-                continue
-            # Strip HTML from line
-            # XXX: Actually we should rather read the whole body into a string
-            #      and strip that. -kaner
-            line = self.stripTags(line)
-	    # Check to see if we got a language request with 'Lang:'
-	    self.matchLang(line)
-        
+    def parseTextPart(self, text):
+        text = self.stripTags(text)
+        if not self.gotPlusReq:
+            self.matchLang(text)
+        self.checkLang()
+        self.torSpecialPackageExpansion()
+    
+        self.matchPackage(text)
+        self.matchSplit(text)
+        self.matchCommand(text)
 
     def matchPlusAddress(self):
-        match = re.search('(?<=\+)\w+', self.toAddress)
+        regexPlus = '.*(<)?(\w+\+(\w+)@\w+(?:\.\w+)+)(?(1)>)'
+        match = re.match(regexPlus, self.toAddress)
         if match:
-            # Cut back and front
-            splitFrontPart = self.toAddress.split('@')
-            assert len(splitFrontPart) > 0, "Splitting To: address failed"
-            splitLang = splitFrontPart[0].rsplit('+')
-            assert len(splitLang) > 1, "Splitting for language failed"
-            self.replyLocale = splitLang[1]
-            # Mark this request so that we might be able to take decisions 
-            # later
-            self.gotPlusReq = True
+            self.replyLocale = match.group(3)
             log.info("User requested language %s" % self.replyLocale)
+            return True
         else:
             log.info("Not a 'plus' address")
+            return False
 
     def matchPackage(self, line):
-        # XXX This is a bit clumsy, but i cant think of a better way
-        # currently. A map also doesnt really help i think. -kaner
         for package in self.packages.keys():
             matchme = ".*" + package + ".*"
-            match = re.match(matchme, line)    
+            match = re.match(matchme, line, re.DOTALL)    
             if match: 
                 self.returnPackage = package
                 log.info("User requested package %s" % self.returnPackage)
@@ -165,19 +131,19 @@ class requestMail:
     def matchSplit(self, line):
         # If we find 'split' somewhere we assume that the user wants a split 
         # delivery
-        match = re.match(".*split.*", line)
+        match = re.match(".*split.*", line, re.DOTALL)
         if match:
             self.splitDelivery = True
             log.info("User requested a split delivery")
 
     def matchLang(self, line):
-        match = re.match(".*[Ll]ang:\s+(.*)$", line)
+        match = re.match(".*[Ll]ang:\s+(.*)$", line, re.DOTALL)
         if match:
             self.replyLocale = match.group(1)
             log.info("User requested locale %s" % self.replyLocale)
 
     def matchCommand(self, line):
-        match = re.match(".*[Cc]ommand:\s+(.*)$", line)
+        match = re.match(".*[Cc]ommand:\s+(.*)$", line, re.DOTALL)
         if match:
             log.info("Command received from %s" % self.replytoAddress) 
             cmd = match.group(1).split()
@@ -191,7 +157,7 @@ class requestMail:
             assert verified == True, \
                     "Unauthorized attempt to command from: %s" \
                     % self.replytoAddress
-            self.commandaddress = address
+            self.commandAddress = address
 
     def torSpecialPackageExpansion(self):
         # If someone wants one of the localizable packages, add language 
@@ -201,17 +167,6 @@ class requestMail:
                                or self.returnPackage == "tor-im-browser-bundle":
             # "tor-browser-bundle" => "tor-browser-bundle_de"
 	    self.returnPackage = self.returnPackage + "_" + self.replyLocale 
-
-    def checkLang(self):
-        # Actually use a map here later XXX
-        for (key, lang) in self.supportedLangs.items():
-            if self.replyLocale == key:
-                log.info("User requested language %s" % self.replyLocale)
-                break
-        else:
-            log.info("Requested language %s not supported. Falling back to %s" \
-                        % (self.replyLocale, self.defaultLang))
-            self.replyLocale = self.defaultLang
 
     def stripTags(self, string):
         """Simple HTML stripper"""
@@ -242,7 +197,41 @@ class requestMail:
         return (self.replytoAddress, self.replyLocale, \
                 self.returnPackage, self.splitDelivery, self.signature)
 
-    def doUglyHack(self):
-        # Here be dragons
-        if self.replyLocale == "zh" or self.replyLocale == "chinese":
-            self.replyLocale = "zh_CN"
+    def checkLang(self):
+        # Look through our aliases list for languages and check if the user
+        # requested an alias rather than an 'official' language name. If he 
+        # does, map back to that official name. Also, if the user didn't 
+        # request a language we support, fall back to default
+        for (lang, aliases) in self.supportedLangs.items():
+            if lang == self.replyLocale:
+                log.info("User requested lang %s" % lang)
+                return
+            if aliases is not None:
+                for alias in aliases:
+                    if alias == self.replyLocale:
+                        log.info("Request for %s via alias %s" % (lang, alias))
+                        # Set it back to the 'official' name
+                        self.replyLocale = lang
+                        return
+        else:
+            log.info("Requested language %s not supported. Falling back to %s" \
+                        % (self.replyLocale, self.defaultLang))
+            self.replyLocale = self.defaultLang
+            return
+
+    def checkInternalEarlyBlacklist(self):
+        if re.compile(".*@.*torproject.org.*").match(self.replytoAddress):
+            return True
+        else:
+            return False
+            
+    def doEarlyFilter(self):
+        # Make sure we drop bounce mails
+        if self.replytoAddress == "<>":
+                log.info("We've received a bounce")
+                self.bounce = True
+        assert self.bounce is not True, "We've got a bounce. Bye."
+
+        # Make sure we drop stupid from addresses
+        badMail = "Mail from address: %s" % self.replytoAddress
+        assert self.checkInternalEarlyBlacklist() is False, badMail
