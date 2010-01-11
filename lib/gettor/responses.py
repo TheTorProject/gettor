@@ -172,7 +172,7 @@ class Response:
     def sendHelp(self):
         """ Send a helpful message to the user interacting with us """
         log.info("Sending out help message to %s" % self.sendTo)
-        return self.sendGenericMessage(gettor.constants.helpmsg)
+        return self.sendGenericMessage(gettor.constants.multilanghelpmsg)
 
 ## XXX the following line was used below to automatically list the names
 ## of available packages. But they were being named in an arbitrary
