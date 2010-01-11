@@ -172,7 +172,7 @@ class Response:
     def sendHelp(self):
         """ Send a helpful message to the user interacting with us """
         log.info("Sending out help message to %s" % self.sendTo)
-        return self.sendGenericMessage(gettor.constants.multilanghelpmsg)
+        return self.sendGenericMessage(gettor.constants.helpmsg)
 
 ## XXX the following line was used below to automatically list the names
 ## of available packages. But they were being named in an arbitrary
@@ -184,7 +184,7 @@ class Response:
     def sendPackageHelp(self):
         """ Send a helpful message to the user interacting with us """
         log.info("Sending package help to %s" % self.sendTo)
-        return self.sendGenericMessage(gettor.constants.packagehelpmsg)
+        return self.sendGenericMessage(gettor.constants.multilanghelpmsg)
 
     def sendForwardReply(self, status):
         " Send a message to the user that issued the forward command """

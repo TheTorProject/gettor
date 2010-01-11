@@ -12,139 +12,376 @@
 
 # Giant multi language help message. Add more translations as they become ready
 multilanghelpmsg = """
-    Hello! This is the "GetTor" robot.
+    Hello, This is the "GetTor" robot.
 
-    Unfortunately, we won't answer you at this address. You should make
-    an account with GMAIL.COM or YAHOO.CN and send the mail from
-    one of those.
+    I will mail you a Tor package, if you tell me which one you want.
+    Please select one of the following package names:
 
-    We only process requests from email services that support "DKIM",
-    which is an email feature that lets us verify that the address in the
-    "From" line is actually the one who sent the mail.
+        tor-browser-bundle
+        macosx-i386-bundle
+        macosx-ppc-bundle
+        tor-im-browser-bundle
+        source-bundle
 
-    (We apologize if you didn't ask for this mail. Since your email is from
-    a service that doesn't use DKIM, we're sending a short explanation,
-    and then we'll ignore this email address for the next day or so.)
+    Please reply to this mail (to gettor), and tell me
+    a single package name anywhere in the body of your email.
 
-    Please note that currently, we can't process HTML emails or base 64
-    mails. You will need to send plain text.
+    OBTAINING LOCALIZED VERSIONS OF TOR
+    ===================================
+
+    To get a version of Tor translated into your language, specify the
+    language you want in the address you send the mail to:
+
+        gettor+zh
+
+    This example will give you the requested package in a localized
+    version for Chinese. Check below for a list of supported language
+    codes.
+
+    List of supported locales:
+    -------------------------
+
+    Here is a list of all available languages:
+
+    gettor+ar:     Arabic
+    gettor+de:     German
+    gettor+en:     English
+    gettor+es:     Spanish
+    gettor+fa:     Farsi (Iran)
+    gettor+fr:     French
+    gettor+it:     Italian
+    gettor+nl:     Dutch
+    gettor+pl:     Polish
+    gettor+ru:     Russian
+    gettor+zh:     Chinese
+
+    If you select no language, you will receive the English version.
+
+    SUPPORT
+    =======
 
     If you have any questions or it doesn't work, you can contact a
-    human at this support email address: tor-assistants@torproject.org
+    human at this support email address: tor-assistants
 
     --
 
-    �~Eرحبا! أ�~Fا ر�~Hب�~Hت "احص�~D ع�~D�~I ت�~Hر".
-
-    �~D�~Dأس�~A �~D�~F �~Fرد ع�~D�~J�~C ع�~D�~I �~Gذا ا�~Dع�~F�~Hا�~F. �~Jت�~Hجب ع�~D�~J�~C أ�~F ت�~Fشئ
-    حسابا�~K ع�~D�~I GMAIL.COM أ�~H YAHOO.COM �~Hترس�~D رسا�~Dة إ�~D�~Cتر�~H�~F�~Jة
-    �~E�~F 
-    أحد�~G�~Eا.
-
-    �~F�~B�~H�~E ب�~Eعا�~Dجة ا�~Dط�~Dبات �~E�~F خد�~Eات ا�~Dبر�~Jد ا�~Dت�~J تدع�~E "DKIM"�~L
-    �~H�~G�~J خاصة تس�~Eح �~D�~Fا با�~Dتح�~B�~B �~E�~F أ�~F ا�~Dع�~F�~Hا�~F �~A�~J
-    ح�~B�~D ا�~D�~Eرس�~D �~G�~H با�~D�~Aع�~D �~E�~F �~Bا�~E بإرسا�~D ا�~Dرسا�~Dة.
-
-    (�~Fعتذر إ�~F �~D�~E ت�~C�~F �~Bد ط�~Dبت �~Gذ�~G ا�~Dرسا�~Dة. ب�~Eا أ�~F بر�~Jد�~C �~E�~Bد�~E �~E�~F
-    خد�~Eة �~Dاتستخد�~E KDIM�~L �~B�~E�~Fا بإرسا�~D شرح �~E�~Hجز�~L
-    �~Hس�~Fتجا�~G�~D ع�~F�~Hا�~F ا�~Dبر�~Jد �~Gذا خ�~Dا�~D ا�~D�~J�~H�~E ا�~Dتا�~D�~J ت�~Bر�~Jبا�~K).
-
-    �~Jرج�~I �~E�~Dاحظة أ�~F�~Fا �~Dا �~Fستط�~Jع �~Eعا�~Dجة رسائ�~D HTML أ�~H base 64
-    . ستحتاج أ�~F ترس�~D �~D�~Fا رسا�~Dة تحت�~H�~J ع�~D�~I �~Fص بس�~Jط �~A�~Bط.
-
-    إ�~F �~Cا�~Fت �~Dد�~J�~C أسئ�~Dة أ�~H إ�~F �~D�~E �~Jع�~E�~D ا�~Dح�~D �~J�~E�~C�~F�~C ا�~Dاتصا�~D ب�~Cائ�~F
-    بشر�~J ع�~D�~I ع�~F�~Hا�~F ا�~Dدع�~E ا�~D�~A�~F�~J �~Gذا: tor-assistants@torproject.org
+    مرحبا، أنا روبوت \"احصل على تور\".
+    
+    سأرسل لك حزمة برامج تور، إذا أخبرتني أيها تريد.
+    رجاء اختر إحدى أسماء الحزم التالية:
+    
+    tor-browser-bundle
+    macosx-i386-bundle
+    macosx-ppc-bundle
+    tor-im-browser-bundle
+    source-bundle
+    
+    يرجى أن ترد على هذه الرسالة (إلى gettor@torproject.org)، وتخبرني
+    باسم حزمة واحدة فقط في أي مكان ضمن رسالة الرد.
+    
+    الحصول على إصدارات مترجمة من تور
+    ========================
+    
+    لتحصل على إصدار تور مترجم إلى لغتك، يرجى أن تحدد
+    اللغة التي تريد ضمن العنوان الذي سترسل الرسالة الإلكترونية إليه:
+    
+    gettor+zh@torproject.org
+    
+    هذا المثال يعطيك الحزمة المطلوبة مترجمة
+    للغة الصينية. تحقق من القائمة أدناه لتجد رموز اللغات
+    المدعومة.
+    
+    قائمة اللغات المدعومة:
+    -------------------
+    
+    ها هي قائمة اللغات المتوفرة:
+    
+    gettor+ar@torproject.org: العربية
+    gettor+de@torproject.org: الألمانية
+    gettor+en@torproject.org: الإنكليزية
+    gettor+es@torproject.org: الإسبانية
+    gettor+fa@torproject.org: الفارسية
+    gettor+fr@torproject.org: الفرنسية
+    gettor+it@torproject.org: الإيطالية
+    gettor+nl@torproject.org: الهولندية
+    gettor+pl@torproject.org: البولندية
+    gettor+ru@torproject.org: الروسية
+    gettor+zh@torproject.org: الصينية
+    
+    إن لم تقم باختيار لغة فستحصل على الإصدارة الإنكليزية.
+    
+    الدعم الفني
+    =======
+    
+    إن كانت لديك أية أسئلة أو إذا لم يعمل هذا الحل يمكنك الاتصال بكائن
+    بشري على عنوان الدعم الفني التالي: tor-assistants@torproject.org
 
     --
 
-    س�~Dا�~E! ر�~Hبات "GetTor" در خد�~Eت ش�~Eاست. 
-    �~Eتاس�~Aا�~F�~G �~Eا �~F�~E�~L ت�~Hا�~F�~L�~E با ا�~L�~F آدرس با ش�~Eا در ارتباط باش�~L�~E. ش�~Eا با�~Lست�~L در 
-    GMAIL.COM �~Lا در YAHOO.CN حساب باز کرد�~G �~H از طر�~L�~B �~Lک�~L از آ�~F آدرس�~Gا با �~Eا 
-    �~Eکاتب�~G ک�~F�~Lد.
+    سلام! روبات "GetTor" در خدمت شماست. 
     
-    �~Eا �~A�~Bط درخ�~Hاست�~Gا�~L�~L را �~E�~Hرد بررس�~L �~Bرار �~E�~L د�~G�~L�~E ک�~G سر�~H�~Lس پست ا�~Dکتر�~H�~F�~Lک�~L آ�~F�~Gا 
-    "DKIM" را پشت�~Lبا�~F�~L ک�~Fد. "DKIM" ا�~L�~F ا�~Eکا�~F را ب�~G �~Eا �~E�~L د�~Gد تا اط�~E�~L�~Fا�~F �~Lاب�~L�~E ک�~G 
-    آدرس �~E�~Fدرج در �~Bس�~Eت  "From"�~L �~G�~Eا�~F آدرس�~L است ک�~G �~Fا�~E�~G از آ�~F ب�~G �~Eا ارسا�~D شد�~G 
-    است. 
+    چنانچه به من بگویید که به کدامیک از بسته های Tor  نیاز دارید، آن را برای شما 
+    ارسال خواهم کرد. 
+    لطفا یکی از بسته های را زیر با ذکر نام انتخاب کنید:  
     
-    (در �~Gر ص�~Hرت عذرخ�~Hا�~G�~L �~Eا را پذ�~Lرا باش�~Lد. از آ�~Fجا�~L�~Lک�~G ا�~L�~E�~L�~D ش�~Eا DKIM را 
-    پشت�~Lبا�~F�~L �~F�~E�~L ک�~Fد�~L �~Eا ا�~L�~F ت�~Hض�~Lح ک�~Hتا�~G را ارسا�~D �~F�~E�~Hد�~G �~H ا�~L�~F آدرس ا�~L�~E�~L�~D را 
-    بز�~Hد�~L از �~A�~Gرست آدرس�~Gا�~L خ�~Hد خارج �~E�~L ک�~F�~L�~E.) 
+    tor-browser-bundle
+    macosx-i386-bundle
+    macosx-ppc-bundle
+    tor-im-browser-bundle
+    source-bundle
+
+    لطفا به این نامه پاسخ داده ( به آدرس gettor@torproject.org ) و در قسمتی از 
+    متن ایمیل خود نام یکی از بسته های فوق را ذکر کنید. 
     
-    �~Dط�~Aا ب�~G ا�~L�~F �~Fکت�~G ت�~Hج�~G داشت�~G باش�~Lد ک�~G در حا�~D حاضر ا�~L�~E�~L�~D �~Gا�~L �~Eبت�~F�~L بر HTML �~Lا 
-    64 ب�~Lت�~L�~L �~Bاب�~D بررس�~L �~F�~E�~L باش�~Fد. ب�~Fابرا�~L�~F ا�~L�~E�~L�~D �~Gا�~L خ�~Hد را ب�~G ص�~Hرت �~Eت�~F ساد�~G 
-    ارسا�~D �~F�~Eا�~L�~Lد. 
+    تهیه نسخه ترجمه شده  TOR  
+    ===================================
     
-    �~F�~Fا�~F�~F�~G س�~Hا�~D�~L دار�~Lد �~Lا بر�~Fا�~E�~G د�~Fار اشکا�~D ب�~Hد�~G �~H کار �~F�~E�~L ک�~Fد �~L با �~Bس�~Eت 
-    پشت�~Lبا�~F�~L با آدرس ز�~Lر ت�~Eاس بگ�~Lر�~Lد تا �~Lک ا�~Fسا�~F ب�~G س�~Hا�~D ش�~Eا پاسخ د�~Gد:
-    tor-assistants@torproject.org
+    برای دریافت نسخه ای از TOR  ترجمه شده به زبان محلی شما، می بایستی زبان مورد 
+    نظر خود را در آدرس گیرنده ایمیل ذکر کنید. بعنوان مثال:  
+    
+    gettor+zh@torproject.org
+
+    در این مثال، فرستنده خواهان نسخه ترجمه شده به زبان چینی می باشد. برای آگاهی 
+    از کدهای مربوط به زبانهای قابل پشتیبانی توسط Tor ، فهرست زیر را مطالعه کنید: 
+    فهرست زبانهای پشتیانی شده
+    -------------------------
+
+    gettor+ar@torproject.org: Arabic
+    gettor+de@torproject.org: German
+    gettor+en@torproject.org: English
+    gettor+es@torproject.org: Spanish
+    gettor+fa@torproject.org: Farsi (Iran)
+    gettor+fr@torproject.org: French
+    gettor+it@torproject.org: Italian
+    gettor+nl@torproject.org: Dutch
+    gettor+pl@torproject.org: Polish
+    gettor+ru@torproject.org: Russian
+    gettor+zh@torproject.org: Chinese
+
+    چنانچه هیچیک از زبانهای فوق را انتخاب نکنید، نسخه انگلیسی برای شما ارسال 
+    خواهد شد. 
+    
+    پشتیبانی 
+    =======
+    
+    چنانچه سوالی دارید یا برنامه دچار اشکال بوده و کار نمی کند ، با قسمت 
+    پشتیبانی با آدرس زیر تماس بگیرید تا یک انسان به سوال شما پاسخ دهد: tor-assistants@torproject.org
+
+    --
+
+    Hei, dette er "GetTor"-roboten
+    
+    Jeg kommer til å sende deg en Tor-pakke, hvis du forteller meg hvilken du 
+    vil ha.
+    Vennligst velg en av følgende pakkenavn:
+    
+    tor-browser-bundle
+    macosx-i386-bundle
+    macosx-ppc-bundle
+    tor-im-browser-bundle
+    source-bundle
+
+    Vennligst svar til denne eposten (til gettor@torproject.org), og nevn
+    kun et enkelt pakkenavn i tekstområdet til eposten din.
+    
+    SKAFFE LOKALISERTE VERSJONER AV TOR
+    ===================================
+
+    For å skaffe en versjon av Tor som har blitt oversatt til ditt språk,
+    spesifiser språket du vil i epostadressen du sender eposten til:
+
+    gettor+zh@torproject.org
+
+    Dette eksempelet vil gi deg en forespurt pakke som er en oversatt
+    versjon for kinesisk. Se listen nedenfor for hvilke språk det er støtte for.
+
+    Liste av støttede språk:
+    -------------------------
+
+    Her er en liste av språkene som er tilgjengelig:
+
+    gettor+ar@torproject.org: Arabisk
+    gettor+de@torproject.org: Tysk
+    gettor+en@torproject.org: Engelsk
+    gettor+es@torproject.org: Spansk
+    gettor+fa@torproject.org: Farsi (Iran)
+    gettor+fr@torproject.org: Fransk
+    gettor+it@torproject.org: Italiensk
+    gettor+nl@torproject.org: Nederlandsk
+    gettor+pl@torproject.org: Polsk
+    gettor+ru@torproject.org: Russisk
+    gettor+zh@torproject.org: Kinesisk
+
+    Hvis du ikke spesifiserer noen språk vil du motta standard Engelsk
+    versjon
+
+    STØTTE
+    =======
+
+    Hvis du har noen spørsmål eller det ikke virker, kan du kontakte et
+    menneske på denne support-eposten: tor-assistants@torproject.org
 
     --
 
     Olá! Este é o robot "GetTor".
-    
-    Infelizmente, não respondemos neste endereço, pelo que é
-    recomendado criar uma conta no Gmail ou Hotmail e enviar a mensagem de um 
-    desses serviços.
-    
-    Só processamos emails de serviços que suportam "DKIM",
-    que é uma forma de verificar que o endereço do "Remetente" é válido e se foi 
-    mesmo esse a enviar o email.
-    
-    (Pedimos desculpa se não solicitou este email. Como a sua mensagem é de um 
-    serviço que não suporta  DKIM, estamos a enviar esta curta explicação, e 
-    depois este endereço de email será ignorado.)
-    
-    Actualmente não suportamos emails com HTML or Base64, pelo que terá que 
-    utilizar apenas texto (plain text).
-    
-    Se tiver alguma dúvida, pode contactar um humano no seguinte endereço: 
-    tor-assistants@torproject.org
+
+    Eu envio-lhe um pacote Tor, bastando para isso dizer qual o que quer. 
+    Escolha um dos seguintes pacotes:
+
+    tor-browser-bundle
+    macosx-i386-bundle
+    macosx-ppc-bundle
+    tor-im-browser-bundle
+    source-bundle
+
+    Por favor responda a esta email (para gettor@torproject.org), e diga qual o 
+    pacote que deseja, colocando o seu nome no corpo do seu email.
+
+    OBTER VERSÕES TRADUZIDAS DO TOR
+    ===================================
+
+    Para lhe ser enviado uma versão traduzida do Tor, especifique a língua no 
+    destinatário do seu email:
+
+    gettor+zh@torproject.org
+
+    Este exemplo vai enviar o pacote traduzido para Chinês Simplificado. Veja a 
+    lista de endereços de email existentes que pode utilizar:
+
+    Lista de endereços de email suportados:
+    -------------------------
+
+    gettor+pt@torproject.org: Português
+    gettor+ar@torproject.org: Arábico
+    gettor+de@torproject.org: Alemão
+    gettor+en@torproject.org: Inglês
+    gettor+es@torproject.org: Espanhol
+    gettor+fa@torproject.org: Farsi (Irão)
+    gettor+fr@torproject.org: Francês
+    gettor+it@torproject.org: Italiano
+    gettor+nl@torproject.org: Holandês
+    gettor+pl@torproject.org: Polaco
+    gettor+ru@torproject.org: Russo
+    gettor+zh@torproject.org: Chinês
+
+    Se não escolher nenhuma língua, receberá o Tor em Inglês.
+
+    SUPORTE
+    =======
+
+    Se tiver alguma dúvida, pode contactar um humano através do seguinte 
+    endereço: tor-assistants@torproject.org
 
     --
 
-    �~Wд�~@ав�~A�~Bв�~Cй�~Bе! Э�~Bо "�~@обо�~B GetTor".
-    
-    �~Z �~Aожалени�~N, м�~K не �~Aможем о�~Bве�~Bи�~B�~L вам на �~M�~Bо�~B ад�~@е�~A. �~R�~K должн�~K �~Aозда�~B�~L
-       �~A�~Gе�~B в GMAIL.COM или в YAHOO.COM и о�~Bп�~@авл�~O�~B�~L по�~G�~B�~C из 
-        одного из �~M�~Bи�~E �~A�~Gе�~Bов.
-    
-    �~\�~K �~Bол�~Lко об�~@аба�~B�~Kваем зап�~@о�~A�~K из по�~G�~Bов�~K�~E �~Aл�~Cжб подде�~@жива�~N�~Iи�~E "DKIM",
-    ко�~Bо�~@а�~O �~Oвл�~Oе�~B�~A�~O �~D�~Cнк�~Fией �~Mлек�~B�~@онной по�~G�~B�~K, позвол�~O�~N�~Iа�~O нам �~Cбеди�~B�~L�~A�~O в 
-    �~Bом, �~G�~Bо ад�~@е�~A в
-    �~A�~B�~@оке "�~^�~B" дей�~A�~Bви�~Bел�~Lно о�~B �~Bого, к�~Bо о�~Bо�~Aлал по�~G�~B�~C.
-    
-     (�~\�~K п�~@ино�~Aим извинени�~O, е�~Aли в�~K не п�~@о�~Aили �~M�~Bого пи�~A�~Lма. Так как ва�~Hе  
-    email из �~Aе�~@ви�~Aа
-    ко�~Bо�~@�~Kй не и�~Aпол�~Lз�~Cе�~B DKIM, м�~K о�~Bп�~@авл�~Oем к�~@а�~Bкое об�~J�~O�~Aнение,
-    и далее м�~K п�~@оигно�~@и�~@�~Cем �~M�~Bо�~B ад�~@е�~A �~Mлек�~B�~@онной по�~G�~B�~K ден�~L или два.)
-    
-    �~_ожал�~Cй�~A�~Bа о�~Bме�~B�~L�~Bе, �~G�~Bо в на�~A�~Bо�~O�~Iее в�~@ем�~O м�~K не можем об�~@або�~Bа�~B�~L HTML 
-    пи�~A�~Lма или базов�~Kе 64
-    по�~G�~B�~C. �~R�~K должн�~K б�~Cде�~Bе по�~Aла�~B�~L об�~K�~Gн�~Kй �~Bек�~A�~B (plain text).
-    
-    �~U�~Aли �~C ва�~A воп�~@о�~A�~K или �~G�~Bо �~Bо не �~A�~@або�~Bало, в�~K може�~Bе �~Aв�~Oза�~B�~L�~A�~O 
-    �~A жив�~Kм п�~@ед�~A�~Bави�~Bелем по �~M�~Bом�~C �~Mлек�~B�~@онном�~C ад�~@е�~A�~C:tor-assistants@torproject.org
+    Здравствуйте! Это "робот GetTor".
+
+    Я отошлю вам пакет Tor если вы укажете который вы хотите.
+    Пожалуйста выберите один из пакетов:
+
+    tor-browser-bundle
+    macosx-i386-bundle
+    macosx-ppc-bundle
+    tor-im-browser-bundle
+    source-bundle
+
+    Пожалуйста свяжитесь с нами по этой элктронной почте 
+    (gettor@torproject.org), и укажите
+    название одного из пакетов в любом месте в "теле" вашего письма.
+
+    ПОЛУЧЕНИЕ ЛОКАЛИЗИРОВАННЫХ ВЕРСИЙ TOR
+    ===================================
+
+    Чтобы получить версию Tor переведенную на ваш язык,укажите
+    предпочитаемый язык в адресной строке куда вы отослали электронную почту:
+
+    gettor+zh@torproject.org
+
+    Вышеуказанный пример даст вам запрошенный пакет в локализированной
+    версии китайского языка. Проверьте ниже список кодов поддерживаемых
+     языков.
+
+    Список поддерживаемых регионов
+    -------------------------
+
+    Ниже указан список всех доступных языков:
+
+    gettor+ar@torproject.org:   арабский
+    gettor+de@torproject.org: немецкий
+    gettor+en@torproject.org: английский
+    gettor+es@torproject.org: испанский
+    gettor+fa@torproject.org: фарси (Иран)
+    gettor+fr@torproject.org: французский
+    gettor+it@torproject.org: итальянский
+    gettor+nl@torproject.org: голландский
+    gettor+pl@torproject.org: польский
+    gettor+ru@torproject.org: русский
+    gettor+zh@torproject.org: китайский
+
+    Если вы не выберите язык, вы получите версию на английском языке.
+
+    ПОДДЕРЖКА
+    =======
+
+    Если у вас вопросы или что то не сработало, вы можете связаться 
+    с живым представителем по этому электронному адресу:tor-assistants@torproject.org
 
     --
 
-       �| 好!�~Y�~G~L�~X��~@~\GetTor�~@~]�~G��~J��~[~^�~M�~@~B
+    你好, 这里是"GetTor"自动回复。
 
-       �~H�~J��~I�~L�~H~Q们�~M对�~Y个�~\��~]~@�~[�~L�~[~^�~M�~L�~B��~T�~@~Z�~G
-       GMAIL.COM�~H~Vyahoo.cn�~Z~D账�~H�使�~T��~H~Q们�~Z~D�~\~M�~J��~@~B
+    您从这里可以得到Tor套件, 请告诉我您需要的套件种类.
+    请选择套件名称:
 
-       �~H~Q们�~A�~B�~I~@�~D�~P~F�~B�件请�~B�~Z~D�~T��~B��~\~M�~J��~U~F�~E须�~T��~L~A�~@~\DKIM�~@~]
-       �~C帮�~J��~H~Q们�~L�~A�~B�件�~X��~P��~\~_�~Z~D�~]��~G��~N�~B��~Z~D�~B�箱�~@~B
+        tor-browser-bundle
+                         (Tor+Firefox浏览器)
+        macosx-i386-bundle
+                         (Tor for MacOS)
+        macosx-ppc-bundle
+                         (Tor for MacOS on PowerPC )
+        tor-im-browser-bundle
+                         (Tor+Pidgin聚合聊天程序+Firefox浏览器)
+        source-bundle
+                         (源码包)
 
-       (�~B�~^~\�~B�没�~\~I�~P~Q�~H~Q们�~O~Q�~@~A�~G�~B�件请�~B�~L对此�~[~^�~M�~H~Q们�~H�~J��~I�~@~B
-      �~[| 为�~B��~Z~D�~B�件�~\~M�~J��~U~F�~M�~O~P�~[DKIM�~J~_�~C��~L�~\~I人�~O��~C�伪�~@| �~F�| �~B��~]~@
-      �~H~Q们�~Y�~G~L�~O~Q�~@~A�~@�~]��~@�~_��~Z~D�~@~Z�~_��~L并�~F�~\�以�~P~N�~Z~D�~G| 天�~G~L忽�~U�该�~B��~]~@�~L
-      以�~E~M形�~H~P�~^~C�~\��~[~^�~M�~@~B)
+    请直接回复本邮件(gettor@torproject.org), 
+    并在信的正文中写好您所需要的套件名称（不包括括号内的中文）。
 
-       请注�~D~O�~L�~H~Q们�~[��~I~M�~W| �~U�~D�~P~FHTML�~H~VBase64�~V�| ~A�~Z~D�~B�件�~L�~B��~O��~C��~O~Q�~@~A纯�~V~G�~\�请�~B�~@~B
+    获取其他语言的Tor套件
+    ===================================
 
-       �~B�~^~\�~B��~A~G�~H�任�~U�~W��~X请�~A~T系�~H~Q们�~Z~D�~J~@�~\��~T��~L~A�~B�箱�~Z
-         tor-assistants@torproject.org
+    在收件人地址中指定语言代码可以获得本对应语言的版本，例如：
+
+        gettor+zh@torproject.org
+
+    本例中，您将得到中文版的Tor套件，下面是目前支持的语种代码：
+
+    支持语言列表:
+    -------------------------
+
+    全部可用语言列表:
+
+    gettor+ar@torproject.org:     Arabic
+    gettor+de@torproject.org:     German
+    gettor+en@torproject.org:     English
+    gettor+es@torproject.org:     Spanish
+    gettor+fa@torproject.org:     Farsi (Iran)
+    gettor+fr@torproject.org:     French
+    gettor+it@torproject.org:     Italian
+    gettor+nl@torproject.org:     Dutch
+    gettor+pl@torproject.org:     Polish
+    gettor+ru@torproject.org:     Russian
+    gettor+zh@torproject.org:     中文
+
+    如果您未指定语言代码，您将收到英文版。
+
+    支持
+    =======
+
+    如果您遇到困难或服务出现问题，请联系我们的
+    技术支持邮箱: tor-assistants@torproject.org
+
+    --
         """
 
 # Short string to build mails follow
@@ -204,7 +441,7 @@ choose_package_2 = _("""
 obtain_localized_head = _("""
     OBTAINING LOCALIZED VERSIONS OF TOR
     """)
-obtain_locallized_underline = """
+obtain_localized_underline = """
     ===================================
 
     """
