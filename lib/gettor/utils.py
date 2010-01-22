@@ -161,7 +161,7 @@ def addWhitelistEntry(conf, address):
     except IOError, e:
         log.error("Whitelist error: %s" % e)
         return False
-    if not whiteList.createListEntry(address):
+    if not whiteList.createListEntry(prepareAddress(address), "general"):
         log.error("Creating whitelist entry failed.")
         return False
     else:
@@ -175,7 +175,7 @@ def addBlacklistEntry(conf, address):
     except IOError, e:
         log.error("Blacklist error: %s" % e)
         return False
-    if not blackList.createListEntry(address):
+    if not blackList.createListEntry(prepareAddress(address), "general"):
         log.error("Creating blacklist entry failed.")
         return False
     else:
@@ -191,10 +191,10 @@ def lookupAddress(conf, address):
     except IOError, e:
         log.error("White/Blacklist error: %s" % e)
         return False
-    if whiteList.lookupListEntry(address):
+    if whiteList.lookupListEntry(address, "general"):
         log.info("Address '%s' is present in the whitelist." % address)
         found = True
-    if blackList.lookupListEntry(address):
+    if blackList.lookupListEntry(address, "general"):
         log.info("Address '%s' is present in the blacklist." % address)
         found = True
     if not found:
@@ -329,3 +329,10 @@ def getCurrentCrontab():
         savedTab += line
     return savedTab
 
+def prepareAddress(address):
+    """We need this because we internally store email addresses in this format
+       in the black- and whitelists"""
+    if address.startswith("<"):
+        return address
+    else:
+        return "<" + address + ">"

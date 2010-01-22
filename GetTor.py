@@ -23,8 +23,9 @@ import gettor.utils
 
 log = gettor.gtlog.getLogger()
 
-def processFail(conf, rawMessage, sendFr, sendTo, e):
+def processFail(conf, rawMessage, reqval, failedAction, e=None):
     """This routine gets called when something went wrong with the processing"""
+    log.error("Failing to " + failedAction)
     if e is not None:
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
         log.error("Detail: %s" %e)
@@ -32,52 +33,48 @@ def processFail(conf, rawMessage, sendFr, sendTo, e):
     log.info("We'll keep a record of this mail.")
     gettor.utils.dumpMessage(conf, rawMessage)
     # Send out notification to user, if possible
-    if sendFr != "" or sendTo != "":
-        if not gettor.responses.sendNotification(conf, sendFr, sendTo):
-            log.error("Also failed to send the user a proper notification. :-/")
-        else:
-            log.info("Failure notification sent to user %s" % sendTo)
+    #if reqval.toField != "" or reqval.sendTo != "":
+    #    if not gettor.responses.sendNotification(conf, reqval.toField, reqval.sendTo):
+    #        log.error("Also failed to send the user a proper notification. :-/")
+    #    else:
+    #        log.info("Failure notification sent to user %s" % reqval.sendTo)
+
+def dumpInfo(reqval):
+    """Dump some info to the logfile"""
+    log.info("Request From: %s To: %s Package: %s Lang: %s Split: %s Signature: %s Cmdaddr: %s" % (reqval.replyTo, reqval.toField, reqval.pack, reqval.lang, reqval.split, reqval.sign, reqval.cmdAddr))
 
 def processMail(conf):
     """All mail processing happens here. Processing goes as follows:
-    - Parse request. This means: Find out everything we need to reply in 
-      an appropriate manner. Reply address, language, package name.
-      Also try to find out if the user wants split packages and if he has 
-      a valid signature on his mail.
-    - Send reply. Use all information gathered from the request and pass
-      it on to the reply class/method to decide what to do."""
+       - Parse request. This means: Find out everything we need to reply in 
+         an appropriate manner. Reply address, language, package name.
+         Also try to find out if the user wants split packages and if he has 
+         a valid signature on his mail.
+       - Send reply. Use all information gathered from the request and pass
+         it on to the reply class/method to decide what to do."""
         
     rawMessage = ""
-    replyTo = ""
-    sendFr = ""
-    replyTo = ""
+    reqval = None
     log.info("Processing mail..")
-    # Retrieve request from stdin
+    # Retrieve request from stdin and parse it
     try:
         request = gettor.requests.requestMail(conf)
         rawMessage = request.getRawMessage()
-        sendFr, replyTo, lang, pack, split, sig, cmdAddr = request.parseMail()
-        log.info("Request from %s package %s, lang %s, split %s, cmdaddr %s" \
-                    % (replyTo, pack, lang, split, cmdAddr))
-        log.info("Signature is %s" % sig)
-        log.info("Mail was sent to %s" % sendFr)
+        # reqval contains all important information we need from the request
+        reqval = request.parseMail()
+        dumpInfo(reqval)
     except Exception, e:
-        log.error("Parsing the request failed.")
-        processFail(conf, rawMessage, sendFr, replyTo, e)
+        processFail(conf, rawMessage, reqval, "process request", e)
         return False
 
-    # Ok, information aquired. Initiate reply sequence
+    # Ok, request information aquired. Initiate reply sequence
     try:
-        reply = gettor.responses.Response(conf, sendFr, replyTo, lang, pack, \
-					  split, sig, cmdAddr)
+        reply = gettor.responses.Response(conf, reqval)
         if not reply.sendReply():
-            log.error("Sending reply failed.")
-            processFail(conf, rawMessage, sendFr, replyTo, None)
+            processFail(conf, rawMessage, reqval, "send reply")
             return False
         return True
     except Exception, e:
-        log.error("Sending the reply failed.")
-        processFail(conf, rawMessage, sendFr, replyTo, e)
+        processFail(conf, rawMessage, reqval, "send reply (got exception)", e)
         return False
 
 def processOptions(options, conf):

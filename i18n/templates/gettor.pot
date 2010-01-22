@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-04 19:12+0100\n"
+"POT-Creation-Date: 2010-01-21 19:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/gettor/constants.py:151
+#: lib/gettor/constants.py:388
 msgid ""
 "\n"
 "    Hello, This is the \"GetTor\" robot.\n"
@@ -26,7 +26,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:157
+#: lib/gettor/constants.py:394
 msgid ""
 "\n"
 "    Unfortunately, we won't answer you at this address. You should make\n"
@@ -36,7 +36,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:163
+#: lib/gettor/constants.py:400
 msgid ""
 "\n"
 "    We only process requests from email services that support \"DKIM\",\n"
@@ -46,7 +46,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:169
+#: lib/gettor/constants.py:406
 msgid ""
 "\n"
 "    (We apologize if you didn't ask for this mail. Since your email is from\n"
@@ -56,7 +56,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:175
+#: lib/gettor/constants.py:412
 msgid ""
 "\n"
 "    Please note that currently, we can't process HTML emails or base 64\n"
@@ -65,7 +65,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:181 lib/gettor/constants.py:261
+#: lib/gettor/constants.py:418 lib/gettor/constants.py:498
 msgid ""
 "\n"
 "    If you have any questions or it doesn't work, you can contact a\n"
@@ -74,7 +74,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:186
+#: lib/gettor/constants.py:423
 msgid ""
 "\n"
 "    I will mail you a Tor package, if you tell me which one you want.\n"
@@ -83,7 +83,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:199
+#: lib/gettor/constants.py:436
 msgid ""
 "\n"
 "    Please reply to this mail (to gettor@torproject.org), and tell me\n"
@@ -92,14 +92,14 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:204
+#: lib/gettor/constants.py:441
 msgid ""
 "\n"
 "    OBTAINING LOCALIZED VERSIONS OF TOR\n"
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:211
+#: lib/gettor/constants.py:448
 msgid ""
 "\n"
 "    To get a version of Tor translated into your language, specify the\n"
@@ -108,7 +108,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:220
+#: lib/gettor/constants.py:457
 msgid ""
 "\n"
 "    This example will give you the requested package in a localized\n"
@@ -118,14 +118,14 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:226
+#: lib/gettor/constants.py:463
 msgid ""
 "\n"
 "    List of supported locales:\n"
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:233
+#: lib/gettor/constants.py:470
 msgid ""
 "\n"
 "    Here is a list of all available languages:\n"
@@ -133,7 +133,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:237
+#: lib/gettor/constants.py:474
 msgid ""
 "\n"
 "    gettor+ar@torproject.org:     Arabic\n"
@@ -151,7 +151,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:251
+#: lib/gettor/constants.py:488
 msgid ""
 "\n"
 "    If you select no language, you will receive the English version.\n"
@@ -159,14 +159,14 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:255
+#: lib/gettor/constants.py:492
 msgid ""
 "\n"
 "    SUPPORT\n"
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:266
+#: lib/gettor/constants.py:503
 msgid ""
 "\n"
 "    Here's your requested software as a zip file. Please unzip the\n"
@@ -175,7 +175,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:271
+#: lib/gettor/constants.py:508
 msgid ""
 "\n"
 "    Hint: If your computer has GnuPG installed, use the gpg\n"
@@ -184,7 +184,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:276
+#: lib/gettor/constants.py:513
 msgid ""
 "\n"
 "       gpg --verify <packagename>.asc <packagename>\n"
@@ -192,7 +192,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:280
+#: lib/gettor/constants.py:517
 msgid ""
 "\n"
 "    The output should look somewhat like this:\n"
@@ -200,7 +200,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:288
+#: lib/gettor/constants.py:525
 msgid ""
 "\n"
 "    If you're not familiar with commandline tools, try looking for\n"
@@ -209,7 +209,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:297
+#: lib/gettor/constants.py:534
 msgid ""
 "\n"
 "    If your Internet connection blocks access to the Tor network, you\n"
@@ -222,7 +222,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:306
+#: lib/gettor/constants.py:543
 msgid ""
 "\n"
 "    You can acquire a bridge by sending an email that contains \"get bridges"
@@ -233,7 +233,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:312
+#: lib/gettor/constants.py:549
 msgid ""
 "\n"
 "    It is also possible to fetch bridges with a web browser at the "
@@ -243,7 +243,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:317
+#: lib/gettor/constants.py:554
 msgid ""
 "\n"
 "    IMPORTANT NOTE:\n"
@@ -255,7 +255,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:325
+#: lib/gettor/constants.py:562
 msgid ""
 "\n"
 "    Packages might come out of order! Please make sure you received\n"
@@ -264,7 +264,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:330
+#: lib/gettor/constants.py:567
 msgid ""
 "\n"
 "    Thank you for your request. It was successfully understood. Your request "
@@ -276,7 +276,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:336
+#: lib/gettor/constants.py:573
 msgid ""
 "\n"
 "    If it doesn't arrive, the package might be too big for your mail "
@@ -288,7 +288,7 @@ msgid ""
 "    "
 msgstr ""
 
-#: lib/gettor/constants.py:343
+#: lib/gettor/constants.py:580
 msgid ""
 "\n"
 "    Unfortunately we are currently experiencing problems and we can't "

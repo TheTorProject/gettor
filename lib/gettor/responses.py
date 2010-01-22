@@ -40,22 +40,23 @@ def sendNotification(config, sendFr, sendTo):
 
 class Response:
 
-    def __init__(self, config, sendFr, replyto, lang, package, split, signature, caddr):
+    def __init__(self, config, reqval):
         self.config = config
-        if sendFr is None:
+        self.reqval = reqval
+        if reqval.toField is None:
             self.srcEmail = "GetTor <gettor@torproject.org>"
         else:
-            self.srcEmail = sendFr
-        self.replyTo = replyto
+            self.srcEmail = reqval.toField
+        self.replyTo = reqval.replyTo
         assert self.replyTo is not None, "Empty reply address."
         # Default lang is en
-        if lang is None:
-            lang = "en"
-        self.mailLang = lang
-        self.package = package
-        self.splitsend = split
-        self.signature = signature
-        self.cmdAddr = caddr
+        if reqval.lang is None:
+            reqval.lang = "en"
+        self.mailLang = reqval.lang
+        self.package = reqval.pack
+        self.splitsend = reqval.split
+        self.signature = reqval.sign
+        self.cmdAddr = reqval.cmdAddr
         # If cmdAddr is set, we are forwarding mail rather than sending a 
         # reply to someone
         if self.cmdAddr is not None:
@@ -64,23 +65,48 @@ class Response:
             self.sendTo = self.replyTo
 
         try:
-            trans = gettext.translation("gettor", config.getLocaleDir(), [lang])
+            localeDir = config.getLocaleDir()
+            trans = gettext.translation("gettor", localeDir, [reqval.lang])
             trans.install()
             # OMG TEH HACK!!
             import gettor.constants
-
         except IOError:
             log.error("Translation fail. Trying running with -r.")
             raise
+
+        # Init black & whitelists
         self.whiteList = gettor.blacklist.BWList(config.getWlStateDir())
         self.blackList = gettor.blacklist.BWList(config.getBlStateDir())
-        # Check blacklist & Drop if necessary
-        blacklisted = self.blackList.lookupListEntry(self.replyTo)
+        # Check blacklist section 'general' list & Drop if necessary
+        blacklisted = self.blackList.lookupListEntry(self.replyTo, "general")
         assert blacklisted is not True, \
             "Mail from blacklisted user %s" % self.replyTo 
 
     def sendReply(self):
         """All routing decisions take place here."""
+        if self.isAllowed():
+            # Ok, see what we've got here.
+            # Was this a GetTor control command wanting us to forward a package?
+            if self.cmdAddr is not None:
+                if not self.sendPackage():
+                    log.error("Failed to forward mail to '%s'" % self.cmdAddr)
+                return self.sendForwardReply(success)
+                
+            # Did the user choose a package?
+            if self.package is None:
+                return self.sendPackageHelp()
+            delayAlert = self.config.getDelayAlert()
+            # Be a polite bot and send message that mail is on the way
+            if delayAlert:
+                if not self.sendDelayAlert():
+                    log.error("Failed to sent delay alert.")
+            # Did the user request a split or normal package download?
+            if self.splitsend:
+                return self.sendSplitPackage()
+            else:
+                return self.sendPackage()
+
+    def isAllowed(self):
         # Check we're happy with sending this user a package
         # XXX This is currently useless since we set self.signature = True
         if not self.signature and not self.cmdAddr \
@@ -98,27 +124,30 @@ class Response:
                 log.info("Unsigned messaged to gettor. We will issue help.")
                 return self.sendHelp()
         else:
-                
-            if self.cmdAddr is not None:
-                success = self.sendPackage()
-                if not success:
-                    log.error("Failed to forward mail to '%s'" % self.cmdAddr)
-                return self.sendForwardReply(success)
-                
-            if self.package is None:
-                return self.sendPackageHelp()
-            delayAlert = self.config.getDelayAlert()
-            if delayAlert:
-                ret = self.sendDelayAlert()
-                if ret != True:
-                    log.error("Failed to sent delay alert.")
-            if self.splitsend:
-                return self.sendSplitPackage()
-            else:
-                return self.sendPackage()
+            return True
+
+    def isBlacklisted(self, fname):
+        """This routine takes care that for each function fname, a given user
+           can access it only once"""
+        # First of all, check if user is whitelisted: Whitelist beats Blacklist
+        if self.whiteList.lookupListEntry(self.replyTo, "general"):
+            log.info("Whitelisted user " + self.replyTo)
+            return False
+        # Create a unique dir name for the requested routine
+        blackList = gettor.blacklist.BWList(self.config.getBlStateDir())
+        blackList.createSublist(fname)
+        if blackList.lookupListEntry(self.replyTo, fname):
+            log.info("User " + self.replyTo + " is blacklisted for " + fname)
+            return True
+        else:
+            blackList.createListEntry(self.replyTo, fname)
+            return False
 
     def sendPackage(self):
         """ Send a message with an attachment to the user"""
+        if self.isBlacklisted("sendPackage"):
+            # Don't send anything
+            return False
         log.info("Sending out %s to %s." % (self.package, self.sendTo))
         packages = gettor.packages.Packages(self.config)
         packageList = packages.getPackageList()
@@ -135,7 +164,11 @@ class Response:
         return status
 
     def sendSplitPackage(self):
-        splitdir = self.config.getPackDir() + "/" + self.package + ".split"
+        if self.isBlacklisted("sendSplitPackage"):
+            # Don't send anything
+            return False
+        splitpack = self.package + ".split"
+        splitdir = os.path.join(self.config.getPackDir(), splitpack)
         try:
             entry = os.stat(splitdir)
         except OSError, e:
@@ -147,7 +180,7 @@ class Response:
         nFiles = len(files)
         num = 0
         for filename in files:
-            fullPath = splitdir + "/" + filename
+            fullPath = os.path.join(splitdir, filename)
             num = num + 1
             subj = "[GetTor] Split package [%02d / %02d] " % (num, nFiles) 
             message = gettor.constants.splitpackagemsg
@@ -166,10 +199,16 @@ class Response:
 
     def sendDelayAlert(self):
         """ Send a delay notification """
+        if self.isBlacklisted("sendDelayAlert"):
+            # Don't send anything
+            return False
         log.info("Sending delay alert to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.delayalertmsg)
             
     def sendHelp(self):
+        if self.isBlacklisted("sendHelp"):
+            # Don't send anything
+            return False
         """ Send a helpful message to the user interacting with us """
         log.info("Sending out help message to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.helpmsg)
@@ -183,8 +222,11 @@ class Response:
 
     def sendPackageHelp(self):
         """ Send a helpful message to the user interacting with us """
+        if self.isBlacklisted("sendPackageHelp"):
+            # Don't send anything
+            return False
         log.info("Sending package help to %s" % self.sendTo)
-        return self.sendGenericMessage(gettor.constants.multilanghelpmsg)
+        return self.sendGenericMessage(gettor.constants.multilangpackagehelpmsg)
 
     def sendForwardReply(self, status):
         " Send a message to the user that issued the forward command """
@@ -219,7 +261,7 @@ class Response:
         # Add text part
         message.attach(text)
 
-        # Add a file if we have one
+        # Add a file part only if we have one
         if fileName:
             filePart = MIMEBase("application", "zip")
             fp = open(fileName, 'rb')
@@ -266,7 +308,7 @@ class Response:
             log.error("General SMTP error caught")
             return False
         except Exception, e:
-            log.error("Unknown SMTP error while trying to send through local MTA")
+            log.error("Unknown SMTP error while trying to send via local MTA")
             log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
             log.error("Detail: %s" %e)
 

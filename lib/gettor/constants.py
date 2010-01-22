@@ -11,7 +11,7 @@
 """
 
 # Giant multi language help message. Add more translations as they become ready
-multilanghelpmsg = """
+multilangpackagehelpmsg = """
     Hello, This is the "GetTor" robot.
 
     I will mail you a Tor package, if you tell me which one you want.

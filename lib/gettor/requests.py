@@ -23,6 +23,16 @@ __all__ = ["requestMail"]
 
 log = gettor.gtlog.getLogger()
 
+class RequestVal:
+    def __init__(self, toField, replyTo, lang, pack, split, sign, cmdAddr):
+        self.toField = toField
+        self.replyTo = replyTo
+        self.lang = lang
+        self.pack = pack
+        self.split = split
+        self.sign = sign
+        self.cmdAddr = cmdAddr
+    
 class requestMail:
 
     defaultLang = "en"
@@ -47,8 +57,9 @@ class requestMail:
         self.rawMessage = sys.stdin.read()
         self.parsedMessage = email.message_from_string(self.rawMessage)
 
-        # WARNING WARNING *** This next line whitelists all ***
+        # WARNING WARNING *** This next line whitelists all addresses ***
         self.signature = True
+
         self.config = config
         self.gotPlusReq = False
         self.returnPackage = None
@@ -93,7 +104,8 @@ class requestMail:
         if self.returnPackage is None:
             log.info("User didn't select any packages")
 
-        return (self.toAddress, self.replytoAddress, self.replyLocale, \
+        return RequestVal(self.toAddress, self.replytoAddress, \
+                self.replyLocale, \
                 self.returnPackage, \
                 self.splitDelivery, self.signature, self.commandAddress)
 
