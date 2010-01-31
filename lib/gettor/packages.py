@@ -81,7 +81,7 @@ class Packages:
         # Build dict like 'name': 'name.z'
         try:
             for filename in os.listdir(self.packDir):
-                self.packageList[filename[:-2]] = self.packDir + "/" + filename
+                self.packageList[filename[:-2]] = os.path.join(self.packDir, filename)
         except OSError, (strerror):
             log.error("Failed to build package list: %s" % strerror)
             return None
@@ -104,9 +104,10 @@ class Packages:
                         log.error("Could not build split files packages")
                         return False
                 if re.compile(regex_single).match(filename):
-                    file = self.distDir + "/" + filename
+                    file = os.path.join(self.distDir, filename)
                     ascfile = file + ".asc"
-                    zipFileName  = self.packDir + "/" + pack + ".z"
+                    zpack = pack + ".z"
+                    zipFileName  = os.path.join(self.packDir, zpack)
                     # If .asc file is there, build Zip file
                     if os.access(ascfile, os.R_OK):
                         zip = zipfile.ZipFile(zipFileName, "w")
@@ -198,7 +199,8 @@ class Packages:
         log.info("Building split files..")
         packSplitDir = None
         try:
-            packSplitDir = self.packDir + "/" + pack + ".split"
+            splitpack = pack + ".split"
+            packSplitDir = os.path.join(self.packDir, splitpack)
             if not os.access(packSplitDir, os.R_OK):
                 os.mkdir(packSplitDir)
         except OSError, e:
@@ -206,26 +208,28 @@ class Packages:
                             % (packSplitDir, e))
         # Loop through split dir, look if every partXX.ZZZ has a 
         # matching signature, pack them together in a .z
-        splitdir = self.distDir + "/" + filename
+        splitdir = os.path.join(self.distDir, filename)
         for splitfile in os.listdir(splitdir):
             # Skip signature files
             if splitfile.endswith(".asc"):
                 continue
             if re.compile(".*split.part.*").match(splitfile):
-                ascfile = splitdir + "/signatures/" + splitfile + ".asc"
+                ascsplit = splitfile + ".asc"
+                ascfile = os.path.join(splitdir, "signatures", ascsplit)
                 # Rename .exe if needed
                 if gettor.utils.hasExe(ascfile):
                     try:
                         ascfile = gettor.utils.renameExe(ascfile)
                     except:
                         log.error("Could not rename exe file")
-                file = splitdir + "/" + splitfile
+                file = os.path.join(splitdir, splitfile)
                 if gettor.utils.hasExe(file):
                     try:
                         file = gettor.utils.renameExe(file)
                     except:
                         log.error("Could not rename exe file")
-                zipFileName = packSplitDir + "/" + splitfile + ".z"
+                zsplitfile = splitfile + ".z"
+                zipFileName = os.path.join(packSplitDir, zsplitfile)
                 if gettor.utils.hasExe(zipFileName):
                     try:
                         zipFileName = gettor.utils.renameExe(zipFileName)

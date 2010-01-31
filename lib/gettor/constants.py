@@ -489,6 +489,83 @@ list_of_langs_3 = _("""
     If you select no language, you will receive the English version.
 
     """)
+
+split_help_head = _("""
+    SMALLER SIZED PACKAGES
+    """)
+split_help_underline = """
+    ======================
+    """
+split_help_1 = _("""
+    If your bandwith is low or your provider doesn't allow you to 
+    receive large attachments in your email, there is a feature of 
+    GetTor you can use to make it send you a number of small packages
+    instead of one big one.
+
+    """
+split_help_2 = _("""
+    Simply include the keyword 'split' somewhere in your email like so:
+    """)
+split_help_3 = """
+    
+        tor-browser-bundle
+        split
+
+    """)
+split_help_4 = _("""
+    Sending this text in an email to GetTor will cause it to send you 
+    the Tor Browser Bundle in a number of 1,4MB attachments.
+
+    """)
+split_help_5 = _("""
+    After having received all parts, you need to re-assemble them to 
+    one package again. This is done as follows:
+
+    """)
+split_help_6 = _("""
+    1.) Save all received attachments into one folder on your disk.
+    
+    """)
+split_help_7 = _("""
+    2.) Unzip all files ending in ".z". If you saved all attachments to
+        a fresh folder before, simply unzip all files in that folder.
+
+    """)
+split_help_8 = _("""
+    3.) Rename the file ending in ".ex_RENAME" to end in ".exe" and 
+        also rename the file ending in ".ex_RENAME.asc" to end in
+        ".exe.asc"
+
+    """)
+split_help_9 = _("""
+    4.) Verify all files as described in the mail you received with 
+        each package. (gpg --verify)
+
+    """)
+split_help_10 = _("""
+    5.) Now use a program that can unrar multivolume RAR archives. On
+        Windows, this usually is WinRAR. If you don't have that
+        installed on you computer yet, get it here:
+
+    """)
+split_help_11 = """
+            http://www.win-rar.com/download.html
+
+    """)
+split_help_12 = _("""
+        To unpack your Tor package, simply doubleclick the ".exe" file.
+
+    """)
+split_help_13 = _("""
+    6.) After unpacking is finished, you should find a newly created 
+        ".exe" file in your destination folder. Simply doubleclick
+        that and Tor Browser Bundle should start within a few seconds.
+
+    """)
+split_help_14 = _("""
+    7.) That's it. You're done. Thanks for using Tor and have fun!
+    
+    """
 support = _("""
     SUPPORT
     """)
@@ -589,6 +666,11 @@ packagehelpmsg = hello_gettor + choose_package_1 + avail_packs + choose_package_
                  obtain_localized_1 + obtain_localized_2 + obtain_localized_3 + \
                  list_of_langs_head + list_of_langs_underline + \
                  list_of_langs_1 + list_of_langs_2 + list_of_langs_3 + \
+                 split_help_head + split_help_underline \
+                 split_help_1 + split_help_2 + split_help_3 + split_help_4 + \
+                 split_help_5 + split_help_6 + split_help_7 + split_help_8 + \
+                 split_help_9 + split_help_10 + split_help_11 + split_help_12 + \
+                 split_help_13 + split_help_14 + \
                  support + support_underline + support_email
 
 helpmsg = hello_gettor + \
