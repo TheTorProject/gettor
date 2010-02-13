@@ -18,7 +18,7 @@
 
 import os
 import sys
-from time import gmtime, strftime
+from time import strftime
 import ConfigParser
 import syslog
 import logging
@@ -51,6 +51,9 @@ def initialize():
     elif logSubSystem == "file":
         # Silently fail if things are misconfigured
         logFile = conf.getLogFile()
+        # Rotate logfile daily
+        logFile += "-"
+        logFile += strftime("%Y-%m-%d")
         try:
             logDir = os.path.dirname(logFile)
             if not os.access(logDir, os.W_OK):
