@@ -99,6 +99,9 @@ class Packages:
         for (pack, (regex_single, regex_split)) in self.packageRegex.items():
             for dirname in os.listdir(self.distDir):
                 subdir = os.path.join(self.distDir, dirname)
+                # Ignore non-dir directory members
+                if not os.path.isdir(subdir):
+                    continue
                 for filename in os.listdir(subdir):
                     # Splitfile hacks. XXX: Refactor
                     if re.compile(regex_split).match(filename):
