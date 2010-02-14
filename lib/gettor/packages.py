@@ -97,105 +97,34 @@ class Packages:
 
     def buildPackages(self):
         for (pack, (regex_single, regex_split)) in self.packageRegex.items():
-            for filename in os.listdir(self.distDir):
-                # Splitfile hacks. XXX: Refactor
-                if re.compile(regex_split).match(filename):
-                    if not self.buildSplitFiles(pack, filename):
-                        log.error("Could not build split files packages")
-                        return False
-                if re.compile(regex_single).match(filename):
-                    file = os.path.join(self.distDir, filename)
-                    ascfile = file + ".asc"
-                    zpack = pack + ".z"
-                    zipFileName  = os.path.join(self.packDir, zpack)
-                    # If .asc file is there, build Zip file
-                    if os.access(ascfile, os.R_OK):
-                        zip = zipfile.ZipFile(zipFileName, "w")
-                        zip.write(file, os.path.basename(file))
-                        zip.write(ascfile, os.path.basename(ascfile))
-                        zip.close()
-                        self.packageList[pack] = zipFileName
-                        break
+            for dirname in os.listdir(self.distDir):
+                subdir = os.path.join(self.distDir, dirname)
+                for filename in os.listdir(subdir):
+                    # Splitfile hacks. XXX: Refactor
+                    if re.compile(regex_split).match(filename):
+                        if not self.buildSplitFiles(pack, subdir, filename):
+                            log.error("Could not build split files packages")
+                            return False
+                    if re.compile(regex_single).match(filename):
+                        file = os.path.join(subdir, filename)
+                        ascfile = file + ".asc"
+                        zpack = pack + ".z"
+                        zipFileName  = os.path.join(self.packDir, zpack)
+                        # If .asc file is there, build Zip file
+                        if os.access(ascfile, os.R_OK):
+                            zip = zipfile.ZipFile(zipFileName, "w")
+                            zip.write(file, os.path.basename(file))
+                            zip.write(ascfile, os.path.basename(ascfile))
+                            zip.close()
+                            self.packageList[pack] = zipFileName
+                            break
         if len(self.packageList) > 0:
             return True
         else:
             log.error("Failed to build packages")
             return False
 
-    def initRsync(self, mirror="rsync.torproject.org", silent=False):
-        # Rsync command 1
-        self.rsync = "rsync -a" 
-        self.rsync += " "
-        self.rsync += "--exclude='*current*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*osx*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*rpm*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*privoxy*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*alpha*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*vidalia-bundles*'"
-        self.rsync += " "
-        if not silent:
-            self.rsync += "--progress"
-            self.rsync += " "
-        self.rsync += "rsync://%s/tor/dist/" % mirror
-        self.rsync += " "
-        self.rsync += self.distDir
-        self.rsync += " "
-        self.rsync += "&&"
-        self.rsync += " "
-        # Rsync command 2
-        self.rsync += "rsync -a"
-        self.rsync += " "
-        self.rsync += "--exclude='*current*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*osx*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*rpm*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*privoxy*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*alpha*'"
-        self.rsync += " "
-        self.rsync += "--exclude='*vidalia-bundles*'"
-        self.rsync += " "
-        if not silent:
-            self.rsync += "--progress"
-            self.rsync += " "
-        self.rsync += "rsync://%s/tor/torbrowser/dist/" % mirror
-        self.rsync += " "
-        self.rsync += self.distDir
-        self.rsync += " "
-        self.rsync += "&&"
-        self.rsync += " "
-        # Rsync command 3
-        self.rsync += "rsync -a"
-        self.rsync += " "
-        self.rsync += "--exclude='*alpha*'"
-        self.rsync += " "
-        if not silent:
-            self.rsync += "--progress"
-            self.rsync += " "
-        self.rsync += "rsync://%s/tor/dist/vidalia-bundles/" % mirror
-        self.rsync += " "
-        self.rsync += self.distDir
-        self.rsync += " "
-
-    def syncWithMirror(self):
-        process = subprocess.Popen(self.rsync, shell=True)
-        process.wait()
-
-        return process.returncode
-
-    def getCommandToStr(self, mirror, silent):
-        """This is useful for cronjob installations
-        """
-        return self.rsync
-
-    def buildSplitFiles(self, pack, filename):
+    def buildSplitFiles(self, pack, dirname, filename):
         log.info("Building split files..")
         packSplitDir = None
         try:
@@ -208,7 +137,7 @@ class Packages:
                             % (packSplitDir, e))
         # Loop through split dir, look if every partXX.ZZZ has a 
         # matching signature, pack them together in a .z
-        splitdir = os.path.join(self.distDir, filename)
+        splitdir = os.path.join(dirname, filename)
         for splitfile in os.listdir(splitdir):
             # Skip signature files
             if splitfile.endswith(".asc"):
@@ -232,9 +161,10 @@ class Packages:
                 zipFileName = os.path.join(packSplitDir, zsplitfile)
                 if gettor.utils.hasExe(zipFileName):
                     try:
-                        zipFileName = gettor.utils.renameExe(zipFileName)
+                        zipFileName = gettor.utils.renameExe(zipFileName, False)
                     except:
-                        log.error("Could not rename exe file")
+                        log.error("Could not rename zip file exe")
+                        return False
                 if os.access(ascfile, os.R_OK) and os.access(file, os.R_OK):
                     zip = zipfile.ZipFile(zipFileName, "w")
                     zip.write(file, os.path.basename(file))
@@ -242,7 +172,86 @@ class Packages:
                     zip.close()
                 else:
                     log.error("Uhm, expected signature file for %s to be: %s" % (file, ascfile))
-                    return False
 
         log.info("Done.")
         return True
+
+    def initRsync(self, mirror="rsync.torproject.org", silent=False):
+        # Rsync command 1
+        self.rsync = "rsync -a" 
+        self.rsync += " "
+        self.rsync += "--delete"
+        self.rsync += " "
+        self.rsync += "--exclude='*current*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*osx*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*rpm*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*privoxy*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*alpha*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*vidalia-bundles*'"
+        self.rsync += " "
+        if not silent:
+            self.rsync += "--progress"
+            self.rsync += " "
+        self.rsync += "rsync://%s/tor/dist/" % mirror
+        self.rsync += " "
+        self.rsync += self.distDir + "_source"
+        self.rsync += " "
+        self.rsync += "&&"
+        self.rsync += " "
+        # Rsync command 2
+        self.rsync += "rsync -a"
+        self.rsync += " "
+        self.rsync += "--delete"
+        self.rsync += " "
+        self.rsync += "--exclude='*current*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*osx*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*rpm*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*privoxy*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*alpha*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*vidalia-bundles*'"
+        self.rsync += " "
+        if not silent:
+            self.rsync += "--progress"
+            self.rsync += " "
+        self.rsync += "rsync://%s/tor/torbrowser/dist/" % mirror
+        self.rsync += " "
+        self.rsync += self.distDir + "_tbb"
+        self.rsync += " "
+        self.rsync += "&&"
+        self.rsync += " "
+        # Rsync command 3
+        self.rsync += "rsync -a"
+        self.rsync += " "
+        self.rsync += "--delete"
+        self.rsync += " "
+        self.rsync += "--exclude='*alpha*'"
+        self.rsync += " "
+        if not silent:
+            self.rsync += "--progress"
+            self.rsync += " "
+        self.rsync += "rsync://%s/tor/dist/vidalia-bundles/" % mirror
+        self.rsync += " "
+        self.rsync += self.distDir + "_vidalia"
+        self.rsync += " "
+
+    def syncWithMirror(self):
+        process = subprocess.Popen(self.rsync, shell=True)
+        process.wait()
+
+        return process.returncode
+
+    def getCommandToStr(self, mirror, silent):
+        """This is useful for cronjob installations
+        """
+        return self.rsync
+

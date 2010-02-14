@@ -276,14 +276,15 @@ def hasExe(filename):
     else:
         return False
 
-def renameExe(filename):
+def renameExe(filename, renameFile=True):
     log.info("Renaming exe..")
-    if not os.access(filename, os.R_OK):
+    if renameFile and not os.access(filename, os.R_OK):
         log.error("Could not access file %s" % filename)
         raise OSError
 
     newfilename = filename.replace(".exe", ".ex_RENAME", 1)
-    os.rename(filename, newfilename)
+    if renameFile:
+        os.rename(filename, newfilename)
 
     return newfilename
 

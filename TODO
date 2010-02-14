@@ -1,6 +1,5 @@
 These are planned changes to the gettor system.
 
-- Clean distdir and packdir on each fetching/packaging run
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - React in some way if the user requested a split download but no split 
   downloads are available for that specific package (maybe send out the non-
