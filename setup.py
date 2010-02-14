@@ -30,7 +30,7 @@ setup(name='GetTor',
       package_dir={'': 'lib'},
       packages=['gettor'],
       data_files = data_files.items(),
-      scripts = ["GetTor.py"],
+      scripts = ["GetTor.py", "MakeStat.py"],
       py_modules=['GetTor'],
       long_description = """Really long text here."""
      )
