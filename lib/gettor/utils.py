@@ -16,7 +16,8 @@ import sys
 import re
 import subprocess
 import hashlib
-import datetime
+from datetime import date, timedelta, datetime
+from time import localtime
 
 import gettor.gtlog
 import gettor.blacklist
@@ -145,7 +146,7 @@ def installCron():
     # XXX: Check if cron is installed and understands our syntax?
     currentCronTab = getCurrentCrontab()
     path = os.getcwd() + "/" + os.path.basename(sys.argv[0])
-    args = " --clear-blacklist --fetch-packages --prep-packages"
+    args = " --clear-blacklist=7 --fetch-packages --prep-packages"
     newCronTab = currentCronTab + '\n' + '3 2 * * * ' + path + args
     echoCmd = ['echo', newCronTab ]
     cronCmd = ['crontab', '-']
@@ -218,14 +219,14 @@ def clearWhitelist(conf):
         log.info("Deleting whitelist done.")
         return True
 
-def clearBlacklist(conf):
+def clearBlacklist(conf, olderThanDays):
     log.info("Clearing blacklist..")
     try:
         blackList = gettor.blacklist.BWList(conf.getBlStateDir())
     except IOError, e:
         log.error("Blacklist error: %s" % e)
         return False
-    if not blackList.removeAll():
+    if not blackList.removeAll(olderThanDays):
         log.error("Deleting blacklist failed.")
         return False
     else:
@@ -287,6 +288,18 @@ def renameExe(filename, renameFile=True):
         os.rename(filename, newfilename)
 
     return newfilename
+
+def fileIsOlderThan(filename, olderThanDays):
+    olderThanDays = int(olderThanDays)
+    if olderThanDays is not 0:
+        daysold = datetime.now() - timedelta(days=olderThanDays)
+        daysold = daysold.timetuple()
+        filetimeUnix = os.path.getmtime(filename)
+        filetime = localtime(filetimeUnix)
+        if daysold < filetime:
+            return False
+        
+    return True
 
 # Helper routines go here ####################################################
 

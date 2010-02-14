@@ -34,9 +34,6 @@ def parseOpts():
     cmdParser.add_option("-p", "--prep-packages", dest="preppackages",
                         action="store_true", default=False,
                         help="prepare packages (zip them)")
-    cmdParser.add_option("-t", "--run-tests", dest="runtests",
-                        action="store_true", default=False,
-                        help="run some tests")
     cmdParser.add_option("-w", "--whitelist", dest="whitelist",
                          default="",
                          help="add an email address to the whitelist",
@@ -52,19 +49,19 @@ def parseOpts():
     cmdParser.add_option("-x", "--clear-whitelist", dest="clearwl",
                         action="store_true", default=False,
                         help="clear all entrys in the whitelist")
-    cmdParser.add_option("-y", "--clear-blacklist", dest="clearbl",
-                        action="store_true", default=False,
-                        help="clear all entrys in the blacklist")
+    cmdParser.add_option("-y", "--clear-blacklist", dest="days",
+                        default=0,
+                        help="clear all entrys in the blacklist older than DAYS days")
     cmdParser.add_option("-r", "--install-translations", dest="insttrans",
                         action="store_true", default=False,
-                        help="Compile and install translation files [check -d]")
+                        help="compile and install translation files [check -d]")
     cmdParser.add_option("-s", "--set-cmdpassword", dest="cmdpass",
                         default="",
-                        help="Set the password for mail commands",
+                        help="set the password for mail commands",
                         metavar="CMDPASS")
     cmdParser.add_option("-d", "--i18n-dir", dest="i18ndir",
                         default="./i18n",
-                        help="Set your locale src dir to DIR [default = %default]",
+                        help="set your locale src dir to DIR [default = %default]",
                         metavar="DIR")
 
     return cmdParser.parse_args()

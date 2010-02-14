@@ -78,22 +78,23 @@ class BWList:
             log.info("Requested removal of non-existing entry. Abord.")
             return False
 
-    def removeAll(self):
-        print "Removing all entries from list!"
+    def removeAll(self, olderThanDays=0):
         for root, dirs, files in os.walk(self.blacklistDir):
             for file in files:
                 rmfile = os.path.join(root, file)
-                try:
-                    os.remove(rmfile)
-                except OSError:
+                # Only remove files older than 'olderThanDays'
+                if gettor.utils.fileIsOlderThan(rmfile, olderThanDays):
                     try:
-                        os.rmdir(rmfile)
+                        os.remove(rmfile)
+                    except OSError:
+                        try:
+                            os.rmdir(rmfile)
+                        except:
+                            log.error("Could not remove %s." % rmfile)
+                            return False
                     except:
                         log.error("Could not remove %s." % rmfile)
                         return False
-                except:
-                    log.error("Could not remove %s." % rmfile)
-                    return False
         return True
 
     def stripEmail(self, address):

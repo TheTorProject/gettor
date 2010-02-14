@@ -97,8 +97,8 @@ def processOptions(options, conf):
         gettor.utils.lookupAddress(conf, options.lookup)
     if options.clearwl:
         gettor.utils.clearWhitelist(conf)
-    if options.clearbl:
-        gettor.utils.clearBlacklist(conf)
+    if options.days:
+        gettor.utils.clearBlacklist(conf, options.days)
     if options.cmdpass:
         gettor.utils.setCmdPassword(conf, options.cmdpass)
 

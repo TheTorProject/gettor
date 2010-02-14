@@ -502,7 +502,7 @@ split_help_1 = _("""
     GetTor you can use to make it send you a number of small packages
     instead of one big one.
 
-    """
+    """)
 split_help_2 = _("""
     Simply include the keyword 'split' somewhere in your email like so:
     """)
@@ -511,7 +511,7 @@ split_help_3 = """
         tor-browser-bundle
         split
 
-    """)
+    """
 split_help_4 = _("""
     Sending this text in an email to GetTor will cause it to send you 
     the Tor Browser Bundle in a number of 1,4MB attachments.
@@ -551,7 +551,7 @@ split_help_10 = _("""
 split_help_11 = """
             http://www.win-rar.com/download.html
 
-    """)
+    """
 split_help_12 = _("""
         To unpack your Tor package, simply doubleclick the ".exe" file.
 
@@ -565,7 +565,7 @@ split_help_13 = _("""
 split_help_14 = _("""
     7.) That's it. You're done. Thanks for using Tor and have fun!
     
-    """
+    """)
 support = _("""
     SUPPORT
     """)
@@ -666,7 +666,7 @@ packagehelpmsg = hello_gettor + choose_package_1 + avail_packs + choose_package_
                  obtain_localized_1 + obtain_localized_2 + obtain_localized_3 + \
                  list_of_langs_head + list_of_langs_underline + \
                  list_of_langs_1 + list_of_langs_2 + list_of_langs_3 + \
-                 split_help_head + split_help_underline \
+                 split_help_head + split_help_underline + \
                  split_help_1 + split_help_2 + split_help_3 + split_help_4 + \
                  split_help_5 + split_help_6 + split_help_7 + split_help_8 + \
                  split_help_9 + split_help_10 + split_help_11 + split_help_12 + \
