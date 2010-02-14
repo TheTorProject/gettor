@@ -82,21 +82,28 @@ def printStatsStdout(days):
             print packstr,
         print ""
 
+def printStatsGNUPlot(days):
+    for day in sorted(days.iterkeys()):
+        packs = days[day]
+        print day,
+        for pack in sorted(packs.iterkeys()):
+            print packs[pack],
+        print ""
 
 def main():
     days = {}
     
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         print >> sys.stderr, "Usage: %s LOGDIR" % sys.argv[0]
         sys.exit(1)
-    if not os.path.isdir(sys.argv[1]):
-        print >> sys.stderr, "Not a directory: %s" % sys.argv[1]
-        sys.exit(1)
-    for dirname, dirnames, filenames in os.walk('.'):
-        for filename in filenames:
-            makestats(filename, days)
+    for arg in sys.argv:
+        if not os.path.isfile(arg):
+            print >> sys.stderr, "Not a file: %s" % arg
+            sys.exit(1)
+        makestats(arg, days)
 
     printStatsStdout(days)
+    #printStatsGNUPlot(days)
 
 if __name__ == "__main__":
     main()
