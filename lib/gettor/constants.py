@@ -20,8 +20,8 @@ multilangpackagehelpmsg = """
         tor-browser-bundle
         macosx-i386-bundle
         macosx-ppc-bundle
-        linux-i386-browser-bundle
-        linux-x86_64-browser-bundle
+        linux-browser-bundle-i386
+        linux-browser-bundle-x86_64
         source-bundle
 
     Please reply to this mail (to gettor), and tell me
@@ -74,8 +74,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    linux-i386-browser-bundle
-    linux-x86_64-browser-bundle
+    linux-browser-bundle-i386
+    linux-browser-bundle-x86_64
     source-bundle
     
     يرجى أن ترد على هذه الرسالة (إلى gettor@torproject.org)، وتخبرني
@@ -129,8 +129,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    linux-i386-browser-bundle
-    linux-x86_64-browser-bundle
+    linux-browser-bundle-i386
+    linux-browser-bundle-x86_64
     source-bundle
 
     لطفا به این نامه پاسخ داده ( به آدرس gettor@torproject.org ) و در قسمتی از 
@@ -181,8 +181,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    linux-i386-browser-bundle
-    linux-x86_64-browser-bundle
+    linux-browser-bundle-i386
+    linux-browser-bundle-x86_64
     source-bundle
 
     Vennligst svar til denne eposten (til gettor@torproject.org), og nevn
@@ -235,8 +235,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    linux-i386-browser-bundle
-    linux-x86_64-browser-bundle
+    linux-browser-bundle-i386
+    linux-browser-bundle-x86_64
     source-bundle
 
     Por favor responda a esta email (para gettor@torproject.org), e diga qual o 
@@ -287,8 +287,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    linux-i386-browser-bundle
-    linux-x86_64-browser-bundle
+    linux-browser-bundle-i386
+    linux-browser-bundle-x86_64
     source-bundle
 
     Пожалуйста свяжитесь с нами по этой элктронной почте 
@@ -345,8 +345,8 @@ multilangpackagehelpmsg = """
                          (Tor for MacOS)
         macosx-ppc-bundle
                          (Tor for MacOS on PowerPC )
-        linux-i386-browser-bundle
-        linux-x86_64-browser-bundle
+        linux-browser-bundle-i386
+        linux-browser-bundle-x86_64
                          (Tor for Linux)
         source-bundle
                          (源码包)
@@ -436,8 +436,8 @@ avail_packs = """
         tor-browser-bundle
         macosx-i386-bundle
         macosx-ppc-bundle
-        linux-i386-browser-bundle
-        linux-x86_64-browser-bundle
+        linux-browser-bundle-i386
+        linux-browser-bundle-x86_64
         source-bundle
     
     """
