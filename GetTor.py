@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __program__ = 'GetTor.py'
-__url__ = 'https://tor-svn.freehaven.net/svn/tor/trunk/contrib/gettor/'
+__url__ = 'https://svn.torproject.org/svn/projects/gettor'
 __author__ = 'Jacob Appelbaum <jacob@appelbaum.net>, Christian Fromme <kaner@strace.org>'
 __copyright__ = 'Copyright (c) 2008, 2009, The Tor Project'
 __license__ = 'See LICENSE for licensing information'

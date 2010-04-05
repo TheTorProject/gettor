@@ -12,6 +12,7 @@
 '''
 
 import os
+import shutil
 import zipfile
 import subprocess
 import gettor.gtlog
@@ -55,6 +56,32 @@ class Packages:
                      "windows-bundle": ("vidalia-bundle-.*.exe$", "vidalia-bundle-.*_split"),
                      "macosx-ppc-bundle": ("vidalia-bundle-.*-ppc.dmg$", "vidalia-bundle-.*-ppc_split"),
                      "macosx-i386-bundle": ("vidalia-bundle-.*-i386.dmg$", "vidalia-bundle-.*-universal_split"),
+                     "linux-browser-bundle-i386": ("i386-tor-browser-gnu-linux-.*-en-US.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_en": ("i386-tor-browser-gnu-linux-.*-en-US.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_ar": ("i386-tor-browser-gnu-linux-.*-ar.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_de": ("i386-tor-browser-gnu-linux-.*-de.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_es-ES": ("i386-tor-browser-gnu-linux-.*-es-ES.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_fa": ("i386-tor-browser-gnu-linux-.*-fa.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_fr": ("i386-tor-browser-gnu-linux-.*-fr.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_it": ("i386-tor-browser-gnu-linux-.*-it.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_nl": ("i386-tor-browser-gnu-linux-.*-nl.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_pl": ("i386-tor-browser-gnu-linux-.*-pl.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_pt_PT": ("i386-tor-browser-gnu-linux-.*-pt_PT.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_ru": ("i386-tor-browser-gnu-linux-.*-ru.tar.gz$", "not available"),
+                     "linux-browser-bundle-i386_zh_CN": ("i386-tor-browser-gnu-linux-.*-zh-CN.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64": ("x86_64-tor-browser-gnu-linux-.*-en-US.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_en": ("x86_64-tor-browser-gnu-linux-.*-en-US.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_ar": ("x86_64-tor-browser-gnu-linux-.*-ar.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_de": ("x86_64-tor-browser-gnu-linux-.*-de.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_es-ES": ("x86_64-tor-browser-gnu-linux-.*-es-ES.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_fa": ("x86_64-tor-browser-gnu-linux-.*-fa.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_fr": ("x86_64-tor-browser-gnu-linux-.*-fr.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_it": ("x86_64-tor-browser-gnu-linux-.*-it.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_nl": ("x86_64-tor-browser-gnu-linux-.*-nl.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_pl": ("x86_64-tor-browser-gnu-linux-.*-pl.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_pt_PT": ("x86_64-tor-browser-gnu-linux-.*-pt_PT.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_ru": ("x86_64-tor-browser-gnu-linux-.*-ru.tar.gz$", "not available"),
+                     "linux-browser-bundle-x86_64_zh_CN": ("x86_64-tor-browser-gnu-linux-.*-zh-CN.tar.gz$", "not available"),
                      # Mike won't sign Torbutton; He doesn't get gettor support
                      #"torbutton": "torbutton-current.xpi$",
                    }
@@ -94,6 +121,24 @@ class Packages:
                             % val)
                 del self.packageList[key]
         return self.packageList
+
+    def preparePackages(self):
+        # Move some stuff around the way we need it: GetTor expects a flat
+        # file system after rsync is finished   
+        log.info("Preparing Linux Bundles..")
+        # Prepare Linux Bundles: Move them from linux/i386/* to 
+        # ./i386-* and from linux/x86_64/* to ./x86_64-*
+        tbbdir = os.path.join(self.distDir, "_tbb")
+        lxdir = os.path.join(tbbdir, "linux")
+        if os.path.isdir(lxdir):
+            # Loop through linux/i386 and linux/x86_64 and whatever might
+            # come in the future
+            for archdir in os.listdir(lxdir):
+                lxarchdir = os.path.join(lxdir, archdir)
+                for srcfile in os.listdir(lxarchdir):
+                    renameTo = archdir + "-" + srcfile
+                    destfile = os.path.join(tbbdir, renameTo)
+                    shutil.move(os.path.join(lxarchdir, srcfile), destfile)
 
     def buildPackages(self):
         for (pack, (regex_single, regex_split)) in self.packageRegex.items():

@@ -20,7 +20,8 @@ multilangpackagehelpmsg = """
         tor-browser-bundle
         macosx-i386-bundle
         macosx-ppc-bundle
-        tor-im-browser-bundle
+        linux-i386-browser-bundle
+        linux-x86_64-browser-bundle
         source-bundle
 
     Please reply to this mail (to gettor), and tell me
@@ -73,7 +74,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    tor-im-browser-bundle
+    linux-i386-browser-bundle
+    linux-x86_64-browser-bundle
     source-bundle
     
     يرجى أن ترد على هذه الرسالة (إلى gettor@torproject.org)، وتخبرني
@@ -127,7 +129,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    tor-im-browser-bundle
+    linux-i386-browser-bundle
+    linux-x86_64-browser-bundle
     source-bundle
 
     لطفا به این نامه پاسخ داده ( به آدرس gettor@torproject.org ) و در قسمتی از 
@@ -178,7 +181,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    tor-im-browser-bundle
+    linux-i386-browser-bundle
+    linux-x86_64-browser-bundle
     source-bundle
 
     Vennligst svar til denne eposten (til gettor@torproject.org), og nevn
@@ -231,7 +235,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    tor-im-browser-bundle
+    linux-i386-browser-bundle
+    linux-x86_64-browser-bundle
     source-bundle
 
     Por favor responda a esta email (para gettor@torproject.org), e diga qual o 
@@ -282,7 +287,8 @@ multilangpackagehelpmsg = """
     tor-browser-bundle
     macosx-i386-bundle
     macosx-ppc-bundle
-    tor-im-browser-bundle
+    linux-i386-browser-bundle
+    linux-x86_64-browser-bundle
     source-bundle
 
     Пожалуйста свяжитесь с нами по этой элктронной почте 
@@ -339,8 +345,9 @@ multilangpackagehelpmsg = """
                          (Tor for MacOS)
         macosx-ppc-bundle
                          (Tor for MacOS on PowerPC )
-        tor-im-browser-bundle
-                         (Tor+Pidgin聚合聊天程序+Firefox浏览器)
+        linux-i386-browser-bundle
+        linux-x86_64-browser-bundle
+                         (Tor for Linux)
         source-bundle
                          (源码包)
 
@@ -429,7 +436,8 @@ avail_packs = """
         tor-browser-bundle
         macosx-i386-bundle
         macosx-ppc-bundle
-        tor-im-browser-bundle
+        linux-i386-browser-bundle
+        linux-x86_64-browser-bundle
         source-bundle
     
     """

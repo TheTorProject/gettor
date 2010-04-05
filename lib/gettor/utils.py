@@ -134,6 +134,7 @@ def prepPackages(conf):
     except IOError:
         log.error("Error initiating package list.")
         return False
+    packs.preparePackages()
     if not packs.buildPackages():
         log.error("Building packages failed.")
         return False
@@ -300,6 +301,38 @@ def fileIsOlderThan(filename, olderThanDays):
             return False
         
     return True
+
+def getVersionStringFromFile(filename):
+    regex = "[a-z-]*-([0-9]*\.[0-9]*\.[0-9]*)"
+    match = re.match(regex, filename)
+    if match:
+        return match.group(1)
+    else:
+        return None
+
+def isNewTorVersion(old, new):
+    oldsplit = old.split(".")
+    newsplit = new.split(".")
+    if len(oldsplit) != 3 or len(newsplit) != 3:
+        log.error("Tor version length fail")
+        return False
+    if oldsplit[0] > newsplit[0]:
+        return False
+    if oldsplit[0] < newsplit[0]:
+        return True
+    if oldsplit[0] == newsplit[0]:
+        if oldsplit[1] > newsplit[1]:
+            return False
+        if oldsplit[1] < newsplit[1]:
+            return True
+        if oldsplit[1] == newsplit[1]:
+            if oldsplit[2] > newsplit[2]:
+                return False
+            if oldsplit[2] < newsplit[2]:
+                return True
+            if oldsplit[2] == newsplit[2]:
+                # Same version
+                return False
 
 # Helper routines go here ####################################################
 

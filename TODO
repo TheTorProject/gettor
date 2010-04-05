@@ -1,5 +1,7 @@
 These are planned changes to the gettor system.
 
+- Write up how and when and for how long we block requests by users on 
+  blacklists, e.g. write up what our spam prevention technology is
 - Split (at least) tiger bundle into several smaller archives to avoid ~20MB
 - React in some way if the user requested a split download but no split 
   downloads are available for that specific package (maybe send out the non-
