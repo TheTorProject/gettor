@@ -36,8 +36,8 @@ class Packages:
                      "tor-im-browser-bundle_ar": ("tor-im-browser-.*_ar.exe$", "tor-im-browser-.*_ar_split"),
                      "tor-browser-bundle_es": ("tor-browser-.*_es-ES.exe$", "tor-browser-.*_es-ES_split"),
                      "tor-im-browser-bundle_es": ("tor-im-browser-.*_es-ES.exe$", "tor-im-browser-.*_es-ES_split"),
-                     "tor-browser-bundle_fa": ("tor-browser-.*_fa-IR.exe$", "tor-browser-.*_fa-IR_split"),
-                     "tor-im-browser-bundle_fa": ("tor-im-browser-.*_fa-IR.exe$", "tor-im-browser-.*_fa-IR_split"),
+                     "tor-browser-bundle_fa": ("tor-browser-.*_fa.exe$", "tor-browser-.*_fa_split"),
+                     "tor-im-browser-bundle_fa": ("tor-im-browser-.*_fa.exe$", "tor-im-browser-.*_fa_split"),
                      "tor-browser-bundle_fr": ("tor-browser-.*_fr.exe$", "tor-browser-.*_fr_split"),
                      "tor-im-browser-bundle_fr": ("tor-im-browser-.*_fr.exe$", "tor-im-browser-.*_fr_split"),
                      "tor-browser-bundle_it": ("tor-browser-.*_it.exe$", "tor-browser-.*_it_split"),
@@ -46,8 +46,8 @@ class Packages:
                      "tor-im-browser-bundle_nl": ("tor-im-browser-.*_nl.exe$", "tor-im-browser-.*_nl_split"),
                      "tor-browser-bundle_pl": ("tor-browser-.*_pl.exe$", "tor-browser-.*_pl_split"),
                      "tor-im-browser-bundle_pl": ("tor-im-browser-.*_pl.exe$", "tor-im-browser-.*_pl_split"),
-                     "tor-browser-bundle_pt": ("tor-browser-.*_pt.exe$", "tor-browser-.*_pt_split"),
-                     "tor-im-browser-bundle_pt": ("tor-im-browser-.*_pt.exe$", "tor-im-browser-.*_pt_split"),
+                     "tor-browser-bundle_pt": ("tor-browser-.*_pt-PT.exe$", "tor-browser-.*_pt-PT_split"),
+                     "tor-im-browser-bundle_pt": ("tor-im-browser-.*_pt-PT.exe$", "tor-im-browser-.*_pt-PT_split"),
                      "tor-browser-bundle_ru": ("tor-browser-.*_ru.exe$", "tor-browser-.*_ru_split"),
                      "tor-im-browser-bundle_ru": ("tor-im-browser-.*_ru.exe$", "tor-im-browser-.*_ru_split"),
                      "tor-browser-bundle_zh_CN": ("tor-browser-.*_zh-CN.exe$", "tor-browser-.*_zh-CN_split"),
@@ -165,7 +165,6 @@ class Packages:
                             zip.write(ascfile, os.path.basename(ascfile))
                             zip.close()
                             self.packageList[pack] = zipFileName
-                            break
         if len(self.packageList) > 0:
             return True
         else:
