@@ -46,7 +46,7 @@ def dumpMessage(conf, message):
             return False
     try:
         fd = open(dumpFile, 'a')
-        now = datetime.datetime.now()
+        now = datetime.now()
         prefix = "Failed mail at %s:\n" % now.strftime("%Y-%m-%d %H:%M:%S")
         fd.write(prefix)
         fd.write(message)
