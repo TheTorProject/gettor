@@ -182,7 +182,9 @@ class requestMail:
         # suffix. This isn't nice because we're hard-coding package names here
         # Attention: This needs to correspond to the  packages in packages.py
         if self.returnPackage == "tor-browser-bundle" \
-                               or self.returnPackage == "tor-im-browser-bundle":
+               or self.returnPackage == "tor-im-browser-bundle" \
+               or self.returnPackage == "linux-browser-bundle-i386" \
+               or self.returnPackage == "linux-browser-bundle-x86_64":
             # "tor-browser-bundle" => "tor-browser-bundle_de"
 	    self.returnPackage = self.returnPackage + "_" + self.replyLocale 
 
