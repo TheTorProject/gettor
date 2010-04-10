@@ -204,7 +204,13 @@ class Packages:
                         file = gettor.utils.renameExe(file)
                     except:
                         log.error("Could not rename exe file")
-                zsplitfile = splitfile + ".z"
+                match = re.match(".*(part[0-9][0-9].*$)", splitfile)
+                if match:
+                    partNo = match.group(1)
+                else:
+                    log.error("Can't happen: No part string in %s" % splitfile)
+                    continue
+                zsplitfile = pack + "." + partNo + ".z"
                 zipFileName = os.path.join(packSplitDir, zsplitfile)
                 if gettor.utils.hasExe(zipFileName):
                     try:
