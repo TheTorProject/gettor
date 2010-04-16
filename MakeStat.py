@@ -52,7 +52,7 @@ def makestats(filename, days):
         sys.exit(1)
     readData = logFile.read().split('\n')
     for line in readData:
-        match = re.match(".*Request from.*", line, re.DOTALL)
+        match = re.match(".*Request from.*cmdaddr None.*", line, re.DOTALL)
         if match:
             splitline = string.split(line)
             if len(splitline) > 12:
@@ -71,6 +71,26 @@ def makestats(filename, days):
                     if pack in packs:
                         packs[pack] += 1
                 days[day] = packs
+        else:
+            match = re.match(".*Request From.*Cmdaddr: None.*", line, re.DOTALL)
+            if match:
+                splitline = string.split(line)
+                if len(splitline) > 12:
+                    day = splitline[0]
+                    pack = splitline[9]
+                    lang = splitline[11]
+                    if not re.match("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]", day):
+                        continue
+                    pack = pack.strip(',')
+                    lang = lang.strip(',')
+                    if day in days:
+                        packs = days[day]
+                    else:
+                        packs = emptyPacks(packages).copy()
+                    if pack is not None:
+                        if pack in packs:
+                            packs[pack] += 1
+                    days[day] = packs
 
 def printStatsStdout(days):
     for day in sorted(days.iterkeys()):
