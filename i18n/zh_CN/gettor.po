@@ -131,6 +131,7 @@ msgstr ""
 "    请回复此邮件（到 gettor@torproject.org），\n"
 "    告诉我任一个在电邮正文中的软件包名称。\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:441
 msgid ""
@@ -191,6 +192,7 @@ msgstr ""
 "\n"
 "    以下是全部可用语言列表:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:474
 msgid ""
@@ -244,6 +246,7 @@ msgid ""
 msgstr ""
 "\n"
 "较小的文件包\n"
+"    "
 
 #: lib/gettor/constants.py:499
 msgid ""
@@ -257,6 +260,7 @@ msgid ""
 msgstr ""
 "\n"
 "如果您的带宽低或者你的提供商不允许您接受电子邮件里的大的附件，GetTor有一个特点是您可以使它向您发送一组小的数据包而不是一个大的数据包。\n"
+"    "
 
 #: lib/gettor/constants.py:506
 msgid ""
@@ -266,6 +270,7 @@ msgid ""
 msgstr ""
 "\n"
 "只需像这样在您的电子邮件中包含“split\"关键字：\n"
+"    "
 
 #: lib/gettor/constants.py:515
 msgid ""
@@ -277,6 +282,7 @@ msgid ""
 msgstr ""
 "\n"
 "向GetTor发送含这个文本的电子邮件会使它向您以一组1.4MB大小的附件的形式发送Tor Browser Bundle。\n"
+"    "
 
 #: lib/gettor/constants.py:520
 msgid ""
@@ -288,6 +294,7 @@ msgid ""
 msgstr ""
 "\n"
 "在接受全部的部分后，您需要把他们重新组装成一个文件包。步骤如下：\n"
+"    "
 
 #: lib/gettor/constants.py:525
 msgid ""
@@ -298,6 +305,7 @@ msgid ""
 msgstr ""
 "\n"
 "1.)将所有接受到的附件保存在您的硬盘的同一个文件夹里。\n"
+"    "
 
 #: lib/gettor/constants.py:529
 msgid ""
@@ -309,6 +317,7 @@ msgid ""
 msgstr ""
 "\n"
 "2.)将所有后缀名为“.z\"的文件解压。如果您之前将所有的附件保存在一个新的文件夹，仅在那个文件夹里解压所有文件就可以。\n"
+"    "
 
 #: lib/gettor/constants.py:534
 msgid ""
@@ -319,6 +328,7 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
 "3.)将后缀名为“.ex_RENAME\"的文件改成以“.exe”为后缀的文件，将后缀名为 \".ex_RENAME.asc\" "
 "的文件改成以\".exe.asc\"为后缀名。"
 
@@ -332,6 +342,7 @@ msgid ""
 msgstr ""
 "\n"
 "核实您接受的所有的该邮件中描述的每个文件包\n"
+"    "
 
 #: lib/gettor/constants.py:545
 msgid ""
@@ -344,6 +355,7 @@ msgid ""
 msgstr ""
 "\n"
 "现在用一个能解压多个卷RAR格式的程序。在Windows环境中通常是WinRAR。如果您没有在您的电脑上安装该软件，请在这里得到它：\n"
+"    "
 
 #: lib/gettor/constants.py:555
 msgid ""
@@ -354,6 +366,7 @@ msgid ""
 msgstr ""
 "\n"
 "要解压您的Tor文件包，只需双击”.exe\"文件。\n"
+"    "
 
 #: lib/gettor/constants.py:559
 msgid ""
@@ -366,6 +379,7 @@ msgid ""
 msgstr ""
 "\n"
 "解压缩结束后，您应该会在您的目标文件夹中找到新创建的“.exe\"文件。只需双击它，Tor Browser Bundle会在几秒钟内运行。\n"
+"    "
 
 #: lib/gettor/constants.py:565
 msgid ""
@@ -376,6 +390,7 @@ msgid ""
 msgstr ""
 "\n"
 "就是这样。过程完成。感谢您使用Tor并祝您愉快！\n"
+"    "
 
 #: lib/gettor/constants.py:569
 msgid ""
@@ -385,6 +400,7 @@ msgid ""
 msgstr ""
 "\n"
 "支持\n"
+"    "
 
 #: lib/gettor/constants.py:580
 msgid ""
@@ -396,6 +412,7 @@ msgid ""
 msgstr ""
 "\n"
 "这是您请求的软件的zip格式文件。请解压文件并验证签名。\n"
+"    "
 
 #: lib/gettor/constants.py:585
 msgid ""
@@ -407,6 +424,7 @@ msgid ""
 msgstr ""
 "\n"
 "提示：如果您的电脑已安装过GnuPG,在解压文件后请如下使用gpg命令栏工具：\n"
+"    "
 
 #: lib/gettor/constants.py:590
 msgid ""
@@ -418,6 +436,7 @@ msgstr ""
 "\n"
 "gpg --验证 <packagename>.asc <packagename>\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:594
 msgid ""
@@ -429,6 +448,7 @@ msgstr ""
 "\n"
 "输出结果应该类似这样:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:602
 msgid ""
@@ -440,6 +460,7 @@ msgid ""
 msgstr ""
 "\n"
 "如果您对命令栏工具不了解，请在这个网站上试着寻找GnuPG适用的用户图形界面：\n"
+"    "
 
 #: lib/gettor/constants.py:611
 msgid ""
@@ -456,6 +477,7 @@ msgstr ""
 "\n"
 "如果您的Internet链接阻止您链接Tor网络，您可能需要一个桥接。桥接（或者简称”桥“）是Tor没有在主目录中列出的Tor网络中继。因为没有中继的完"
 "整的公开列表，即使您的ISP过滤了所有通向已知Tor中继的链接，它们可能不会屏蔽所有的桥接。\n"
+"    "
 
 #: lib/gettor/constants.py:620
 msgid ""
@@ -469,6 +491,7 @@ msgid ""
 msgstr ""
 "\n"
 "你可以向这个地址：bridges@torproject.org发送电子邮件以获取一个桥接，需要在正文中包含\"get bridges\"。\n"
+"    "
 
 #: lib/gettor/constants.py:626
 msgid ""
@@ -481,6 +504,7 @@ msgid ""
 msgstr ""
 "\n"
 "您也可以通过浏览器在以下网址得到桥接：https://bridges.torproject.org/\n"
+"    "
 
 #: lib/gettor/constants.py:631
 msgid ""
@@ -496,6 +520,7 @@ msgstr ""
 "\n"
 "重要提示：\n"
 "因为这是分卷发送的请求，您需要等待所有的部分接受到后，然后把它们保存到同一个文件夹，接着双击第一个文件解压。\n"
+"    "
 
 #: lib/gettor/constants.py:639
 msgid ""
@@ -507,6 +532,7 @@ msgid ""
 msgstr ""
 "\n"
 "文件包可能不是按顺序接受到！请您确认接受到所有的文件包后在尝试解压他们！\n"
+"    "
 
 #: lib/gettor/constants.py:644
 msgid ""
@@ -521,6 +547,7 @@ msgid ""
 msgstr ""
 "\n"
 "感谢您的请求。我们已经成功理解。您的请求正在被处理中。您的文件包应该在接下来的十分钟内传达。\n"
+"    "
 
 #: lib/gettor/constants.py:650
 msgid ""
@@ -536,6 +563,7 @@ msgstr ""
 "\n"
 "如果文件包没有收到，可能是因为它对于您的电子邮箱提供商来说过于庞大。请试着用gmail.com或者yahoo.cn"
 "的账户重新发送请求文件。而且，尝试请求tor-browser-bundle而尽量不是tor-im-browser，因为前者更小一点。\n"
+"    "
 
 #: lib/gettor/constants.py:657
 msgid ""
@@ -549,6 +577,7 @@ msgid ""
 msgstr ""
 "\n"
 "很遗憾我们目前遇到一些问题，我们不能立刻实现您的请求。请您耐心等待，我们会尝试解决此问题。\n"
+"    "
 
 #~ msgid ""
 #~ "\n"
