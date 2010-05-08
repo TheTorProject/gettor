@@ -88,7 +88,8 @@ class Response:
             # Ok, see what we've got here.
             # Was this a GetTor control command wanting us to forward a package?
             if self.cmdAddr is not None:
-                if not self.sendPackage():
+                success = self.sendPackage()
+                if not success:
                     log.error("Failed to forward mail to '%s'" % self.cmdAddr)
                 return self.sendForwardReply(success)
                 
