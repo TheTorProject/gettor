@@ -2,19 +2,18 @@
 # Copyright (C) 2009
 # This file is distributed under the same license as the GetTor package.
 # Jacob Appelbaum <jacob@appelbaum.net>, 2009
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-14 14:10+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2010-05-16 18:54-0600\n"
+"Last-Translator: vangelis <vangelis@s0f.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Pootle 1.1.0\n"
 
 #: lib/gettor/constants.py:388
 msgid ""
@@ -25,6 +24,11 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"안녕하세요, 저는 \"GetTor\" 로봇입니다.\n"
+"\n"
+"당신의 요청에 대해 감사드립니다.\n"
+"\n"
 
 #: lib/gettor/constants.py:394
 msgid ""
@@ -35,6 +39,11 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"유감스럽지만, 우리는 이 주소로 당신께 대답하지 않을 것입니다.\n"
+"당신은 GMAIL.COM 또는 YAHOO.CN으로 계정을 만들어\n"
+"이들 중 하나로부터 메일을 보내야만 합니다.\n"
+"\n"
 
 #: lib/gettor/constants.py:400
 msgid ""
@@ -45,6 +54,11 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"우리는 \"DKIM\"을 지원하는 이메일 서버스로부터 온 요청만 처리하며,\n"
+"\"DKIM\"은 \"From\" 라인에 있는 주소가 실제로 그 메일을 보낸 사람의 것인지를\n"
+"우리가 확인하게 해주는 이메일 기능입니다.\n"
+"\n"
 
 #: lib/gettor/constants.py:406
 msgid ""
@@ -55,6 +69,12 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"(당신이 이 메일을 요청하지 않았다면 사과드립니다.\n"
+"당신의 이메일이 DKIM을 사용하지 않는 서비스로부터 왔기 때문에 \n"
+"우리는 간단한 설명을 보내드리며,\n"
+"그리고 이 이후로 우리는 이 이메일 주소는 무시할 것입니다.)\n"
+"\n"
 
 #: lib/gettor/constants.py:412
 msgid ""
