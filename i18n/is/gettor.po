@@ -2,19 +2,18 @@
 # Copyright (C) 2009
 # This file is distributed under the same license as the GetTor package.
 # Jacob Appelbaum <jacob@appelbaum.net>, 2009
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-14 14:10+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2010-06-02 15:30-0600\n"
+"Last-Translator: Berglind Ósk Bergsdóttir <beggaboo85@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Pootle 1.1.0\n"
 
 #: lib/gettor/constants.py:388
 msgid ""
@@ -25,6 +24,10 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"Halló, þetta er \"Náðu í Tor\" vélmennið.\n"
+"\n"
+"Takk fyrir beiðnina.\n"
 
 #: lib/gettor/constants.py:394
 msgid ""
@@ -35,6 +38,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"Því miður er ekki hægt að svara þér frá þessu netfangi. Þú ættir að búa til\n"
+"reikning hjá gmail.com eða yahoo.cn og senda póst frá öðrum hvorum þeirra\n"
 
 #: lib/gettor/constants.py:400
 msgid ""
@@ -45,6 +51,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Við vinnum aðeins úr beiðnum frá vefþjónustum sem styðja \"DKIM\", sem er "
+"virkni fyrir vefpóst sem gerir okkur kleift að staðfesta að veffangið í "
+"\"Frá\" línunni sé fyrir alvöru það sem senti okkur póstinn."
 
 #: lib/gettor/constants.py:406
 msgid ""
@@ -55,6 +64,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"(Við biðjumst velvirðingar ef þú baðst ekki um þennan póst. Þar sem "
+"vefpósturinn er frá þjónustu sem notar ekki DKIM sendum við stutta "
+"útskýringu og munum svo hunsa þetta veffang næsta sólarhringinn eða svo.)"
 
 #: lib/gettor/constants.py:412
 msgid ""
@@ -64,6 +76,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Vinsamlegast athugið að eins og er getum við ekki unnið úr HTML vefpóstum né "
+"base 64 póstum. Þú verður að senda póst með einfaldri textagerð."
 
 #: lib/gettor/constants.py:418 lib/gettor/constants.py:575
 msgid ""
@@ -73,6 +87,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Ef þú hefur einhverjar spurningar eða eitthvað virkar ekki, geturu haft "
+"samband við manneskju í gegnum eftirfarandi veffang: tor-"
+"assistants@torproject.org"
 
 #: lib/gettor/constants.py:423
 msgid ""
@@ -82,6 +99,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Ég mun senda þér Tor-pakkann ef þú segir mér hvern þú vilt fá. Vinsamlegast "
+"veldu eitt eftirfarandi pakkaheita:"
 
 #: lib/gettor/constants.py:436
 msgid ""
@@ -91,6 +110,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Vinsamlegast svaraðu á þetta veffang (gettor@torproject.org), og segðu mér "
+"heiti á einum pakkanna einhvers staðar í body veffpóstsins."
 
 #: lib/gettor/constants.py:441
 msgid ""
@@ -107,6 +128,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Til þess að fá útgáfu af Tor þýdda yfir á þitt tungumál, gerðu grein fyrir "
+"hvaða tungumál þú vilt fá hana á í veffanginu þar sem þú sendir póstinn til:"
 
 #: lib/gettor/constants.py:457
 msgid ""
@@ -131,7 +154,7 @@ msgid ""
 "    Here is a list of all available languages:\n"
 "\n"
 "    "
-msgstr ""
+msgstr "Hér er listi yfir öll tiltæk tungumál:"
 
 #: lib/gettor/constants.py:474
 msgid ""
@@ -150,6 +173,17 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"gettor+ar@torproject.org: Arabíska\n"
+"gettor+de@torproject.org: Þýska\n"
+"gettor+en@torproject.org: Enska\n"
+"gettor+es@torproject.org: Spænska\n"
+"gettor+fa@torproject.org: Farsi (Íranska)\n"
+"gettor+fr@torproject.org: Franska\n"
+"gettor+it@torproject.org: Ítalska\n"
+"gettor+nl@torproject.org: Hollenska\n"
+"gettor+pl@torproject.org: Pólska\n"
+"gettor+ru@torproject.org: Rússneska\n"
+"gettor+zh@torproject.org: Kínverska\n"
 
 #: lib/gettor/constants.py:488
 msgid ""
@@ -157,14 +191,14 @@ msgid ""
 "    If you select no language, you will receive the English version.\n"
 "\n"
 "    "
-msgstr ""
+msgstr "Ef ekkert tungumál er valið muntu fá ensku útgáfuna."
 
 #: lib/gettor/constants.py:493
 msgid ""
 "\n"
 "    SMALLER SIZED PACKAGES\n"
 "    "
-msgstr ""
+msgstr "MINNI STÆRÐ AF PÖKKUM"
 
 #: lib/gettor/constants.py:499
 msgid ""
@@ -176,6 +210,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Ef bandvíddin þín er lág eða þú hefur ekkivöl á að fá stór viðhengi með "
+"tölvupósti, er virkni í GetTor sem hægt er að nota til að fá send fjölda "
+"smærri pakka í staðinn fyrir einn stórann."
 
 #: lib/gettor/constants.py:506
 msgid ""
@@ -183,6 +220,8 @@ msgid ""
 "    Simply include the keyword 'split' somewhere in your email like so:\n"
 "    "
 msgstr ""
+"Einfaldlega settu inn lykilorðið 'split' einhvers staðar í tölvupóstinn þinn "
+"líkt og:"
 
 #: lib/gettor/constants.py:515
 msgid ""
@@ -192,6 +231,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Með því að senda þennan texta með tölvupósti mun GetTor senda þér Tor-"
+"vafrara-pakkann í fjölda 1.4 MB viðhengjum."
 
 #: lib/gettor/constants.py:520
 msgid ""
@@ -201,6 +242,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Eftir að hafa fengið alla parta þarftu að setja þá aftur saman í einn pakka. "
+"Það er gert eftirfarandi:"
 
 #: lib/gettor/constants.py:525
 msgid ""
@@ -209,6 +252,9 @@ msgid ""
 "    \n"
 "    "
 msgstr ""
+"\n"
+"1.) Vistaðu öll viðhengi í eina möppu á diskinn þinn.\n"
+"\n"
 
 #: lib/gettor/constants.py:529
 msgid ""
@@ -218,6 +264,10 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"2.) Afþjappaðu allar skrár sem enda á \".z\". Ef þú vistaðir öll viðhengi í "
+"nýja möppu áðan, einfaldlega afþjappaðu allar skrár í þeirri möppu.\n"
+"\n"
 
 #: lib/gettor/constants.py:534
 msgid ""
@@ -228,6 +278,12 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"3.) Breyttu nafninu á skránni sem hefur endinguna \".ex_RENAME\" yfir í \".exe\" "
+"og \n"
+"breyttu einnig nafninu á skránni hefur endinguna \".ex.RENAME.asc\" yfir í \n"
+"\".exe.asc\"\n"
+"\n"
 
 #: lib/gettor/constants.py:540
 msgid ""
@@ -237,6 +293,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"4.) Sannprófaðu allar skrár eins og lýst er í póstinum sem þú fékkst með \n"
+"hverjum pakka. (gpg --verify)\n"
 
 #: lib/gettor/constants.py:545
 msgid ""
