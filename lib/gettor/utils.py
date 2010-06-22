@@ -134,7 +134,7 @@ def prepPackages(conf):
     except IOError:
         log.error("Error initiating package list.")
         return False
-    packs.preparePackages()
+    #packs.preparePackages()
     if not packs.buildPackages():
         log.error("Building packages failed.")
         return False
