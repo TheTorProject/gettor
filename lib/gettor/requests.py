@@ -114,12 +114,12 @@ class requestMail:
         if self.returnPackage is None:
             log.info("User didn't select any packages")
 
-        return RequestVal(self.toAddress, \
-                          self.replytoAddress, \
-                          self.replyLocale, \
-                          self.returnPackage, \
-                          self.splitDelivery, \
-                          self.signature, \
+        return RequestVal(self.toAddress,
+                          self.replytoAddress,
+                          self.replyLocale,
+                          self.returnPackage,
+                          self.splitDelivery,
+                          self.signature,
                           self.commandAddress)
 
     def parseTextPart(self, text):
