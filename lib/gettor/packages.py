@@ -172,7 +172,6 @@ class Packages:
             return False
 
     def buildSplitFiles(self, pack, dirname, filename):
-        log.info("Building split files..")
         packSplitDir = None
         try:
             splitpack = pack + ".split"
@@ -226,7 +225,6 @@ class Packages:
                 else:
                     log.error("Uhm, expected signature file for %s to be: %s" % (file, ascfile))
 
-        log.info("Done.")
         return True
 
     def initRsync(self, mirror="rsync.torproject.org", silent=False):

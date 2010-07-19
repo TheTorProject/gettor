@@ -134,6 +134,8 @@ def prepPackages(conf):
     except IOError:
         log.error("Error initiating package list.")
         return False
+    # Currently not needed. Keep it here in case someone decides to change the
+    # directory structure back
     #packs.preparePackages()
     if not packs.buildPackages():
         log.error("Building packages failed.")
@@ -279,7 +281,6 @@ def hasExe(filename):
         return False
 
 def renameExe(filename, renameFile=True):
-    log.info("Renaming exe..")
     if renameFile and not os.access(filename, os.R_OK):
         log.error("Could not access file %s" % filename)
         raise OSError

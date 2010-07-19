@@ -213,3 +213,50 @@ currently 20MB (though we have sent around 21MB without issue):
 	http://mail.google.com/support/bin/answer.py?hl=en&answer=8770
 
 Other providers are not as transparent and this may cause failures.
+
+SPAM / ABUSE PREVENTION
+------------------------------
+
+GetTor does some spam/abuse prevention. This is primarily because we don't want 
+to hammer innocent inboxes with huge amounts of tor packages.
+
+First of all, there is a DKIM checker (see "WHAT'S DKIM / WHY DKIM" above) that
+prevents GetTor from answering useless spam emails. On top of that, there are 
+some hard-coded checks being performed on the sender address. Only mails coming
+from yahoo.com.cn, yahoo.com and gmail.com are allowed. However, DKIM checking 
+and hard-coded domain checks are currently disabled in GetTor. Mails from all
+addresses are being passed to GetTor processing.
+
+On top of that, there is a blacklisting mechanism. It works as follows: Each 
+unique email address is allowed to mail GetTor the same type of mail once each
+7 days. Mail types are sendDelayAlert, sendPackage, sendPackageHelp, 
+sendSplitPackage. Blacklists are stored in the form of hashed email files under
+directories. In reality, that looks as follows:
+
+    gettor@moria:~/opt/gettor$ ls -d /home/gettor/gettor/bl/*
+        /home/gettor/gettor/bl/general
+        /home/gettor/gettor/bl/sendPackage
+        /home/gettor/gettor/bl/sendSplitPackage
+        /home/gettor/gettor/bl/sendDelayAlert
+        /home/gettor/gettor/bl/sendPackageHelp
+
+    gettor@moria:~/opt/gettor$ ls /home/gettor/gettor/bl/sendDelayAlert \
+                                                                    | head -n 2
+     0154d8584c0afa6290e21098e7ab4cc635b7d50a
+     02a33e16feece8671f1274de62de32068a67cf20
+
+In addition to this automatic whitelisting, there is the possibility to add
+blacklist entries by hand as follows:
+
+    gettor@moria:~/opt/gettor$ ./GetTor.py -b someone@evil.org
+
+Email addresses that are added this way, go to the general/ directory in the 
+blacklist directory.
+
+Besides the blacklisting mechanism, there is a whitelisting mechanism. It works
+analogous to the manual blacklisting mechanism:
+
+    gettor@moria:~/opt/gettor$ ./GetTor.py -w someone@evil.org
+
+Whitelisting wins over blacklisting. If a user if blacklisted for X, but also
+whitelisted, he will be allowed to do X.
