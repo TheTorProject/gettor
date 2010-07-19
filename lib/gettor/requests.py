@@ -34,7 +34,6 @@ class RequestVal:
         self.cmdAddr = cmdAddr
     
 class requestMail:
-
     defaultLang = "en"
     # XXX Move this to the config file
     #                  LANG: ALIASE
@@ -68,16 +67,16 @@ class requestMail:
         self.replyLocale = self.defaultLang
         self.replytoAddress = self.parsedMessage["Return-Path"]
         self.bounce = False
+        self.defaultFrom = self.config.getDefaultFrom()
         
         # Filter rough edges
         self.doEarlyFilter()
-
         # We want to parse, log and act on the "To" field
-        self.toAddress = self.parsedMessage["to"]
+        self.sanitizeAndAssignToField(self.parsedMessage["to"])
+
         log.info("User %s made request to %s" % \
                 (self.replytoAddress, self.toAddress))
         self.gotPlusReq = self.matchPlusAddress()
-
         packager = gettor.packages.Packages(config)
         self.packages = packager.getPackageList()
         assert len(self.packages) > 0, "Empty package list"
@@ -92,6 +91,17 @@ class requestMail:
         #       except:
         #           pass
 
+    def sanitizeAndAssignToField(self, toField):
+        """Do basic santization of the To: field of the mail header
+        """
+        regexGettorMail = '.*(<)?(gettor.*@torproject.org)+(?(1)>).*'
+        match = re.match(regexGettorMail, toField)
+        if match:
+            self.toAddress= match.group(2)
+        else:
+            # Fall back to default From: address
+            self.toAddress = self.defaultFrom
+
     def parseMail(self):
         if self.parsedMessage.is_multipart():
             for part in self.parsedMessage.walk():
@@ -104,10 +114,13 @@ class requestMail:
         if self.returnPackage is None:
             log.info("User didn't select any packages")
 
-        return RequestVal(self.toAddress, self.replytoAddress, \
-                self.replyLocale, \
-                self.returnPackage, \
-                self.splitDelivery, self.signature, self.commandAddress)
+        return RequestVal(self.toAddress, \
+                          self.replytoAddress, \
+                          self.replyLocale, \
+                          self.returnPackage, \
+                          self.splitDelivery, \
+                          self.signature, \
+                          self.commandAddress)
 
     def parseTextPart(self, text):
         text = self.stripTags(text)

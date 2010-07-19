@@ -28,6 +28,7 @@
      delayAlert = True
      cmdPassFile = /var/lib/gettor/pass
      dumpFile = /var/lib/gettor/dump
+     defaultFrom = gettor@torproject.org
 
  Note that you can set from none to any of these values in your config file.
  Values you dont provide will be taken from the defaults in 'useConf'.
@@ -54,6 +55,8 @@
                 that a package was selected and will be sent.
  cmdPassFile:   Where our forward command password resides
  dumpFile:      Where failed mails get stored
+ defaultFrom:   Use this email address in the From: field, if all else fails to
+                make sense
 
  If no valid config file is provided to __init__, gettorConf will try to use
  '~/.gettorrc' as default config file. If that fails, the default values from
@@ -101,7 +104,8 @@ class Config:
                         "localeDir":    ("/usr/share/locale",       "global"),
                         "cmdPassFile":  ("/var/lib/gettor/cmdpass", "global"),
                         "dumpFile":     ("/var/lib/gettor/dump",    "global"),
-                        "delayAlert":   (True,                    "global")}
+                        "delayAlert":   (True,                      "global"),
+                        "defaultFrom":  ("gettor@torproject.org",   "global")}
 
         # One ConfigParser instance to read the actual values from config
         self.config = ConfigParser.ConfigParser()
@@ -185,6 +189,9 @@ class Config:
 
     def getDumpFile(self):
         return self.useConf["dumpFile"][0]
+
+    def getDefaultFrom(self):
+        return self.useConf["defaultFrom"][0]
 
 if __name__ == "__main__" :
     c = Config()
