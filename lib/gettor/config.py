@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
- gettor_config.py - Parse configuration file for gettor
-
  Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
                      Christian Fromme <kaner@strace.org>
 
@@ -84,10 +82,9 @@ class Config:
     '''
 
     def __init__(self, path = os.path.expanduser("~/.gettorrc")):
-        '''
-        Most of the work happens here. Parse config, merge with default values,
-        prepare outConf.
-        '''
+        """Most of the work happens here. Parse config, merge with default values,
+           prepare outConf.
+        """
 
         self.configFile = os.path.expanduser(path)
 
@@ -145,9 +142,8 @@ class Config:
                 self.outConf.set(sec, dkey, dval)
 
     def printConfiguration(self):
-        '''
-        Print out config file. This works even if there is none
-        '''
+        """Print out config file. This works even if there is none
+        """
         return self.outConf.write(sys.stdout)
 
     # All getter routines live below

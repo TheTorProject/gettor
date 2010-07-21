@@ -1,14 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
- packages.py: Package related stuff
-
  Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
                      Christian Fromme <kaner@strace.org>
 
  This is Free Software. See LICENSE for license information.
-
- This module handles all package related functionality
 '''
 
 import os
@@ -105,7 +101,8 @@ class Packages:
                 raise IOError
 
     def getPackageList(self):
-        # Build dict like 'name': 'name.z'
+        """Build dict like 'name': 'name.z'
+        """
         try:
             for filename in os.listdir(self.packDir):
                 self.packageList[filename[:-2]] = os.path.join(self.packDir, filename)
@@ -123,8 +120,9 @@ class Packages:
         return self.packageList
 
     def preparePackages(self):
-        # Move some stuff around the way we need it: GetTor expects a flat
-        # file system after rsync is finished   
+        """Move some stuff around the way we need it: GetTor expects a flat
+           file system after rsync is finished   
+        """
         log.info("Preparing Linux Bundles..")
         # Prepare Linux Bundles: Move them from linux/i386/* to 
         # ./i386-* and from linux/x86_64/* to ./x86_64-*
@@ -141,6 +139,9 @@ class Packages:
                     shutil.move(os.path.join(lxarchdir, srcfile), destfile)
 
     def buildPackages(self):
+        """Action! Take all packages in distdir and turn them into GetTor-
+           digestables in packdir
+        """
         for (pack, (regex_single, regex_split)) in self.packageRegex.items():
             for dirname in os.listdir(self.distDir):
                 subdir = os.path.join(self.distDir, dirname)
@@ -172,6 +173,8 @@ class Packages:
             return False
 
     def buildSplitFiles(self, pack, dirname, filename):
+        """Build split file packages
+        """
         packSplitDir = None
         try:
             splitpack = pack + ".split"
@@ -228,6 +231,8 @@ class Packages:
         return True
 
     def initRsync(self, mirror="rsync.torproject.org", silent=False):
+        """Build rsync command for fetching packages
+        """
         # Rsync command 1
         self.rsync = "rsync -a" 
         self.rsync += " "
@@ -296,6 +301,8 @@ class Packages:
         self.rsync += " "
 
     def syncWithMirror(self):
+        """Actually execute rsync
+        """
         process = subprocess.Popen(self.rsync, shell=True)
         process.wait()
 

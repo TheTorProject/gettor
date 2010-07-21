@@ -24,7 +24,8 @@ import gettor.utils
 log = gettor.gtlog.getLogger()
 
 def processFail(conf, rawMessage, reqval, failedAction, e=None):
-    """This routine gets called when something went wrong with the processing"""
+    """This routine gets called when something went wrong with the processing
+    """
     log.error("Failing to " + failedAction)
     if e is not None:
         log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
@@ -40,7 +41,8 @@ def processFail(conf, rawMessage, reqval, failedAction, e=None):
     #        log.info("Failure notification sent to user %s" % reqval.sendTo)
 
 def dumpInfo(reqval):
-    """Dump some info to the logfile"""
+    """Dump some info to the logfile
+    """
     log.info("Request From: %s To: %s Package: %s Lang: %s Split: %s Signature: %s Cmdaddr: %s" % (reqval.replyTo, reqval.toField, reqval.pack, reqval.lang, reqval.split, reqval.sign, reqval.cmdAddr))
 
 def processMail(conf):
@@ -50,8 +52,8 @@ def processMail(conf):
          Also try to find out if the user wants split packages and if he has 
          a valid signature on his mail.
        - Send reply. Use all information gathered from the request and pass
-         it on to the reply class/method to decide what to do."""
-        
+         it on to the reply class/method to decide what to do.
+    """
     rawMessage = ""
     reqval = None
     log.info("Processing mail..")
@@ -79,14 +81,15 @@ def processMail(conf):
 
 def processOptions(options, conf):
     """Do everything that's not part of parsing a mail. Prepare GetTor usage,
-    install files, fetch packages, do some black/whitelist voodoo and so on""" 
+       install files, fetch packages, do some black/whitelist voodoo and so on
+    """ 
     # Order matters!
     if options.insttrans:
         m = gettor.utils.installTranslations(conf, options.i18ndir)
     if options.fetchpackages:
         gettor.utils.fetchPackages(conf, options.mirror)
     if options.preppackages:
-        gettor.utils.prepPackages(conf)
+       gettor.utils.prepPackages(conf)
     if options.installcron:
         gettor.utils.installCron()
     if options.whitelist:
@@ -103,7 +106,8 @@ def processOptions(options, conf):
         gettor.utils.setCmdPassword(conf, options.cmdpass)
 
 def main():
-    # Parse command line, setup config and logging
+    """Parse command line, setup config and logging
+    """
     options, arguments = gettor.opt.parseOpts()
     config = gettor.config.Config(options.configfile)
     gettor.gtlog.initialize()

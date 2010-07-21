@@ -1,8 +1,6 @@
 #!/usr/bin/python2.5
 # -*- coding: utf-8 -*-
 """
- gettor_config.py - Parse configuration file for gettor
-
  Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
                      Christian Fromme <kaner@strace.org>
 
@@ -24,8 +22,6 @@ from email.mime.text import MIMEText
 import gettor.gtlog
 import gettor.blacklist
 
-
-
 __all__ = ["Response"]
 
 log = gettor.gtlog.getLogger()
@@ -33,25 +29,31 @@ log = gettor.gtlog.getLogger()
 trans = None
 
 def sendNotification(config, sendFr, sendTo):
-    """Send notification to user"""
+    """Send notification to user
+    """
     response = Response(config, sendFr, sendTo, None, "", False, True, "")
     message = gettor.constants.mailfailmsg
     return response.sendGenericMessage(message)
 
 class Response:
-
     def __init__(self, config, reqval):
+        """Intialize the reply class. The most important values are passed in
+           via the 'reqval' RequestValue class. Initialize the locale subsystem
+           and do early blacklist checks of reply-to addresses 
+        """
         self.config = config
         self.reqval = reqval
+        # Set default From: field for reply. Defaults to gettor@torproject.org
         if reqval.toField is None:
-            self.srcEmail = "GetTor <gettor@torproject.org>"
+            self.srcEmail = config.getDefaultFrom()
         else:
             self.srcEmail = reqval.toField
         self.replyTo = reqval.replyTo
+        # Make sure we know who to reply to. If not, we can't continue   
         assert self.replyTo is not None, "Empty reply address."
-        # Default lang is en
+        # Set default lang in none is set. Defaults to 'en'
         if reqval.lang is None:
-            reqval.lang = "en"
+            reqval.lang = config.getLocale()
         self.mailLang = reqval.lang
         self.package = reqval.pack
         self.splitsend = reqval.split
@@ -64,11 +66,13 @@ class Response:
         else:
             self.sendTo = self.replyTo
 
+        # Initialize the reply language usage
         try:
             localeDir = config.getLocaleDir()
             trans = gettext.translation("gettor", localeDir, [reqval.lang])
             trans.install()
-            # OMG TEH HACK!!
+            # OMG TEH HACK!! Constants need to be imported *after* we've 
+            # initialized the locale/gettext subsystem
             import gettor.constants
         except IOError:
             log.error("Translation fail. Trying running with -r.")
@@ -78,12 +82,15 @@ class Response:
         self.whiteList = gettor.blacklist.BWList(config.getWlStateDir())
         self.blackList = gettor.blacklist.BWList(config.getBlStateDir())
         # Check blacklist section 'general' list & Drop if necessary
+        # XXX: This should learn wildcards
         blacklisted = self.blackList.lookupListEntry(self.replyTo, "general")
         assert blacklisted is not True, \
             "Mail from blacklisted user %s" % self.replyTo 
 
     def sendReply(self):
-        """All routing decisions take place here."""
+        """All routing decisions take place here. Sending of mails takes place
+           here, too.
+        """
         if self.isAllowed():
             # Ok, see what we've got here.
             # Was this a GetTor control command wanting us to forward a package?
@@ -108,6 +115,9 @@ class Response:
                 return self.sendPackage()
 
     def isAllowed(self):
+        """Do all checks necessary to decide whether the reply-to user is 
+           allowed to get a reply by us.
+        """
         # Check we're happy with sending this user a package
         # XXX This is currently useless since we set self.signature = True
         if not self.signature and not self.cmdAddr \
@@ -127,9 +137,11 @@ class Response:
         else:
             return True
 
-    def isBlacklisted(self, fname):
+    def isBlacklistedForMessageType(self, fname):
         """This routine takes care that for each function fname, a given user
-           can access it only once"""
+           can access it only once. The 'fname' parameter carries the message
+           type name we're looking for
+        """
         # First of all, check if user is whitelisted: Whitelist beats Blacklist
         if self.whiteList.lookupListEntry(self.replyTo, "general"):
             log.info("Whitelisted user " + self.replyTo)
@@ -145,8 +157,10 @@ class Response:
             return False
 
     def sendPackage(self):
-        """ Send a message with an attachment to the user"""
-        if self.isBlacklisted("sendPackage"):
+        """ Send a message with an attachment to the user. The attachment is 
+            chosen automatically from the selected self.package
+        """
+        if self.isBlacklistedForMessageType("sendPackage"):
             # Don't send anything
             return False
         log.info("Sending out %s to %s." % (self.package, self.sendTo))
@@ -165,7 +179,10 @@ class Response:
         return status
 
     def sendSplitPackage(self):
-        if self.isBlacklisted("sendSplitPackage"):
+        """Send a number of messages with attachments to the user. The number
+           depends on the number of parts of the package.
+        """
+        if self.isBlacklistedForMessageType("sendSplitPackage"):
             # Don't send anything
             return False
         splitpack = self.package + ".split"
@@ -180,6 +197,7 @@ class Response:
         files.sort()
         nFiles = len(files)
         num = 0
+        # For each available split file, send a mail
         for filename in files:
             fullPath = os.path.join(splitdir, filename)
             num = num + 1
@@ -199,18 +217,21 @@ class Response:
         return status
 
     def sendDelayAlert(self):
-        """ Send a delay notification """
-        if self.isBlacklisted("sendDelayAlert"):
+        """Send a polite delay notification
+        """
+        if self.isBlacklistedForMessageType("sendDelayAlert"):
             # Don't send anything
             return False
         log.info("Sending delay alert to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.delayalertmsg)
             
     def sendHelp(self):
-        if self.isBlacklisted("sendHelp"):
+        """Send a help mail. This happens when a user sent us a request we 
+           didn't really understand
+        """
+        if self.isBlacklistedForMessageType("sendHelp"):
             # Don't send anything
             return False
-        """ Send a helpful message to the user interacting with us """
         log.info("Sending out help message to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.helpmsg)
 
@@ -222,15 +243,18 @@ class Response:
 ##    """ + "".join([ "\t%s\n" % key for key in packageList.keys()]) + """
 
     def sendPackageHelp(self):
-        """ Send a helpful message to the user interacting with us """
-        if self.isBlacklisted("sendPackageHelp"):
+        """Send a helpful message to the user interacting with us about
+           how to select a proper package
+        """
+        if self.isBlacklistedForMessageType("sendPackageHelp"):
             # Don't send anything
             return False
         log.info("Sending package help to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.multilangpackagehelpmsg)
 
     def sendForwardReply(self, status):
-        " Send a message to the user that issued the forward command """
+        """Send a message to the user that issued the forward command
+        """
         log.info("Sending reply to forwarder '%s'" % self.replyTo)
         message = "Forwarding mail to '%s' status: %s" % (self.sendTo, status)
         # Magic: We're now returning to the original issuer
@@ -238,7 +262,9 @@ class Response:
         return self.sendGenericMessage(message)
 
     def sendGenericMessage(self, text):
-        """ Send a message of some sort """
+        """Generic message sending routine. All mails that are being sent out
+           go through this function.
+        """
         message = self.constructMessage(text)
         try:
             status = self.sendMessage(message)
@@ -250,8 +276,9 @@ class Response:
         return status
 
     def constructMessage(self, messageText, subj="[GetTor] Your Request", fileName=None):
-        """ Construct a multi-part mime message, including only the first part
-        with plaintext."""
+        """Construct a multi-part mime message, including only the first part
+           with plaintext.
+        """
 
         message = MIMEMultipart()
         message['Subject'] = subj
@@ -276,6 +303,9 @@ class Response:
         return message
 
     def sendMessage(self, message, smtpserver="localhost:25"):
+        """Send out message via STMP. If an error happens, be verbose about 
+           the reason
+        """
         try:
             smtp = smtplib.SMTP(smtpserver)
             smtp.sendmail(self.srcEmail, self.sendTo, message.as_string())

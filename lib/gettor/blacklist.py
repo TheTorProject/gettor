@@ -1,4 +1,10 @@
 #!/usr/bin/python2.5
+'''
+ Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
+                     Christian Fromme <kaner@strace.org>
+
+ This is Free Software. See LICENSE for license information.
+'''
 """This library implements all of the black listing features needed for gettor.
 Basically, it offers creation, removal and lookup of email addresses stored as
 SHA1 hashes in a dedicated directory on the filesystem.
@@ -16,13 +22,19 @@ log = gettor.gtlog.getLogger()
 
 class BWList:
     def __init__(self, blacklistDir):
-        """A blacklist lives as hash files inside a directory."""
+        """A blacklist lives as hash files inside a directory and is simply a 
+           number of files that represent hashed email addresses.
+        """
         self.blacklistDir = blacklistDir
         # "general" is the main blacklist
         self.createSublist("general")
 
     def createSublist(self, blacklistName):
-        """Create a sub blacklist"""
+        """Create a sub blacklist. A blacklist is built of several sublists, 
+           each for a certain purpose. There are blacklists for many 
+           different types of mail. Users get blacklisted for package sending
+           after they received a package for 7 days, for example.
+        """
         fullDir = os.path.join(self.blacklistDir, blacklistName)
         if not os.path.isdir(fullDir):
             if not gettor.utils.createDir(fullDir):
@@ -30,7 +42,8 @@ class BWList:
                 raise IOError("Bad dir: %s" % fullDir)
 
     def lookupListEntry(self, address, blacklistName="*"):
-        """Check to see if we have a list entry for the given address."""
+        """Check to see if we have a list entry for the given address.
+        """
         if address is None:
            log.error("Argument 'address' is None")
            return False
@@ -42,7 +55,8 @@ class BWList:
         return False
 
     def createListEntry(self, address, blacklistName="general"):
-        """ Create a black- or whitelist entry """
+        """Create a black- or whitelist entry
+        """
         if address is None or blacklistName is None:
            log.error("Bad args in createListEntry()")
            return False
@@ -61,7 +75,8 @@ class BWList:
             return False
 
     def removeListEntry(self, address, blacklistName="*"):
-        """ Remove an entry from the black- or whitelist """
+        """Remove an entry from the black- or whitelist
+        """
         if address is None:
            log.error("Argument 'address' is None")
            return False
@@ -79,6 +94,9 @@ class BWList:
             return False
 
     def removeAll(self, olderThanDays=0):
+        """Remove all blacklist entries that are older than 'olderThanDays'
+           days.
+        """
         for root, dirs, files in os.walk(self.blacklistDir):
             for file in files:
                 rmfile = os.path.join(root, file)
@@ -98,13 +116,17 @@ class BWList:
         return True
 
     def stripEmail(self, address):
-        '''Strip "Bart Foobar <bart@foobar.net>" to "<bart@foobar.net">'''
+        """Strip "Bart Foobar <bart@foobar.net>" to "<bart@foobar.net">
+        """
         match = re.search('<.*?>', address)
         if match is not None:
             return match.group()
-        return address
+        # Make sure to return the address in the form of '<bla@foo.de>'
+        return gettor.utils.normalizeAddress(address)
 
     def getHash(self, address):
+        """Return hash for a given emailaddress
+        """
         emailonly = self.stripEmail(address)
         return str(hashlib.sha1(emailonly).hexdigest())
 

@@ -16,3 +16,11 @@ These are planned changes to the gettor system.
 - Implement test (-t switch) functionality
 - Add torbutton (Mike, please sign torbutton and populate a proper .asc)
 - Add GetTor to GetTor and it will be able to distribute itself
+- Merge checkInternalEarlyBlacklist() in requests.py with the real blacklist
+  mechanism of GetTor
+  Related:
+  - Make blacklists learn wildcards: Something like "*@torproject.org" as a 
+    reply-to address should really be blacklisted, for instance.
+- Come up with something more elegant than torSpecialPackageExpansion() in
+  requests.py. Hardcoding package names in other places than packages.py is
+  inviting bugs.

@@ -1,14 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
- utils.py: Useful helper routines
-
  Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
                      Christian Fromme <kaner@strace.org>
 
  This is Free Software. See LICENSE for license information.
-
- This module handles all package related functionality
 '''
 
 import os
@@ -26,7 +22,8 @@ import gettor.packages
 log = gettor.gtlog.getLogger()
 
 def createDir(path):
-    """Helper routine that creates a given directory"""
+    """Helper routine that creates a given directory
+    """
     try:
         log.info("Creating directory %s.." % path)
         os.makedirs(path)
@@ -36,7 +33,8 @@ def createDir(path):
     return True
 
 def dumpMessage(conf, message):
-    """Dump a message to our dumpfile"""
+    """Dump a (mail) message to our dumpfile
+    """
     dumpFile = conf.getDumpFile()
     # Be nice: Create dir if it's not there
     dumpDir = os.path.dirname(dumpFile)
@@ -57,7 +55,8 @@ def dumpMessage(conf, message):
         return False
 
 def installTranslations(conf, localeSrcdir):
-    """Install all translation files to 'dir'"""
+    """Install all translation files to 'dir'
+    """
     log.info("Installing translation files..")
     hasDirs = None
 
@@ -112,7 +111,8 @@ def installTranslations(conf, localeSrcdir):
     return True
 
 def fetchPackages(conf, mirror):
-    """Fetch Tor packages from a mirror"""
+    """Fetch Tor packages from a mirror
+    """
     log.info("Fetching package files..")
     try:
         packs = gettor.packages.Packages(conf, mirror, False)
@@ -127,7 +127,8 @@ def fetchPackages(conf, mirror):
         return True
 
 def prepPackages(conf):
-    """Prepare the downloaded packages in a way so GetTor can work with them"""
+    """Prepare the downloaded packages in a way so GetTor can work with them
+    """
     log.info("Preparing package files..")
     try:
         packs = gettor.packages.Packages(conf)
@@ -145,6 +146,8 @@ def prepPackages(conf):
         return True
 
 def installCron():
+    """Install all needed cronjobs for GetTor
+    """
     log.info("Installing cronjob..")
     # XXX: Check if cron is installed and understands our syntax?
     currentCronTab = getCurrentCrontab()
@@ -159,13 +162,15 @@ def installCron():
     return cronProc.returncode
 
 def addWhitelistEntry(conf, address):
+    """Add an entry to the global whitelist
+    """
     log.info("Adding address to whitelist: %s" % address)
     try:
         whiteList = gettor.blacklist.BWList(conf.getWlStateDir())
     except IOError, e:
         log.error("Whitelist error: %s" % e)
         return False
-    if not whiteList.createListEntry(prepareAddress(address), "general"):
+    if not whiteList.createListEntry(normalizeAddress(address), "general"):
         log.error("Creating whitelist entry failed.")
         return False
     else:
@@ -173,13 +178,15 @@ def addWhitelistEntry(conf, address):
         return True
 
 def addBlacklistEntry(conf, address):
+    """Add an entry to the global blacklist
+    """
     log.info("Adding address to blacklist: %s" % address)
     try:
         blackList = gettor.blacklist.BWList(conf.getBlStateDir())
     except IOError, e:
         log.error("Blacklist error: %s" % e)
         return False
-    if not blackList.createListEntry(prepareAddress(address), "general"):
+    if not blackList.createListEntry(normalizeAddress(address), "general"):
         log.error("Creating blacklist entry failed.")
         return False
     else:
@@ -187,6 +194,8 @@ def addBlacklistEntry(conf, address):
         return True
 
 def lookupAddress(conf, address):
+    """Lookup if a given address is in the blacklist- or whitelist pool
+    """
     log.info("Lookup address: %s" % address)
     found = False
     try:
@@ -209,6 +218,8 @@ def lookupAddress(conf, address):
     return found
 
 def clearWhitelist(conf):
+    """Delete all entries in the global whitelist
+    """
     try:
         whiteList = gettor.blacklist.BWList(conf.getWlStateDir())
     except IOError, e:
@@ -223,6 +234,9 @@ def clearWhitelist(conf):
         return True
 
 def clearBlacklist(conf, olderThanDays):
+    """Delete all entries in the global blacklist that are older than
+       'olderThanDays' days
+    """
     log.info("Clearing blacklist..")
     try:
         blackList = gettor.blacklist.BWList(conf.getBlStateDir())
@@ -237,6 +251,9 @@ def clearBlacklist(conf, olderThanDays):
         return True
 
 def setCmdPassword(conf, password):
+    """Write the password for the admin commands in the configured file
+       Hash routine used: SHA1
+    """
     log.info("Setting command password")
     passwordHash = str(hashlib.sha1(password).hexdigest())
     cmdPassFile = conf.getCmdPassFile()
@@ -258,6 +275,9 @@ def setCmdPassword(conf, password):
         return False
 
 def verifyPassword(conf, password):
+    """Verify that a given password matches the one provided in the
+       password file
+    """
     candidateHash = str(hashlib.sha1(password).hexdigest())
     cmdPassFile = conf.getCmdPassFile()
     try:
@@ -275,12 +295,19 @@ def verifyPassword(conf, password):
         return False
 
 def hasExe(filename):
+    """Helper routine for building the packages for GetTor:
+       Check if a file ends in .exe
+    """
     if re.compile(".*.exe.*").match(filename):
         return True
     else:
         return False
 
 def renameExe(filename, renameFile=True):
+    """Helper routine for building the packages for GetTor:
+       If we find a file ending in .exe, we rename it to .ex_RENAME
+       to get past Google's spam filters
+    """
     if renameFile and not os.access(filename, os.R_OK):
         log.error("Could not access file %s" % filename)
         raise OSError
@@ -292,6 +319,8 @@ def renameExe(filename, renameFile=True):
     return newfilename
 
 def fileIsOlderThan(filename, olderThanDays):
+    """Return True if file 'filename' is older than 'olderThandays'
+    """
     olderThanDays = int(olderThanDays)
     if olderThanDays is not 0:
         daysold = datetime.now() - timedelta(days=olderThanDays)
@@ -304,6 +333,8 @@ def fileIsOlderThan(filename, olderThanDays):
     return True
 
 def getVersionStringFromFile(filename):
+    """Return what version string is encoded in Tor package filename
+    """
     regex = "[a-z-]*-([0-9]*\.[0-9]*\.[0-9]*)"
     match = re.match(regex, filename)
     if match:
@@ -312,6 +343,8 @@ def getVersionStringFromFile(filename):
         return None
 
 def isNewTorVersion(old, new):
+    """Return True if Tor version string 'new' is newer than 'old'
+    """
     oldsplit = old.split(".")
     newsplit = new.split(".")
     if len(oldsplit) != 3 or len(newsplit) != 3:
@@ -335,9 +368,9 @@ def isNewTorVersion(old, new):
                 # Same version
                 return False
 
-# Helper routines go here ####################################################
-
 def installMo(poFile, targetDir):
+    """Install a certain gettext .mo file
+    """
     global log
     args = os.getcwd() + "/" + poFile + " -o " + targetDir + "/gettor.mo"
     try:
@@ -350,36 +383,19 @@ def installMo(poFile, targetDir):
         return False
     return True
 
-def installTrans(config, localeSrcdir):
-    global log
-    hasDirs = None
-
-    if config is None:
-        log.error("Bad arg.")
-        return False
-    if not os.path.isdir(localeSrcdir):
-        log.info("Not a directory: %s" % localeSrcdir)
-        if not createDir(localeSrcdir):
-            log.error("Giving up on %s" % localeSrcdir)
-            return False
-    localeDir = config.getLocaleDir()
-    if not os.path.isdir(localeDir):
-        log.info("Not a directory: %s" % localeDir)
-        if not createDir(localeDir):
-            log.error("Giving up on %s" % localeDir)
-            return False
-
 def getCurrentCrontab():
-    # This returns our current crontab
+    """This returns our current crontab
+    """
     savedTab = "# This crontab has been tampered with by gettor.py\n"
     currentTab = os.popen("crontab -l")
     for line in currentTab:
         savedTab += line
     return savedTab
 
-def prepareAddress(address):
+def normalizeAddress(address):
     """We need this because we internally store email addresses in this format
-       in the black- and whitelists"""
+       in the black- and whitelists
+    """
     if address.startswith("<"):
         return address
     else:
