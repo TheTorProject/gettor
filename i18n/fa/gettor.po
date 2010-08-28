@@ -7,13 +7,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-14 14:10+0100\n"
-"PO-Revision-Date: 2009-12-05 03:12-0700\n"
-"Last-Translator: Behrouz K.A. <behkol@gmail.com>\n"
+"PO-Revision-Date: 2010-08-25 23:17+0200\n"
+"Last-Translator: Ghazal <nevisht@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Pootle 1.1.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: lib/gettor/constants.py:388
 msgid ""
@@ -23,7 +25,7 @@ msgid ""
 "    Thank you for your request.\n"
 "\n"
 "    "
-msgstr ""
+msgstr "سلام، من پاسخگوی خودکار \"GetTor\" هستم. از دریافت درخواست شما ممنون-ایم."
 
 #: lib/gettor/constants.py:394
 msgid ""
@@ -34,6 +36,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"متاسفانه در این آدرس امکان پاسخ به شما را نداریم. می بایست حساب کاربری در "
+"جی-میل.کام و یا در یاهو.کام باز کنید و از یکی از این حساب های کاربری با ما "
+"مکاتبه کنید. "
 
 #: lib/gettor/constants.py:400
 msgid ""
@@ -44,6 +49,10 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"ما تنها به درخواست هایی پاسخ می دهیم که از حساب های کاربری حمایت شده توسط "
+"\"DKIM\" ارسال شده اند. این حساب های کاربری به گونه ای تنظیم  شده اند که "
+"قادرند تعیین کنند آدرسی که در \"From\" نوشته شده است همان آدرسی است که ایمیل "
+"از آنجا ارسال شده است. "
 
 #: lib/gettor/constants.py:406
 msgid ""
@@ -54,6 +63,11 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"اگر برای دریافت این ایمیل درخواستی ارائه نکرده بودید، پیشاپیش از ارسال آن "
+"پوزش می طلبیم. از آنجایی که حساب کاربری/ایمیل شما از سرویسی فرستاده شده که "
+"از امکانات\"DKIM\" استفاده نمی کند، راهنمای مختصری برای شما می فرستیم و سپس "
+"این آدرس ایمیل را در طول روز آینده و یکی دو روز پس از آن، از سیستم خارج "
+"خواهیم کرد."
 
 #: lib/gettor/constants.py:412
 msgid ""
@@ -63,6 +77,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"لطفن توجه داشته باشید که در حال حاضر امکان بکارگیری ایمیل های HTML  و یا "
+"base 64  نداریم. ایمیل های خود را صورت plain-text ارسال نمایید."
 
 #: lib/gettor/constants.py:418 lib/gettor/constants.py:575
 msgid ""
@@ -81,6 +97,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"اگر توضیح بدهید که کدام یک از بسته های اطلاعاتی Tor مورد نیاز شماست، من آن "
+"بسته را برای شما ارسال می کنم. لطفن از میان بسته های اطلاعاتی زیر، یکی از "
+"نام ها را انتخاب کنید."
 
 #: lib/gettor/constants.py:436
 msgid ""
@@ -90,13 +109,15 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"لطفن به این ایمیل (gettor@torproject.rog)پاسخی ارسال کنید و نام یک بسته ی "
+"اطلاعاتی واحد را در هر کجا از بدنه ی ایمیل وارد کنید."
 
 #: lib/gettor/constants.py:441
 msgid ""
 "\n"
 "    OBTAINING LOCALIZED VERSIONS OF TOR\n"
 "    "
-msgstr ""
+msgstr "دریافت نمونه های محلی TOR"
 
 #: lib/gettor/constants.py:448
 msgid ""
@@ -106,6 +127,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"برای دریافت ترجمه ای از Tor به زبان مورد نظر شما، لطفن زبان مذکور و آدرسی که "
+"به آن می بایست ارسال شود را مشخص کنید. "
 
 #: lib/gettor/constants.py:457
 msgid ""
@@ -116,13 +139,15 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"این نمونه، حاوی ترجمه ی بسته اطلاعاتی مورد خواست شما به زبان چینی است. در "
+"زیر، فهرستی از کدهای زبانی در دسترس را خواهید یافت."
 
 #: lib/gettor/constants.py:463
 msgid ""
 "\n"
 "    List of supported locales:\n"
 "    "
-msgstr ""
+msgstr "فهرستی از مناطق تحت پوشش"
 
 #: lib/gettor/constants.py:470
 msgid ""
@@ -130,7 +155,7 @@ msgid ""
 "    Here is a list of all available languages:\n"
 "\n"
 "    "
-msgstr ""
+msgstr "در این بخش فهرستی از زبان های موجود ارائه شده است."
 
 #: lib/gettor/constants.py:474
 msgid ""
@@ -157,13 +182,15 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"اگر زبان دیگری را انتخاب نکنید، نمونه ی ارسالی به آدرس شما به زبان انگلیسی "
+"خواهد بود."
 
 #: lib/gettor/constants.py:493
 msgid ""
 "\n"
 "    SMALLER SIZED PACKAGES\n"
 "    "
-msgstr ""
+msgstr "بسته های اطلاعاتی کوچک-تر"
 
 #: lib/gettor/constants.py:499
 msgid ""
@@ -175,6 +202,10 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"اگر پهنای باند شما به کم است و یا سرویس دهنده اجازه ی دریافت ایمیل با ضمیمه "
+"های بزرگ را نمی دهد، می توانید از نمونه ای از GetTor استفاده کنید که به شما "
+"امکان می دهد به جای دریافت یک ضمیمه ی بزرگ، آن را به صورت چند ضمیمه ی کوچک "
+"دریافت کنید."
 
 #: lib/gettor/constants.py:506
 msgid ""
