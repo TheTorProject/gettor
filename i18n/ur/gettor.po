@@ -2,19 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-14 14:10+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2010-09-03 10:08+0200\n"
+"Last-Translator: ahmedsalman <ahmed.salman@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.5.3\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: lib/gettor/constants.py:388
 msgid ""
@@ -24,7 +25,7 @@ msgid ""
 "    Thank you for your request.\n"
 "\n"
 "    "
-msgstr ""
+msgstr "آپ کی درخواست کا شکریہ"
 
 #: lib/gettor/constants.py:394
 msgid ""
@@ -35,6 +36,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"بدقسمتی سے, ہم اس پتے پر آپ جواب نہ دیں گے. تم کو چاہئے  GMAIL.COM یا "
+"YAHOO.CN کے ساتھ ایک اکاؤنٹ اور ای میل بھیجو ان میں سے ایک"
 
 #: lib/gettor/constants.py:400
 msgid ""
@@ -44,7 +47,7 @@ msgid ""
 "    \"From\" line is actually the one who sent the mail.\n"
 "\n"
 "    "
-msgstr ""
+msgstr " ہم صرف ان درخواست  کو سپورٹ کرتے ھیں جو ای میل DKIM  پر عمل کر تے ہے"
 
 #: lib/gettor/constants.py:406
 msgid ""
@@ -55,6 +58,10 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"ہم معذرت چاہتے ہیں اگر آپ اس ای میل کے لئے نہیں پوچھا تھا. چونکہ آپ کا ای "
+"میل سے ایک سروس ہے جو کہ DKIM استعمال نہیں کرتا, ہم نے ایک مختصر وضاحت بھیج "
+"رہے ہیں, اور پھر ہم اس ای میل ایڈریس کو نظر انداز کر دیں گے, اگلے دن یا اس "
+"سے اگے"
 
 #: lib/gettor/constants.py:412
 msgid ""
@@ -64,6 +71,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"براہ مہربانی نوٹ کریں کہ فی الحال ہم ایچ ٹی ایم ایل ای میلز یا عمل نہیں کر "
+"سکتے ہیں یا  64 بیس ای میل. آپ کو سادہ متن بھیجنے کی ضرورت ہو گی"
 
 #: lib/gettor/constants.py:418 lib/gettor/constants.py:575
 msgid ""
@@ -73,6 +82,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"اگر آپ کو کوئی سوالات ہیں ، یا یہ کام نہیں کرتا, آپ  ھیومن ریسورس سے اس ای "
+"میل ایڈریس پر رابطہ کر سکتے ہیں tor-assistants@torproject.org"
 
 #: lib/gettor/constants.py:423
 msgid ""
@@ -82,6 +93,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"میں آپ کو ایک ٹار پیکج ای میل کرو گا, اگر آپ مجھے بتاو جو آپ چاہتے ہو. براہ "
+"مہربانی مندرجہ ذیل پیکج کے نام سے ایک کا انتخاب کریں. "
 
 #: lib/gettor/constants.py:436
 msgid ""
@@ -91,13 +104,15 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"براہ مہربانی مجھے اس  ای میل پر جواب ریں (togettor@torproject.org). کہیں بھی "
+"آپ کے ای میل میں ایک پیکیج کا نام. "
 
 #: lib/gettor/constants.py:441
 msgid ""
 "\n"
 "    OBTAINING LOCALIZED VERSIONS OF TOR\n"
 "    "
-msgstr ""
+msgstr "TOR کا مقامی ورژن حاصل کرنا"
 
 #: lib/gettor/constants.py:448
 msgid ""
@@ -107,6 +122,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"TOR کا ایک ورژن جو آپ کی زبان میں ترجمہ ہوا ہووضاحت کروجو زبان آپ چاہتے ہیں "
+"اسے ای میل ایڈریس میں"
 
 #: lib/gettor/constants.py:457
 msgid ""
@@ -117,13 +134,15 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"یہ مثال آپ کو درخواست کردہ پیکج مقامی طر پہ دے گیچینی ورژن کے لئےمندرجہ ذیل "
+"کوڈز میں فہرست ملاحظہ کریں"
 
 #: lib/gettor/constants.py:463
 msgid ""
 "\n"
 "    List of supported locales:\n"
 "    "
-msgstr ""
+msgstr "مقامی حمایت کردہ فہرست"
 
 #: lib/gettor/constants.py:470
 msgid ""
@@ -131,7 +150,7 @@ msgid ""
 "    Here is a list of all available languages:\n"
 "\n"
 "    "
-msgstr ""
+msgstr "یہ تمام دستیاب زبانوں کی فہرست ہے"
 
 #: lib/gettor/constants.py:474
 msgid ""
@@ -150,6 +169,12 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"عربی میں gettor+ar@torproject.org جرمن میں gettor+de@torproject.orgانگریزی "
+"میں gettor+en@torproject.orgہسپانوی میں  gettor+es@torproject.orgفارسی "
+"(ایران) میں gettor+fa@torproject.orgفرانسیسی میں "
+"gettor+fr@torproject.orgاطالوی میں gettor+it@torproject.orgڈچ میں "
+"gettor+nl@torproject.orgپولینڈ میں gettor+pl@torproject.orgروشین میں "
+"gettor+ru@torproject.orgچینی میں gettor+zh@torproject.org"
 
 #: lib/gettor/constants.py:488
 msgid ""
@@ -157,14 +182,14 @@ msgid ""
 "    If you select no language, you will receive the English version.\n"
 "\n"
 "    "
-msgstr ""
+msgstr "اگر آپ نے کوئی زبان منتخب نہ کی تو آپ انگریزی ورژن حاصل کریں گے"
 
 #: lib/gettor/constants.py:493
 msgid ""
 "\n"
 "    SMALLER SIZED PACKAGES\n"
 "    "
-msgstr ""
+msgstr "چھوٹے سائز کے پیکجز"
 
 #: lib/gettor/constants.py:499
 msgid ""
@@ -176,13 +201,17 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"اگر آپ کی بینڈ وڈتھ کم ہے, یا آپ کو سروس فراہم کرنے والے آپ کو اپنے ای میل "
+"میں بڑی ملحقات حاصل کرنے کی اجازت نہیں دیتا, وہاں GetTor کی ایک خصوصیت یہ "
+"ہے, آپ اسے چھوٹے پیکیج کی ایک بڑی تعداد بھیجنے کے لئے استعمال کر سکتے ہیں, "
+"بجائے ایک بڑے سے کے"
 
 #: lib/gettor/constants.py:506
 msgid ""
 "\n"
 "    Simply include the keyword 'split' somewhere in your email like so:\n"
 "    "
-msgstr ""
+msgstr "بس مطلوبہ الفاظ \"ٹکڑے ٹکڑے کر ڈالا\" شامل کریں, کہیں آپنے ای میل میں"
 
 #: lib/gettor/constants.py:515
 msgid ""
