@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-14 14:10+0100\n"
-"PO-Revision-Date: 2010-09-03 12:08+0200\n"
+"PO-Revision-Date: 2010-09-08 12:37+0200\n"
 "Last-Translator: ahmedsalman <ahmed.salman@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ur\n"
@@ -230,6 +230,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"تمام حصوں کے موصول ہونے کے بعد آپ کو انھں دوبارہ جمع کرنا ہو گا. اسکا طریقہ "
+"درج ذيل ہے:"
 
 #: lib/gettor/constants.py:525
 msgid ""
@@ -247,6 +249,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"2) Z سے ختم ہونے والی تمام فائلیں کھول دیں. آگر آپ تمام ملحقات ایک نئے فلڈر "
+"میں محفوظ کرتے ھیں, تو اس فولڈر میں تمام فائلیں کھولیں"
 
 #: lib/gettor/constants.py:534
 msgid ""
@@ -257,6 +261,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"3) ex_Rename فا ئل کا نام تبدیل کر کے exe. کردیں۔ex_RENAME.asc فا ئل کا نام "
+"بھی تبدیل کر کے exe.asc. کردیں"
 
 #: lib/gettor/constants.py:540
 msgid ""
@@ -266,6 +272,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"4) تو ثیق کریں ان فا ئلوں کی جیسا کہ ای میل آپ کو بتایا گیا ہے   (gpg -- "
+"تصدیق)"
 
 #: lib/gettor/constants.py:545
 msgid ""
@@ -276,6 +284,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"5) اب ایک ا یسا پروگرام استعمال کریں جو multivolume RARکو أرکائیو کر "
+"سکے.ونڈوز میں عام طو ر پر یہ کام winrar کرتا ہے.اگر تمھارے کمپیوٹر پر ا "
+"نسٹال نہیں ہے تو اسے یہاں سے حاصل کرو"
 
 #: lib/gettor/constants.py:555
 msgid ""
@@ -283,7 +294,7 @@ msgid ""
 "        To unpack your Tor package, simply doubleclick the \".exe\" file.\n"
 "\n"
 "    "
-msgstr ""
+msgstr "اپنے پیکج کو کھولنے کے لیے صرف \"exe.\" پرڈبل کلک کریں"
 
 #: lib/gettor/constants.py:559
 msgid ""
@@ -294,6 +305,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"6) فا ئل کو کھولنے کے بعد ، آپ کو ایک نئی .exe فا ئل ملے گی آپ کے مطلو بہ "
+"فولڈر میں۔ بس اس فلڈر پہ ڈبل کلک کریں، اور Tor Browser Bundle کو چند سکنڈ "
+"میں سروع ہو جانا چاہے۔"
 
 #: lib/gettor/constants.py:565
 msgid ""
@@ -302,13 +316,15 @@ msgid ""
 "    \n"
 "    "
 msgstr ""
+"7) اب یہ کام پورا ہو گیا ہے۔ Tor استعمال کرنے کا شکریہ۔ اب آپ اس سے لطف اندز "
+"ہوسکتے ہیں۔"
 
 #: lib/gettor/constants.py:569
 msgid ""
 "\n"
 "    SUPPORT\n"
 "    "
-msgstr ""
+msgstr "تعاون"
 
 #: lib/gettor/constants.py:580
 msgid ""
@@ -318,6 +334,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"یہ آپ کا مطلوبہ سافٹ ویئر زپ فائل میں ہے۔ اس پیکج کو کھولیں اور دستخط کی "
+"تصدیق کریں۔"
 
 #: lib/gettor/constants.py:585
 msgid ""
@@ -327,6 +345,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"شارہ: اگر اپ کے کمپیوٹرپر GnuPG نصب ہے، تو gpg کمانڈ لائن طریقہ کواستعمال "
+"کرتے ہوے زپ فائل کو کھل دو"
 
 #: lib/gettor/constants.py:590
 msgid ""
@@ -334,7 +354,7 @@ msgid ""
 "       gpg --verify <packagename>.asc <packagename>\n"
 "\n"
 "    "
-msgstr ""
+msgstr "gpg تصدیق <پیکیج کا نام>.asc. <پیکیج کا نام>"
 
 #: lib/gettor/constants.py:594
 msgid ""
@@ -342,7 +362,7 @@ msgid ""
 "    The output should look somewhat like this:\n"
 "\n"
 "    "
-msgstr ""
+msgstr "اس کی پیداوار کسی حد تک اس طرح نظر آنی چا ہئے"
 
 #: lib/gettor/constants.py:602
 msgid ""
@@ -351,7 +371,7 @@ msgid ""
 "    a graphical user interface for GnuPG on this website:\n"
 "\n"
 "    "
-msgstr ""
+msgstr "اگر اپ کمانڈ لائن طریقہ سے ناواقف ہے تو تصویر ی صارف مواجہ کو تلاش کریں"
 
 #: lib/gettor/constants.py:611
 msgid ""
@@ -365,6 +385,11 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"اگر آپ کا انٹرنٹ کنکشن Tor نیٹ ورک کنشن تک رسائی کو بلاک کرتا ہے,آپ کو ایک "
+"پل کے ریلے کی ضرورت ہوسکتی ہے,برج رلی یا (\"پل\" مختصر),Tor رلی کہ مرکزی "
+"ڈائریکٹری میں درج نہیں ہیں, چونکہ ان میں سے کوئی مکمل عوامی فہرست نہیں ہے, "
+"یہاں تک کہ اگر آپ کا آئی ایس پی فلٹرنگ کر رہا ہے، تو وہ تمام پلوں کو بلاک "
+"نہیں کر سکے گے۔"
 
 #: lib/gettor/constants.py:620
 msgid ""
@@ -376,6 +401,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"آپ اس ای میل ایڈریس : bridges@torporject.org پرایک ای میل بیجھ کرپل حاصل کر "
+"سکتے ہیں ، جس میں لکھا ہو\"پل حاصل کرو\""
 
 #: lib/gettor/constants.py:626
 msgid ""
@@ -386,6 +413,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"پل کو حاصل کرنے کا طریقہ یہ بھی ہے کہ ویب براؤ زر پر یہ یوآرایل "
+"دیں:https://bridges.torproject.org "
 
 #: lib/gettor/constants.py:631
 msgid ""
@@ -398,6 +427,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"اہم نوٹ:چونکہ یہ ایک الگ الگ فائل کی درخواست کا حصہ ہے,تمھیں انتظ ر کرنے کی "
+"ضرورت ہے،تمام الگ الگ فائلیں جو کہ موصول ہو گی،ان سب کو ایک ڈاریکٹری میں ڈال "
+"دیںاور فائل کو دومرتبہ کلک کر کے کھول دیں "
 
 #: lib/gettor/constants.py:639
 msgid ""
@@ -407,6 +439,8 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"پیکیج ترتیب سے ہٹ سکتے ہیں۔اس سے پہلے کہا آپ پیکیج کھولیں براہ مہربانی یقین "
+"کرلیں کہ آپ نے تمام پیکیج مصول کر لیے ہیں"
 
 #: lib/gettor/constants.py:644
 msgid ""
@@ -419,6 +453,9 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"آپ کی درخواست کے لئے آپ کا شکریہ.اسے کامیابی سے سمجھ لیا گیا ہےآپ کی درخواست "
+"پراس وقت عملدرآمد کیا جا رہا ہےآپ کا پیکج اگلے دس کے اندر اندر پہنچ جانا "
+"چاہئے"
 
 #: lib/gettor/constants.py:650
 msgid ""
@@ -431,6 +468,10 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"آگر یہ مصول نہیں ہوں گی، آپ کے ای میل فراہم کرنے والے کے لیے یہ بڑا "
+"ہوگا۔gmail.com یا yahoo.cn سے یہ ای میل دوبارا بیھجنے کی کوشش کرو۔اس کے "
+"علاوہ tor-im-browser کے بجائےtor-browser-bundle استعمال کرنے کی کوشش کرو "
+"کیونکہ یہ چھوٹی ہے."
 
 #: lib/gettor/constants.py:657
 msgid ""
@@ -442,3 +483,6 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"بدقسمتی سے ہم اس وقت مشکلات کا سامنا کر رہے ہیںاور ہم آپ کی فرمائش کی تکمیل "
+"ابھی نہیں کر سکتے ہیں.براہ مہربانی صبر کریں ہم اس مسئلے کو حل کرنے کی کوشش "
+"ہیں"
