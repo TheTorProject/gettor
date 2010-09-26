@@ -60,7 +60,7 @@ def parseOpts():
                         help="set the password for mail commands",
                         metavar="CMDPASS")
     cmdParser.add_option("-d", "--i18n-dir", dest="i18ndir",
-                        default="./i18n",
+                        default="./po",
                         help="set your locale src dir to DIR [default = %default]",
                         metavar="DIR")
 

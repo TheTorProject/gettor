@@ -11,6 +11,6 @@ locale          = en
 delayalert      = True
 logSubSystem    = stdout
 logFile         = /tmp/gettor/logfile
-localDir        = /tmp/gettor/i18n/
+localDir        = /tmp/gettor/po/
 cmdPassFile     = /tmp/gettor/pass
 dumpFile        = /tmp/gettor/dumpfile

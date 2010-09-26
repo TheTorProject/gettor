@@ -89,24 +89,24 @@ locale files for you as follows:
 You can also configure the .mo files to live in another place by telling GetTor
 so in the config file, for example:
 
-    localeDir = /home/gettor/gettor/i18n
+    localeDir = /home/gettor/gettor/po
 
 This will result in GetTor expecting the English .mo file in the directory
 
-    /home/gettor/gettor/i18n/en/gettor.mo
+    /home/gettor/gettor/po/en/gettor.mo
 
 Also, in case your .po files for some reason live in a different directory
-than i18n/ (relative to GetTor.py, as provided by GetTor), you can tell this
+than po/ (relative to GetTor.py, as provided by GetTor), you can tell this
 to GetTor as follows:
 
     gettor@moria:~/opt/gettor$ ./GetTor.py -r -d /path/to/my/pofiles/directory
 
 Note that GetTor will expect the same directory structure as provided under
-i18n/ in the GetTor source package, e.g. 'i18n/en/gettor.po',
-'i18n/de/gettor.po', and so on.
+po/ in the GetTor source package, e.g. 'po/en/gettor.po',
+'po/de/gettor.po', and so on.
 
 To add a new language to GetTor, one must create a new .po file in subversion
-in the proper directory. For Korean, one would create i18n/ko/ and add the
+in the proper directory. For Korean, one would create po/ko/ and add the
 untranslated file (called gettor.po) to that directory. This file should be
 translated but partial translations are allowed. Once this file has been
 created, the GetTor program does not need to be modified.
@@ -134,7 +134,7 @@ and should look like this:
     locale          = en
     logSubSystem    = stdout
     logFile         = /home/gettor/gettor/logs/logfile
-    localeDir       =  /home/gettor/gettor/i18n/
+    localeDir       =  /home/gettor/gettor/po/
     cmdPassFile     = /home/gettor/gettor/pass
     dumpFile        = /home/gettor/gettor/failedmails
 

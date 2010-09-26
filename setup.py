@@ -8,7 +8,7 @@ import sys
 
 from distutils.core import setup
 
-TRANSLATION_DIR='i18n'
+TRANSLATION_DIR='po'
 data_files = dict()
 for filename in os.listdir(TRANSLATION_DIR):
     if filename.endswith('.svn'):
