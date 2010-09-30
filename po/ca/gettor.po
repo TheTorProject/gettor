@@ -31,6 +31,7 @@ msgstr ""
 "\n"
 "Gracies per la teva peticiò.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:394
 msgid ""
@@ -46,6 +47,7 @@ msgstr ""
 "compte amb GMAIL.COM o YAHOO.CN i enviar un E-mail desde \n"
 "un d'aquests comptes.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:400
 msgid ""
@@ -61,6 +63,7 @@ msgstr ""
 "que es una opcio que ens permet verificar que la adreça desde el camp \"From\"\n"
 "es la que actualment esta enviant el missatge.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:406
 msgid ""
@@ -76,6 +79,7 @@ msgstr ""
 "prové d'un servei que no fa servir DKIM, t'enviem una petita explicació,\n"
 "i per tant ignorem la adreça d'aquest mail per el dia d'avui.)\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:412
 msgid ""
@@ -89,6 +93,7 @@ msgstr ""
 "Siusplau, pren nota que normalment no procesem emails HTML o emails base 64.\n"
 "Et suggerim enviar emails de texte.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:418 lib/gettor/constants.py:575
 msgid ""
@@ -102,6 +107,7 @@ msgstr ""
 "Si tens dubtes o problemes, pots contactar amb\n"
 "una persona, a la adreça de suport: tor-assistants@torproject.org\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:423
 msgid ""
@@ -115,6 +121,7 @@ msgstr ""
 "T'enviarem el pack Tor, si ens indiques quin vols.\n"
 "Siusplau, selecciona'n un dels de la llista:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:436
 msgid ""
@@ -128,6 +135,7 @@ msgstr ""
 "Siusplau respon a aquest email (to gettor@torproject.org), indicant\n"
 "un unic pack en qualsevol lloc del cos del missatge.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:441
 msgid ""
@@ -137,6 +145,7 @@ msgid ""
 msgstr ""
 "\n"
 "OBTENINT VERSIONS LOCALITZADES DE TOR\n"
+"    "
 
 #: lib/gettor/constants.py:448
 msgid ""
@@ -150,6 +159,7 @@ msgstr ""
 "Per obtenir una versió de Tor en la teva llengua, especifica \n"
 "l'idioma que vols a la adreça que envies el mail a:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:457
 msgid ""
@@ -164,6 +174,7 @@ msgstr ""
 "Aquest exemple t'ofereix el pack solicitat per a una versió \n"
 "localitzada de Xinés. Selecciona a la llista de sota l'idioma suportat \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:463
 msgid ""
@@ -173,6 +184,7 @@ msgid ""
 msgstr ""
 "\n"
 "Llista de locals suportades:\n"
+"    "
 
 #: lib/gettor/constants.py:470
 msgid ""
@@ -184,6 +196,7 @@ msgstr ""
 "\n"
 "Això es una llista d'idiomes disponibles:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:474
 msgid ""
@@ -215,6 +228,7 @@ msgstr ""
 "gettor+ru@torproject.org: Russian\n"
 "gettor+zh@torproject.org: Chinese\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:488
 msgid ""
@@ -226,6 +240,7 @@ msgstr ""
 "\n"
 "Si no en selecciones cap, rebras la versiò en Anglès.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:493
 msgid ""
@@ -235,6 +250,7 @@ msgid ""
 msgstr ""
 "\n"
 "PAQUETS DE MIDA REDUÏDA\n"
+"    "
 
 #: lib/gettor/constants.py:499
 msgid ""
@@ -252,6 +268,7 @@ msgstr ""
 "GetTor i pots enviar diferents paquets de mida reduïda, per comptes d'un de "
 "gran.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:506
 msgid ""
@@ -261,6 +278,7 @@ msgid ""
 msgstr ""
 "\n"
 "Sencillament inclou la paraula 'split' en algún lloc del teu email:\n"
+"    "
 
 #: lib/gettor/constants.py:515
 msgid ""
@@ -274,6 +292,7 @@ msgstr ""
 "Enviant aquest texte en un email a GetTor rebrás \n"
 "el Tor Browser Bundle en un adjunt de mida 1,4MB.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:520
 msgid ""
@@ -287,6 +306,7 @@ msgstr ""
 "Un cop hagis rebut totes les parts, tens de reconstruir-ho tot \n"
 "en un sol paquet. Ho podras fer de la següent forma:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:525
 msgid ""
@@ -298,6 +318,7 @@ msgstr ""
 "\n"
 "1.) Desa tots els adjunts rebuts dins una carpeta al teu disc.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:529
 msgid ""
@@ -312,6 +333,7 @@ msgstr ""
 "tots els adjunts en una carpeta nova, sencillament descomprimeix tots els "
 "arxius de la carpeta.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:534
 msgid ""
@@ -327,6 +349,7 @@ msgstr ""
 "l'arxiu acabat en \".ex_RENAME.asc\" en\n"
 "\".exe.asc\"\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:540
 msgid ""
@@ -340,6 +363,7 @@ msgstr ""
 "4.) Verifica la existencia de tots els arxius descrits en el mail \n"
 "rebut de cada paquet. (gpg --verify)\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:545
 msgid ""
@@ -355,6 +379,7 @@ msgstr ""
 "Windows, normalment es WinRAR.Si no el tens instalat\n"
 "en el teu ordinador, el tens disponible aqui:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:555
 msgid ""
@@ -366,6 +391,7 @@ msgstr ""
 "\n"
 "Per desenpaquetar, sencillament fes doble clic al arxiu \".exe\" .\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:559
 msgid ""
@@ -381,6 +407,7 @@ msgstr ""
 "\".exe\" a la teva carpeta de destí. Fent doble clic al arxiu\n"
 "el Tor Browser Bundle iniciará al cap d'uns segons.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:565
 msgid ""
@@ -392,6 +419,7 @@ msgstr ""
 "\n"
 "7.) Aixó es tot. Ja ho tens. Gracies per utilitzar Tor, i pasa-ho be.!\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:569
 msgid ""
@@ -401,6 +429,7 @@ msgid ""
 msgstr ""
 "\n"
 "SUPORT\n"
+"    "
 
 #: lib/gettor/constants.py:580
 msgid ""
@@ -415,6 +444,7 @@ msgstr ""
 "descomprimeix\n"
 "el paquet i verifica la signatura.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:585
 msgid ""
@@ -428,6 +458,7 @@ msgstr ""
 "Nota: Si el teu ordinador te GnuPG instal·lat, utilitza l'eina gpg\n"
 "a la linia de comanaments abans de descomprimir l'arxiu ZIP:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:590
 msgid ""
@@ -437,8 +468,9 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"gpg --verifica <packagename>.asc <packagename>\n"
+"gpg --verify <packagename>.asc <packagename>\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:594
 msgid ""
@@ -450,6 +482,7 @@ msgstr ""
 "\n"
 "La sortida te de semblar alguna cosa semblant a :\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:602
 msgid ""
@@ -463,6 +496,7 @@ msgstr ""
 "Si no estas familiaritzat amb els comanaments en linia, prova alguna\n"
 "interficie grafica per GnuPG en aquesta pàgina:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:611
 msgid ""
@@ -484,6 +518,7 @@ msgstr ""
 "totes les connexions als repetidors Tor, segurament no podrás\n"
 "blocar els ponts.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:620
 msgid ""
@@ -500,6 +535,7 @@ msgstr ""
 "dins el cos del missatge, a la adreça:\n"
 "bridges@torproject.org\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:626
 msgid ""
@@ -514,6 +550,7 @@ msgstr ""
 "Es posible buscar ponts amb un navegador a la\n"
 "url: https://bridges.torproject.org/\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:631
 msgid ""
@@ -532,6 +569,7 @@ msgstr ""
 "a rebre tots els troços dels arxius demanats abans de desar-los\n"
 "en el mateix directori i descompprimir fent doble clic al primer arxiu\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:639
 msgid ""
@@ -545,6 +583,7 @@ msgstr ""
 "Els paquets poden estar desordenats! Siusplau, asegura't de rebre\n"
 "tots els paquets abans de intentar desenpaquetar!\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:644
 msgid ""
@@ -563,6 +602,7 @@ msgstr ""
 "minuts\n"
 "següents.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:650
 msgid ""
@@ -582,6 +622,7 @@ msgstr ""
 "pots demanar el tor-browser-bundle en comptes de tor-im-browser-bundle,\n"
 "donat que es mes petit.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:657
 msgid ""
@@ -597,3 +638,4 @@ msgstr ""
 "Desafortunadament estem tenint problemes i no podem enviar-tel\n"
 "el que ens has demanat ara. Siusplau tingues paciencia mentre ho resolem.\n"
 "\n"
+"    "

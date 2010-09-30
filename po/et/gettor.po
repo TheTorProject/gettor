@@ -29,6 +29,7 @@ msgstr ""
 "\n"
 "Täname päringu eest.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:394
 msgid ""

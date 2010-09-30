@@ -28,6 +28,7 @@ msgstr ""
 " Hallo, dit is de \"GetTor\" robot.\n"
 "\n"
 "Dank u voor uw verzoek.\n"
+"    "
 
 #: lib/gettor/constants.py:394
 msgid ""
@@ -43,6 +44,7 @@ msgstr ""
 "adres. U zult een gmail of yahoo account moeten aanmaken \n"
 " en vanaf daar een e-mail sturen.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:400
 msgid ""
@@ -59,6 +61,7 @@ msgstr ""
 "dat de e-mail daadwerkelijk van de het gesuggereerde e-mail adres afkomstig "
 "is.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:406
 msgid ""
@@ -75,6 +78,7 @@ msgstr ""
 "antwoord.\n"
 "Daarna negeren we dit e-mailadres voor 24 uur.)\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:412
 msgid ""
@@ -89,6 +93,7 @@ msgstr ""
 "e-mails kunnen accepteren. \n"
 "U zult gewone text (plain text) e-mails moeten versturen.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:418 lib/gettor/constants.py:575
 msgid ""
@@ -102,6 +107,7 @@ msgstr ""
 "Voor vragen kunt u contact opnemen met tor-assistants@torproject.org\n"
 "\n"
 "Neem in achting dat de voertaal Engels is. \n"
+"    "
 
 #: lib/gettor/constants.py:423
 msgid ""
@@ -115,6 +121,7 @@ msgstr ""
 "Ik zal u een Tor paket sturen als u vertelt welke u wilt. \n"
 "Kies een van de onderstaande paketten:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:436
 msgid ""
@@ -128,6 +135,7 @@ msgstr ""
 "Antwoord op dit e-mailadres (gettor@torproject.org), en noem in de body van "
 "uw bericht een enkel pakket.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:441
 msgid ""
@@ -136,7 +144,9 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Bezig met het verkrijgen van gelokaliseerde versies van Tor."
+"Bezig met het verkrijgen van gelokaliseerde versies van Tor.\n"
+"\n"
+"    "
 
 #: lib/gettor/constants.py:448
 msgid ""
@@ -150,6 +160,7 @@ msgstr ""
 "Om een taalspecifieke versie van Tor te verkrijgen, \n"
 "noteert u de gewenste taal in het adres waar u de e-mail heen stuurt: \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:457
 msgid ""
@@ -164,6 +175,7 @@ msgstr ""
 "Dit voorbeeld geeft u een pakket in een gelokaliseerde versie voor Chinees. \n"
 " Onderaan vind u een lijst met ondersteunde taalcodes.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:463
 msgid ""
@@ -173,6 +185,7 @@ msgid ""
 msgstr ""
 "\n"
 "Lijst van ondersteunde gelokaliseerde versies: \n"
+"    "
 
 #: lib/gettor/constants.py:470
 msgid ""
@@ -184,6 +197,7 @@ msgstr ""
 "\n"
 "Hier is een lijst van alle beschikbare talen: \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:474
 msgid ""
@@ -215,6 +229,7 @@ msgstr ""
 "gettor+ru@torproject.org: Russisch\n"
 "gettor+zh@torproject.org: Chinees\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:488
 msgid ""
@@ -226,6 +241,7 @@ msgstr ""
 "\n"
 "Indien u geen taal specificeert, ontvangt u de Engelse versie. \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:493
 msgid ""
@@ -235,6 +251,7 @@ msgid ""
 msgstr ""
 "\n"
 "PAKKETTEN MET KLEINERE GROOTTE\n"
+"    "
 
 #: lib/gettor/constants.py:499
 msgid ""
@@ -251,6 +268,7 @@ msgstr ""
 "geen grote bijlagen ondersteunt, is er een mogelijkheid \n"
 "om kleinere plaketten te ontvangen, in plaats van de grotere.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:506
 msgid ""
@@ -260,6 +278,7 @@ msgid ""
 msgstr ""
 "\n"
 "Neem in uw e-mail het woord 'split' op, zoals hier voorgedaan:\n"
+"    "
 
 #: lib/gettor/constants.py:515
 msgid ""
@@ -273,6 +292,7 @@ msgstr ""
 "Indien u deze tekst meestuurt in een e-mail aan GetTor, zorgt die ervoor\n"
 "dat u een Tor Browser Bundle ontvangt in meerdere bijlagen van elk 1.4 MB.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:520
 msgid ""
@@ -287,6 +307,7 @@ msgstr ""
 "één pakket. \n"
 "Dit kunt u als volgt doen: \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:525
 msgid ""
@@ -298,6 +319,7 @@ msgstr ""
 "\n"
 "1.) Sla alle bijlagen op in een en dezelfde map op uw harde schijf. \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:529
 msgid ""
@@ -312,6 +334,7 @@ msgstr ""
 "gemaakt\n"
 " kunt u simpelweg alle bestanden in die map unzippen.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:534
 msgid ""
@@ -327,6 +350,7 @@ msgstr ""
 "hernoem eveneens het bestand dat eindigt op \".ex_RENAME.asc\" naar \n"
 "\".exe.asc\"\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:540
 msgid ""
@@ -340,6 +364,7 @@ msgstr ""
 "4.) Controleer alle bestanden zoals beschreven in de e-mail die u ontvangen "
 "heeft tezamen met alle pakketen. (gpg --verify)\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:545
 msgid ""
@@ -355,6 +380,7 @@ msgstr ""
 "Op Windows is dit meestal WinRAR. Als u dit niet heeft\n"
 "kunt u het downloaden op: \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:555
 msgid ""
@@ -367,6 +393,7 @@ msgstr ""
 "Om uw Tor pakket uit te pakken dubbel-klikt u simpelweg op het \".exe\" "
 "bestand.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:559
 msgid ""
@@ -382,6 +409,7 @@ msgstr ""
 "\".exe\" bestand in de bestemmingsmap. Dubbelklik hierop\n"
 "en de Tor Browser Bundle start binnen enkele seconden.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:565
 msgid ""
@@ -394,6 +422,7 @@ msgstr ""
 "7.) U bent klaar met installeren. Dank u voor het gebruik van Tor en veel "
 "plezier! \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:569
 msgid ""
@@ -403,6 +432,7 @@ msgid ""
 msgstr ""
 "\n"
 "ONDERSTEUNING \n"
+"    "
 
 #: lib/gettor/constants.py:580
 msgid ""
@@ -416,6 +446,7 @@ msgstr ""
 "Hier is uw gevraagde software als een zip bestand. Unzip het pakket en "
 "controleer de digitale handtekening. \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:585
 msgid ""
@@ -429,6 +460,7 @@ msgstr ""
 "Hint: Als u computer GnuPG heeft, gebruik dan de commandline tool als volgt "
 "na het uitpakken van de zip-file:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:590
 msgid ""
@@ -440,6 +472,7 @@ msgstr ""
 "\n"
 "gpg --verify <pakketnaam>.asc <pakketnaam>\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:594
 msgid ""
@@ -451,6 +484,7 @@ msgstr ""
 "\n"
 "De output zou ietwat op dit moeten lijken:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:602
 msgid ""
@@ -464,6 +498,7 @@ msgstr ""
 "Als u niet betekent bent met commandline tools, probeer dan te zoeken naar "
 "een grafische interface voor GnuPG op deze website: \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:611
 msgid ""
@@ -485,6 +520,7 @@ msgstr ""
 "dat uw provider \n"
 " alle tor bridges blokkeert.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:620
 msgid ""
@@ -501,6 +537,7 @@ msgstr ""
 "bridges@torproject.org\n"
 "Vermeld hierbij \"get bridges\"\n"
 " in de body van uw bericht."
+"    "
 
 #: lib/gettor/constants.py:626
 msgid ""
@@ -515,6 +552,7 @@ msgstr ""
 "Het is ook mogelijk om bridges te verkrijgen via onderstaande url: \n"
 "https://bridges.torproject.org/\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:631
 msgid ""
@@ -534,6 +572,7 @@ msgstr ""
 " e-mails ontvangen zijn voordat u ze opslaat in dezelfde map en uitpakt door "
 "te dubbelklikken op het eerste bestand. \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:639
 msgid ""
@@ -547,6 +586,7 @@ msgstr ""
 "Pakketen kunnen ontvangen worden in verkeerde volgorde! Zorg ervoor dat u "
 "alle pakketten ontvangen heeft voor u probeert deze uit te pakken. \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:644
 msgid ""
@@ -563,6 +603,7 @@ msgstr ""
 "Dank u voor uw verzoek. Uw verzoek is begrepen en wordt momenteel verwerkt. "
 "U kunt het pakket verwachten binnen de volgende tien minuten. \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:650
 msgid ""
@@ -582,6 +623,7 @@ msgstr ""
 "Ook kunt u proberen de tor-browser-bundle in plaats van de tor-im-browser-"
 "bundle op te halen, aan gezien deze kleiner is. \n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:657
 msgid ""
@@ -598,6 +640,7 @@ msgstr ""
 "verwerken. \n"
 "  Wacht geduldig terwijl wij proberen het probleem op te lossen. \n"
 "\n"
+"    "
 
 #~ msgid ""
 #~ "\n"
