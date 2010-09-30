@@ -31,6 +31,7 @@ msgstr ""
 "\n"
 "İstekte bulunduğunuz için teşekkür ederiz.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:394
 msgid ""
@@ -46,6 +47,7 @@ msgstr ""
 "GMAIL.COM yada YAHOO.CN hesaplarınızdan mail göndererek \n"
 "tekrar deneyin.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:400
 msgid ""
@@ -61,6 +63,7 @@ msgstr ""
 "e-posta servislerinin isteklerini kabul ediyoruz\n"
 "Yani gönderen kısmında gerçek e-posta adresi olmalı.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:406
 msgid ""
@@ -77,6 +80,7 @@ msgstr ""
 "Bununla ilgili size kısa bir açıklama gönderiyoruz.\n"
 "Açıklama size ulaşana kadar e-postanızı görmezden geleceğiz.)\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:412
 msgid ""
@@ -90,6 +94,7 @@ msgstr ""
 "Bilginize, HTML ve base 64 formatlı e-postalarla işlem yapamıyoruz.\n"
 "Lütfen düzmetin olarak tekrar gönderin\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:418 lib/gettor/constants.py:575
 msgid ""
@@ -100,10 +105,11 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Her soru ve sorunlarınızı aşağıda verilen e-posta adresine "
+"Her soru ve sorunlarınızı aşağıda verilen e-posta adresine\n"
 "gönderebilirsiniz:\n"
 "tor-assistants@torproject.org\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:423
 msgid ""
@@ -117,6 +123,7 @@ msgstr ""
 "I will mail you a Tor package, if you tell me which one you want.\n"
 "Please select one of the following package names:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:436
 msgid ""
@@ -130,6 +137,7 @@ msgstr ""
 "Please reply to this mail (to gettor@torproject.org), and tell me\n"
 "a single package name anywhere in the body of your email.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:441
 msgid ""
@@ -139,6 +147,7 @@ msgid ""
 msgstr ""
 "\n"
 "OBTAINING LOCALIZED VERSIONS OF TOR\n"
+"    "
 
 #: lib/gettor/constants.py:448
 msgid ""
@@ -152,6 +161,7 @@ msgstr ""
 "Tor'un dilinize çevrilmiş bir sürümünü edinmek için\n"
 "istediğiniz dili göndereceğiniz epostada belirtin:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:457
 msgid ""
@@ -171,6 +181,7 @@ msgid ""
 msgstr ""
 "\n"
 "Desteklenen yerellerin listesi:\n"
+"    "
 
 #: lib/gettor/constants.py:470
 msgid ""
@@ -182,6 +193,7 @@ msgstr ""
 "\n"
 "Desteklenen diller:\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:474
 msgid ""
@@ -213,6 +225,7 @@ msgstr ""
 "gettor+ru@torproject.org: Rusça\n"
 "gettor+zh@torproject.org: Çince\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:488
 msgid ""
@@ -224,6 +237,7 @@ msgstr ""
 "\n"
 "Herhangi bir dil seçmezseniz, ingilizce versiyonu kullanacak.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:493
 msgid ""
@@ -233,6 +247,7 @@ msgid ""
 msgstr ""
 "\n"
 "DAHA KÜÇÜK BOYUTLU PAKETLER\n"
+"    "
 
 #: lib/gettor/constants.py:499
 msgid ""

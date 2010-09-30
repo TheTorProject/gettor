@@ -590,6 +590,7 @@ msgstr ""
 "    gleichen Ordner gespeichert und, durch einen Doppelklick auf die erste "
 "Datei,\n"
 "    entpackt werden können.\n"
+"    "
 
 #: lib/gettor/constants.py:639
 msgid ""

@@ -131,6 +131,7 @@ msgid ""
 msgstr ""
 "\n"
 "    【Torのローカライズ版を入手する】\n"
+"    "
 
 #: lib/gettor/constants.py:448
 msgid ""

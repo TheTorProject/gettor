@@ -31,6 +31,7 @@ msgstr ""
 "\n"
 "Obrigado por sua solicitação.\n"
 "\n"
+"    "
 
 #: lib/gettor/constants.py:394
 msgid ""
