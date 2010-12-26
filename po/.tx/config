@@ -1,0 +1,8 @@
+[torproject.gettor-gettor-pot]
+file_filter = <lang>/gettor.po
+source_file = en/gettor.po
+source_lang = en
+
+[main]
+host = http://www.transifex.net
+
