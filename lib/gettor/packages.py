@@ -193,7 +193,7 @@ class Packages:
                 continue
             if re.compile(".*split.part.*").match(splitfile):
                 ascsplit = splitfile + ".asc"
-                ascfile = os.path.join(splitdir, "signatures", ascsplit)
+                ascfile = os.path.join(splitdir, ascsplit)
                 # Rename .exe if needed
                 if gettor.utils.hasExe(ascfile):
                     try:
@@ -250,6 +250,18 @@ class Packages:
         self.rsync += " "
         self.rsync += "--exclude='*vidalia-bundles*'"
         self.rsync += " "
+        self.rsync += "--exclude='*vidalia*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*torbrowser*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*torbutton*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*win32*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*android*'"
+        self.rsync += " "
+        self.rsync += "--exclude='*misc*'"
+        self.rsync += " "
         if not silent:
             self.rsync += "--progress"
             self.rsync += " "
@@ -279,7 +291,7 @@ class Packages:
         if not silent:
             self.rsync += "--progress"
             self.rsync += " "
-        self.rsync += "rsync://%s/tor/torbrowser/dist/" % mirror
+        self.rsync += "rsync://%s/tor/dist/torbrowser/" % mirror
         self.rsync += " "
         self.rsync += self.distDir + "_tbb"
         self.rsync += " "
