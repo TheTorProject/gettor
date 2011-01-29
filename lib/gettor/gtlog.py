@@ -87,11 +87,3 @@ def getLogger():
     if logger is None:
         initialize()
     return logger
-
-if __name__ == "__main__" :
-    initialize()
-    print "This is the logging module. You probably do not want to call it by hand."
-    print "We'll send a test logging message now with the following subsystem: " + \
-    getLogSubSystem()
-    log = getLogger()
-    log.info("I'm a logger, logging!")

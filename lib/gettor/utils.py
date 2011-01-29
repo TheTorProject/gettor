@@ -271,7 +271,7 @@ def setCmdPassword(conf, password):
         os.chmod(cmdPassFile, 0400)
         return True
     except Exception, e:
-        log.error("Creating list entry %s failed: %s" % (entry, e))
+        log.error("Creating pass file failed: %s" % e)
         return False
 
 def verifyPassword(conf, password):

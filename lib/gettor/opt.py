@@ -65,6 +65,3 @@ def parseOpts():
                         metavar="DIR")
 
     return cmdParser.parse_args()
-
-if __name__ == "__main__":
-    print >> sys.stderr, "You shouldn't run this directly."

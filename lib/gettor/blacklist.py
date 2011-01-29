@@ -80,6 +80,7 @@ class BWList:
         if address is None:
            log.error("Argument 'address' is None")
            return False
+        hashString = self.getHash(address)
         globPath = os.path.join(self.blacklistDir, blacklistName)
         hashVec = glob.glob(os.path.join(globPath, hashString))
         for entry in hashVec:

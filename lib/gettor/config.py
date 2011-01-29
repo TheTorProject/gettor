@@ -188,8 +188,3 @@ class Config:
 
     def getDefaultFrom(self):
         return self.useConf["defaultFrom"][0]
-
-if __name__ == "__main__" :
-    c = Config()
-    print "# This is a suitable default configuration. Tune to fit your needs."
-    c.printConfiguration()
