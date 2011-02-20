@@ -1,46 +1,51 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-'''
- Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
-                     Christian Fromme <kaner@strace.org>
-
- This is Free Software. See LICENSE for license information.
-'''
+# Copyright (c) 2008 - 2011, Jacob Appelbaum <jacob@appelbaum.net>, 
+#                            Christian Fromme <kaner@strace.org>
+#  This is Free Software. See LICENSE for license information.
 
 import os
 import sys
 import re
 import subprocess
 import hashlib
+import logging
+import errno
+import zipfile
+
 from datetime import date, timedelta, datetime
 from time import localtime
 
-import gettor.gtlog
 import gettor.blacklist
 import gettor.packages
 
-log = gettor.gtlog.getLogger()
-
 def createDir(path):
-    """Helper routine that creates a given directory
+    """Helper routine that creates a given directory. Doesn't fail if directory
+       already exists.
     """
     try:
-        log.info("Creating directory %s.." % path)
+        logging.debug("Creating directory %s if it doesn't exist.." % path)
         os.makedirs(path)
-    except OSError, e:
-        log.error("Failed to create directory %s: %s" % (path, e))
-        return False
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            logging.error("Failed to create directory %s: %s" % (path, e))
+            return False
     return True
 
-def dumpMessage(conf, message):
+def makeZip(zipPath, fileList):
+    """Create a zip file zipFile from the files listed in fileList.
+    """
+    zipper = zipfile.ZipFile(zipPath, "w")
+    for item in fileList:
+        zipper.write(item, os.path.basename(item))
+    zipper.close()
+
+def dumpMessage(dumpFile, message):
     """Dump a (mail) message to our dumpfile
     """
-    dumpFile = conf.getDumpFile()
     # Be nice: Create dir if it's not there
     dumpDir = os.path.dirname(dumpFile)
     if not os.access(dumpDir, os.W_OK):
         if not createDir(dumpDir):
-            log.error("Could not create dump dir")
+            logging.error("Could not create dump dir")
             return False
     try:
         fd = open(dumpFile, 'a')
@@ -51,104 +56,43 @@ def dumpMessage(conf, message):
         fd.close
         return True
     except Exception, e:
-        log.error("Creating dump entry failed: %s" % e)
+        logging.error("Creating dump entry failed: %s" % e)
         return False
 
-def installTranslations(conf, localeSrcdir):
-    """Install all translation files to 'dir'
-    """
-    log.info("Installing translation files..")
-    hasDirs = None
-
-    if conf is None:
-        log.error("Bad arg.")
-        return False
-    if not os.path.isdir(localeSrcdir):
-        log.info("Not a directory: %s" % localeSrcdir)
-        if not createDir(localeSrcdir):
-            log.error("Giving up on %s" % localeSrcdir)
-            return False
-    localeDir = conf.getLocaleDir()
-    if not os.path.isdir(localeDir):
-        log.info("Not a directory: %s" % localeDir)
-        if not createDir(localeDir):
-            log.error("Giving up on %s" % localeDir)
-            return False
-
-    # XXX: Warn if there is no translation files anywhere..
-    for root, dirs, files in os.walk(localeSrcdir):
-        # Python lacks 'depth' feature for os.walk()
-        if root != localeSrcdir:
-            continue
-        for dir in dirs:
-            hasDirs = True
-            if dir.startswith("."):
-                continue
-            # We ignore the templates dir for now
-            if dir.startswith("templates"):
-                continue
-            try:
-                poFile = os.path.join(root, dir) + "/gettor.po"
-                # Construct target dir
-                targetDir = localeDir + "/" + dir + "/LC_MESSAGES"
-                if not os.path.isdir(targetDir):
-                    log.info("Not a directory: %s" % targetDir)
-                    if not createDir(targetDir):
-                        log.error("Giving up on %s" % targetDir)
-                        return False
-                if installMo(poFile, targetDir) == False:
-                    log.error("Installing .mo files failed.")
-                    return False
-            except Exception:
-                log.error("Error accessing translation files.")
-                return False
-    if hasDirs is None:
-        log.error("Empty locale dir: " % localeSrcdir)
-        return False
-
-    log.info("Installing translation files done.")
-
-    return True
-
-def fetchPackages(conf, mirror):
+def fetchPackages(conf):
     """Fetch Tor packages from a mirror
     """
-    log.info("Fetching package files..")
+    logging.info("Fetching package files..")
     try:
-        packs = gettor.packages.Packages(conf, mirror, False)
+        packs = gettor.packages.Packages(conf, False)
     except IOError:
-        log.error("Error initiating package list.")
+        logging.error("Error initiating package list.")
         return False
     if packs.syncWithMirror() != 0:
-        log.error("Syncing Tor packages failed.")
+        logging.error("Syncing Tor packages failed.")
         return False
     else:
-        log.info("Syncing Tor packages done.")
+        logging.info("Syncing Tor packages done.")
         return True
 
 def prepPackages(conf):
     """Prepare the downloaded packages in a way so GetTor can work with them
     """
-    log.info("Preparing package files..")
-    try:
-        packs = gettor.packages.Packages(conf)
-    except IOError:
-        log.error("Error initiating package list.")
+    logging.info("Preparing package files..")
+    packs = gettor.packages.Packages(conf)
+
+    if not packs.preparePackages():
         return False
-    # Currently not needed. Keep it here in case someone decides to change the
-    # directory structure back
-    #packs.preparePackages()
     if not packs.buildPackages():
-        log.error("Building packages failed.")
-        return False
-    else:
-        log.info("Building packages done.")
-        return True
+       return False
+
+    logging.info("Building packages done.")
+    return True
 
 def installCron():
     """Install all needed cronjobs for GetTor
     """
-    log.info("Installing cronjob..")
+    logging.info("Installing cronjob..")
     # XXX: Check if cron is installed and understands our syntax?
     currentCronTab = getCurrentCrontab()
     path = os.getcwd() + "/" + os.path.basename(sys.argv[0])
@@ -164,54 +108,58 @@ def installCron():
 def addWhitelistEntry(conf, address):
     """Add an entry to the global whitelist
     """
-    log.info("Adding address to whitelist: %s" % address)
+    wlStateDir = conf.BASEDIR + "/wl"
+    logging.info("Adding address to whitelist: %s" % address)
     try:
-        whiteList = gettor.blacklist.BWList(conf.getWlStateDir())
+        whiteList = gettor.blacklist.BWList(conf.wlStateDir)
     except IOError, e:
-        log.error("Whitelist error: %s" % e)
+        logging.error("Whitelist error: %s" % e)
         return False
     if not whiteList.createListEntry(normalizeAddress(address), "general"):
-        log.error("Creating whitelist entry failed.")
+        logging.error("Creating whitelist entry failed.")
         return False
     else:
-        log.info("Creating whitelist entry ok.")
+        logging.info("Creating whitelist entry ok.")
         return True
 
 def addBlacklistEntry(conf, address):
     """Add an entry to the global blacklist
     """
-    log.info("Adding address to blacklist: %s" % address)
+    logging.info("Adding address to blacklist: %s" % address)
+    blStateDir = conf.BASEDIR + "/bl"
     try:
-        blackList = gettor.blacklist.BWList(conf.getBlStateDir())
+        blackList = gettor.blacklist.BWList(blStateDir)
     except IOError, e:
-        log.error("Blacklist error: %s" % e)
+        logging.error("Blacklist error: %s" % e)
         return False
     if not blackList.createListEntry(normalizeAddress(address), "general"):
-        log.error("Creating blacklist entry failed.")
+        logging.error("Creating blacklist entry failed.")
         return False
     else:
-        log.info("Creating whitelist entry ok.")
+        logging.info("Creating whitelist entry ok.")
         return True
 
 def lookupAddress(conf, address):
     """Lookup if a given address is in the blacklist- or whitelist pool
     """
-    log.info("Lookup address: %s" % address)
+    logging.info("Lookup address: %s" % address)
     found = False
+    wlStateDir = conf.BASEDIR + "/wl"
+    blStateDir = conf.BASEDIR + "/bl"
     try:
-        whiteList = gettor.blacklist.BWList(conf.getWlStateDir())
-        blackList = gettor.blacklist.BWList(conf.getBlStateDir())
+        whiteList = gettor.blacklist.BWList(wlStateDir)
+        blackList = gettor.blacklist.BWList(blStateDir)
     except IOError, e:
-        log.error("White/Blacklist error: %s" % e)
+        logging.error("White/Blacklist error: %s" % e)
         return False
     if whiteList.lookupListEntry(address, "general"):
-        log.info("Address '%s' is present in the whitelist." % address)
+        logging.info("Address '%s' is present in the whitelist." % address)
         found = True
     if blackList.lookupListEntry(address, "general"):
-        log.info("Address '%s' is present in the blacklist." % address)
+        logging.info("Address '%s' is present in the blacklist." % address)
         found = True
     if not found:
-        log.info("Address '%s' neither in blacklist or whitelist." % address)
+        logging.info("Address '%s' neither in blacklist or whitelist." % address)
         found = True
 
     # Always True
@@ -220,48 +168,49 @@ def lookupAddress(conf, address):
 def clearWhitelist(conf):
     """Delete all entries in the global whitelist
     """
+    wlStateDir = conf.BASEDIR + "/wl"
     try:
-        whiteList = gettor.blacklist.BWList(conf.getWlStateDir())
+        whiteList = gettor.blacklist.BWList(wlStateDir)
     except IOError, e:
-        log.error("Whitelist error: %s" % e)
+        logging.error("Whitelist error: %s" % e)
         return False
-    log.info("Clearing whitelist..")
+    logging.info("Clearing whitelist..")
     if not whiteList.removeAll():
-        log.error("Deleting whitelist failed.")
+        logging.error("Deleting whitelist failed.")
         return False
     else:
-        log.info("Deleting whitelist done.")
+        logging.info("Deleting whitelist done.")
         return True
 
 def clearBlacklist(conf, olderThanDays):
     """Delete all entries in the global blacklist that are older than
        'olderThanDays' days
     """
-    log.info("Clearing blacklist..")
+    logging.info("Clearing blacklist..")
+    blStateDir = conf.BASEDIR + "/bl"
     try:
-        blackList = gettor.blacklist.BWList(conf.getBlStateDir())
+        blackList = gettor.blacklist.BWList(blStateDir)
     except IOError, e:
-        log.error("Blacklist error: %s" % e)
+        logging.error("Blacklist error: %s" % e)
         return False
     if not blackList.removeAll(olderThanDays):
-        log.error("Deleting blacklist failed.")
+        logging.error("Deleting blacklist failed.")
         return False
     else:
-        log.info("Deleting blacklist done.")
+        logging.info("Deleting blacklist done.")
         return True
 
-def setCmdPassword(conf, password):
+def setCmdPassword(cmdPassFile, password):
     """Write the password for the admin commands in the configured file
        Hash routine used: SHA1
     """
-    log.info("Setting command password")
+    logging.info("Setting command password")
     passwordHash = str(hashlib.sha1(password).hexdigest())
-    cmdPassFile = conf.getCmdPassFile()
     # Be nice: Create dir if it's not there
     passDir = os.path.dirname(cmdPassFile)
     if not os.access(passDir, os.W_OK):
         if not createDir(passDir):
-            log.error("Could not create pass dir")
+            logging.error("Could not create pass dir")
             return False
     try:
         fd = open(cmdPassFile, 'w')
@@ -271,7 +220,7 @@ def setCmdPassword(conf, password):
         os.chmod(cmdPassFile, 0400)
         return True
     except Exception, e:
-        log.error("Creating pass file failed: %s" % e)
+        logging.error("Creating pass file failed: %s" % e)
         return False
 
 def verifyPassword(conf, password):
@@ -279,19 +228,18 @@ def verifyPassword(conf, password):
        password file
     """
     candidateHash = str(hashlib.sha1(password).hexdigest())
-    cmdPassFile = conf.getCmdPassFile()
     try:
-        fd = open(cmdPassFile, 'r')
+        fd = open(conf.PASSFILE, 'r')
         passwordHash = fd.read()
         fd.close
         if candidateHash == passwordHash:
-            log.info("Verification succeeded")
+            logging.info("Verification succeeded")
             return True
         else:
-            log.info("Verification failed")
+            logging.info("Verification failed")
             return False
     except Exception, e:
-        log.error("Verifying password failed: %s" % e)
+        logging.error("Verifying password failed: %s" % e)
         return False
 
 def hasExe(filename):
@@ -309,7 +257,7 @@ def renameExe(filename, renameFile=True):
        to get past Google's spam filters
     """
     if renameFile and not os.access(filename, os.R_OK):
-        log.error("Could not access file %s" % filename)
+        logging.error("Could not access file %s" % filename)
         raise OSError
 
     newfilename = filename.replace(".exe", ".ex_RENAME", 1)
@@ -348,7 +296,7 @@ def isNewTorVersion(old, new):
     oldsplit = old.split(".")
     newsplit = new.split(".")
     if len(oldsplit) != 3 or len(newsplit) != 3:
-        log.error("Tor version length fail")
+        logging.error("Tor version length fail")
         return False
     if oldsplit[0] > newsplit[0]:
         return False
@@ -376,10 +324,10 @@ def installMo(poFile, targetDir):
     try:
         ret = subprocess.call("msgfmt" + " " + args, shell=True)
         if ret < 0:
-            log.error("Error in msgfmt execution: %s" % ret)
+            logging.error("Error in msgfmt execution: %s" % ret)
             return False
     except OSError, e:
-        log.error("Comilation failed: " % e)
+        logging.error("Comilation failed: " % e)
         return False
     return True
 
@@ -400,3 +348,14 @@ def normalizeAddress(address):
         return address
     else:
         return "<" + address + ">"
+
+
+def stripEmail(address):
+    """Strip "Bart Foobar <bart@foobar.net>" to "<bart@foobar.net">
+    """
+    match = re.search('<.*?>', address)
+    if match is not None:
+        return match.group()
+    # Make sure to return the address in the form of '<bla@foo.de>'
+    return normalizeAddress(address)
+

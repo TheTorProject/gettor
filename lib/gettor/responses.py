@@ -1,30 +1,20 @@
-#!/usr/bin/python2.5
-# -*- coding: utf-8 -*-
-"""
- Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
-                     Christian Fromme <kaner@strace.org>
-
- This is Free Software. See LICENSE for license information.
-
- This library implements all of the email replying features needed for gettor. 
-"""
+# Copyright (c) 2008 - 2011, Jacob Appelbaum <jacob@appelbaum.net>, 
+#                            Christian Fromme <kaner@strace.org>
+#  This is Free Software. See LICENSE for license information.
 
 import os
 import re
 import sys
 import smtplib
 import gettext
+import logging
+
 from email import encoders
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
-import gettor.gtlog
 import gettor.blacklist
-
-__all__ = ["Response"]
-
-log = gettor.gtlog.getLogger()
 
 trans = None
 
@@ -45,7 +35,7 @@ class Response:
         self.reqval = reqval
         # Set default From: field for reply. Defaults to gettor@torproject.org
         if reqval.toField is None:
-            self.srcEmail = config.getDefaultFrom()
+            self.srcEmail = self.config.MAIL_FROM
         else:
             self.srcEmail = reqval.toField
         self.replyTo = reqval.replyTo
@@ -53,7 +43,7 @@ class Response:
         assert self.replyTo is not None, "Empty reply address."
         # Set default lang in none is set. Defaults to 'en'
         if reqval.lang is None:
-            reqval.lang = config.getLocale()
+            reqval.lang = self.config.LOCALE
         self.mailLang = reqval.lang
         self.package = reqval.pack
         self.splitsend = reqval.split
@@ -68,19 +58,21 @@ class Response:
 
         # Initialize the reply language usage
         try:
-            localeDir = config.getLocaleDir()
+            localeDir = os.path.join(self.config.BASEDIR, "i18n")
             trans = gettext.translation("gettor", localeDir, [reqval.lang])
             trans.install()
             # OMG TEH HACK!! Constants need to be imported *after* we've 
             # initialized the locale/gettext subsystem
             import gettor.constants
         except IOError:
-            log.error("Translation fail. Trying running with -r.")
+            logging.error("Translation fail. Trying running with -r.")
             raise
 
         # Init black & whitelists
-        self.whiteList = gettor.blacklist.BWList(config.getWlStateDir())
-        self.blackList = gettor.blacklist.BWList(config.getBlStateDir())
+        wlStateDir = os.path.join(self.config.BASEDIR, "wl")
+        blStateDir = os.path.join(self.config.BASEDIR, "bl")
+        self.whiteList = gettor.blacklist.BWList(wlStateDir)
+        self.blackList = gettor.blacklist.BWList(blStateDir)
         # Check blacklist section 'general' list & Drop if necessary
         # XXX: This should learn wildcards
         blacklisted = self.blackList.lookupListEntry(self.replyTo, "general")
@@ -97,17 +89,17 @@ class Response:
             if self.cmdAddr is not None:
                 success = self.sendPackage()
                 if not success:
-                    log.error("Failed to forward mail to '%s'" % self.cmdAddr)
+                    logging.error("Failed to forward mail to '%s'" % self.cmdAddr)
                 return self.sendForwardReply(success)
                 
             # Did the user choose a package?
             if self.package is None:
                 return self.sendPackageHelp()
-            delayAlert = self.config.getDelayAlert()
+            delayAlert = self.config.DELAY_ALERT
             # Be a polite bot and send message that mail is on the way
             if delayAlert:
                 if not self.sendDelayAlert():
-                    log.error("Failed to sent delay alert.")
+                    logging.error("Failed to sent delay alert.")
             # Did the user request a split or normal package download?
             if self.splitsend:
                 return self.sendSplitPackage()
@@ -118,6 +110,7 @@ class Response:
         """Do all checks necessary to decide whether the reply-to user is 
            allowed to get a reply by us.
         """
+
         # Check we're happy with sending this user a package
         # XXX This is currently useless since we set self.signature = True
         if not self.signature and not self.cmdAddr \
@@ -127,12 +120,12 @@ class Response:
            and not re.compile(".*@gmail.com").match(self.replyTo):
             blackListed = self.blackList.lookupListEntry(self.replyTo)
             if blackListed:
-                log.info("Unsigned messaged to gettor by blacklisted user dropped.")
+                logging.info("Unsigned messaged to gettor by blacklisted user dropped.")
                 return False
             else:
                 # Reply with some help and bail out
                 self.blackList.createListEntry(self.replyTo)
-                log.info("Unsigned messaged to gettor. We will issue help.")
+                logging.info("Unsigned messaged to gettor. We will issue help.")
                 return self.sendHelp()
         else:
             return True
@@ -144,13 +137,14 @@ class Response:
         """
         # First of all, check if user is whitelisted: Whitelist beats Blacklist
         if self.whiteList.lookupListEntry(self.replyTo, "general"):
-            log.info("Whitelisted user " + self.replyTo)
+            logging.info("Whitelisted user " + self.replyTo)
             return False
         # Create a unique dir name for the requested routine
-        blackList = gettor.blacklist.BWList(self.config.getBlStateDir())
+        blStateDir = os.path.join(self.config.BASEDIR, "bl")
+        blackList = gettor.blacklist.BWList(blStateDir)
         blackList.createSublist(fname)
         if blackList.lookupListEntry(self.replyTo, fname):
-            log.info("User " + self.replyTo + " is blacklisted for " + fname)
+            logging.info("User " + self.replyTo + " is blacklisted for " + fname)
             return True
         else:
             blackList.createListEntry(self.replyTo, fname)
@@ -163,19 +157,17 @@ class Response:
         if self.isBlacklistedForMessageType("sendPackage"):
             # Don't send anything
             return False
-        log.info("Sending out %s to %s." % (self.package, self.sendTo))
-        packages = gettor.packages.Packages(self.config)
-        packageList = packages.getPackageList()
-        filename = packageList[self.package]
+        logging.info("Sending out %s to %s." % (self.package, self.sendTo))
+        filename = os.path.join(self.config.BASEDIR, "packages", self.package + ".z")
         message = gettor.constants.packagemsg
         package = self.constructMessage(message, fileName=filename)
         try:
             status = self.sendMessage(package)
         except:
-            log.error("Could not send package to user")
+            logging.error("Could not send package to user")
             status = False
 
-        log.info("Send status: %s" % status)
+        logging.debug("Send status: %s" % status)
         return status
 
     def sendSplitPackage(self):
@@ -186,12 +178,7 @@ class Response:
             # Don't send anything
             return False
         splitpack = self.package + ".split"
-        splitdir = os.path.join(self.config.getPackDir(), splitpack)
-        try:
-            entry = os.stat(splitdir)
-        except OSError, e:
-            log.error("Not a valid directory: %s" % splitdir)
-            return False
+        splitdir = os.path.join(self.config.BASEDIR, "packages", splitpack)
         files = os.listdir(splitdir)
         # Sort the files, so we can send 01 before 02 and so on..
         files.sort()
@@ -206,10 +193,10 @@ class Response:
             package = self.constructMessage(message, subj, fullPath)
             try:
                 status = self.sendMessage(package)
-                log.info("Sent out split package [%02d / %02d]. Status: %s" \
+                logging.info("Sent out split package [%02d / %02d]. Status: %s" \
                         % (num, nFiles, status))
             except:
-                log.error("Could not send package %s to user" % filename)
+                logging.error("Could not send package %s to user" % filename)
                 # XXX What now? Keep on sending? Bail out? Use might have 
                 # already received 10 out of 12 packages..
                 status = False
@@ -222,7 +209,7 @@ class Response:
         if self.isBlacklistedForMessageType("sendDelayAlert"):
             # Don't send anything
             return False
-        log.info("Sending delay alert to %s" % self.sendTo)
+        logging.info("Sending delay alert to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.delayalertmsg)
             
     def sendHelp(self):
@@ -232,7 +219,7 @@ class Response:
         if self.isBlacklistedForMessageType("sendHelp"):
             # Don't send anything
             return False
-        log.info("Sending out help message to %s" % self.sendTo)
+        logging.info("Sending out help message to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.helpmsg)
 
 ## XXX the following line was used below to automatically list the names
@@ -249,13 +236,13 @@ class Response:
         if self.isBlacklistedForMessageType("sendPackageHelp"):
             # Don't send anything
             return False
-        log.info("Sending package help to %s" % self.sendTo)
+        logging.info("Sending package help to %s" % self.sendTo)
         return self.sendGenericMessage(gettor.constants.multilangpackagehelpmsg)
 
     def sendForwardReply(self, status):
         """Send a message to the user that issued the forward command
         """
-        log.info("Sending reply to forwarder '%s'" % self.replyTo)
+        logging.info("Sending reply to forwarder '%s'" % self.replyTo)
         message = "Forwarding mail to '%s' status: %s" % (self.sendTo, status)
         # Magic: We're now returning to the original issuer
         self.sendTo = self.replyTo
@@ -269,10 +256,10 @@ class Response:
         try:
             status = self.sendMessage(message)
         except:
-            log.error("Could not send message to user %s" % self.sendTo)
+            logging.error("Could not send message to user %s" % self.sendTo)
             status = False
 
-        log.info("Send status: %s" % status)
+        logging.debug("Send status: %s" % status)
         return status
 
     def constructMessage(self, messageText, subj="[GetTor] Your Request", fileName=None):
@@ -312,36 +299,36 @@ class Response:
             smtp.quit()
             status = True
         except smtplib.SMTPAuthenticationError:
-            log.error("SMTP authentication error")
+            logging.error("SMTP authentication error")
             return False
         except smtplib.SMTPHeloError:
-            log.error("SMTP HELO error")
+            logging.error("SMTP HELO error")
             return False
         except smtplib.SMTPConnectError:
-            log.error("SMTP connection error")
+            logging.error("SMTP connection error")
             return False
         except smtplib.SMTPDataError:
-            log.error("SMTP data error")
+            logging.error("SMTP data error")
             return False
         except smtplib.SMTPRecipientsRefused:
-            log.error("SMTP refused to send to recipients")
+            logging.error("SMTP refused to send to recipients")
             return False
         except smtplib.SMTPSenderRefused:
-            log.error("SMTP sender address refused")
+            logging.error("SMTP sender address refused")
             return False
         except smtplib.SMTPResponseException:
-            log.error("SMTP response exception received")
+            logging.error("SMTP response exception received")
             return False
         except smtplib.SMTPServerDisconnected:
-            log.error("SMTP server disconnect exception received")
+            logging.error("SMTP server disconnect exception received")
             return False
         except smtplib.SMTPException:
-            log.error("General SMTP error caught")
+            logging.error("General SMTP error caught")
             return False
         except Exception, e:
-            log.error("Unknown SMTP error while trying to send via local MTA")
-            log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
-            log.error("Detail: %s" %e)
+            logging.error("Unknown SMTP error while trying to send via local MTA")
+            logging.error("Here is the exception I saw: %s" % sys.exc_info()[0])
+            logging.error("Detail: %s" %e)
 
             return False
 

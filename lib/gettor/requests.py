@@ -1,25 +1,16 @@
-#!/usr/bin/python2.5
-# -*- coding: utf-8 -*-
-"""
-  Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
-                     Christian Fromme <kaner@strace.org>
-
- This is Free Software. See LICENSE for license information.
-
- This library implements all of the email parsing features needed for gettor.
-"""
+# Copyright (c) 2008 - 2011, Jacob Appelbaum <jacob@appelbaum.net>, 
+#                            Christian Fromme <kaner@strace.org>
+#  This is Free Software. See LICENSE for license information.
 
 import sys
 import email
 import dkim
 import re
+import logging
 
-import gettor.gtlog
 import gettor.packages
 
 __all__ = ["requestMail"]
-
-log = gettor.gtlog.getLogger()
 
 class RequestVal:
     """A simple value class carrying everything that is interesting from a
@@ -78,19 +69,16 @@ class requestMail:
         self.replyLocale = self.defaultLang
         self.replytoAddress = self.parsedMessage["Return-Path"]
         self.bounce = False         # Is the mail a bounce? 
-        self.defaultFrom = self.config.getDefaultFrom()
+        self.defaultFrom = self.config.MAIL_FROM
         
         # Filter rough edges
         self.doEarlyFilter()
-        # We want to parse, log and act on the "To" field
+        # We want to parse and act on the "To" field
         self.sanitizeAndAssignToField(self.parsedMessage["to"])
 
-        log.info("User %s made request to %s" % \
+        logging.debug("User %s made request to %s" % \
                 (self.replytoAddress, self.toAddress))
         self.gotPlusReq = self.matchPlusAddress()
-        packager = gettor.packages.Packages(config)
-        self.packages = packager.getPackageList()
-        assert len(self.packages) > 0, "Empty package list"
 
         # TODO XXX:
         # This should catch DNS exceptions and fail to verify if we have a 
@@ -125,7 +113,7 @@ class requestMail:
             self.parseTextPart(self.parsedMessage.get_payload(decode=1))
 
         if self.returnPackage is None:
-            log.info("User didn't select any packages")
+            logging.debug("User didn't select any packages")
 
         return RequestVal(self.toAddress,
                           self.replytoAddress,
@@ -165,20 +153,20 @@ class requestMail:
         match = re.match(regexPlus, self.toAddress)
         if match:
             self.replyLocale = match.group(3)
-            log.info("User requested language %s" % self.replyLocale)
+            logging.debug("User requested language %s" % self.replyLocale)
             return True
         else:
-            log.info("Not a 'plus' address")
+            logging.debug("Not a 'plus' address")
             return False
 
     def matchPackage(self, line):
         """Look up which package the user wants to have"""
-        for package in self.packages.keys():
+        for package in self.config.PACKAGES.keys():
             matchme = ".*" + package + ".*"
             match = re.match(matchme, line, re.DOTALL)    
             if match: 
                 self.returnPackage = package
-                log.info("User requested package %s" % self.returnPackage)
+                logging.debug("User requested package %s" % self.returnPackage)
                 return
 
     def matchSplit(self, line):
@@ -188,7 +176,7 @@ class requestMail:
         match = re.match(".*split.*", line, re.DOTALL)
         if match:
             self.splitDelivery = True
-            log.info("User requested a split delivery")
+            logging.debug("User requested a split delivery")
 
     def matchLang(self, line):
         """See if we have a "Lang: <lang>" directive in the mail. If so,
@@ -200,7 +188,7 @@ class requestMail:
         match = re.match(".*[Ll]ang:\s+(.*)$", line, re.DOTALL)
         if match:
             self.replyLocale = match.group(1)
-            log.info("User requested locale %s" % self.replyLocale)
+            logging.debug("User requested locale %s" % self.replyLocale)
 
     def matchCommand(self, line):
         """Check if we have a command from the GetTor admin in this email.
@@ -214,7 +202,7 @@ class requestMail:
         """
         match = re.match(".*[Cc]ommand:\s+(.*)$", line, re.DOTALL)
         if match:
-            log.info("Command received from %s" % self.replytoAddress) 
+            logging.debug("Command received from %s" % self.replytoAddress) 
             cmd = match.group(1).split()
             length = len(cmd)
             assert length == 3, "Wrong command syntax"
@@ -278,17 +266,17 @@ class requestMail:
         """
         for (lang, aliases) in self.supportedLangs.items():
             if lang == self.replyLocale:
-                log.info("User requested lang %s" % lang)
+                logging.debug("User requested lang %s" % lang)
                 return
             if aliases is not None:
                 for alias in aliases:
                     if alias == self.replyLocale:
-                        log.info("Request for %s via alias %s" % (lang, alias))
+                        logging.debug("Request for %s via alias %s" % (lang, alias))
                         # Set it back to the 'official' name
                         self.replyLocale = lang
                         return
         else:
-            log.info("Requested language %s not supported. Falling back to %s" \
+            logging.debug("Requested language %s not supported. Falling back to %s" \
                         % (self.replyLocale, self.defaultLang))
             self.replyLocale = self.defaultLang
             return
@@ -312,7 +300,7 @@ class requestMail:
         """
         # Make sure we drop bounce mails
         if self.replytoAddress == "<>":
-                log.info("We've received a bounce")
+                logging.debug("We've received a bounce")
                 self.bounce = True
         assert self.bounce is not True, "We've got a bounce. Bye."
 

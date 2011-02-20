@@ -28,31 +28,21 @@ SETUP
 This setup descripton presumes that you have access to the latest gettor svn 
 trunk somewhere in your local file system.
 
-    gettor@moria:~/tmp$ svn co https://freehaven.net/svn/projects/gettor gettor
+    gettor@hostname:~/tmp$ svn co https://freehaven.net/svn/projects/gettor gettor
 
 After checking out the GetTor source code, you will need to install everything
 as follows:
 
-    gettor@moria:~/tmp$ cd gettor/
-    gettor@moria:~/tmp/gettor$ python setup.py install
+    gettor@hostname:~/tmp$ cd gettor/
+    gettor@hostname:~/tmp/gettor$ python setup.py trans
+    gettor@hostname:~/tmp/gettor$ python setup.py install_data
+    gettor@hostname:~/tmp/gettor$ python setup.py install
 
 This will copy necessary files to ~/opt/gettor.
 
-Next, configure your ~/.gettorrc file (see "Configuration", below).
-
-After that, you will want to ensure that you have a properly configured set
-of mo files for each translation. Generate and install mo files as follows:
-
-    gettor@moria:~/tmp/gettor$ cd ~/opt/gettor
-    gettor@moria:~/opt/gettor$ ./GetTor.py -r
-
-You'll see something like this upon success:
-
-    2009-06-21 20:06:01,324 (6136) Installing translation files done.
-
 Once you have everything installed, you'll want to initialize the file store:
 
-    gettor@moria:~/opt/gettor$ ./GetTor.py -fp
+    gettor@hostname:~/opt/gettor$ ./GetTor.py -fp
 
 You should see an rsync and finally something like:
 
@@ -64,17 +54,20 @@ You should see an rsync and finally something like:
 Now you'll install the cronjob. This clears the blacklist and updates packages 
 daily:
 
-    gettor@moria:~/opt/gettor$ ./GetTor.py -i
+    gettor@hostname:~/opt/gettor$ ./GetTor.py -i
     2009-01-05 17:34:53,911 (16646) Installing cron donee
 
 Set up a password for package forwarding commands if you wish to use that 
 feature:
 
-    gettor@moria:~/opt/gettor$ ./GetTor.py -s seCreTpAssworD
+    gettor@hostname:~/opt/gettor$ ./GetTor.py -s seCreTpAssworD
+
+The secret password will be stored in whereever `PASSFILE' is configured in 
+the configuration.
 
 Finally, you need to setup email forwarding to the GetTor bot like so:
 
-    gettor@moria:~$ echo "|/home/gettor/opt/gettor/GetTor.py" > ~/.forward
+    gettor@hostname:~$ echo "|/home/gettor/opt/gettor/GetTor.py" > ~/.forward
 
 Now GetTor.py is installed, prepared and ready to serve files. Send it email!
 
@@ -83,27 +76,8 @@ TRANSLATION FILES
 Provided there is a working locale environment, GetTor will compile and setup
 locale files for you as follows:
 
-    gettor@moria:~/opt/gettor$ ./GetTor.py -r
-    2009-01-08 12:18:09,041 (19287) Installing translation files done.
-
-You can also configure the .mo files to live in another place by telling GetTor
-so in the config file, for example:
-
-    localeDir = /home/gettor/gettor/po
-
-This will result in GetTor expecting the English .mo file in the directory
-
-    /home/gettor/gettor/po/en/gettor.mo
-
-Also, in case your .po files for some reason live in a different directory
-than po/ (relative to GetTor.py, as provided by GetTor), you can tell this
-to GetTor as follows:
-
-    gettor@moria:~/opt/gettor$ ./GetTor.py -r -d /path/to/my/pofiles/directory
-
-Note that GetTor will expect the same directory structure as provided under
-po/ in the GetTor source package, e.g. 'po/en/gettor.po',
-'po/de/gettor.po', and so on.
+    gettor@hostname:~/opt/gettor$ python setup.py trans
+    gettor@hostname:~/opt/gettor$ python setup.py install_data
 
 To add a new language to GetTor, one must create a new .po file in subversion
 in the proper directory. For Korean, one would create po/ko/ and add the
@@ -122,46 +96,37 @@ to modiy the 'requests.py' file like so:
 CONFIGURATION
 -------------
 A proper GetTor configuration file is expected in the user's home directory
-and should look like this:
+and should look similar to this:
 
-    gettor@moria:~$ cat .gettorrc
-    [global]
-    stateDir        = /home/gettor/gettor/state/
-    blStateDir      = /home/gettor/gettor/bl/
-    wlStateDir      = /home/gettor/gettor/wl/
-    distDir         = /home/gettor/gettor/distdir/
-    packDir         = /home/gettor/gettor/packdir/
-    locale          = en
-    logSubSystem    = stdout
-    logFile         = /home/gettor/gettor/logs/logfile
-    localeDir       =  /home/gettor/gettor/po/
-    cmdPassFile     = /home/gettor/gettor/pass
-    dumpFile        = /home/gettor/gettor/failedmails
+    gettor@hostname:~$ cat .gettor.conf
+    # Where it is all based at. Subdirs for GetTor start from here.
+    BASEDIR = "/tmp"
 
-You can leave any of these lines out, and it will choose a suitable
-default.
+    # Default locale
+    DEFAULT_LOCALE = "en"
 
-Here is what each of them is used for individually:
+    # Should we send a `Your package will arrive soon, be patient' mail?
+    DELAY_ALERT = True
 
-blStateDir:    Blacklisted (hashed) email addresses go here
-wlStateDir:    Whitelisted (hashed) email addresses go here
-distDir:       Pristine Tor packages as downloaded by rsync will be found here
-packDir:       Processed Tor packages ready to be handed out to the user will
-               be found here
-srcEmail:      The email containing the Tor package will use this as 'From:'
-locale:        Choose your default mail locale
-logFile:       If 'file' logging is chosen, log to this file
-logSubSystem:  This has to be one of the following strings:
-               'nothing':  Nothing is logged anywhere (Recommended)
-               'stdout':   Log to stdout
-               'syslog':   Log messages will be written to syslog
-               'file':     Log messages will be written to a file (Not that
-                           this needs the 'logFile' option in the config file
-                           also set to something useful
-localeDir:     This is where the 'en/LC_MESSAGES/gettor.mo' or
-               'whateverlang/LC_MESSAGES/gettor.mo' should go
-cmdPassFile:   The file containing the hashed command password
-dumpFile:      All failed mails are recorded here
+    # Basename of the GetTor log files. Will be expandet to $LOGFILE-YYYY-MM-DD.log
+    LOGFILE = "/tmp/gettorlog"
+
+    # The file containing the hashed command password
+    PASSFILE = "gettor.pass"
+
+    # Where do we dump erronous emails?
+    DUMPFILE = "./gettor.dump"
+
+    # Do we send every mail type to every user only once before we blacklist them
+    # for it?
+    BLACKLIST_BY_TYPE = True
+
+    RSYNC_MIRROR = "rsync.torproject.org"
+
+    #            "bundle name": ("single file regex", "split file regex")
+    PACKAGES = { "tor-browser-bundle": 
+                 ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"), }
+
 
 WHAT'S DKIM / WHY DKIM?
 -----------------------
@@ -233,14 +198,14 @@ unique email address is allowed to mail GetTor the same type of mail once each
 sendSplitPackage. Blacklists are stored in the form of hashed email files under
 directories. In reality, that looks as follows:
 
-    gettor@moria:~/opt/gettor$ ls -d /home/gettor/gettor/bl/*
+    gettor@hostname:~/opt/gettor$ ls -d /home/gettor/gettor/bl/*
         /home/gettor/gettor/bl/general
         /home/gettor/gettor/bl/sendPackage
         /home/gettor/gettor/bl/sendSplitPackage
         /home/gettor/gettor/bl/sendDelayAlert
         /home/gettor/gettor/bl/sendPackageHelp
 
-    gettor@moria:~/opt/gettor$ ls /home/gettor/gettor/bl/sendDelayAlert \
+    gettor@hostname:~/opt/gettor$ ls /home/gettor/gettor/bl/sendDelayAlert \
                                                                     | head -n 2
      0154d8584c0afa6290e21098e7ab4cc635b7d50a
      02a33e16feece8671f1274de62de32068a67cf20
@@ -248,7 +213,7 @@ directories. In reality, that looks as follows:
 In addition to this automatic whitelisting, there is the possibility to add
 blacklist entries by hand as follows:
 
-    gettor@moria:~/opt/gettor$ ./GetTor.py -b someone@evil.org
+    gettor@hostname:~/opt/gettor$ ./GetTor.py -b someone@evil.org
 
 Email addresses that are added this way, go to the general/ directory in the 
 blacklist directory.
@@ -256,7 +221,7 @@ blacklist directory.
 Besides the blacklisting mechanism, there is a whitelisting mechanism. It works
 analogous to the manual blacklisting mechanism:
 
-    gettor@moria:~/opt/gettor$ ./GetTor.py -w someone@evil.org
+    gettor@hostname:~/opt/gettor$ ./GetTor.py -w someone@evil.org
 
 Whitelisting wins over blacklisting. If a user if blacklisted for X, but also
 whitelisted, he will be allowed to do X.

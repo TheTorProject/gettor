@@ -1,4 +1,4 @@
-#!/usr/bin/python2.5
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 __program__ = 'GetTor.py'
@@ -12,8 +12,9 @@ try:
 except ImportError:
     antigravity = None
 
+import os
 import sys
-
+import logging
 import gettor.gtlog
 import gettor.opt
 import gettor.config
@@ -21,29 +22,22 @@ import gettor.requests
 import gettor.responses
 import gettor.utils
 
-log = gettor.gtlog.getLogger()
-
 def processFail(conf, rawMessage, reqval, failedAction, e=None):
     """This routine gets called when something went wrong with the processing
     """
-    log.error("Failing to " + failedAction)
+    logging.error("Failing to " + failedAction)
     if e is not None:
-        log.error("Here is the exception I saw: %s" % sys.exc_info()[0])
-        log.error("Detail: %s" %e)
+        logging.error("Here is the exception I saw: %s" % sys.exc_info()[0])
+        logging.error("Detail: %s" %e)
     # Keep a copy of the failed email for later reference
-    log.info("We'll keep a record of this mail.")
-    gettor.utils.dumpMessage(conf, rawMessage)
-    # Send out notification to user, if possible
-    #if reqval.toField != "" or reqval.sendTo != "":
-    #    if not gettor.responses.sendNotification(conf, reqval.toField, reqval.sendTo):
-    #        log.error("Also failed to send the user a proper notification. :-/")
-    #    else:
-    #        log.info("Failure notification sent to user %s" % reqval.sendTo)
+    logging.info("We'll keep a record of this mail.")
+    dumpFile = os.path.join(conf.BASEDIR, conf.DUMPFILE)
+    gettor.utils.dumpMessage(dumpFile, rawMessage)
 
 def dumpInfo(reqval):
-    """Dump some info to the logfile
+    """Dump some info to the logging.ile
     """
-    log.info("Request From: %s To: %s Package: %s Lang: %s Split: %s Signature: %s Cmdaddr: %s" % (reqval.replyTo, reqval.toField, reqval.pack, reqval.lang, reqval.split, reqval.sign, reqval.cmdAddr))
+    logging.info("Request From: %s To: %s Package: %s Lang: %s Split: %s Signature: %s Cmdaddr: %s" % (reqval.replyTo, reqval.toField, reqval.pack, reqval.lang, reqval.split, reqval.sign, reqval.cmdAddr))
 
 def processMail(conf):
     """All mail processing happens here. Processing goes as follows:
@@ -56,7 +50,7 @@ def processMail(conf):
     """
     rawMessage = ""
     reqval = None
-    log.info("Processing mail..")
+    logging.debug("Processing mail..")
     # Retrieve request from stdin and parse it
     try:
         request = gettor.requests.requestMail(conf)
@@ -83,11 +77,9 @@ def processOptions(options, conf):
     """Do everything that's not part of parsing a mail. Prepare GetTor usage,
        install files, fetch packages, do some black/whitelist voodoo and so on
     """ 
-    # Order matters!
-    if options.insttrans:
-        m = gettor.utils.installTranslations(conf, options.i18ndir)
+
     if options.fetchpackages:
-        gettor.utils.fetchPackages(conf, options.mirror)
+        gettor.utils.fetchPackages(conf)
     if options.preppackages:
        gettor.utils.prepPackages(conf)
     if options.installcron:
@@ -106,24 +98,24 @@ def processOptions(options, conf):
         gettor.utils.setCmdPassword(conf, options.cmdpass)
 
 def main():
-    """Parse command line, setup config and logging
+    """Parse command line, setup config and logging.
     """
     options, arguments = gettor.opt.parseOpts()
     config = gettor.config.Config(options.configfile)
-    gettor.gtlog.initialize()
+    gettor.gtlog.initialize(config)
 
     if sys.stdin.isatty():
         # We separate this because we need a way to know how we reply to the 
-        # caller: Send mail or just dump to stdout/stderr.
+        # caller: Send mail/write log file or just dump to stdout/stderr.
         processOptions(options, config)
+        print "Done."
     else:
         # We've got mail
         if processMail(config):
-            log.info("Processing mail finished")
+            logging.debug("Processing mail finished")
         else:
-            log.error("Processing mail failed")
-
-    log.info("Done.")
+            logging.error("Processing mail failed")
+        logging.debug("Done.")
 
 if __name__ == "__main__":
     main()

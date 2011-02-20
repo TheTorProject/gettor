@@ -1,24 +1,13 @@
-#!/usr/bin/python2.5
-'''
- Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
-                     Christian Fromme <kaner@strace.org>
-
- This is Free Software. See LICENSE for license information.
-'''
-"""This library implements all of the black listing features needed for gettor.
-Basically, it offers creation, removal and lookup of email addresses stored as
-SHA1 hashes in a dedicated directory on the filesystem.
-"""
+# Copyright (c) 2008 - 2011, Jacob Appelbaum <jacob@appelbaum.net>, 
+#                            Christian Fromme <kaner@strace.org>
+#  This is Free Software. See LICENSE for license information.
 
 import hashlib
 import os
 import re
 import glob
-import gettor.config
-import gettor.gtlog
+import logging
 import gettor.utils
-
-log = gettor.gtlog.getLogger()
 
 class BWList:
     def __init__(self, blacklistDir):
@@ -45,7 +34,7 @@ class BWList:
         """Check to see if we have a list entry for the given address.
         """
         if address is None:
-           log.error("Argument 'address' is None")
+           logging.error("Argument 'address' is None")
            return False
         hashString = self.getHash(address)
         globPath = os.path.join(self.blacklistDir, blacklistName)
@@ -58,7 +47,7 @@ class BWList:
         """Create a black- or whitelist entry
         """
         if address is None or blacklistName is None:
-           log.error("Bad args in createListEntry()")
+           logging.error("Bad args in createListEntry()")
            return False
         if self.lookupListEntry(address) == False:
             hashString = self.getHash(address)
@@ -68,7 +57,7 @@ class BWList:
                 fd.close
                 return True
             except:
-                log.error("Creating list entry %s failed." % entry)
+                logging.error("Creating list entry %s failed." % entry)
                 return False
         else:
             # List entry already exists
@@ -78,20 +67,20 @@ class BWList:
         """Remove an entry from the black- or whitelist
         """
         if address is None:
-           log.error("Argument 'address' is None")
+           logging.error("Argument 'address' is None")
            return False
         hashString = self.getHash(address)
         globPath = os.path.join(self.blacklistDir, blacklistName)
         hashVec = glob.glob(os.path.join(globPath, hashString))
         for entry in hashVec:
             try:
-                log.info("Unlinking %s" % entry)
+                logging.info("Unlinking %s" % entry)
                 os.unlink(entry)
             except OSError:
-                log.error("Could not unlink entry %s" % entry)
+                logging.error("Could not unlink entry %s" % entry)
                 continue
         else:
-            log.info("Requested removal of non-existing entry. Abord.")
+            logging.info("Requested removal of non-existing entry. Abord.")
             return False
 
     def removeAll(self, olderThanDays=0):
@@ -109,25 +98,16 @@ class BWList:
                         try:
                             os.rmdir(rmfile)
                         except:
-                            log.error("Could not remove %s." % rmfile)
+                            logging.error("Could not remove %s." % rmfile)
                             return False
                     except:
-                        log.error("Could not remove %s." % rmfile)
+                        logging.error("Could not remove %s." % rmfile)
                         return False
         return True
-
-    def stripEmail(self, address):
-        """Strip "Bart Foobar <bart@foobar.net>" to "<bart@foobar.net">
-        """
-        match = re.search('<.*?>', address)
-        if match is not None:
-            return match.group()
-        # Make sure to return the address in the form of '<bla@foo.de>'
-        return gettor.utils.normalizeAddress(address)
 
     def getHash(self, address):
         """Return hash for a given emailaddress
         """
-        emailonly = self.stripEmail(address)
+        emailonly = gettor.utils.stripEmail(address)
         return str(hashlib.sha1(emailonly).hexdigest())
 

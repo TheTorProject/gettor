@@ -1,14 +1,6 @@
-#!/usr/bin/python2.5
-# -*- coding: utf-8 -*-
-"""
- constants.py
-
- Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>,
-                     Christian Fromme <kaner@strace.org>
-
- This is Free Software. See LICENSE for license information.
-
-"""
+# Copyright (c) 2008 - 2011, Jacob Appelbaum <jacob@appelbaum.net>, 
+#                            Christian Fromme <kaner@strace.org>
+#  This is Free Software. See LICENSE for license information.
 
 # Giant multi language help message. Add more translations as they become ready
 multilangpackagehelpmsg = """

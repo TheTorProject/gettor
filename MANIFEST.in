@@ -1,2 +1,0 @@
-include README TODO README.USER-HOWTO README.locale-spec-draft
-recursive-include po *

@@ -1,16 +1,6 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-'''
- gettor_config.py: Command line parser for gettor
-
- Copyright (c) 2008, Jacob Appelbaum <jacob@appelbaum.net>, 
-                     Christian Fromme <kaner@strace.org>
-
- This is Free Software. See LICENSE for license information.
-
-
- This is the option parser module for gettor.
-'''
+# Copyright (c) 2008 - 2011, Jacob Appelbaum <jacob@appelbaum.net>, 
+#                            Christian Fromme <kaner@strace.org>
+#  This is Free Software. See LICENSE for license information.
 
 import optparse
 
@@ -19,12 +9,8 @@ __all__ = ["parseOpts"]
 def parseOpts():
     cmdParser = optparse.OptionParser()
     cmdParser.add_option("-c", "--config", dest="configfile",
-                        default="~/.gettorrc",
+                        default="~/.gettor.conf",
                         help="set config file to FILE", metavar="FILE")
-    cmdParser.add_option("-m", "--use-mirror", dest="mirror",
-                        default="rsync.torproject.org",
-                        help="set Tor package mirror to MIRROR", 
-                        metavar="MIRROR")
     cmdParser.add_option("-i", "--install-crontab", dest="installcron",
                         action="store_true", default=False,
                         help="install crontab to refresh packagelist")
@@ -52,16 +38,9 @@ def parseOpts():
     cmdParser.add_option("-y", "--clear-blacklist", dest="days",
                         default=0,
                         help="clear all entrys in the blacklist older than DAYS days")
-    cmdParser.add_option("-r", "--install-translations", dest="insttrans",
-                        action="store_true", default=False,
-                        help="compile and install translation files [check -d]")
     cmdParser.add_option("-s", "--set-cmdpassword", dest="cmdpass",
                         default="",
                         help="set the password for mail commands",
                         metavar="CMDPASS")
-    cmdParser.add_option("-d", "--i18n-dir", dest="i18ndir",
-                        default="./po",
-                        help="set your locale src dir to DIR [default = %default]",
-                        metavar="DIR")
 
     return cmdParser.parse_args()
