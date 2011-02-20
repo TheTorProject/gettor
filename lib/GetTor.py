@@ -15,12 +15,27 @@ except ImportError:
 import os
 import sys
 import logging
-import gettor.gtlog
 import gettor.opt
 import gettor.config
 import gettor.requests
 import gettor.responses
 import gettor.utils
+from time import strftime
+
+
+def initializeLogging(cfg):
+    level = getattr(cfg, 'LOGLEVEL', 'WARNING')
+    level = getattr(logging, level)
+    extra = {}
+    logfileName = cfg.LOGFILE + "-" +  strftime("%Y-%m-%d") + ".log"
+    extra['filename'] = os.path.join(cfg.BASEDIR, logfileName)
+
+    print "Logfile is %s" % extra['filename']
+
+    logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
+                        datefmt="%b %d %H:%M:%S",
+                        level=level,
+                        **extra)
 
 def processFail(conf, rawMessage, reqval, failedAction, e=None):
     """This routine gets called when something went wrong with the processing
@@ -102,7 +117,7 @@ def main():
     """
     options, arguments = gettor.opt.parseOpts()
     config = gettor.config.Config(options.configfile)
-    gettor.gtlog.initialize(config)
+    initializeLogging(config)
 
     if sys.stdin.isatty():
         # We separate this because we need a way to know how we reply to the 
