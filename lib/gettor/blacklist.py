@@ -46,10 +46,10 @@ class BWList:
     def createListEntry(self, address, blacklistName="general"):
         """Create a black- or whitelist entry
         """
-        if address is None or blacklistName is None:
+        if address is None:
            logging.error("Bad args in createListEntry()")
            return False
-        if self.lookupListEntry(address) == False:
+        if self.lookupListEntry(address, blacklistName) == False:
             hashString = self.getHash(address)
             entry = os.path.join(self.blacklistDir, blacklistName, hashString)
             try:

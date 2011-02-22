@@ -9,7 +9,6 @@
 
  MAIL_FROM:     The email address we put in the `from' field in replies.
  BASEDIR:       Where it is all based at. Subdirs for GetTor start from here.
- DEFAULT_LOCALE:        Default locale
  LOGFILE:       Log messages will be written to $logFile-YYYY-MM-DD.log
  LOGLEVEL:      The level log records are written with
  DELAY_ALERT:   If set to True (the default), a message will be sent to any
@@ -20,6 +19,8 @@
  BLACKLIST_BY_TYPE:  Do we send every mail type to every user only once before 
                      we blacklist them for it?
  RSYNC_MIRROR:  Which rsync server to sync packages from
+ DEFAULT_LOCALE: Default locale
+ SUPP_LANGS:    Supported languages by GetTor
  PACKAGES:      List of packages GetTor serves
 
  If no valid config file is provided to __init__, gettorConf will try to use
@@ -35,7 +36,6 @@ __all__ = ["Config"]
 CONFIG_DEFAULTS = {
    'MAIL_FROM': "GetTor <gettor@torproject.org>",
    'BASEDIR':  "/tmp",
-   'DEFAULT_LOCALE': "en",
    'DELAY_ALERT': True,
    'LOGFILE': "gettorlog",
    'LOGLEVEL': "DEBUG",
@@ -43,10 +43,12 @@ CONFIG_DEFAULTS = {
    'DUMPFILE': "./gettor.dump",
    'BLACKLIST_BY_TYPE': True,
    'RSYNC_MIRROR': "rsync.torproject.org",
+   'DEFAULT_LOCALE': "en",
+   'SUPP_LANGS': { 'en': ("english", ), },
    'PACKAGES': { 
        "tor-browser-bundle": 
            ("tor-browser-.*_en-US.exe$", 
-            "tor-browser-.*_en-US_split") }
+            "tor-browser-.*_en-US_split"), }
 }
 
 class Config:

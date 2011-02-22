@@ -4,102 +4,58 @@
 
 import sys
 import email
-import dkim
 import re
 import logging
 
+import gettor.utils
 import gettor.packages
 
-__all__ = ["requestMail"]
-
-class RequestVal:
-    """A simple value class carrying everything that is interesting from a
-       parsed email
-       toField  - Who this mail was sent to
-       replyTo  - Who sent us the mail, this is also who gets the reply
-       lang     - The language the user wants the reply in
-       split    - True if the user wants us to send Tor in split files
-       sign     - True if that mail carried a good DKIM signature
-       cmdAddr  - Special commands from the GetTor admin
-    """
-    def __init__(self, toField, replyTo, lang, pack, split, sign, cmdAddr):
-        self.toField = toField
-        self.replyTo = replyTo
-        self.lang = lang
-        self.pack = pack
-        self.split = split
-        self.sign = sign
-        self.cmdAddr = cmdAddr
-    
 class requestMail:
-    defaultLang = "en"
-    # XXX Move this to the config file
-    #                  LANG: ALIASE
-    supportedLangs = { "en": ("english", ),
-                       "fa": ("farsi", ),
-                       "de": ("deutsch", ),
-                       "ar": ("arabic", ),
-                       "es": ("spanish", ),
-                       "fr": ("french", ),
-                       "it": ("italian", ),
-                       "nl": ("dutch", ),
-                       "pl": ("polish", ),
-                       "ru": ("russian", ),
-                       "zh_CN": ("chinese", "zh",) }
-
     def __init__(self, config):
-        """ Read message from stdin, initialize and do some early filtering and
-            sanitization
+        """ Read message from stdin, try to assign some values already.
         """
         # Read email from stdin
         self.rawMessage = sys.stdin.read()
         self.parsedMessage = email.message_from_string(self.rawMessage)
 
-        # WARNING WARNING *** This next line whitelists all addresses
-        #                 *** It exists as long as we don't want to check 
-        #                 *** for DKIM properly
-        self.signature = True
-        # WARNING WARNING ***
-
         self.config = config
-        self.gotPlusReq = False     # Was this a gettor+lang@ request?
-        self.returnPackage = None   
-        self.splitDelivery = False
-        self.commandAddress = None
-        self.replyLocale = self.defaultLang
-        self.replytoAddress = self.parsedMessage["Return-Path"]
-        self.bounce = False         # Is the mail a bounce? 
-        self.defaultFrom = self.config.MAIL_FROM
-        
-        # Filter rough edges
-        self.doEarlyFilter()
-        # We want to parse and act on the "To" field
-        self.sanitizeAndAssignToField(self.parsedMessage["to"])
+        self.request = {}
+        self.request['user'] = self.parsedMessage["Return-Path"]
+        self.request['ouraddr'] = self.getRealTo(self.parsedMessage["to"])
+        self.request['locale'] = self.getLocaleInTo(self.request['ouraddr'])
+        self.request['plus'] = False # Was this a gettor+lang@ request?
+        self.request['package'] = None
+        self.request['split'] = False
+        self.request['forward'] = None
+        self.request['valid'] = False # This will get set by gettor.filters
 
-        logging.debug("User %s made request to %s" % \
-                (self.replytoAddress, self.toAddress))
-        self.gotPlusReq = self.matchPlusAddress()
-
-        # TODO XXX:
-        # This should catch DNS exceptions and fail to verify if we have a 
-        # dns timeout
-        # We also should catch totally malformed messages here
-        #try:
-        #           if dkim.verify(self.rawMessage):
-        #               self.signature = True
-        #       except:
-        #           pass
-
-    def sanitizeAndAssignToField(self, toField):
-        """Do basic santization of the To: field of the mail header
+    def getRealTo(self, toField):
+        """If someone wrote to `gettor+zh_CN@torproject.org', the `From:' field
+           in our reply should reflect that. So, use the `To:' field from the
+           incoming mail, but filter out everything except the gettor@ address.
         """
-        regexGettorMail = '.*(<)?(gettor.*@torproject.org)+(?(1)>).*'
-        match = re.match(regexGettorMail, toField)
+        regexGettor = '.*(<)?(gettor.*@torproject.org)+(?(1)>).*'
+        match = re.match(regexGettor, toField)
         if match:
-            self.toAddress= match.group(2)
+            return match.group(2)
         else:
             # Fall back to default From: address
-            self.toAddress = self.defaultFrom
+            return self.config.MAIL_FROM
+
+    def getLocaleInTo(self, address):
+        """See whether the user sent his email to a 'plus' address, for 
+           instance to gettor+fa@tpo. Plus addresses are the current 
+           mechanism to set the reply language
+        """
+        regexPlus = '.*(<)?(\w+\+(\w+)@\w+(?:\.\w+)+)(?(1)>)'
+        match = re.match(regexPlus, address)
+        if match:
+            locale = match.group(3)
+            logging.debug("User requested language %s" % locale)
+            return locale
+        else:
+            logging.debug("Not a 'plus' address")
+            return self.config.DEFAULT_LOCALE
 
     def parseMail(self):
         """Main mail parsing routine. Returns a RequestVal value class
@@ -110,64 +66,39 @@ class requestMail:
                     # We found a text part, parse it
                     self.parseTextPart(part.get_payload(decode=1))
         else:
+            # Not a multipart message, just parse along what we've got
             self.parseTextPart(self.parsedMessage.get_payload(decode=1))
 
-        if self.returnPackage is None:
+        if self.request['package'] is None:
             logging.debug("User didn't select any packages")
 
-        return RequestVal(self.toAddress,
-                          self.replytoAddress,
-                          self.replyLocale,
-                          self.returnPackage,
-                          self.splitDelivery,
-                          self.signature,
-                          self.commandAddress)
+        return self.request
 
     def parseTextPart(self, text):
         """If we've found a text part in a multipart email or if we just want
            to parse a non-multipart message, this is the routine to call with
            the text body as its argument
         """
-        text = self.stripTags(text)
-        if not self.gotPlusReq:
-            self.matchLang(text)
-        self.checkLang()
-    
-        lines = text.split('\n')
+        lines = gettor.utils.stripHTMLTags(text).split('\n')
         for line in lines:
-            if self.returnPackage is None:
-                self.matchPackage(line)
-            if self.splitDelivery is False:
-                self.matchSplit(line)
-            if self.commandAddress is None:
-                self.matchCommand(line)
-
-        self.torSpecialPackageExpansion()
-
-    def matchPlusAddress(self):
-        """See whether the user sent his email to a 'plus' address, for 
-           instance to gettor+fa@tpo. Plus addresses are the current 
-           mechanism to set the reply language
-        """
-        regexPlus = '.*(<)?(\w+\+(\w+)@\w+(?:\.\w+)+)(?(1)>)'
-        match = re.match(regexPlus, self.toAddress)
-        if match:
-            self.replyLocale = match.group(3)
-            logging.debug("User requested language %s" % self.replyLocale)
-            return True
-        else:
-            logging.debug("Not a 'plus' address")
-            return False
+            if self.request['package'] is None:
+                self.request['package'] = self.matchPackage(line)
+            if self.request['split'] is False:
+                self.request['split'] = self.matchSplit(line)
+            if self.request['forward'] is None:
+                self.request['forward'] = self.matchForwardCommand(line)
 
     def matchPackage(self, line):
-        """Look up which package the user wants to have"""
-        for package in self.config.PACKAGES.keys():
-            matchme = ".*" + package + ".*"
+        """Look up which package the user is requesting.
+        """
+        for p in self.config.PACKAGES.keys():
+            matchme = ".*" + p + ".*"
             match = re.match(matchme, line, re.DOTALL)    
             if match: 
-                self.returnPackage = package
-                logging.debug("User requested package %s" % self.returnPackage)
-                return
+                logging.debug("User requested package %s" % p)
+                return p
+
+        return None
 
     def matchSplit(self, line):
         """If we find 'split' somewhere we assume that the user wants a split 
@@ -175,22 +106,12 @@ class requestMail:
         """
         match = re.match(".*split.*", line, re.DOTALL)
         if match:
-            self.splitDelivery = True
             logging.debug("User requested a split delivery")
+            return True
+        else:
+            return False
 
-    def matchLang(self, line):
-        """See if we have a "Lang: <lang>" directive in the mail. If so,
-           set the reply language appropriatly.
-           Note that setting the language in this way is somewhat deprecated.
-           Currently, replay language is chosen by the user with "plus" email
-           addresses (e.g. gettor+fa@tpo)
-        """
-        match = re.match(".*[Ll]ang:\s+(.*)$", line, re.DOTALL)
-        if match:
-            self.replyLocale = match.group(1)
-            logging.debug("User requested locale %s" % self.replyLocale)
-
-    def matchCommand(self, line):
+    def matchForwardCommand(self, line):
         """Check if we have a command from the GetTor admin in this email.
            Command lines always consists of the following syntax:
            'Command: <password> <command part 1> <command part 2>'
@@ -202,7 +123,7 @@ class requestMail:
         """
         match = re.match(".*[Cc]ommand:\s+(.*)$", line, re.DOTALL)
         if match:
-            logging.debug("Command received from %s" % self.replytoAddress) 
+            logging.debug("Command received from %s" % self.request['user']) 
             cmd = match.group(1).split()
             length = len(cmd)
             assert length == 3, "Wrong command syntax"
@@ -213,97 +134,31 @@ class requestMail:
             verified = gettor.utils.verifyPassword(self.config, auth)
             assert verified == True, \
                     "Unauthorized attempt to command from: %s" \
-                    % self.replytoAddress
-            self.commandAddress = address
+                    % self.request['user']
+            return address
+        else:
+            return None
 
-    def torSpecialPackageExpansion(self):
-        """If someone wants one of the localizable packages, add language 
-           suffix. This isn't nice because we're hard-coding package names here
-           Attention: This needs to correspond to the  packages in packages.py
-        """
-        if self.returnPackage == "tor-browser-bundle" \
-               or self.returnPackage == "tor-im-browser-bundle" \
-               or self.returnPackage == "linux-browser-bundle-i386" \
-               or self.returnPackage == "linux-browser-bundle-x86_64":
-            # "tor-browser-bundle" => "tor-browser-bundle_de"
-	    self.returnPackage = self.returnPackage + "_" + self.replyLocale 
-
-    def stripTags(self, string):
-        """Simple HTML stripper
-        """
-        return re.sub(r'<[^>]*?>', '', string)
-
-    def getRawMessage(self):
-        return self.rawMessage
-
-    def hasVerifiedSignature(self):
-        return self.signature
-
-    def getParsedMessage(self):
-        return self.parsedMessage
-
-    def getReplyTo(self):
-        return self.replytoAddress
-
-    def getPackage(self):
-        return self.returnPackage
-
-    def getLocale(self):
-        return self.replyLocale
-
-    def getSplitDelivery(self):
-        return self.splitDelivery
-
-    def getAll(self):
-        return (self.replytoAddress, self.replyLocale, \
-                self.returnPackage, self.splitDelivery, self.signature)
-
-    def checkLang(self):
+    def checkAndGetLocale(self, locale):
         """Look through our aliases list for languages and check if the user
            requested an alias rather than an 'official' language name. If he 
            does, map back to that official name. Also, if the user didn't 
            request a language we support, fall back to default.
         """
-        for (lang, aliases) in self.supportedLangs.items():
-            if lang == self.replyLocale:
+        for (lang, aliases) in self.config.SUPP_LANGS.items():
+            if lang == locale:
                 logging.debug("User requested lang %s" % lang)
-                return
+                return locale
             if aliases is not None:
-                for alias in aliases:
-                    if alias == self.replyLocale:
-                        logging.debug("Request for %s via alias %s" % (lang, alias))
-                        # Set it back to the 'official' name
-                        self.replyLocale = lang
-                        return
+                if locale in aliases:
+                    logging.debug("Request for %s via alias %s" % (lang, alias))
+                    # Return the 'official' name
+                    return lang
         else:
-            logging.debug("Requested language %s not supported. Falling back to %s" \
-                        % (self.replyLocale, self.defaultLang))
-            self.replyLocale = self.defaultLang
+            logging.debug("Requested language %s not supported. Fallback: %s" \
+                              % (self.replyLocale, self.config.DEFAULT_LOCALE))
+            self.replyLocale = self.config.DEFAULT_LOCALE
             return
 
-    def checkInternalEarlyBlacklist(self):
-        """This is called by doEarlyFilter() and makes it possible to add
-           hardcoded blacklist entries
-           XXX: This should merge somehow with the GetTor blacklisting
-                mechanism at some point
-        """
-        if re.compile(".*@.*torproject.org.*").match(self.replytoAddress):
-            return True
-        else:
-            return False
-            
-    def doEarlyFilter(self):
-        """This exists to by able to drop mails as early as possible to avoid
-           mail loops and other terrible things. 
-           Calls checkInternalEarlyBlacklist() to filter unwanted sender 
-           addresses
-        """
-        # Make sure we drop bounce mails
-        if self.replytoAddress == "<>":
-                logging.debug("We've received a bounce")
-                self.bounce = True
-        assert self.bounce is not True, "We've got a bounce. Bye."
-
-        # Make sure we drop stupid from addresses
-        badMail = "Mail from address: %s" % self.replytoAddress
-        assert self.checkInternalEarlyBlacklist() is False, badMail
+    def getRawMessage(self):
+        return self.rawMessage

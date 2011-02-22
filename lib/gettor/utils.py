@@ -55,7 +55,7 @@ def dumpMessage(dumpFile, message):
         fd.write(message)
         fd.close
         return True
-    except Exception, e:
+    except Exception as e:
         logging.error("Creating dump entry failed: %s" % e)
         return False
 
@@ -111,7 +111,7 @@ def addWhitelistEntry(conf, address):
     wlStateDir = conf.BASEDIR + "/wl"
     logging.info("Adding address to whitelist: %s" % address)
     try:
-        whiteList = gettor.blacklist.BWList(conf.wlStateDir)
+        whiteList = gettor.blacklist.BWList(wlStateDir)
     except IOError, e:
         logging.error("Whitelist error: %s" % e)
         return False
@@ -200,26 +200,22 @@ def clearBlacklist(conf, olderThanDays):
         logging.info("Deleting blacklist done.")
         return True
 
-def setCmdPassword(cmdPassFile, password):
+def setCmdPassword(conf, password):
     """Write the password for the admin commands in the configured file
        Hash routine used: SHA1
     """
     logging.info("Setting command password")
     passwordHash = str(hashlib.sha1(password).hexdigest())
     # Be nice: Create dir if it's not there
-    passDir = os.path.dirname(cmdPassFile)
-    if not os.access(passDir, os.W_OK):
-        if not createDir(passDir):
-            logging.error("Could not create pass dir")
-            return False
+    passFile = os.path.join(conf.BASEDIR, conf.PASSFILE)
     try:
-        fd = open(cmdPassFile, 'w')
+        fd = open(passFile, 'w')
         fd.write(passwordHash)
         fd.close
-        # Be secretive
-        os.chmod(cmdPassFile, 0400)
+        # Sekrit
+        os.chmod(passFile, 0400)
         return True
-    except Exception, e:
+    except Exception as e:
         logging.error("Creating pass file failed: %s" % e)
         return False
 
@@ -229,7 +225,8 @@ def verifyPassword(conf, password):
     """
     candidateHash = str(hashlib.sha1(password).hexdigest())
     try:
-        fd = open(conf.PASSFILE, 'r')
+        passFile = os.path.join(conf.BASEDIR, conf.PASSFILE)
+        fd = open(passFile, 'r')
         passwordHash = fd.read()
         fd.close
         if candidateHash == passwordHash:
@@ -238,7 +235,7 @@ def verifyPassword(conf, password):
         else:
             logging.info("Verification failed")
             return False
-    except Exception, e:
+    except Exception as e:
         logging.error("Verifying password failed: %s" % e)
         return False
 
@@ -358,4 +355,9 @@ def stripEmail(address):
         return match.group()
     # Make sure to return the address in the form of '<bla@foo.de>'
     return normalizeAddress(address)
+
+def stripHTMLTags(string):
+    """Simple HTML stripper
+    """
+    return re.sub(r'<[^>]*?>', '', string)
 

@@ -20,6 +20,7 @@ import gettor.config
 import gettor.requests
 import gettor.responses
 import gettor.utils
+import gettor.filters
 from time import strftime
 
 
@@ -37,22 +38,18 @@ def initializeLogging(cfg):
                         level=level,
                         **extra)
 
-def processFail(conf, rawMessage, reqval, failedAction, e=None):
+def processFail(conf, rawMessage, failedAction, e=None):
     """This routine gets called when something went wrong with the processing
     """
-    logging.error("Failing to " + failedAction)
+    logging.error("Failed to " + failedAction)
     if e is not None:
         logging.error("Here is the exception I saw: %s" % sys.exc_info()[0])
         logging.error("Detail: %s" %e)
-    # Keep a copy of the failed email for later reference
-    logging.info("We'll keep a record of this mail.")
-    dumpFile = os.path.join(conf.BASEDIR, conf.DUMPFILE)
-    gettor.utils.dumpMessage(dumpFile, rawMessage)
-
-def dumpInfo(reqval):
-    """Dump some info to the logging.ile
-    """
-    logging.info("Request From: %s To: %s Package: %s Lang: %s Split: %s Signature: %s Cmdaddr: %s" % (reqval.replyTo, reqval.toField, reqval.pack, reqval.lang, reqval.split, reqval.sign, reqval.cmdAddr))
+    if conf.DUMPFILE != "":
+        # Keep a copy of the failed email for later reference
+        logging.info("We'll keep a record of this mail.")
+        dumpFile = os.path.join(conf.BASEDIR, conf.DUMPFILE)
+        gettor.utils.dumpMessage(dumpFile, rawMessage)
 
 def processMail(conf):
     """All mail processing happens here. Processing goes as follows:
@@ -60,32 +57,45 @@ def processMail(conf):
          an appropriate manner. Reply address, language, package name.
          Also try to find out if the user wants split packages and if he has 
          a valid signature on his mail.
+       - Do some filtering voodoo.
        - Send reply. Use all information gathered from the request and pass
          it on to the reply class/method to decide what to do.
     """
     rawMessage = ""
-    reqval = None
+    reqInfo = None
     logging.debug("Processing mail..")
     # Retrieve request from stdin and parse it
     try:
         request = gettor.requests.requestMail(conf)
         rawMessage = request.getRawMessage()
         # reqval contains all important information we need from the request
-        reqval = request.parseMail()
-        dumpInfo(reqval)
-    except Exception, e:
-        processFail(conf, rawMessage, reqval, "process request", e)
+        reqInfo = request.parseMail()
+    except Exception as e:
+        processFail(conf, rawMessage, "process request", e)
         return False
 
-    # Ok, request information aquired. Initiate reply sequence
+    # Do some filtering on the request
     try:
-        reply = gettor.responses.Response(conf, reqval)
+        reqInfo = gettor.filters.doFilter(reqInfo)
+    except Exception as e:
+        processFail(conf, rawMessage, "filter request", e)
+        return False
+
+    # See if the filtering process decided if the request was valid
+    if reqInfo['valid'] is not True:
+        logging.error("Invalid request.")
+        processFail(conf, rawMessage, "send reply")
+        return False
+
+    # Ok, request information aquired. Make it so.
+    try:
+        reply = gettor.responses.Response(conf, reqInfo)
         if not reply.sendReply():
-            processFail(conf, rawMessage, reqval, "send reply")
+            processFail(conf, rawMessage, "send reply")
             return False
         return True
-    except Exception, e:
-        processFail(conf, rawMessage, reqval, "send reply (got exception)", e)
+    except Exception as e:
+        processFail(conf, rawMessage, "send reply (got exception)", e)
         return False
 
 def processOptions(options, conf):

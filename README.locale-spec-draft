@@ -18,22 +18,6 @@ SUPPORTED LOCALES
 
 All supported locales will be advertised by gettor in all emails.
 
-LOW TECH LOCALE PARSING
------------------------
-
-If no locale is specified, GetTor will default to English in the locale 'en-US'
-for all output.
-
-If a user wishes, they may set the locale for all responses. The locale must be
-passed by the end user as a single line. The start of the line must begin with
-'Lang: ' and be followed by the desired locale. The locale must be at the end
-of the line. An example follows on the following line:
-
-    Lang: de
-
-The first valid Locale line found in the message will designate the response
-locale.
-
 AUTOMATED LOCALE PARSING
 ------------------------
 
