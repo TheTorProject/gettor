@@ -159,7 +159,7 @@ def lookupAddress(conf, address):
         logging.info("Address '%s' is present in the blacklist." % address)
         found = True
     if not found:
-        logging.info("Address '%s' neither in blacklist or whitelist." % address)
+        logging.info("Address '%s' neither in black or whitelist." % address)
         found = True
 
     # Always True
@@ -239,30 +239,6 @@ def verifyPassword(conf, password):
         logging.error("Verifying password failed: %s" % e)
         return False
 
-def hasExe(filename):
-    """Helper routine for building the packages for GetTor:
-       Check if a file ends in .exe
-    """
-    if re.compile(".*.exe.*").match(filename):
-        return True
-    else:
-        return False
-
-def renameExe(filename, renameFile=True):
-    """Helper routine for building the packages for GetTor:
-       If we find a file ending in .exe, we rename it to .ex_RENAME
-       to get past Google's spam filters
-    """
-    if renameFile and not os.access(filename, os.R_OK):
-        logging.error("Could not access file %s" % filename)
-        raise OSError
-
-    newfilename = filename.replace(".exe", ".ex_RENAME", 1)
-    if renameFile:
-        os.rename(filename, newfilename)
-
-    return newfilename
-
 def fileIsOlderThan(filename, olderThanDays):
     """Return True if file 'filename' is older than 'olderThandays'
     """
@@ -275,57 +251,6 @@ def fileIsOlderThan(filename, olderThanDays):
         if daysold < filetime:
             return False
         
-    return True
-
-def getVersionStringFromFile(filename):
-    """Return what version string is encoded in Tor package filename
-    """
-    regex = "[a-z-]*-([0-9]*\.[0-9]*\.[0-9]*)"
-    match = re.match(regex, filename)
-    if match:
-        return match.group(1)
-    else:
-        return None
-
-def isNewTorVersion(old, new):
-    """Return True if Tor version string 'new' is newer than 'old'
-    """
-    oldsplit = old.split(".")
-    newsplit = new.split(".")
-    if len(oldsplit) != 3 or len(newsplit) != 3:
-        logging.error("Tor version length fail")
-        return False
-    if oldsplit[0] > newsplit[0]:
-        return False
-    if oldsplit[0] < newsplit[0]:
-        return True
-    if oldsplit[0] == newsplit[0]:
-        if oldsplit[1] > newsplit[1]:
-            return False
-        if oldsplit[1] < newsplit[1]:
-            return True
-        if oldsplit[1] == newsplit[1]:
-            if oldsplit[2] > newsplit[2]:
-                return False
-            if oldsplit[2] < newsplit[2]:
-                return True
-            if oldsplit[2] == newsplit[2]:
-                # Same version
-                return False
-
-def installMo(poFile, targetDir):
-    """Install a certain gettext .mo file
-    """
-    global log
-    args = os.getcwd() + "/" + poFile + " -o " + targetDir + "/gettor.mo"
-    try:
-        ret = subprocess.call("msgfmt" + " " + args, shell=True)
-        if ret < 0:
-            logging.error("Error in msgfmt execution: %s" % ret)
-            return False
-    except OSError, e:
-        logging.error("Comilation failed: " % e)
-        return False
     return True
 
 def getCurrentCrontab():
