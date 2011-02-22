@@ -67,7 +67,7 @@ the configuration.
 
 Finally, you need to setup email forwarding to the GetTor bot like so:
 
-    gettor@hostname:~$ echo "|/home/gettor/opt/gettor/GetTor.py" > ~/.forward
+    gettor@hostname:~$ echo "|python /home/g/opt/gettor/GetTor.py" > ~/.forward
 
 Now GetTor.py is installed, prepared and ready to serve files. Send it email!
 
