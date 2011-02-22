@@ -42,7 +42,7 @@ This will copy necessary files to ~/opt/gettor.
 
 Once you have everything installed, you'll want to initialize the file store:
 
-    gettor@hostname:~/opt/gettor$ ./GetTor.py -fp
+    gettor@hostname:~/opt/gettor$ python GetTor.py -fp
 
 You should see an rsync and finally something like:
 
@@ -54,13 +54,12 @@ You should see an rsync and finally something like:
 Now you'll install the cronjob. This clears the blacklist and updates packages 
 daily:
 
-    gettor@hostname:~/opt/gettor$ ./GetTor.py -i
-    2009-01-05 17:34:53,911 (16646) Installing cron donee
+    gettor@hostname:~/opt/gettor$ python GetTor.py -i
 
 Set up a password for package forwarding commands if you wish to use that 
 feature:
 
-    gettor@hostname:~/opt/gettor$ ./GetTor.py -s seCreTpAssworD
+    gettor@hostname:~/opt/gettor$ python GetTor.py -s seCreTpAssworD
 
 The secret password will be stored in whereever `PASSFILE' is configured in 
 the configuration.
@@ -85,30 +84,24 @@ untranslated file (called gettor.po) to that directory. This file should be
 translated but partial translations are allowed. Once this file has been
 created, the GetTor program does not need to be modified.
 
-However, if a user wished to add support in responses to users, they will need
-to modiy the 'requests.py' file like so:
-
-    defaultLang = "en"
-    supportedLangs = { "en": "English",·
-                       "ko": "Korean",·
-                       "de": "Deutsch" }
-
 CONFIGURATION
 -------------
 A proper GetTor configuration file is expected in the user's home directory
 and should look similar to this:
 
     gettor@hostname:~$ cat .gettor.conf
+
+    # What `From:' address are we using by default?
+    MAIL_FROM = "GetTor <gettor@torproject.org>"
+
     # Where it is all based at. Subdirs for GetTor start from here.
     BASEDIR = "/tmp"
-
-    # Default locale
-    DEFAULT_LOCALE = "en"
 
     # Should we send a `Your package will arrive soon, be patient' mail?
     DELAY_ALERT = True
 
-    # Basename of the GetTor log files. Will be expandet to $LOGFILE-YYYY-MM-DD.log
+    # Basename of the GetTor log files. Will be expandet to 
+    # $LOGFILE-YYYY-MM-DD.log
     LOGFILE = "/tmp/gettorlog"
 
     # The file containing the hashed command password
@@ -117,11 +110,28 @@ and should look similar to this:
     # Where do we dump erronous emails?
     DUMPFILE = "./gettor.dump"
 
-    # Do we send every mail type to every user only once before we blacklist them
-    # for it?
+    # Do we send every mail type to every user only once before we blacklist 
+    # them for it?
     BLACKLIST_BY_TYPE = True
 
     RSYNC_MIRROR = "rsync.torproject.org"
+
+    # Default locale
+    DEFAULT_LOCALE = "en"
+
+    # Which languages to we support in GetTor?
+    SUPP_LANGS = { "en": ("english", ),
+                   "fa": ("farsi", ),
+                   "de": ("deutsch", ),
+                   "ar": ("arabic", ),
+                   "es": ("spanish", ),
+                   "fr": ("french", ),
+                   "it": ("italian", ),
+                   "nl": ("dutch", ),
+                   "pl": ("polish", ),
+                   "ru": ("russian", ),
+                   "zh_CN": ("chinese", "zh",) }
+
 
     #            "bundle name": ("single file regex", "split file regex")
     PACKAGES = { "tor-browser-bundle": 
@@ -213,7 +223,7 @@ directories. In reality, that looks as follows:
 In addition to this automatic whitelisting, there is the possibility to add
 blacklist entries by hand as follows:
 
-    gettor@hostname:~/opt/gettor$ ./GetTor.py -b someone@evil.org
+    gettor@hostname:~/opt/gettor$ python GetTor.py -b someone@evil.org
 
 Email addresses that are added this way, go to the general/ directory in the 
 blacklist directory.
@@ -221,7 +231,7 @@ blacklist directory.
 Besides the blacklisting mechanism, there is a whitelisting mechanism. It works
 analogous to the manual blacklisting mechanism:
 
-    gettor@hostname:~/opt/gettor$ ./GetTor.py -w someone@evil.org
+    gettor@hostname:~/opt/gettor$ python GetTor.py -w someone@heaven.org
 
 Whitelisting wins over blacklisting. If a user if blacklisted for X, but also
 whitelisted, he will be allowed to do X.
