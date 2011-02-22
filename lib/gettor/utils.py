@@ -62,7 +62,7 @@ def dumpMessage(dumpFile, message):
 def fetchPackages(conf):
     """Fetch Tor packages from a mirror
     """
-    logging.info("Fetching package files..")
+    logging.debug("Fetching package files..")
     try:
         packs = gettor.packages.Packages(conf, False)
     except IOError:
@@ -72,13 +72,13 @@ def fetchPackages(conf):
         logging.error("Syncing Tor packages failed.")
         return False
     else:
-        logging.info("Syncing Tor packages done.")
+        logging.debug("Syncing Tor packages done.")
         return True
 
 def prepPackages(conf):
     """Prepare the downloaded packages in a way so GetTor can work with them
     """
-    logging.info("Preparing package files..")
+    logging.debug("Preparing package files..")
     packs = gettor.packages.Packages(conf)
 
     if not packs.preparePackages():
@@ -86,13 +86,13 @@ def prepPackages(conf):
     if not packs.buildPackages():
        return False
 
-    logging.info("Building packages done.")
+    logging.debug("Building packages done.")
     return True
 
 def installCron():
     """Install all needed cronjobs for GetTor
     """
-    logging.info("Installing cronjob..")
+    logging.debug("Installing cronjob..")
     # XXX: Check if cron is installed and understands our syntax?
     currentCronTab = getCurrentCrontab()
     path = os.getcwd() + "/" + os.path.basename(sys.argv[0])
@@ -109,7 +109,7 @@ def addWhitelistEntry(conf, address):
     """Add an entry to the global whitelist
     """
     wlStateDir = conf.BASEDIR + "/wl"
-    logging.info("Adding address to whitelist: %s" % address)
+    logging.debug("Adding address to whitelist: %s" % address)
     try:
         whiteList = gettor.blacklist.BWList(wlStateDir)
     except IOError, e:
@@ -119,13 +119,13 @@ def addWhitelistEntry(conf, address):
         logging.error("Creating whitelist entry failed.")
         return False
     else:
-        logging.info("Creating whitelist entry ok.")
+        logging.debug("Creating whitelist entry ok.")
         return True
 
 def addBlacklistEntry(conf, address):
     """Add an entry to the global blacklist
     """
-    logging.info("Adding address to blacklist: %s" % address)
+    logging.debug("Adding address to blacklist: %s" % address)
     blStateDir = conf.BASEDIR + "/bl"
     try:
         blackList = gettor.blacklist.BWList(blStateDir)
@@ -136,13 +136,13 @@ def addBlacklistEntry(conf, address):
         logging.error("Creating blacklist entry failed.")
         return False
     else:
-        logging.info("Creating whitelist entry ok.")
+        logging.debug("Creating whitelist entry ok.")
         return True
 
 def lookupAddress(conf, address):
     """Lookup if a given address is in the blacklist- or whitelist pool
     """
-    logging.info("Lookup address: %s" % address)
+    logging.debug("Lookup address: %s" % address)
     found = False
     wlStateDir = conf.BASEDIR + "/wl"
     blStateDir = conf.BASEDIR + "/bl"
@@ -174,19 +174,19 @@ def clearWhitelist(conf):
     except IOError, e:
         logging.error("Whitelist error: %s" % e)
         return False
-    logging.info("Clearing whitelist..")
+    logging.debug("Clearing whitelist..")
     if not whiteList.removeAll():
         logging.error("Deleting whitelist failed.")
         return False
     else:
-        logging.info("Deleting whitelist done.")
+        logging.debug("Deleting whitelist done.")
         return True
 
 def clearBlacklist(conf, olderThanDays):
     """Delete all entries in the global blacklist that are older than
        'olderThanDays' days
     """
-    logging.info("Clearing blacklist..")
+    logging.debug("Clearing blacklist..")
     blStateDir = conf.BASEDIR + "/bl"
     try:
         blackList = gettor.blacklist.BWList(blStateDir)
@@ -197,14 +197,14 @@ def clearBlacklist(conf, olderThanDays):
         logging.error("Deleting blacklist failed.")
         return False
     else:
-        logging.info("Deleting blacklist done.")
+        logging.debug("Deleting blacklist done.")
         return True
 
 def setCmdPassword(conf, password):
     """Write the password for the admin commands in the configured file
        Hash routine used: SHA1
     """
-    logging.info("Setting command password")
+    logging.debug("Setting command password")
     passwordHash = str(hashlib.sha1(password).hexdigest())
     # Be nice: Create dir if it's not there
     passFile = os.path.join(conf.BASEDIR, conf.PASSFILE)
@@ -230,10 +230,10 @@ def verifyPassword(conf, password):
         passwordHash = fd.read()
         fd.close
         if candidateHash == passwordHash:
-            logging.info("Verification succeeded")
+            logging.debug("Verification succeeded")
             return True
         else:
-            logging.info("Verification failed")
+            logging.error("Verification failed")
             return False
     except Exception as e:
         logging.error("Verifying password failed: %s" % e)

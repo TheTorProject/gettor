@@ -26,6 +26,9 @@ class Response:
         self.config = config
         self.reqInfo = reqInfo
 
+        # Dump info
+        logging.info(str(self.reqInfo))
+
         # Initialize the reply language usage
         try:
             localeDir = os.path.join(self.config.BASEDIR, "i18n")
