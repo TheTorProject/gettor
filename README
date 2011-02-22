@@ -68,7 +68,7 @@ Finally, you need to setup email forwarding to the GetTor bot like so:
 
     gettor@hostname:~$ echo "|python /home/g/opt/gettor/GetTor.py" > ~/.forward
 
-Now GetTor.py is installed, prepared and ready to serve files. Send it email!
+Now GetTor is installed, prepared and ready to serve files. Send it email!
 
 TRANSLATION FILES
 -----------------
@@ -95,20 +95,20 @@ and should look similar to this:
     MAIL_FROM = "GetTor <gettor@torproject.org>"
 
     # Where it is all based at. Subdirs for GetTor start from here.
-    BASEDIR = "/tmp"
+    BASEDIR = "/home/gettor/gettor"
 
     # Should we send a `Your package will arrive soon, be patient' mail?
     DELAY_ALERT = True
 
     # Basename of the GetTor log files. Will be expandet to 
     # $LOGFILE-YYYY-MM-DD.log
-    LOGFILE = "/tmp/gettorlog"
+    LOGFILE = "gettor_log"
 
     # The file containing the hashed command password
     PASSFILE = "gettor.pass"
 
     # Where do we dump erronous emails?
-    DUMPFILE = "./gettor.dump"
+    DUMPFILE = "gettor.dump"
 
     # Do we send every mail type to every user only once before we blacklist 
     # them for it?
@@ -138,8 +138,79 @@ and should look similar to this:
                  ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"), }
 
 
+VALIDATION OF REQUESTED FILES
+-----------------------------
+
+When a user submits a successful request, GetTor will respond with an email
+that has one attachment. This attachment is a zip file with a .z file
+extension. The compressed file currently consists of two files: the requested
+tool and a gpg signature from the packager of the respective file.
+
+FILE SIZE ISSUES
+----------------
+
+Some email providers may not be happy with the files GetTor sends.
+Gmail provides documentation of their incoming and outgoing file sizes. It is
+currently 20MB (though we have sent around 21MB without issue):
+
+	http://mail.google.com/support/bin/answer.py?hl=en&answer=8770
+
+Other providers are not as transparent and this may cause failures.
+
+SPAM / ABUSE PREVENTION
+------------------------------
+
+GetTor does some spam/abuse prevention. This is primarily because we don't want 
+to hammer innocent inboxes with huge amounts of tor packages.
+
+First of all, there is a DKIM checker (see "WHAT'S DKIM / WHY DKIM" above) that
+prevents GetTor from answering useless spam emails. On top of that, there are 
+some hard-coded checks being performed on the sender address. Only mails coming
+from yahoo.com and gmail.com are allowed. However, DKIM checking and hard-coded
+domain checks are currently disabled in GetTor. Mails from all addresses are 
+being passed to GetTor processing. But note that besides GMail and Yahoo, only
+vry few mail providers allow attachments of the size that GetTor will send out.
+
+On top of that, there is a blacklisting mechanism. It works as follows: Each 
+unique email address is allowed to mail GetTor the same type of mail once each
+7 days. Mail types are sendDelayAlert, sendPackage, sendPackageHelp, 
+sendSplitPackage. Blacklists are stored in the form of hashed email files under
+directories. In reality, that looks as follows:
+
+    gettor@hostname:~/opt/gettor$ ls -d /home/gettor/gettor/bl/*
+        /home/gettor/gettor/bl/general
+        /home/gettor/gettor/bl/sendPackage
+        /home/gettor/gettor/bl/sendSplitPackage
+        /home/gettor/gettor/bl/sendDelayAlert
+        /home/gettor/gettor/bl/sendPackageHelp
+
+    gettor@hostname:~/opt/gettor$ ls /home/gettor/gettor/bl/sendDelayAlert \
+                                                                    | head -n 2
+     0154d8584c0afa6290e21098e7ab4cc635b7d50a
+     02a33e16feece8671f1274de62de32068a67cf20
+
+In addition to this automatic blacklisting mechanism, there is the possibility 
+to add blacklist entries by hand as follows:
+
+    gettor@hostname:~/opt/gettor$ python GetTor.py -b someone@evil.org
+
+Email addresses that are added this way, go to the general/ directory in the 
+blacklist directory and will therefore be blocked from using GetTor in any way.
+
+Besides the blacklisting mechanism, there is a whitelisting mechanism. It works
+analogous to the manual blacklisting mechanism:
+
+    gettor@hostname:~/opt/gettor$ python GetTor.py -w someone@heaven.org
+
+Whitelisting wins over blacklisting. If a user if blacklisted for X, but also
+whitelisted, he will be allowed to do X.
+
 WHAT'S DKIM / WHY DKIM?
 -----------------------
+
+NOTE THAT THIS SECTION IS CURRENTLY OUTDATED, BECAUSE GETTOR DOESN'T DO DKIM
+CHECK ITSELF ANYMORE. IT RELIES ON THAT BEING DONE SOMEWHERE ELSE BEFORE THE
+EMAIL ARRIVES AT GETTOR.
 
 People who send mail to gettor need to either use a mail provider that
 signs outgoing mail with DKIM, or have their email address or domain
@@ -170,68 +241,3 @@ DKIM is probably not exactly the same set that we should recommend for
 our users, due to other properties of each mail provider like their
 privacy policies.
 
-VALIDATION OF REQUESTED FILES
------------------------------
-
-When a user submits a successful request, GetTor will respond with an email
-that has one attachment. This attachment is a zip file with a .z file
-extension. The compressed file currently consists of two files: the requested
-tool and a gpg signature from the packager of the respective file.
-
-FILE SIZE ISSUES
-----------------
-
-Some email providers may not be happy with the files GetTor sends.
-Gmail provides documentation of their incoming and outgoing file sizes. It is
-currently 20MB (though we have sent around 21MB without issue):
-
-	http://mail.google.com/support/bin/answer.py?hl=en&answer=8770
-
-Other providers are not as transparent and this may cause failures.
-
-SPAM / ABUSE PREVENTION
-------------------------------
-
-GetTor does some spam/abuse prevention. This is primarily because we don't want 
-to hammer innocent inboxes with huge amounts of tor packages.
-
-First of all, there is a DKIM checker (see "WHAT'S DKIM / WHY DKIM" above) that
-prevents GetTor from answering useless spam emails. On top of that, there are 
-some hard-coded checks being performed on the sender address. Only mails coming
-from yahoo.com.cn, yahoo.com and gmail.com are allowed. However, DKIM checking 
-and hard-coded domain checks are currently disabled in GetTor. Mails from all
-addresses are being passed to GetTor processing.
-
-On top of that, there is a blacklisting mechanism. It works as follows: Each 
-unique email address is allowed to mail GetTor the same type of mail once each
-7 days. Mail types are sendDelayAlert, sendPackage, sendPackageHelp, 
-sendSplitPackage. Blacklists are stored in the form of hashed email files under
-directories. In reality, that looks as follows:
-
-    gettor@hostname:~/opt/gettor$ ls -d /home/gettor/gettor/bl/*
-        /home/gettor/gettor/bl/general
-        /home/gettor/gettor/bl/sendPackage
-        /home/gettor/gettor/bl/sendSplitPackage
-        /home/gettor/gettor/bl/sendDelayAlert
-        /home/gettor/gettor/bl/sendPackageHelp
-
-    gettor@hostname:~/opt/gettor$ ls /home/gettor/gettor/bl/sendDelayAlert \
-                                                                    | head -n 2
-     0154d8584c0afa6290e21098e7ab4cc635b7d50a
-     02a33e16feece8671f1274de62de32068a67cf20
-
-In addition to this automatic whitelisting, there is the possibility to add
-blacklist entries by hand as follows:
-
-    gettor@hostname:~/opt/gettor$ python GetTor.py -b someone@evil.org
-
-Email addresses that are added this way, go to the general/ directory in the 
-blacklist directory.
-
-Besides the blacklisting mechanism, there is a whitelisting mechanism. It works
-analogous to the manual blacklisting mechanism:
-
-    gettor@hostname:~/opt/gettor$ python GetTor.py -w someone@heaven.org
-
-Whitelisting wins over blacklisting. If a user if blacklisted for X, but also
-whitelisted, he will be allowed to do X.

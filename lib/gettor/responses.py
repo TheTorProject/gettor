@@ -15,8 +15,88 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
 import gettor.blacklist
+import gettor.i18n as i18n
 
-trans = None
+def getPackageHelpMsg(t):
+        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[6]) + "\n\n" \
+             + """        tor-browser-bundle
+        macosx-i386-bundle
+        macosx-ppc-bundle
+        linux-browser-bundle-i386
+        linux-browser-bundle-x86_64
+        source-bundle""" + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[7]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[8]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[9]) + "\n\n" \
+             + "        gettor+zh_CN@torproject.org" + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[10]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[11]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[12]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[13]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[14]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[15]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[16]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[17]) + "\n\n" \
+             + "        tor-browser-bundle" + "\n" \
+             + "        split" + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[18]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[19]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[20]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[21]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[22]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[23]) + "\n\n" \
+             + "        http://www.win-rar.com/download.html" + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[23]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[24]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[25]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[26]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[33]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[34]) + "\n\n" \
+             + "        bridges@torproject.org" + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[34]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[35]) + "\n"
+                
+def getPackageMsg(t):
+        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[29]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[30]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[31]) + "\n\n" \
+             + "  gpg: Good signature from 'Roger Dingledine <arma@mit.edu>'" \
+             + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[32]) + "\n\n" \
+             + "  http://www.gnupg.org/related_software/frontends.html" \
+             + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[33]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[34]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[35]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
+
+def getSplitPackageMsg(t):
+        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[36]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[37]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[19]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[20]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[21]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[22]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[23]) + "\n\n" \
+             + "        http://www.win-rar.com/download.html" + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[24]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[25]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[26]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
+
+def getDelayAlertMsg(t):
+        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[38]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[39]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
 
 class Response:
     def __init__(self, config, reqInfo):
@@ -29,28 +109,15 @@ class Response:
         # Dump info
         logging.info(str(self.reqInfo))
 
-        # Initialize the reply language usage
-        try:
-            localeDir = os.path.join(self.config.BASEDIR, "i18n")
-            t = gettext.translation("gettor", localeDir, [reqInfo['locale']])
-            t.install()
-            # OMG TEH HACK!! Constants need to be imported *after* we've 
-            # initialized the locale/gettext subsystem
-            import gettor.constants
-        except IOError:
-            logging.error("Translation fail. Trying running with -r.")
-            raise
+        # Initialize locale subsystem
+        gettext.install("gettor", unicode=True)
+        self.t = i18n.getLang(self.reqInfo['locale'])
 
         # Init black & whitelists
         wlStateDir = os.path.join(self.config.BASEDIR, "wl")
         blStateDir = os.path.join(self.config.BASEDIR, "bl")
         self.wList = gettor.blacklist.BWList(wlStateDir)
         self.bList = gettor.blacklist.BWList(blStateDir)
-        # Check blacklist section 'general' list & Drop if necessary
-        # XXX: This should learn wildcards
-        bListed = self.bList.lookupListEntry(self.reqInfo['user'], "general")
-        assert bListed is not True, \
-            "Mail from blacklisted user %s" % self.reqInfo['user']
 
     def sendReply(self):
         """All routing decisions take place here. Sending of mails takes place
@@ -89,6 +156,10 @@ class Response:
         if self.wList.lookupListEntry(self.reqInfo['user'], "general"):
             logging.info("Whitelisted user " + self.reqInfo['user'])
             return False
+        # Now check general and specific blacklists, in that order
+        if self.bList.lookupListEntry(self.reqInfo['user'], "general"):
+            logging.info("Blacklisted user " + self.reqInfo['user'])
+            return True
         # Create a unique dir name for the requested routine
         self.bList.createSublist(fname)
         if self.bList.lookupListEntry(self.reqInfo['user'], fname):
@@ -110,7 +181,7 @@ class Response:
             return False
         logging.info("Sending out %s to %s." % (pack, to))
         f = os.path.join(self.config.BASEDIR, "packages", pack + ".z")
-        txt = gettor.constants.packagemsg
+        txt = getPackageMsg(self.t)
         msg = self.makeMsg(txt, to, fileName=f)
         try:
             status = self.sendEmail(to, msg)
@@ -130,7 +201,7 @@ class Response:
         to = self.reqInfo['user']
         logging.info("Sending out %s to %s."  % (pack, fwd))
         f = os.path.join(self.config.BASEDIR, "packages", pack + ".z")
-        text = gettor.constants.packagemsg
+        text = getPackageMsg(self.t)
         msg = self.makeMsg(text, fwd, fileName=f)
         try:
             status = self.sendEmail(fwd, msg)
@@ -172,7 +243,7 @@ class Response:
             path = os.path.join(splitDir, filename)
             num = num + 1
             sub = "[GetTor] Split package [%02d / %02d] " % (num, nFiles) 
-            txt = gettor.constants.splitpackagemsg
+            txt = getSplitPackageMsg(self.t)
             msg = self.makeMsg(txt, sub, self.reqInfo['user'], fileName=path)
             try:
                 status = self.sendEmail(self.reqInfo['user'], msg)
@@ -193,7 +264,7 @@ class Response:
             # Don't send anything
             return False
         logging.info("Sending delay alert to %s" % self.reqInfo['user'])
-        return self.sendTextEmail(gettor.constants.delayalertmsg)
+        return self.sendTextEmail(getDelayAlertMsg(self.t))
             
     def sendHelp(self):
         """Send a help mail. This happens when a user sent us a request we 
@@ -203,7 +274,7 @@ class Response:
             # Don't send anything
             return False
         logging.info("Sending out help message to %s" % self.reqInfo['user'])
-        return self.sendTextEmail(gettor.constants.helpmsg)
+        return self.sendTextEmail(getPackageHelpMsg(self.t))
 
     def sendPackageHelp(self):
         """Send a helpful message to the user interacting with us about
@@ -213,7 +284,7 @@ class Response:
             # Don't send anything
             return False
         logging.info("Sending package help to %s" % self.reqInfo['user'])
-        return self.sendTextEmail(gettor.constants.multilangpackagehelpmsg)
+        return self.sendTextEmail(i18n.MULTILANGHELP)
 
     def sendTextEmail(self, text):
         """Generic text message sending routine.

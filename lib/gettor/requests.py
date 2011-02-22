@@ -23,7 +23,6 @@ class requestMail:
         self.request['user'] = self.parsedMessage["Return-Path"]
         self.request['ouraddr'] = self.getRealTo(self.parsedMessage["to"])
         self.request['locale'] = self.getLocaleInTo(self.request['ouraddr'])
-        self.request['plus'] = False # Was this a gettor+lang@ request?
         self.request['package'] = None
         self.request['split'] = False
         self.request['forward'] = None
@@ -52,7 +51,7 @@ class requestMail:
         if match:
             locale = match.group(3)
             logging.debug("User requested language %s" % locale)
-            return locale
+            return self.checkAndGetLocale(locale)
         else:
             logging.debug("Not a 'plus' address")
             return self.config.DEFAULT_LOCALE
@@ -147,7 +146,6 @@ class requestMail:
         """
         for (lang, aliases) in self.config.SUPP_LANGS.items():
             if lang == locale:
-                logging.debug("User requested lang %s" % lang)
                 return locale
             if aliases is not None:
                 if locale in aliases:

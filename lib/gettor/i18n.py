@@ -2,8 +2,25 @@
 #                            Christian Fromme <kaner@strace.org>
 #  This is Free Software. See LICENSE for license information.
 
+import os
+import gettext
+
+def getLang(lang, localedir=os.path.expanduser("~") + "/gettor/i18n"):
+    """Return the Translation instance for a given language. If no Translation
+       instance is found, return the one for 'en'
+    """
+    return gettext.translation("gettor", localedir=localedir,
+                               languages=[lang], fallback="en")
+
+def _(text):
+    """This is necessary because strings are translated when they're imported.
+       Otherwise this would make it impossible to switch languages more than 
+       once
+    """
+    return text
+
 # Giant multi language help message. Add more translations as they become ready
-multilangpackagehelpmsg = """
+MULTILANGHELP = """
     Hello, This is the "GetTor" robot.
 
     I will mail you a Tor package, if you tell me which one you want.
@@ -383,96 +400,52 @@ multilangpackagehelpmsg = """
     --
         """
 
-# Short string to build mails follow
-hello_gettor = _("""
-    Hello, This is the "GetTor" robot.
+GETTOR_TEXT = [
+ # GETTOR_TEXT[0]
+_("""Hello, This is the "GetTor" robot.
 
-    Thank you for your request.
-
-    """)
-help_dkim_1 = _("""
-    Unfortunately, we won't answer you at this address. You should make
-    an account with GMAIL.COM or YAHOO.CN and send the mail from
-    one of those.
-
-    """)
-help_dkim_2 = _("""
-    We only process requests from email services that support "DKIM",
-    which is an email feature that lets us verify that the address in the
-    "From" line is actually the one who sent the mail.
-
-    """)
-help_dkim_3 = _("""
-    (We apologize if you didn't ask for this mail. Since your email is from
-    a service that doesn't use DKIM, we're sending a short explanation,
-    and then we'll ignore this email address for the next day or so.)
-
-    """)
-help_dkim_4 = _("""
-    Please note that currently, we can't process HTML emails or base 64
-    mails. You will need to send plain text.
-
-    """)
-
-help_dkim_5 = _("""
-    If you have any questions or it doesn't work, you can contact a
-    human at this support email address: tor-assistants@torproject.org
-
-    """)
-choose_package_1 = _("""
-    I will mail you a Tor package, if you tell me which one you want.
-    Please select one of the following package names:
-
-    """)
-avail_packs = """
-        tor-browser-bundle
-        macosx-i386-bundle
-        macosx-ppc-bundle
-        linux-browser-bundle-i386
-        linux-browser-bundle-x86_64
-        source-bundle
-    
-    """
-choose_package_2 = _("""
-    Please reply to this mail (to gettor@torproject.org), and tell me
-    a single package name anywhere in the body of your email.
-
-    """)
-obtain_localized_head = _("""
-    OBTAINING LOCALIZED VERSIONS OF TOR
-    """)
-obtain_localized_underline = """
-    ===================================
-
-    """
-obtain_localized_1 = _("""
-    To get a version of Tor translated into your language, specify the
-    language you want in the address you send the mail to:
-
-    """)
-obtain_localized_2 = """
-        gettor+zh@torproject.org
-
-    """
-obtain_localized_3 = _("""
-    This example will give you the requested package in a localized
-    version for Chinese. Check below for a list of supported language
-    codes.
-
-    """)
-list_of_langs_head = _("""
-    List of supported locales:
-    """)
-list_of_langs_underline = """
-    -------------------------
-
-    """
-list_of_langs_1 = _("""
-    Here is a list of all available languages:
-
-    """)
-list_of_langs_2 = _("""
-    gettor+ar@torproject.org:     Arabic
+Thank you for your request."""),
+ # GETTOR_TEXT[1]
+_(""" Unfortunately, we won't answer you at this address. You should make
+an account with GMAIL.COM or YAHOO.CN and send the mail from
+one of those."""),
+ # GETTOR_TEXT[2]
+_("""We only process requests from email services that support "DKIM",
+which is an email feature that lets us verify that the address in the
+"From" line is actually the one who sent the mail."""),
+ # GETTOR_TEXT[3]
+_("""(We apologize if you didn't ask for this mail. Since your email is from
+a service that doesn't use DKIM, we're sending a short explanation,
+and then we'll ignore this email address for the next day or so.)"""),
+ # GETTOR_TEXT[4]
+_("""Please note that currently, we can't process HTML emails or base 64
+mails. You will need to send plain text."""),
+ # GETTOR_TEXT[5]
+_("""If you have any questions or it doesn't work, you can contact a
+human at this support email address: tor-assistants@torproject.org"""),
+ # GETTOR_TEXT[6]
+_("""I will mail you a Tor package, if you tell me which one you want.
+Please select one of the following package names:"""),
+ # GETTOR_TEXT[7]
+_("""Please reply to this mail (to gettor@torproject.org), and tell me
+a single package name anywhere in the body of your email."""),
+ # GETTOR_TEXT[8]
+_(""" OBTAINING LOCALIZED VERSIONS OF TOR
+==================================="""),
+ # GETTOR_TEXT[9]
+_("""To get a version of Tor translated into your language, specify the
+language you want in the address you send the mail to:"""),
+ # GETTOR_TEXT[10]
+_("""This example will give you the requested package in a localized
+version for Chinese. Check below for a list of supported language
+codes. """),
+ # GETTOR_TEXT[11]
+_(""" List of supported locales:
+-------------------------"""),
+ # GETTOR_TEXT[12]
+_("""Here is a list of all available languages:"""),
+ # GETTOR_TEXT[13]
+_("""    gettor+ar@torproject.org:     Arabic
     gettor+de@torproject.org:     German
     gettor+en@torproject.org:     English
     gettor+es@torproject.org:     Spanish
@@ -482,222 +455,92 @@ list_of_langs_2 = _("""
     gettor+nl@torproject.org:     Dutch
     gettor+pl@torproject.org:     Polish
     gettor+ru@torproject.org:     Russian
-    gettor+zh@torproject.org:     Chinese
-
-    """)
-list_of_langs_3 = _("""
-    If you select no language, you will receive the English version.
-
-    """)
-
-split_help_head = _("""
-    SMALLER SIZED PACKAGES
-    """)
-split_help_underline = """
-    ======================
-    """
-split_help_1 = _("""
-    If your bandwith is low or your provider doesn't allow you to 
-    receive large attachments in your email, there is a feature of 
-    GetTor you can use to make it send you a number of small packages
-    instead of one big one.
-
-    """)
-split_help_2 = _("""
-    Simply include the keyword 'split' somewhere in your email like so:
-    """)
-split_help_3 = """
-    
-        tor-browser-bundle
-        split
-
-    """
-split_help_4 = _("""
-    Sending this text in an email to GetTor will cause it to send you 
-    the Tor Browser Bundle in a number of 1,4MB attachments.
-
-    """)
-split_help_5 = _("""
-    After having received all parts, you need to re-assemble them to 
-    one package again. This is done as follows:
-
-    """)
-split_help_6 = _("""
-    1.) Save all received attachments into one folder on your disk.
-    
-    """)
-split_help_7 = _("""
-    2.) Unzip all files ending in ".z". If you saved all attachments to
-        a fresh folder before, simply unzip all files in that folder.
-
-    """)
-split_help_8 = _("""
-    3.) Rename the file ending in ".ex_RENAME" to end in ".exe" and 
-        also rename the file ending in ".ex_RENAME.asc" to end in
-        ".exe.asc"
-
-    """)
-split_help_9 = _("""
-    4.) Verify all files as described in the mail you received with 
-        each package. (gpg --verify)
-
-    """)
-split_help_10 = _("""
-    5.) Now use a program that can unrar multivolume RAR archives. On
-        Windows, this usually is WinRAR. If you don't have that
-        installed on you computer yet, get it here:
-
-    """)
-split_help_11 = """
-            http://www.win-rar.com/download.html
-
-    """
-split_help_12 = _("""
-        To unpack your Tor package, simply doubleclick the ".exe" file.
-
-    """)
-split_help_13 = _("""
-    6.) After unpacking is finished, you should find a newly created 
-        ".exe" file in your destination folder. Simply doubleclick
-        that and Tor Browser Bundle should start within a few seconds.
-
-    """)
-split_help_14 = _("""
-    7.) That's it. You're done. Thanks for using Tor and have fun!
-    
-    """)
-support = _("""
-    SUPPORT
-    """)
-support_underline = """
-    =======
-    """
-support_email = _("""
-    If you have any questions or it doesn't work, you can contact a
-    human at this support email address: tor-assistants@torproject.org
-
-    """)
-package_mail_1 = _("""
-    Here's your requested software as a zip file. Please unzip the
-    package and verify the signature.
-
-    """)
-package_mail_2 = _("""
-    Hint: If your computer has GnuPG installed, use the gpg
-    commandline tool as follows after unpacking the zip file:
-
-    """)
-package_mail_3 = _("""
-       gpg --verify <packagename>.asc <packagename>
-
-    """)
-package_mail_4 = _("""
-    The output should look somewhat like this:
-
-    """)
-package_mail_5 = """
-       gpg: Good signature from "Roger Dingledine <arma@mit.edu>"
-
-    """
-package_mail_6 = _("""
-    If you're not familiar with commandline tools, try looking for
-    a graphical user interface for GnuPG on this website:
-
-    """)
-package_mail_7 = """
-       http://www.gnupg.org/related_software/frontends.html
-
-    """
-package_mail_8 = _("""
-    If your Internet connection blocks access to the Tor network, you
-    may need a bridge relay. Bridge relays (or "bridges" for short)
-    are Tor relays that aren't listed in the main directory. Since there
-    is no complete public list of them, even if your ISP is filtering
-    connections to all the known Tor relays, they probably won't be able
-    to block all the bridges.
-
-    """)
-package_mail_9 = _("""
-    You can acquire a bridge by sending an email that contains "get bridges"
-    in the body of the email to the following email address:
-    bridges@torproject.org
-
-    """)
-package_mail_10 = _("""
-    It is also possible to fetch bridges with a web browser at the following
-    url: https://bridges.torproject.org/
-
-    """)
-split_package_1 = _("""
-    IMPORTANT NOTE:
-    Since this is part of a split-file request, you need to wait for
-    all split files to be received by you before you can save them all
-    into the same directory and unpack them by double-clicking the
-    first file.
-
-    """)
-split_package_2 = _("""
-    Packages might come out of order! Please make sure you received
-    all packages before you attempt to unpack them!
-
-    """)
-delay_alert_1 = _("""
-    Thank you for your request. It was successfully understood. Your request is
-    currently being processed. Your package should arrive within the next ten
-    minutes.
-
-    """)
-delay_alert_2 = _("""
-    If it doesn't arrive, the package might be too big for your mail provider.
-    Try resending the mail from a gmail.com or yahoo.cn account. Also,
-    try asking for tor-browser-bundle rather than tor-im-browser-bundle,
-    since it's smaller.
-
-    """)
-error_mail = _("""
-    Unfortunately we are currently experiencing problems and we can't fulfill
-    your request right now. Please be patient as we try to resolve this issue.
-
-    """)
-
-# Build the actual mail texts
-packagehelpmsg = hello_gettor + choose_package_1 + avail_packs + choose_package_2 + \
-                 obtain_localized_head + obtain_localized_underline + \
-                 obtain_localized_1 + obtain_localized_2 + obtain_localized_3 + \
-                 list_of_langs_head + list_of_langs_underline + \
-                 list_of_langs_1 + list_of_langs_2 + list_of_langs_3 + \
-                 split_help_head + split_help_underline + \
-                 split_help_1 + split_help_2 + split_help_3 + split_help_4 + \
-                 split_help_5 + split_help_6 + split_help_7 + split_help_8 + \
-                 split_help_9 + split_help_10 + split_help_11 + split_help_12 + \
-                 split_help_13 + split_help_14 + \
-                 support + support_underline + support_email
-
-helpmsg = hello_gettor + \
-          help_dkim_1 + help_dkim_2 + help_dkim_3 + help_dkim_4 + help_dkim_5 + \
-          support_email
-
-
-packagemsg = hello_gettor + \
-             package_mail_1 + package_mail_2 + package_mail_3 + package_mail_4 + \
-             package_mail_5 + package_mail_6 + package_mail_7 + package_mail_8 + \
-             package_mail_9 + package_mail_10 + \
-             support_email
-
-
-splitpackagemsg = hello_gettor + \
-                  split_package_1 + split_package_2 + \
-                  package_mail_1 + package_mail_2 + package_mail_3 + package_mail_4 + \
-                  package_mail_5 + package_mail_6 + package_mail_7 + package_mail_8 + \
-                  package_mail_9 + package_mail_10 + \
-                  support_email
-
-
-delayalertmsg = hello_gettor + \
-                delay_alert_1 + delay_alert_2 + \
-                support_email
-
-mailfailmsg = hello_gettor + \
-              support_email
-
-
+    gettor+zh@torproject.org:     Chinese"""),
+ # GETTOR_TEXT[14]
+_("""If you select no language, you will receive the English version."""),
+ # GETTOR_TEXT[15]
+_("""SMALLER SIZED PACKAGES
+======================"""),
+ # GETTOR_TEXT[16]
+_("""If your bandwith is low or your provider doesn't allow you to 
+receive large attachments in your email, there is a feature of 
+GetTor you can use to make it send you a number of small packages
+instead of one big one."""),
+ # GETTOR_TEXT[17]
+_("""Simply include the keyword 'split' somewhere in your email like so:"""),
+ # GETTOR_TEXT[18]
+_("""Sending this text in an email to GetTor will cause it to send you 
+the Tor Browser Bundle in a number of 1,4MB attachments."""),
+ # GETTOR_TEXT[19]
+_("""After having received all parts, you need to re-assemble them to 
+one package again. This is done as follows:"""),
+ # GETTOR_TEXT[20]
+_("""1.) Save all received attachments into one folder on your disk."""),
+ # GETTOR_TEXT[21]
+_("""2.) Unzip all files ending in ".z". If you saved all attachments to
+a fresh folder before, simply unzip all files in that folder."""),
+ # GETTOR_TEXT[22]
+_("""3.) Verify all files as described in the mail you received with 
+each package. (gpg --verify)"""),
+ # GETTOR_TEXT[23]
+_("""4.) Now use a program that can unrar multivolume RAR archives. On
+Windows, this usually is WinRAR. If you don't have that
+installed on you computer yet, get it here:"""),
+ # GETTOR_TEXT[24]
+_("""To unpack your Tor package, simply doubleclick the ".exe" file."""),
+ # GETTOR_TEXT[25]
+_("""5.) After unpacking is finished, you should find a newly created 
+".exe" file in your destination folder. Simply doubleclick
+that and Tor Browser Bundle should start within a few seconds."""),
+ # GETTOR_TEXT[26]
+_("""6.) That's it. You're done. Thanks for using Tor and have fun!"""),
+ # GETTOR_TEXT[27]
+_("""SUPPORT
+======="""),
+ # GETTOR_TEXT[28]
+_("""If you have any questions or it doesn't work, you can contact a
+human at this support email address: tor-assistants@torproject.org"""),
+ # GETTOR_TEXT[29]
+_(""" Here's your requested software as a zip file. Please unzip the
+package and verify the signature."""),
+ # GETTOR_TEXT[30]
+_("""Hint: If your computer has GnuPG installed, use the gpg
+commandline tool as follows after unpacking the zip file:"""),
+ # GETTOR_TEXT[31]
+_("""The output should look somewhat like this:"""),
+ # GETTOR_TEXT[32]
+_("""If you're not familiar with commandline tools, try looking for
+a graphical user interface for GnuPG on this website:"""),
+ # GETTOR_TEXT[33]
+_("""If your Internet connection blocks access to the Tor network, you
+may need a bridge relay. Bridge relays (or "bridges" for short)
+are Tor relays that aren't listed in the main directory. Since there
+is no complete public list of them, even if your ISP is filtering
+connections to all the known Tor relays, they probably won't be able
+to block all the bridges."""),
+ # GETTOR_TEXT[34]
+_("""You can acquire a bridge by sending an email that contains "get bridges"
+in the body of the email to the following email address:"""),
+ # GETTOR_TEXT[35]
+_("""It is also possible to fetch bridges with a web browser at the following
+url: https://bridges.torproject.org/"""),
+ # GETTOR_TEXT[36]
+_("""IMPORTANT NOTE:
+Since this is part of a split-file request, you need to wait for
+all split files to be received by you before you can save them all
+into the same directory and unpack them by double-clicking the
+first file."""),
+ # GETTOR_TEXT[37]
+_("""Packages mighit come out of order! Please make sure you received
+all packages before you attempt to unpack them!"""),
+ # GETTOR_TEXT[38]
+_("""Thank you for your request. 
+It was successfully understood. Your request is currently being processed.
+Your package should arrive within the next ten minutes."""),
+ # GETTOR_TEXT[39]
+_("""If it doesn't arrive, the package might be too big for your mail provider.
+Try resending the mail from a GMAIL.COM or YAHOO.COM account."""),
+ # GETTOR_TEXT[40]
+_("""Unfortunately we are currently experiencing problems and we can't fulfill
+your request right now. Please be patient as we try to resolve this issue.""")
+]
