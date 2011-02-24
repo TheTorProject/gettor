@@ -6,12 +6,14 @@
 import os
 import gettext
 
-def getLang(lang, localedir=os.path.expanduser("~") + "/gettor/i18n"):
+def getLang(lang, config):
     """Return the Translation instance for a given language. If no Translation
        instance is found, return the one for 'en'
     """
-    return gettext.translation("gettor", localedir=localedir,
-                               languages=[lang], fallback="en")
+    localeDir = os.path.join(config.BASEDIR, "i18n")
+    fallback = config.DEFAULT_LOCALE
+    return gettext.translation("gettor", localedir=localeDir,
+                               languages=[lang], fallback=fallback)
 
 def _(text):
     """This is necessary because strings are translated when they're imported.

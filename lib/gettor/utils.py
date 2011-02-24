@@ -22,7 +22,6 @@ def createDir(path):
        already exists.
     """
     try:
-        logging.debug("Creating directory %s if it doesn't exist.." % path)
         os.makedirs(path)
     except OSError as e:
         if e.errno != errno.EEXIST:

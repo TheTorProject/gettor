@@ -110,7 +110,7 @@ class Response:
         logging.info(str(self.reqInfo))
 
         # Initialize locale subsystem
-        self.t = i18n.getLang(self.reqInfo['locale'])
+        self.t = i18n.getLang(self.reqInfo['locale'], config)
 
         # Init black & whitelists
         wlStateDir = os.path.join(self.config.BASEDIR, "wl")

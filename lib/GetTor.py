@@ -29,7 +29,11 @@ def initializeLogging(cfg):
     level = getattr(logging, level)
     extra = {}
     logfileName = cfg.LOGFILE + "-" +  strftime("%Y-%m-%d") + ".log"
-    extra['filename'] = os.path.join(cfg.BASEDIR, logfileName)
+    logDir = os.path.join(cfg.BASEDIR, "log")
+    if not gettor.utils.createDir(logDir):
+        # Fall back to /tmp in case of an error
+        logDir="/tmp"
+    extra['filename'] = os.path.join(logDir, logfileName)
 
     print "Logfile is %s" % extra['filename']
 
