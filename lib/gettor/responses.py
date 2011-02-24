@@ -243,7 +243,7 @@ class Response:
             num = num + 1
             sub = "[GetTor] Split package [%02d / %02d] " % (num, nFiles) 
             txt = getSplitPackageMsg(self.t)
-            msg = self.makeMsg(txt, sub, self.reqInfo['user'], fileName=path)
+            msg = self.makeMsg(txt, self.reqInfo['user'], sub, fileName=path)
             try:
                 status = self.sendEmail(self.reqInfo['user'], msg)
                 logging.info("Package [%02d / %02d] sent. Status: %s" \
