@@ -1,130 +1,60 @@
 #!/usr/bin/python
 
-
+import ast
 import sys
 import os
 import re
+import glob
 import string
+import gettor.config
 
-def emptyPacks(packs):
-    for k, v in packs.iteritems():
-        packs[k] = 0
-    return packs
+def makestats(filename, configPackages):
 
-def makestats(filename, days):
-    day = None
-    pack = None
-    lang = None
-    packages = {"None": 0,
-                "tor-browser-bundle": 0,
-                "tor-im-browser-bundle": 0,
-                "tor-browser-bundle_en": 0,
-                "tor-im-browser-bundle_en": 0,
-                "tor-browser-bundle_de": 0,
-                "tor-im-browser-bundle_de": 0,
-                "tor-browser-bundle_ar": 0,
-                "tor-im-browser-bundle_ar": 0,
-                "tor-browser-bundle_es": 0,
-                "tor-im-browser-bundle_es": 0,
-                "tor-browser-bundle_fa": 0,
-                "tor-im-browser-bundle_fa": 0,
-                "tor-browser-bundle_fr": 0,
-                "tor-im-browser-bundle_fr": 0,
-                "tor-browser-bundle_it": 0,
-                "tor-im-browser-bundle_it": 0,
-                "tor-browser-bundle_nl": 0,
-                "tor-im-browser-bundle_nl": 0,
-                "tor-browser-bundle_pl": 0,
-                "tor-im-browser-bundle_pl": 0,
-                "tor-browser-bundle_pt": 0,
-                "tor-im-browser-bundle_pt": 0,
-                "tor-browser-bundle_ru": 0,
-                "tor-im-browser-bundle_ru": 0,
-                "tor-browser-bundle_zh_CN": 0,
-                "tor-im-browser-bundle_zh_CN": 0,
-                "source-bundle": 0,
-                "macosx-ppc-bundle": 0,
-                "macosx-i386-bundle": 0}
+    # Initialize package counter
+    packageCounter = { 'None': 0}
+    for k in configPackages.keys():
+        packageCounter[k] = 0
 
     try:
         logFile = open(filename, 'r')
     except:
-        print "Couldn't open logfile %s" % filename
+        print >>sys.stderr, "Couldn't open logfile %s" % filename
         sys.exit(1)
+
     readData = logFile.read().split('\n')
     for line in readData:
-        match = re.match(".*Request from.*cmdaddr None.*", line, re.DOTALL)
+        matchStr = "([0-9]{4}-[0-9]{2}-[0-9]{2}).*({'.*'}).*"
+        match = re.match(matchStr, line, re.DOTALL)
         if match:
-            splitline = string.split(line)
-            if len(splitline) > 12:
-                day = splitline[0]
-                pack = splitline[7]
-                lang = splitline[9]
-                if not re.match("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]", day):
-                    continue
-                pack = pack.strip(',')
-                lang = lang.strip(',')
-                if day in days:
-                    packs = days[day]
-                else:
-                    packs = emptyPacks(packages).copy()
-                if pack is not None:
-                    if pack in packs:
-                        packs[pack] += 1
-                days[day] = packs
-        else:
-            match = re.match(".*Request From.*Cmdaddr: None.*", line, re.DOTALL)
-            if match:
-                splitline = string.split(line)
-                if len(splitline) > 12:
-                    day = splitline[0]
-                    pack = splitline[9]
-                    lang = splitline[11]
-                    if not re.match("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]", day):
-                        continue
-                    pack = pack.strip(',')
-                    lang = lang.strip(',')
-                    if day in days:
-                        packs = days[day]
-                    else:
-                        packs = emptyPacks(packages).copy()
-                    if pack is not None:
-                        if pack in packs:
-                            packs[pack] += 1
-                    days[day] = packs
+            dateInfo = match.group(1)
+            reqInfo = ast.literal_eval(match.group(2))
+            package = reqInfo['package']
+            if package is not None:
+                packageCounter[package] += 1
+            else:
+                packageCounter['None'] += 1
 
-def printStatsStdout(days):
-    for day in sorted(days.iterkeys()):
-        packs = days[day]
-        daystr = "%s -" % day
-        print daystr, 
-        for pack in sorted(packs.iterkeys()):
-            packstr = "%s:%s" % (pack, packs[pack])
-            print packstr,
-        print ""
+    logFile.close()
 
-def printStatsGNUPlot(days):
-    for day in sorted(days.iterkeys()):
-        packs = days[day]
-        print day,
-        for pack in sorted(packs.iterkeys()):
-            print packs[pack],
-        print ""
+    return dateInfo, packageCounter            
+
+def printStatsStdout(daystr, stats):
+    print daystr + " -", 
+    for pack in sorted(stats.iterkeys()):
+        packstr = "%s:%s" % (pack, stats[pack])
+        print packstr,
+    print ""
 
 def main():
-    days = {}
+    stats = {}
     
-    if len(sys.argv) < 2:
-        print >> sys.stderr, "Usage: %s LOGDIR" % sys.argv[0]
-        sys.exit(1)
-    for arg in sys.argv:
-        if not os.path.isfile(arg):
-            print >> sys.stderr, "Not a file: %s" % arg
-            sys.exit(1)
-        makestats(arg, days)
-
-    printStatsStdout(days)
-    #printStatsGNUPlot(days)
+    config = gettor.config.Config()
+    logDir = os.path.join(config.BASEDIR, "log")
+    logFilePattern = os.path.join(logDir, config.LOGFILE + "*.log")
+    fileList = glob.glob(logFilePattern)
+    for f in fileList:
+        dateInfo, stats = makestats(f, config.PACKAGES)
+        printStatsStdout(dateInfo, stats)
 
 if __name__ == "__main__":
     main()
