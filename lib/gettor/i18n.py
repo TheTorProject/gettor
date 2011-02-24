@@ -1,6 +1,7 @@
 # Copyright (c) 2008 - 2011, Jacob Appelbaum <jacob@appelbaum.net>, 
 #                            Christian Fromme <kaner@strace.org>
 #  This is Free Software. See LICENSE for license information.
+# -*- coding: utf-8 -*-
 
 import os
 import gettext
@@ -430,8 +431,7 @@ Please select one of the following package names:"""),
 _("""Please reply to this mail (to gettor@torproject.org), and tell me
 a single package name anywhere in the body of your email."""),
  # GETTOR_TEXT[8]
-_(""" OBTAINING LOCALIZED VERSIONS OF TOR
-==================================="""),
+_(""" OBTAINING LOCALIZED VERSIONS OF TOR"""),
  # GETTOR_TEXT[9]
 _("""To get a version of Tor translated into your language, specify the
 language you want in the address you send the mail to:"""),
@@ -440,8 +440,7 @@ _("""This example will give you the requested package in a localized
 version for Chinese. Check below for a list of supported language
 codes. """),
  # GETTOR_TEXT[11]
-_(""" List of supported locales:
--------------------------"""),
+_(""" List of supported locales:"""),
  # GETTOR_TEXT[12]
 _("""Here is a list of all available languages:"""),
  # GETTOR_TEXT[13]
@@ -459,8 +458,7 @@ _("""    gettor+ar@torproject.org:     Arabic
  # GETTOR_TEXT[14]
 _("""If you select no language, you will receive the English version."""),
  # GETTOR_TEXT[15]
-_("""SMALLER SIZED PACKAGES
-======================"""),
+_("""SMALLER SIZED PACKAGES"""),
  # GETTOR_TEXT[16]
 _("""If your bandwith is low or your provider doesn't allow you to 
 receive large attachments in your email, there is a feature of 
@@ -495,8 +493,7 @@ that and Tor Browser Bundle should start within a few seconds."""),
  # GETTOR_TEXT[26]
 _("""6.) That's it. You're done. Thanks for using Tor and have fun!"""),
  # GETTOR_TEXT[27]
-_("""SUPPORT
-======="""),
+_("""SUPPORT"""),
  # GETTOR_TEXT[28]
 _("""If you have any questions or it doesn't work, you can contact a
 human at this support email address: tor-assistants@torproject.org"""),
@@ -531,7 +528,7 @@ all split files to be received by you before you can save them all
 into the same directory and unpack them by double-clicking the
 first file."""),
  # GETTOR_TEXT[37]
-_("""Packages mighit come out of order! Please make sure you received
+_("""Packages might arrive out of order! Please make sure you received
 all packages before you attempt to unpack them!"""),
  # GETTOR_TEXT[38]
 _("""Thank you for your request. 

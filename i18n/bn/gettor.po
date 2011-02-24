@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-14 14:10+0100\n"
+"POT-Creation-Date: 2011-02-24 11:28+0100\n"
 "PO-Revision-Date: 2010-08-30 17:58+0200\n"
 "Last-Translator: Rezwan <i_rezwan@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: lib/gettor/constants.py:388
+#: lib/gettor/i18n.py:406
+#, fuzzy
 msgid ""
+"Hello, This is the \"GetTor\" robot.\n"
 "\n"
-"    Hello, This is the \"GetTor\" robot.\n"
-"\n"
-"    Thank you for your request.\n"
-"\n"
-"    "
+"Thank you for your request."
 msgstr ""
 "\n"
 "হ্যালো, এটি \"গেটটর\" রবোট। \n"
@@ -33,14 +31,12 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:394
+#: lib/gettor/i18n.py:410
+#, fuzzy
 msgid ""
-"\n"
-"    Unfortunately, we won't answer you at this address. You should make\n"
-"    an account with GMAIL.COM or YAHOO.CN and send the mail from\n"
-"    one of those.\n"
-"\n"
-"    "
+" Unfortunately, we won't answer you at this address. You should make\n"
+"an account with GMAIL.COM or YAHOO.CN and send the mail from\n"
+"one of those."
 msgstr ""
 "\n"
 "দুর্ভাগ্যজনকভাবে, আমরা এই ঠিকানায় আপনাকে উত্তর দিতে পারব না। আপনার উচিৎ\n"
@@ -49,14 +45,12 @@ msgstr ""
 "\n"
 " "
 
-#: lib/gettor/constants.py:400
+#: lib/gettor/i18n.py:414
+#, fuzzy
 msgid ""
-"\n"
-"    We only process requests from email services that support \"DKIM\",\n"
-"    which is an email feature that lets us verify that the address in the\n"
-"    \"From\" line is actually the one who sent the mail.\n"
-"\n"
-"    "
+"We only process requests from email services that support \"DKIM\",\n"
+"which is an email feature that lets us verify that the address in the\n"
+"\"From\" line is actually the one who sent the mail."
 msgstr ""
 "\n"
 "আমরা শুধু সেইসব ইমেইল সেবা থেকে অনুরোধ প্রক্রিয়াজাত করি যেগুলো \"ডিকেওয়াইএম\" "
@@ -66,31 +60,26 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:406
+#: lib/gettor/i18n.py:418
+#, fuzzy
 msgid ""
-"\n"
-"    (We apologize if you didn't ask for this mail. Since your email is from\n"
-"    a service that doesn't use DKIM, we're sending a short explanation,\n"
-"    and then we'll ignore this email address for the next day or so.)\n"
-"\n"
-"    "
+"(We apologize if you didn't ask for this mail. Since your email is from\n"
+"a service that doesn't use DKIM, we're sending a short explanation,\n"
+"and then we'll ignore this email address for the next day or so.)"
 msgstr ""
 "\n"
-"(আমরা দু:খিত যদি আপনি এই মেইলের জন্যে অনুরোধ না করে থাকেন। আপনার ইমেইলটি "
-"একটি\n"
-"সেবা থেকে এসেছে যা \"ডিকেওয়াইএম\" প্রযুক্তি ব্যবহার করে না, আমরা একটি ছোট "
-"ব্যাখ্যা পাঠাচ্ছি,\n"
+"(আমরা দু:খিত যদি আপনি এই মেইলের জন্যে অনুরোধ না করে থাকেন। আপনার ইমেইলটি একটি\n"
+"সেবা থেকে এসেছে যা \"ডিকেওয়াইএম\" প্রযুক্তি ব্যবহার করে না, আমরা একটি ছোট ব্যাখ্যা "
+"পাঠাচ্ছি,\n"
 "আর এরপরে আমরা এই ইমেইল ঠিকানাটি এড়িয়ে যাব।)\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:412
+#: lib/gettor/i18n.py:422
+#, fuzzy
 msgid ""
-"\n"
-"    Please note that currently, we can't process HTML emails or base 64\n"
-"    mails. You will need to send plain text.\n"
-"\n"
-"    "
+"Please note that currently, we can't process HTML emails or base 64\n"
+"mails. You will need to send plain text."
 msgstr ""
 "\n"
 "অনুগ্রহ করে খেয়াল করবেন যে বর্তমানে আমরা এইচটিএমএল ইমেইল অথবা বেইজ ৬৪ ইমেইল\n"
@@ -98,28 +87,23 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:418 lib/gettor/constants.py:575
+#: lib/gettor/i18n.py:425 lib/gettor/i18n.py:498
+#, fuzzy
 msgid ""
-"\n"
-"    If you have any questions or it doesn't work, you can contact a\n"
-"    human at this support email address: tor-assistants@torproject.org\n"
-"\n"
-"    "
+"If you have any questions or it doesn't work, you can contact a\n"
+"human at this support email address: tor-assistants@torproject.org"
 msgstr ""
 "\n"
-"আপনার যদি কোন প্রশ্ন থাকে অথবা এটি কাজ না করে, আপনারা কোন সাহায্যকারী "
-"ব্যক্তিকে\n"
+"আপনার যদি কোন প্রশ্ন থাকে অথবা এটি কাজ না করে, আপনারা কোন সাহায্যকারী ব্যক্তিকে\n"
 "এই সহায়ক ইমেইল ঠিকানায় মেইল করতে পারেন: tor-assistants@torproject.org\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:423
+#: lib/gettor/i18n.py:428
+#, fuzzy
 msgid ""
-"\n"
-"    I will mail you a Tor package, if you tell me which one you want.\n"
-"    Please select one of the following package names:\n"
-"\n"
-"    "
+"I will mail you a Tor package, if you tell me which one you want.\n"
+"Please select one of the following package names:"
 msgstr ""
 "\n"
 "আমি আপনাকে একটি টর প্যাকেজ পাঠাব, যদি আপনি বলতে পারেন যে ঠিক কোনটি আপনি চান।\n"
@@ -127,13 +111,11 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:436
+#: lib/gettor/i18n.py:431
+#, fuzzy
 msgid ""
-"\n"
-"    Please reply to this mail (to gettor@torproject.org), and tell me\n"
-"    a single package name anywhere in the body of your email.\n"
-"\n"
-"    "
+"Please reply to this mail (to gettor@torproject.org), and tell me\n"
+"a single package name anywhere in the body of your email."
 msgstr ""
 "\n"
 "অনুগ্রহ করে এই ঠিকানায় জবাব পাঠান (প্রতি gettor@torproject.org), এবং আমাকে "
@@ -142,23 +124,19 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:441
-msgid ""
-"\n"
-"    OBTAINING LOCALIZED VERSIONS OF TOR\n"
-"    "
+#: lib/gettor/i18n.py:434
+#, fuzzy
+msgid " OBTAINING LOCALIZED VERSIONS OF TOR"
 msgstr ""
 "\n"
 "টরের অনুবাদিত সংস্করণগুলো পাওয়ার উপায়\n"
 "    "
 
-#: lib/gettor/constants.py:448
+#: lib/gettor/i18n.py:436
+#, fuzzy
 msgid ""
-"\n"
-"    To get a version of Tor translated into your language, specify the\n"
-"    language you want in the address you send the mail to:\n"
-"\n"
-"    "
+"To get a version of Tor translated into your language, specify the\n"
+"language you want in the address you send the mail to:"
 msgstr ""
 "\n"
 "আপনার পছন্দের ভাষায় অনুবাদ করার জন্যে টরের একটি সংস্করণ নির্দিষ্ট করুন\n"
@@ -166,14 +144,12 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:457
+#: lib/gettor/i18n.py:439
+#, fuzzy
 msgid ""
-"\n"
-"    This example will give you the requested package in a localized\n"
-"    version for Chinese. Check below for a list of supported language\n"
-"    codes.\n"
-"\n"
-"    "
+"This example will give you the requested package in a localized\n"
+"version for Chinese. Check below for a list of supported language\n"
+"codes. "
 msgstr ""
 "\n"
 "এই উদাহরণটির মত কাজ করলে আপনাকে পাঠাবে আপনার অনুরোধকৃত প্যাকেজটির\n"
@@ -183,31 +159,26 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:463
-msgid ""
-"\n"
-"    List of supported locales:\n"
-"    "
+#: lib/gettor/i18n.py:443
+#, fuzzy
+msgid " List of supported locales:"
 msgstr ""
 "\n"
 "আমরা যেসব ভাষায় প্যাকেজটি দিয়ে থাকি:\n"
 "    "
 
-#: lib/gettor/constants.py:470
-msgid ""
-"\n"
-"    Here is a list of all available languages:\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:445
+#, fuzzy
+msgid "Here is a list of all available languages:"
 msgstr ""
 "\n"
 "এখানে সহজলভ্য সব ভাষার তালিকা দেয়া আছে:\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:474
+#: lib/gettor/i18n.py:447
+#, fuzzy
 msgid ""
-"\n"
 "    gettor+ar@torproject.org:     Arabic\n"
 "    gettor+de@torproject.org:     German\n"
 "    gettor+en@torproject.org:     English\n"
@@ -218,9 +189,7 @@ msgid ""
 "    gettor+nl@torproject.org:     Dutch\n"
 "    gettor+pl@torproject.org:     Polish\n"
 "    gettor+ru@torproject.org:     Russian\n"
-"    gettor+zh@torproject.org:     Chinese\n"
-"\n"
-"    "
+"    gettor+zh@torproject.org:     Chinese"
 msgstr ""
 "\n"
 "gettor+ar@torproject.org: আরবী\n"
@@ -237,38 +206,30 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:488
-msgid ""
-"\n"
-"    If you select no language, you will receive the English version.\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:459
+#, fuzzy
+msgid "If you select no language, you will receive the English version."
 msgstr ""
 "\n"
-"আপনি যদি কোন ভাষা না পছন্দ করে থাকেন, তাহলে আপনাকে ইংরেজী সংস্করণ পাঠানো "
-"হবে।\n"
+"আপনি যদি কোন ভাষা না পছন্দ করে থাকেন, তাহলে আপনাকে ইংরেজী সংস্করণ পাঠানো হবে।\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:493
-msgid ""
-"\n"
-"    SMALLER SIZED PACKAGES\n"
-"    "
+#: lib/gettor/i18n.py:461
+#, fuzzy
+msgid "SMALLER SIZED PACKAGES"
 msgstr ""
 "\n"
 "ছোট সাইজের প্যাকেজ\n"
 "    "
 
-#: lib/gettor/constants.py:499
+#: lib/gettor/i18n.py:463
+#, fuzzy
 msgid ""
-"\n"
-"    If your bandwith is low or your provider doesn't allow you to \n"
-"    receive large attachments in your email, there is a feature of \n"
-"    GetTor you can use to make it send you a number of small packages\n"
-"    instead of one big one.\n"
-"\n"
-"    "
+"If your bandwith is low or your provider doesn't allow you to \n"
+"receive large attachments in your email, there is a feature of \n"
+"GetTor you can use to make it send you a number of small packages\n"
+"instead of one big one."
 msgstr ""
 "\n"
 "আপনার ব্যান্ডউইদথ (ইন্টারনেটের গতি) যদি কম থাকে অথবা আপনার আইএসপি আপনাকে\n"
@@ -279,36 +240,30 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:506
-msgid ""
-"\n"
-"    Simply include the keyword 'split' somewhere in your email like so:\n"
-"    "
+#: lib/gettor/i18n.py:468
+#, fuzzy
+msgid "Simply include the keyword 'split' somewhere in your email like so:"
 msgstr ""
 "\n"
 "শুধুমাত্র 'split' (স্প্লিট) এই কিওয়ার্ডটি আপনার ইমেইলে যোগ করে দিন এভাবে:\n"
 "    "
 
-#: lib/gettor/constants.py:515
+#: lib/gettor/i18n.py:470
+#, fuzzy
 msgid ""
-"\n"
-"    Sending this text in an email to GetTor will cause it to send you \n"
-"    the Tor Browser Bundle in a number of 1,4MB attachments.\n"
-"\n"
-"    "
+"Sending this text in an email to GetTor will cause it to send you \n"
+"the Tor Browser Bundle in a number of 1,4MB attachments."
 msgstr ""
 "\n"
 "এই টেক্সট বার্তাটি একটি ইমেইলের মাধ্যমে গেটটরের কাছে পাঠালে\n"
 "এটি আপনাকে টর ব্রাউজার বান্ডেল ১.৪ মেগাবাইটের সংযুক্তির আকারে পাঠাবে।\n"
 "    "
 
-#: lib/gettor/constants.py:520
+#: lib/gettor/i18n.py:473
+#, fuzzy
 msgid ""
-"\n"
-"    After having received all parts, you need to re-assemble them to \n"
-"    one package again. This is done as follows:\n"
-"\n"
-"    "
+"After having received all parts, you need to re-assemble them to \n"
+"one package again. This is done as follows:"
 msgstr ""
 "\n"
 "সব কটি অংশ পাবার পরে আপনাকে সেগুলোকে পুনরায় একত্র করতে হবে\n"
@@ -316,56 +271,33 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:525
-msgid ""
-"\n"
-"    1.) Save all received attachments into one folder on your disk.\n"
-"    \n"
-"    "
+#: lib/gettor/i18n.py:476
+#, fuzzy
+msgid "1.) Save all received attachments into one folder on your disk."
 msgstr ""
 "\n"
 "১) আপনার হার্ডডিস্কের একটি ফোল্ডারে সব অ্যাটাচমেন্টগুলো সেভ করে রাখুন।\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:529
+#: lib/gettor/i18n.py:478
+#, fuzzy
 msgid ""
-"\n"
-"    2.) Unzip all files ending in \".z\". If you saved all attachments to\n"
-"        a fresh folder before, simply unzip all files in that folder.\n"
-"\n"
-"    "
+"2.) Unzip all files ending in \".z\". If you saved all attachments to\n"
+"a fresh folder before, simply unzip all files in that folder."
 msgstr ""
 "\n"
-"২) যেসব ফাইলের শেষে \".z\" আছে সেগুলোকে আনজিপ করুন। আপনি যদি সব অ্যটাচমেন্ট "
-"সেইভ করে রাখেন\n"
+"২) যেসব ফাইলের শেষে \".z\" আছে সেগুলোকে আনজিপ করুন। আপনি যদি সব অ্যটাচমেন্ট সেইভ "
+"করে রাখেন\n"
 "একটি নতুন ফোল্ডারে, সেই ফোল্ডারেই সব ফাইল আনজিপ করুন।\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:534
+#: lib/gettor/i18n.py:481
+#, fuzzy
 msgid ""
-"\n"
-"    3.) Rename the file ending in \".ex_RENAME\" to end in \".exe\" and \n"
-"        also rename the file ending in \".ex_RENAME.asc\" to end in\n"
-"        \".exe.asc\"\n"
-"\n"
-"    "
-msgstr ""
-"\n"
-"৩) \".ex_RENAME\" সম্বলিত ফাইলের শেষাংশের নাম বদলে \".exe\" করুন এবং\n"
-"আরও বদল করুন \".ex_RENAME.asc\" এই অংশগুলোকে এই ফাইল এক্সটেনশনের মাধ্যমে -\n"
-"\".exe.asc\"\n"
-"\n"
-"    "
-
-#: lib/gettor/constants.py:540
-msgid ""
-"\n"
-"    4.) Verify all files as described in the mail you received with \n"
-"        each package. (gpg --verify)\n"
-"\n"
-"    "
+"3.) Verify all files as described in the mail you received with \n"
+"each package. (gpg --verify)"
 msgstr ""
 "\n"
 "৪) মিলিয়ে দেখুন মেইলে যেমন বলা আছে তার সাথে যে ফাইলগুলো পেয়েছেন \n"
@@ -373,43 +305,36 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:545
+#: lib/gettor/i18n.py:484
+#, fuzzy
 msgid ""
-"\n"
-"    5.) Now use a program that can unrar multivolume RAR archives. On\n"
-"        Windows, this usually is WinRAR. If you don't have that\n"
-"        installed on you computer yet, get it here:\n"
-"\n"
-"    "
+"4.) Now use a program that can unrar multivolume RAR archives. On\n"
+"Windows, this usually is WinRAR. If you don't have that\n"
+"installed on you computer yet, get it here:"
 msgstr ""
 "\n"
-"৫) এখন একটি প্রোগ্রাম ব্যবহার করুন যা রার আর্কাইভ থেকে ফাইলগুলোকে "
-"সম্প্রসারিত করতে সাহায্য করবে।\n"
+"৫) এখন একটি প্রোগ্রাম ব্যবহার করুন যা রার আর্কাইভ থেকে ফাইলগুলোকে সম্প্রসারিত করতে "
+"সাহায্য করবে।\n"
 "উইন্ডোজে এটির নাম সাধারণত উইনরার। আপনার যদি তা না থাকে\n"
 "ইনস্টল করা তাহলে তা এখান থেকে ডাউনলোড করুন:\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:555
-msgid ""
-"\n"
-"        To unpack your Tor package, simply doubleclick the \".exe\" file.\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:488
+#, fuzzy
+msgid "To unpack your Tor package, simply doubleclick the \".exe\" file."
 msgstr ""
 "\n"
 "আপনার টর প্যাকেজটি খোলার জন্যে শুধু \".exe\" ফাইলটি ডাবলক্লিক করুন।\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:559
+#: lib/gettor/i18n.py:490
+#, fuzzy
 msgid ""
-"\n"
-"    6.) After unpacking is finished, you should find a newly created \n"
-"        \".exe\" file in your destination folder. Simply doubleclick\n"
-"        that and Tor Browser Bundle should start within a few seconds.\n"
-"\n"
-"    "
+"5.) After unpacking is finished, you should find a newly created \n"
+"\".exe\" file in your destination folder. Simply doubleclick\n"
+"that and Tor Browser Bundle should start within a few seconds."
 msgstr ""
 "\n"
 "৬) প্যাকেজ খোলা শেষ হলে আপনি একটি নতুন খোলা\n"
@@ -418,50 +343,37 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:565
-msgid ""
-"\n"
-"    7.) That's it. You're done. Thanks for using Tor and have fun!\n"
-"    \n"
-"    "
+#: lib/gettor/i18n.py:494
+#, fuzzy
+msgid "6.) That's it. You're done. Thanks for using Tor and have fun!"
 msgstr ""
 "\n"
 "৭) এই তো! আপনার কাজ শেষ। ধন্যবাদ টর ব্যবহারের জন্যে এবং উপভোগ করুন!\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:569
-msgid ""
-"\n"
-"    SUPPORT\n"
-"    "
+#: lib/gettor/i18n.py:496
+msgid "SUPPORT"
 msgstr ""
-"\n"
-"সহায়তা\n"
-"    "
 
-#: lib/gettor/constants.py:580
+#: lib/gettor/i18n.py:501
+#, fuzzy
 msgid ""
-"\n"
-"    Here's your requested software as a zip file. Please unzip the\n"
-"    package and verify the signature.\n"
-"\n"
-"    "
+" Here's your requested software as a zip file. Please unzip the\n"
+"package and verify the signature."
 msgstr ""
 "\n"
-"এখানে আপনার আকাঙ্খিত সফ্টওয়্যারটি রয়েছে একটি জিপ ফাইল হিসেবে। অনুগ্রহ করে "
-"আনজিপ করুন\n"
+"এখানে আপনার আকাঙ্খিত সফ্টওয়্যারটি রয়েছে একটি জিপ ফাইল হিসেবে। অনুগ্রহ করে আনজিপ "
+"করুন\n"
 "এই প্যাকেজটি এবং সিগনেচারটি সত্যায়িত করুন।\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:585
+#: lib/gettor/i18n.py:504
+#, fuzzy
 msgid ""
-"\n"
-"    Hint: If your computer has GnuPG installed, use the gpg\n"
-"    commandline tool as follows after unpacking the zip file:\n"
-"\n"
-"    "
+"Hint: If your computer has GnuPG installed, use the gpg\n"
+"commandline tool as follows after unpacking the zip file:"
 msgstr ""
 "\n"
 "ইঙ্গিত: আপনার কম্পিউটারে যদি জিএনইউপিজি ইনস্টল করা থাকে, তাহলে ব্যবহার করুন "
@@ -470,37 +382,20 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:590
-msgid ""
-"\n"
-"       gpg --verify <packagename>.asc <packagename>\n"
-"\n"
-"    "
-msgstr ""
-"\n"
-"gpg --verify <প্যাকেজের নাম>.asc <প্যাকেজের নাম>\n"
-"\n"
-"    "
-
-#: lib/gettor/constants.py:594
-msgid ""
-"\n"
-"    The output should look somewhat like this:\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:507
+#, fuzzy
+msgid "The output should look somewhat like this:"
 msgstr ""
 "\n"
 "এর আউটপুটটি এরকম দেখাবে হয়ত:\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:602
+#: lib/gettor/i18n.py:509
+#, fuzzy
 msgid ""
-"\n"
-"    If you're not familiar with commandline tools, try looking for\n"
-"    a graphical user interface for GnuPG on this website:\n"
-"\n"
-"    "
+"If you're not familiar with commandline tools, try looking for\n"
+"a graphical user interface for GnuPG on this website:"
 msgstr ""
 "\n"
 "আপনার যদি কমান্ডলাইন টুল সম্পর্কে জানা না থাকে তাহলে চেষ্টা করুন খুঁজতে\n"
@@ -508,17 +403,15 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:611
+#: lib/gettor/i18n.py:512
+#, fuzzy
 msgid ""
-"\n"
-"    If your Internet connection blocks access to the Tor network, you\n"
-"    may need a bridge relay. Bridge relays (or \"bridges\" for short)\n"
-"    are Tor relays that aren't listed in the main directory. Since there\n"
-"    is no complete public list of them, even if your ISP is filtering\n"
-"    connections to all the known Tor relays, they probably won't be able\n"
-"    to block all the bridges.\n"
-"\n"
-"    "
+"If your Internet connection blocks access to the Tor network, you\n"
+"may need a bridge relay. Bridge relays (or \"bridges\" for short)\n"
+"are Tor relays that aren't listed in the main directory. Since there\n"
+"is no complete public list of them, even if your ISP is filtering\n"
+"connections to all the known Tor relays, they probably won't be able\n"
+"to block all the bridges."
 msgstr ""
 "\n"
 "আপনার ইন্টারনেট কানেকশন যদি টর নেটওয়ার্ককে ব্লক করে, আপনার\n"
@@ -530,32 +423,25 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:620
+#: lib/gettor/i18n.py:519
+#, fuzzy
 msgid ""
-"\n"
-"    You can acquire a bridge by sending an email that contains \"get bridges"
-"\"\n"
-"    in the body of the email to the following email address:\n"
-"    bridges@torproject.org\n"
-"\n"
-"    "
+"You can acquire a bridge by sending an email that contains \"get bridges\"\n"
+"in the body of the email to the following email address:"
 msgstr ""
 "\n"
-"আপনি একটি ব্রিজকে অধিগ্রহণ করতে পারবেন একটি ইমেইল পাঠিয়ে যাতে লেখা থাকবে "
-"\"get bridges\" (গেট ব্রিজেস)\n"
+"আপনি একটি ব্রিজকে অধিগ্রহণ করতে পারবেন একটি ইমেইল পাঠিয়ে যাতে লেখা থাকবে \"get "
+"bridges\" (গেট ব্রিজেস)\n"
 "সেই মেইলের মূল অংশে যা এই ঠিকানায় পাঠানো হবে:\n"
 "bridges@torproject.org\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:626
+#: lib/gettor/i18n.py:522
+#, fuzzy
 msgid ""
-"\n"
-"    It is also possible to fetch bridges with a web browser at the "
-"following\n"
-"    url: https://bridges.torproject.org/\n"
-"\n"
-"    "
+"It is also possible to fetch bridges with a web browser at the following\n"
+"url: https://bridges.torproject.org/"
 msgstr ""
 "\n"
 "ওয়েব ব্রাউজার ব্যবহার করেও সম্ভব ব্রিজ আনা - এই ইউআরএল এ যেতে হবে\n"
@@ -563,16 +449,14 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:631
+#: lib/gettor/i18n.py:525
+#, fuzzy
 msgid ""
-"\n"
-"    IMPORTANT NOTE:\n"
-"    Since this is part of a split-file request, you need to wait for\n"
-"    all split files to be received by you before you can save them all\n"
-"    into the same directory and unpack them by double-clicking the\n"
-"    first file.\n"
-"\n"
-"    "
+"IMPORTANT NOTE:\n"
+"Since this is part of a split-file request, you need to wait for\n"
+"all split files to be received by you before you can save them all\n"
+"into the same directory and unpack them by double-clicking the\n"
+"first file."
 msgstr ""
 "\n"
 "গুরুত্বপূর্ণ তথ্য:\n"
@@ -583,13 +467,11 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:639
+#: lib/gettor/i18n.py:531
+#, fuzzy
 msgid ""
-"\n"
-"    Packages might come out of order! Please make sure you received\n"
-"    all packages before you attempt to unpack them!\n"
-"\n"
-"    "
+"Packages might arrive out of order! Please make sure you received\n"
+"all packages before you attempt to unpack them!"
 msgstr ""
 "\n"
 "প্যাকেজগুলো কাজ নাও করতে পারে! অনুগ্রহ করে দেখুন আপনি পেয়েছেন কি না\n"
@@ -597,16 +479,12 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:644
+#: lib/gettor/i18n.py:534
+#, fuzzy
 msgid ""
-"\n"
-"    Thank you for your request. It was successfully understood. Your request "
-"is\n"
-"    currently being processed. Your package should arrive within the next "
-"ten\n"
-"    minutes.\n"
-"\n"
-"    "
+"Thank you for your request. \n"
+"It was successfully understood. Your request is currently being processed.\n"
+"Your package should arrive within the next ten minutes."
 msgstr ""
 "\n"
 "ধন্যবাদ আপনার অনুরোধের জন্যে। এটি ভালভাবে বোঝা গেছে। আপনার অনুরোধ\n"
@@ -615,39 +493,64 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:650
+#: lib/gettor/i18n.py:538
+#, fuzzy
 msgid ""
-"\n"
-"    If it doesn't arrive, the package might be too big for your mail "
-"provider.\n"
-"    Try resending the mail from a gmail.com or yahoo.cn account. Also,\n"
-"    try asking for tor-browser-bundle rather than tor-im-browser-bundle,\n"
-"    since it's smaller.\n"
-"\n"
-"    "
+"If it doesn't arrive, the package might be too big for your mail provider.\n"
+"Try resending the mail from a GMAIL.COM or YAHOO.COM account."
 msgstr ""
 "\n"
 "এটি যদি না আসে, এই প্যাকেজটি আপনার আইএসপির জন্যে খুব বড় হয়ে গেছে।\n"
 "মেইলটি জিমেইল.কম বা ইয়াহু.সিএন এর একটি অ্যাকাউন্ট থেকে পাঠানোর চেষ্টা করুন\n"
-"আপনি টর ইম ব্রাউজার বান্ডেলের পরিবর্তে টর ব্রাউজার বান্ডেল পাবার জন্যে "
-"অনুরোধ করুন,\n"
+"আপনি টর ইম ব্রাউজার বান্ডেলের পরিবর্তে টর ব্রাউজার বান্ডেল পাবার জন্যে অনুরোধ করুন,\n"
 "কারন এটি সাইজে ছোট।\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:657
+#: lib/gettor/i18n.py:541
+#, fuzzy
 msgid ""
-"\n"
-"    Unfortunately we are currently experiencing problems and we can't "
-"fulfill\n"
-"    your request right now. Please be patient as we try to resolve this "
-"issue.\n"
-"\n"
-"    "
+"Unfortunately we are currently experiencing problems and we can't fulfill\n"
+"your request right now. Please be patient as we try to resolve this issue."
 msgstr ""
 "\n"
 "দু:খিত আমরা এখন সমস্যার মধ্যে দিয়ে যাচ্ছি এবং আপনার।\n"
-"অনুরোধ রক্ষা করতে পারছি না। অনুগ্রহ করে ধৈর্য ধরুন যতক্ষণ না আমরা এই সমস্যার "
-"সমাধান করি।\n"
+"অনুরোধ রক্ষা করতে পারছি না। অনুগ্রহ করে ধৈর্য ধরুন যতক্ষণ না আমরা এই সমস্যার সমাধান "
+"করি।\n"
 "\n"
 "    "
+
+#~ msgid ""
+#~ "\n"
+#~ "    3.) Rename the file ending in \".ex_RENAME\" to end in \".exe\" and \n"
+#~ "        also rename the file ending in \".ex_RENAME.asc\" to end in\n"
+#~ "        \".exe.asc\"\n"
+#~ "\n"
+#~ "    "
+#~ msgstr ""
+#~ "\n"
+#~ "৩) \".ex_RENAME\" সম্বলিত ফাইলের শেষাংশের নাম বদলে \".exe\" করুন এবং\n"
+#~ "আরও বদল করুন \".ex_RENAME.asc\" এই অংশগুলোকে এই ফাইল এক্সটেনশনের মাধ্যমে -\n"
+#~ "\".exe.asc\"\n"
+#~ "\n"
+#~ "    "
+
+#~ msgid ""
+#~ "\n"
+#~ "    SUPPORT\n"
+#~ "    "
+#~ msgstr ""
+#~ "\n"
+#~ "সহায়তা\n"
+#~ "    "
+
+#~ msgid ""
+#~ "\n"
+#~ "       gpg --verify <packagename>.asc <packagename>\n"
+#~ "\n"
+#~ "    "
+#~ msgstr ""
+#~ "\n"
+#~ "gpg --verify <প্যাকেজের নাম>.asc <প্যাকেজের নাম>\n"
+#~ "\n"
+#~ "    "

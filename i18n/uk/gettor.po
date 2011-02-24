@@ -6,37 +6,34 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-14 14:10+0100\n"
+"POT-Creation-Date: 2011-02-24 11:28+0100\n"
 "PO-Revision-Date: 2010-05-26 15:28-0600\n"
 "Last-Translator: Eugene Briskin <phirelli@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Pootle 1.1.0\n"
 
-#: lib/gettor/constants.py:388
+#: lib/gettor/i18n.py:406
+#, fuzzy
 msgid ""
+"Hello, This is the \"GetTor\" robot.\n"
 "\n"
-"    Hello, This is the \"GetTor\" robot.\n"
-"\n"
-"    Thank you for your request.\n"
-"\n"
-"    "
+"Thank you for your request."
 msgstr ""
 "\n"
 "Привіт, Це Робот \"GetTor\". Дякую вам за ваш запит.\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:394
+#: lib/gettor/i18n.py:410
+#, fuzzy
 msgid ""
-"\n"
-"    Unfortunately, we won't answer you at this address. You should make\n"
-"    an account with GMAIL.COM or YAHOO.CN and send the mail from\n"
-"    one of those.\n"
-"\n"
-"    "
+" Unfortunately, we won't answer you at this address. You should make\n"
+"an account with GMAIL.COM or YAHOO.CN and send the mail from\n"
+"one of those."
 msgstr ""
 "\n"
 "На жаль, ми не змогли відповісти вам на цю адресу. Вам потрібно створити\n"
@@ -44,30 +41,27 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:400
+#: lib/gettor/i18n.py:414
+#, fuzzy
 msgid ""
-"\n"
-"    We only process requests from email services that support \"DKIM\",\n"
-"    which is an email feature that lets us verify that the address in the\n"
-"    \"From\" line is actually the one who sent the mail.\n"
-"\n"
-"    "
+"We only process requests from email services that support \"DKIM\",\n"
+"which is an email feature that lets us verify that the address in the\n"
+"\"From\" line is actually the one who sent the mail."
 msgstr ""
 "\n"
-"Ми опрацювуємо запити лише з поштових сервісів що мають підтримку \"DKIM\", що\n"
+"Ми опрацювуємо запити лише з поштових сервісів що мають підтримку \"DKIM\", "
+"що\n"
 "є поштовою формою, яка дозволяє нам перевіряти адресу від людей, що дійсно\n"
 "відправили нам пошту.\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:406
+#: lib/gettor/i18n.py:418
+#, fuzzy
 msgid ""
-"\n"
-"    (We apologize if you didn't ask for this mail. Since your email is from\n"
-"    a service that doesn't use DKIM, we're sending a short explanation,\n"
-"    and then we'll ignore this email address for the next day or so.)\n"
-"\n"
-"    "
+"(We apologize if you didn't ask for this mail. Since your email is from\n"
+"a service that doesn't use DKIM, we're sending a short explanation,\n"
+"and then we'll ignore this email address for the next day or so.)"
 msgstr ""
 "\n"
 "(Ми перепрошуємо якщо ви не просили відсилати вам цього листа. Так як ваша\n"
@@ -76,13 +70,11 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:412
+#: lib/gettor/i18n.py:422
+#, fuzzy
 msgid ""
-"\n"
-"    Please note that currently, we can't process HTML emails or base 64\n"
-"    mails. You will need to send plain text.\n"
-"\n"
-"    "
+"Please note that currently, we can't process HTML emails or base 64\n"
+"mails. You will need to send plain text."
 msgstr ""
 "\n"
 "Будь-ласка запам'тайте це зараз, ми не можемо обробляти HTML листи і емейл\n"
@@ -90,13 +82,11 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:418 lib/gettor/constants.py:575
+#: lib/gettor/i18n.py:425 lib/gettor/i18n.py:498
+#, fuzzy
 msgid ""
-"\n"
-"    If you have any questions or it doesn't work, you can contact a\n"
-"    human at this support email address: tor-assistants@torproject.org\n"
-"\n"
-"    "
+"If you have any questions or it doesn't work, you can contact a\n"
+"human at this support email address: tor-assistants@torproject.org"
 msgstr ""
 "\n"
 "Якщо у вас є будь-які питання, ви можете зв'язатися з нашою підтримкою за\n"
@@ -104,13 +94,11 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:423
+#: lib/gettor/i18n.py:428
+#, fuzzy
 msgid ""
-"\n"
-"    I will mail you a Tor package, if you tell me which one you want.\n"
-"    Please select one of the following package names:\n"
-"\n"
-"    "
+"I will mail you a Tor package, if you tell me which one you want.\n"
+"Please select one of the following package names:"
 msgstr ""
 "\n"
 "Я надішлю вам пакет програм Tor, якщо ви повідомите мені який пакет програм\n"
@@ -118,65 +106,47 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/constants.py:436
+#: lib/gettor/i18n.py:431
+#, fuzzy
 msgid ""
-"\n"
-"    Please reply to this mail (to gettor@torproject.org), and tell me\n"
-"    a single package name anywhere in the body of your email.\n"
-"\n"
-"    "
+"Please reply to this mail (to gettor@torproject.org), and tell me\n"
+"a single package name anywhere in the body of your email."
 msgstr ""
 "\n"
 "Будь-ласка після вибору пакета надішліть лист на цю адресу\n"
-"gettor@torproject.org, та напишіть мені назву пакету програм десь на початку\n"
+"gettor@torproject.org, та напишіть мені назву пакету програм десь на "
+"початку\n"
 "вашого листа.\n"
 "\n"
 "    "
 
-#: lib/gettor/constants.py:441
-msgid ""
-"\n"
-"    OBTAINING LOCALIZED VERSIONS OF TOR\n"
-"    "
+#: lib/gettor/i18n.py:434
+msgid " OBTAINING LOCALIZED VERSIONS OF TOR"
 msgstr ""
 
-#: lib/gettor/constants.py:448
+#: lib/gettor/i18n.py:436
 msgid ""
-"\n"
-"    To get a version of Tor translated into your language, specify the\n"
-"    language you want in the address you send the mail to:\n"
-"\n"
-"    "
+"To get a version of Tor translated into your language, specify the\n"
+"language you want in the address you send the mail to:"
 msgstr ""
 
-#: lib/gettor/constants.py:457
+#: lib/gettor/i18n.py:439
 msgid ""
-"\n"
-"    This example will give you the requested package in a localized\n"
-"    version for Chinese. Check below for a list of supported language\n"
-"    codes.\n"
-"\n"
-"    "
+"This example will give you the requested package in a localized\n"
+"version for Chinese. Check below for a list of supported language\n"
+"codes. "
 msgstr ""
 
-#: lib/gettor/constants.py:463
-msgid ""
-"\n"
-"    List of supported locales:\n"
-"    "
+#: lib/gettor/i18n.py:443
+msgid " List of supported locales:"
 msgstr ""
 
-#: lib/gettor/constants.py:470
-msgid ""
-"\n"
-"    Here is a list of all available languages:\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:445
+msgid "Here is a list of all available languages:"
 msgstr ""
 
-#: lib/gettor/constants.py:474
+#: lib/gettor/i18n.py:447
 msgid ""
-"\n"
 "    gettor+ar@torproject.org:     Arabic\n"
 "    gettor+de@torproject.org:     German\n"
 "    gettor+en@torproject.org:     English\n"
@@ -187,272 +157,159 @@ msgid ""
 "    gettor+nl@torproject.org:     Dutch\n"
 "    gettor+pl@torproject.org:     Polish\n"
 "    gettor+ru@torproject.org:     Russian\n"
-"    gettor+zh@torproject.org:     Chinese\n"
-"\n"
-"    "
+"    gettor+zh@torproject.org:     Chinese"
 msgstr ""
 
-#: lib/gettor/constants.py:488
-msgid ""
-"\n"
-"    If you select no language, you will receive the English version.\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:459
+msgid "If you select no language, you will receive the English version."
 msgstr ""
 
-#: lib/gettor/constants.py:493
-msgid ""
-"\n"
-"    SMALLER SIZED PACKAGES\n"
-"    "
+#: lib/gettor/i18n.py:461
+msgid "SMALLER SIZED PACKAGES"
 msgstr ""
 
-#: lib/gettor/constants.py:499
+#: lib/gettor/i18n.py:463
 msgid ""
-"\n"
-"    If your bandwith is low or your provider doesn't allow you to \n"
-"    receive large attachments in your email, there is a feature of \n"
-"    GetTor you can use to make it send you a number of small packages\n"
-"    instead of one big one.\n"
-"\n"
-"    "
+"If your bandwith is low or your provider doesn't allow you to \n"
+"receive large attachments in your email, there is a feature of \n"
+"GetTor you can use to make it send you a number of small packages\n"
+"instead of one big one."
 msgstr ""
 
-#: lib/gettor/constants.py:506
-msgid ""
-"\n"
-"    Simply include the keyword 'split' somewhere in your email like so:\n"
-"    "
+#: lib/gettor/i18n.py:468
+msgid "Simply include the keyword 'split' somewhere in your email like so:"
 msgstr ""
 
-#: lib/gettor/constants.py:515
+#: lib/gettor/i18n.py:470
 msgid ""
-"\n"
-"    Sending this text in an email to GetTor will cause it to send you \n"
-"    the Tor Browser Bundle in a number of 1,4MB attachments.\n"
-"\n"
-"    "
+"Sending this text in an email to GetTor will cause it to send you \n"
+"the Tor Browser Bundle in a number of 1,4MB attachments."
 msgstr ""
 
-#: lib/gettor/constants.py:520
+#: lib/gettor/i18n.py:473
 msgid ""
-"\n"
-"    After having received all parts, you need to re-assemble them to \n"
-"    one package again. This is done as follows:\n"
-"\n"
-"    "
+"After having received all parts, you need to re-assemble them to \n"
+"one package again. This is done as follows:"
 msgstr ""
 
-#: lib/gettor/constants.py:525
-msgid ""
-"\n"
-"    1.) Save all received attachments into one folder on your disk.\n"
-"    \n"
-"    "
+#: lib/gettor/i18n.py:476
+msgid "1.) Save all received attachments into one folder on your disk."
 msgstr ""
 
-#: lib/gettor/constants.py:529
+#: lib/gettor/i18n.py:478
 msgid ""
-"\n"
-"    2.) Unzip all files ending in \".z\". If you saved all attachments to\n"
-"        a fresh folder before, simply unzip all files in that folder.\n"
-"\n"
-"    "
+"2.) Unzip all files ending in \".z\". If you saved all attachments to\n"
+"a fresh folder before, simply unzip all files in that folder."
 msgstr ""
 
-#: lib/gettor/constants.py:534
+#: lib/gettor/i18n.py:481
 msgid ""
-"\n"
-"    3.) Rename the file ending in \".ex_RENAME\" to end in \".exe\" and \n"
-"        also rename the file ending in \".ex_RENAME.asc\" to end in\n"
-"        \".exe.asc\"\n"
-"\n"
-"    "
+"3.) Verify all files as described in the mail you received with \n"
+"each package. (gpg --verify)"
 msgstr ""
 
-#: lib/gettor/constants.py:540
+#: lib/gettor/i18n.py:484
 msgid ""
-"\n"
-"    4.) Verify all files as described in the mail you received with \n"
-"        each package. (gpg --verify)\n"
-"\n"
-"    "
+"4.) Now use a program that can unrar multivolume RAR archives. On\n"
+"Windows, this usually is WinRAR. If you don't have that\n"
+"installed on you computer yet, get it here:"
 msgstr ""
 
-#: lib/gettor/constants.py:545
-msgid ""
-"\n"
-"    5.) Now use a program that can unrar multivolume RAR archives. On\n"
-"        Windows, this usually is WinRAR. If you don't have that\n"
-"        installed on you computer yet, get it here:\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:488
+msgid "To unpack your Tor package, simply doubleclick the \".exe\" file."
 msgstr ""
 
-#: lib/gettor/constants.py:555
+#: lib/gettor/i18n.py:490
 msgid ""
-"\n"
-"        To unpack your Tor package, simply doubleclick the \".exe\" file.\n"
-"\n"
-"    "
+"5.) After unpacking is finished, you should find a newly created \n"
+"\".exe\" file in your destination folder. Simply doubleclick\n"
+"that and Tor Browser Bundle should start within a few seconds."
 msgstr ""
 
-#: lib/gettor/constants.py:559
-msgid ""
-"\n"
-"    6.) After unpacking is finished, you should find a newly created \n"
-"        \".exe\" file in your destination folder. Simply doubleclick\n"
-"        that and Tor Browser Bundle should start within a few seconds.\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:494
+msgid "6.) That's it. You're done. Thanks for using Tor and have fun!"
 msgstr ""
 
-#: lib/gettor/constants.py:565
-msgid ""
-"\n"
-"    7.) That's it. You're done. Thanks for using Tor and have fun!\n"
-"    \n"
-"    "
+#: lib/gettor/i18n.py:496
+msgid "SUPPORT"
 msgstr ""
 
-#: lib/gettor/constants.py:569
+#: lib/gettor/i18n.py:501
 msgid ""
-"\n"
-"    SUPPORT\n"
-"    "
+" Here's your requested software as a zip file. Please unzip the\n"
+"package and verify the signature."
 msgstr ""
 
-#: lib/gettor/constants.py:580
+#: lib/gettor/i18n.py:504
 msgid ""
-"\n"
-"    Here's your requested software as a zip file. Please unzip the\n"
-"    package and verify the signature.\n"
-"\n"
-"    "
+"Hint: If your computer has GnuPG installed, use the gpg\n"
+"commandline tool as follows after unpacking the zip file:"
 msgstr ""
 
-#: lib/gettor/constants.py:585
-msgid ""
-"\n"
-"    Hint: If your computer has GnuPG installed, use the gpg\n"
-"    commandline tool as follows after unpacking the zip file:\n"
-"\n"
-"    "
+#: lib/gettor/i18n.py:507
+msgid "The output should look somewhat like this:"
 msgstr ""
 
-#: lib/gettor/constants.py:590
+#: lib/gettor/i18n.py:509
 msgid ""
-"\n"
-"       gpg --verify <packagename>.asc <packagename>\n"
-"\n"
-"    "
+"If you're not familiar with commandline tools, try looking for\n"
+"a graphical user interface for GnuPG on this website:"
 msgstr ""
 
-#: lib/gettor/constants.py:594
+#: lib/gettor/i18n.py:512
 msgid ""
-"\n"
-"    The output should look somewhat like this:\n"
-"\n"
-"    "
+"If your Internet connection blocks access to the Tor network, you\n"
+"may need a bridge relay. Bridge relays (or \"bridges\" for short)\n"
+"are Tor relays that aren't listed in the main directory. Since there\n"
+"is no complete public list of them, even if your ISP is filtering\n"
+"connections to all the known Tor relays, they probably won't be able\n"
+"to block all the bridges."
 msgstr ""
 
-#: lib/gettor/constants.py:602
+#: lib/gettor/i18n.py:519
 msgid ""
-"\n"
-"    If you're not familiar with commandline tools, try looking for\n"
-"    a graphical user interface for GnuPG on this website:\n"
-"\n"
-"    "
+"You can acquire a bridge by sending an email that contains \"get bridges\"\n"
+"in the body of the email to the following email address:"
 msgstr ""
 
-#: lib/gettor/constants.py:611
+#: lib/gettor/i18n.py:522
 msgid ""
-"\n"
-"    If your Internet connection blocks access to the Tor network, you\n"
-"    may need a bridge relay. Bridge relays (or \"bridges\" for short)\n"
-"    are Tor relays that aren't listed in the main directory. Since there\n"
-"    is no complete public list of them, even if your ISP is filtering\n"
-"    connections to all the known Tor relays, they probably won't be able\n"
-"    to block all the bridges.\n"
-"\n"
-"    "
+"It is also possible to fetch bridges with a web browser at the following\n"
+"url: https://bridges.torproject.org/"
 msgstr ""
 
-#: lib/gettor/constants.py:620
+#: lib/gettor/i18n.py:525
 msgid ""
-"\n"
-"    You can acquire a bridge by sending an email that contains \"get bridges"
-"\"\n"
-"    in the body of the email to the following email address:\n"
-"    bridges@torproject.org\n"
-"\n"
-"    "
+"IMPORTANT NOTE:\n"
+"Since this is part of a split-file request, you need to wait for\n"
+"all split files to be received by you before you can save them all\n"
+"into the same directory and unpack them by double-clicking the\n"
+"first file."
 msgstr ""
 
-#: lib/gettor/constants.py:626
+#: lib/gettor/i18n.py:531
 msgid ""
-"\n"
-"    It is also possible to fetch bridges with a web browser at the "
-"following\n"
-"    url: https://bridges.torproject.org/\n"
-"\n"
-"    "
+"Packages might arrive out of order! Please make sure you received\n"
+"all packages before you attempt to unpack them!"
 msgstr ""
 
-#: lib/gettor/constants.py:631
+#: lib/gettor/i18n.py:534
 msgid ""
-"\n"
-"    IMPORTANT NOTE:\n"
-"    Since this is part of a split-file request, you need to wait for\n"
-"    all split files to be received by you before you can save them all\n"
-"    into the same directory and unpack them by double-clicking the\n"
-"    first file.\n"
-"\n"
-"    "
+"Thank you for your request. \n"
+"It was successfully understood. Your request is currently being processed.\n"
+"Your package should arrive within the next ten minutes."
 msgstr ""
 
-#: lib/gettor/constants.py:639
+#: lib/gettor/i18n.py:538
 msgid ""
-"\n"
-"    Packages might come out of order! Please make sure you received\n"
-"    all packages before you attempt to unpack them!\n"
-"\n"
-"    "
+"If it doesn't arrive, the package might be too big for your mail provider.\n"
+"Try resending the mail from a GMAIL.COM or YAHOO.COM account."
 msgstr ""
 
-#: lib/gettor/constants.py:644
+#: lib/gettor/i18n.py:541
 msgid ""
-"\n"
-"    Thank you for your request. It was successfully understood. Your request "
-"is\n"
-"    currently being processed. Your package should arrive within the next "
-"ten\n"
-"    minutes.\n"
-"\n"
-"    "
-msgstr ""
-
-#: lib/gettor/constants.py:650
-msgid ""
-"\n"
-"    If it doesn't arrive, the package might be too big for your mail "
-"provider.\n"
-"    Try resending the mail from a gmail.com or yahoo.cn account. Also,\n"
-"    try asking for tor-browser-bundle rather than tor-im-browser-bundle,\n"
-"    since it's smaller.\n"
-"\n"
-"    "
-msgstr ""
-
-#: lib/gettor/constants.py:657
-msgid ""
-"\n"
-"    Unfortunately we are currently experiencing problems and we can't "
-"fulfill\n"
-"    your request right now. Please be patient as we try to resolve this "
-"issue.\n"
-"\n"
-"    "
+"Unfortunately we are currently experiencing problems and we can't fulfill\n"
+"your request right now. Please be patient as we try to resolve this issue."
 msgstr ""
 
 #~ msgid ""
@@ -464,10 +321,12 @@ msgstr ""
 #~ "    one of those.\n"
 #~ "\n"
 #~ "    We only process requests from email services that support \"DKIM\",\n"
-#~ "    which is an email feature that lets us verify that the address in the\n"
+#~ "    which is an email feature that lets us verify that the address in "
+#~ "the\n"
 #~ "    \"From\" line is actually the one who sent the mail.\n"
 #~ "\n"
-#~ "    (We apologize if you didn't ask for this mail. Since your email is from\n"
+#~ "    (We apologize if you didn't ask for this mail. Since your email is "
+#~ "from\n"
 #~ "    a service that doesn't use DKIM, we're sending a short explanation,\n"
 #~ "    and then we'll ignore this email address for the next day or so.)\n"
 #~ "\n"
@@ -486,14 +345,14 @@ msgstr ""
 #~ "    акаунт на сервісі GMAIL.COM або YAHOO.CN та надіслати лист\n"
 #~ "    з одного з цих сайтів.\n"
 #~ "\n"
-#~ "    Ми можемо відповідати на запити тільки з email-сервісів які підтримують "
-#~ "\"DKIM\",\n"
+#~ "    Ми можемо відповідати на запити тільки з email-сервісів які "
+#~ "підтримують \"DKIM\",\n"
 #~ "    що є особливістю email верифікувати нам що адреса в графі\n"
 #~ "    \"From\" (від кого) належить тому, хто надіслав лист.\n"
 #~ "\n"
 #~ "    (Ми вибачаємось якщо ти не питав про це. Тому що твоя скринька з \n"
-#~ "    сервісу який не підтимує використання DKIM, ми надсилаємо тобі коротке "
-#~ "розяснення,\n"
+#~ "    сервісу який не підтимує використання DKIM, ми надсилаємо тобі "
+#~ "коротке розяснення,\n"
 #~ "    та потім ми будемо ігнорувати цей адрес на наступні дні.)\n"
 #~ "\n"
 #~ "    Please note that currently, we can't process HTML emails or base 64\n"

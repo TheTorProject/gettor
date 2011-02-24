@@ -35,7 +35,8 @@ GENERATING .po/.pot FILES
 
 In the top level directory of the gettor source, run the following command:
 
-    xgettext lib/gettor/constants.py -d gettor -o po/templates/gettor.pot
+    xgettext lib/gettor/i18n.py -dgettor --from-code=utf-8 -o i18n/templates/gettor.pot 
+    for i in i18n/*/gettor.po; do msgmerge -U $i i18n/templates/gettor.pot ; done
 
 Commit your pot file. Then log into the pootle server, commit any
 outstanding changes in ~/gettor/, and do an svn update. Then log into the

@@ -71,7 +71,7 @@ class createTrans(Command):
                         print 'Compiling %s' % src
                         self.msgfmt(src, dest)
     def msgfmt(self, src, dest):
-        args = src + " -o " + dest
+        args = src + " -f -o " + dest
         try:
             ret = subprocess.call("msgfmt" + " " + args, shell=True)
             if ret < 0:

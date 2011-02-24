@@ -110,7 +110,6 @@ class Response:
         logging.info(str(self.reqInfo))
 
         # Initialize locale subsystem
-        gettext.install("gettor", unicode=True)
         self.t = i18n.getLang(self.reqInfo['locale'])
 
         # Init black & whitelists
