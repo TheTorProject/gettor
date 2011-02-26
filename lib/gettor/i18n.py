@@ -541,5 +541,10 @@ _("""If it doesn't arrive, the package might be too big for your mail provider.
 Try resending the mail from a GMAIL.COM or YAHOO.COM account."""),
  # GETTOR_TEXT[40]
 _("""Unfortunately we are currently experiencing problems and we can't fulfill
-your request right now. Please be patient as we try to resolve this issue.""")
+your request right now. Please be patient as we try to resolve this issue."""),
+ # GETTOR_TEXT[41]
+_("""Unfortunately there is no split package available for the package you
+requested. Please send us another package name or request the same package 
+again, but remove the 'split' keyword. In that case we'll send you the whole 
+package. Make sure this is what you want.""")
 ]

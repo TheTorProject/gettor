@@ -98,6 +98,12 @@ def getDelayAlertMsg(t):
              + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
              + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
 
+def getNoSplitAvailable(t):
+        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[41]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
+
 class Response:
     def __init__(self, config, reqInfo):
         """Intialize the reply class. The most important values are passed in
@@ -222,6 +228,14 @@ class Response:
         """Send a number of messages with attachments to the user. The number
            depends on the number of parts of the package.
         """
+        # Check if there's a split package for this available
+        pack =  self.reqInfo['package']
+        split = self.config.PACKAGES[pack][1]
+        if split and split is "unavailable":
+            logging.error("User requested split package that isn't available")
+            # Inform the user
+            return self.sendTextEmail(getNoSplitAvailable(self.t))
+
         if self.isBlacklistedForMessageType("sendSplitPackage"):
             # Don't send anything
             return False
