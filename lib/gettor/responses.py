@@ -136,10 +136,6 @@ class Response:
             # Did the user choose a package?
             if self.reqInfo['package'] is None:
                 return self.sendPackageHelp()
-            # Be a polite bot and send message that mail is on the way
-            if self.config.DELAY_ALERT:
-                if not self.sendDelayAlert():
-                    logging.error("Failed to sent delay alert.")
             # Did the user request a split or normal package download?
             if self.reqInfo['split']:
                 return self.sendSplitPackage()
@@ -179,6 +175,11 @@ class Response:
         """ Send a message with an attachment to the user. The attachment is 
             chosen automatically from the selected self.reqInfo['package']
         """
+        # Be a polite bot and send message that mail is on the way
+        if self.config.DELAY_ALERT:
+	    if not self.sendDelayAlert():
+	        logging.error("Failed to sent delay alert.")
+
         pack = self.reqInfo['package']
         to = self.reqInfo['user']
         if self.isBlacklistedForMessageType("sendPackage"):
@@ -231,10 +232,15 @@ class Response:
         # Check if there's a split package for this available
         pack =  self.reqInfo['package']
         split = self.config.PACKAGES[pack][1]
-        if split and split is "unavailable":
+        if split is not None and split == "unavailable":
             logging.error("User requested split package that isn't available")
             # Inform the user
             return self.sendTextEmail(getNoSplitAvailable(self.t))
+
+        # Be a polite bot and send message that mail is on the way
+        if self.config.DELAY_ALERT:
+	    if not self.sendDelayAlert():
+	        logging.error("Failed to sent delay alert.")
 
         if self.isBlacklistedForMessageType("sendSplitPackage"):
             # Don't send anything
