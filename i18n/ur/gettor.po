@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-24 11:28+0100\n"
+"POT-Creation-Date: 2011-02-27 00:10+0100\n"
 "PO-Revision-Date: 2010-09-15 09:05+0200\n"
 "Last-Translator: ahmedsalman <ahmed.salman@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: lib/gettor/i18n.py:406
+#: lib/gettor/i18n.py:408
 #, fuzzy
 msgid ""
 "Hello, This is the \"GetTor\" robot.\n"
@@ -28,7 +28,7 @@ msgstr ""
 "آپ کی درخواست کا شکریہ\n"
 "    "
 
-#: lib/gettor/i18n.py:410
+#: lib/gettor/i18n.py:412
 #, fuzzy
 msgid ""
 " Unfortunately, we won't answer you at this address. You should make\n"
@@ -40,7 +40,7 @@ msgstr ""
 "CN کے ساتھ ایک اکاؤنٹ اور ای میل بھیجو ان میں سے ایک\n"
 "    "
 
-#: lib/gettor/i18n.py:414
+#: lib/gettor/i18n.py:416
 #, fuzzy
 msgid ""
 "We only process requests from email services that support \"DKIM\",\n"
@@ -51,7 +51,7 @@ msgstr ""
 " ہم صرف ان درخواست  کو سپورٹ کرتے ھیں جو ای میل DKIM  پر عمل کر تے ہے\n"
 "    "
 
-#: lib/gettor/i18n.py:418
+#: lib/gettor/i18n.py:420
 #, fuzzy
 msgid ""
 "(We apologize if you didn't ask for this mail. Since your email is from\n"
@@ -65,7 +65,7 @@ msgstr ""
 "سے اگے\n"
 "    "
 
-#: lib/gettor/i18n.py:422
+#: lib/gettor/i18n.py:424
 #, fuzzy
 msgid ""
 "Please note that currently, we can't process HTML emails or base 64\n"
@@ -76,7 +76,7 @@ msgstr ""
 "سکتے ہیں یا  64 بیس ای میل. آپ کو سادہ متن بھیجنے کی ضرورت ہو گی\n"
 "    "
 
-#: lib/gettor/i18n.py:425 lib/gettor/i18n.py:498
+#: lib/gettor/i18n.py:427 lib/gettor/i18n.py:500
 #, fuzzy
 msgid ""
 "If you have any questions or it doesn't work, you can contact a\n"
@@ -87,7 +87,7 @@ msgstr ""
 "میل ایڈریس پر رابطہ کر سکتے ہیں tor-assistants@torproject.org\n"
 "    "
 
-#: lib/gettor/i18n.py:428
+#: lib/gettor/i18n.py:430
 #, fuzzy
 msgid ""
 "I will mail you a Tor package, if you tell me which one you want.\n"
@@ -98,7 +98,7 @@ msgstr ""
 "مہربانی مندرجہ ذیل پیکج کے نام سے ایک کا انتخاب کریں. \n"
 "    "
 
-#: lib/gettor/i18n.py:431
+#: lib/gettor/i18n.py:433
 #, fuzzy
 msgid ""
 "Please reply to this mail (to gettor@torproject.org), and tell me\n"
@@ -109,14 +109,14 @@ msgstr ""
 "آپ کے ای میل میں ایک پیکیج کا نام. \n"
 "    "
 
-#: lib/gettor/i18n.py:434
+#: lib/gettor/i18n.py:436
 #, fuzzy
 msgid " OBTAINING LOCALIZED VERSIONS OF TOR"
 msgstr ""
 "\n"
 "TOR کا مقامی ورژن حاصل کرنا    "
 
-#: lib/gettor/i18n.py:436
+#: lib/gettor/i18n.py:438
 #, fuzzy
 msgid ""
 "To get a version of Tor translated into your language, specify the\n"
@@ -127,7 +127,7 @@ msgstr ""
 "اسے ای میل ایڈریس میں\n"
 "    "
 
-#: lib/gettor/i18n.py:439
+#: lib/gettor/i18n.py:441
 #, fuzzy
 msgid ""
 "This example will give you the requested package in a localized\n"
@@ -139,14 +139,14 @@ msgstr ""
 "کوڈز میں فہرست ملاحظہ کریں\n"
 "    "
 
-#: lib/gettor/i18n.py:443
+#: lib/gettor/i18n.py:445
 #, fuzzy
 msgid " List of supported locales:"
 msgstr ""
 "\n"
 "مقامی حمایت کردہ فہرست    "
 
-#: lib/gettor/i18n.py:445
+#: lib/gettor/i18n.py:447
 #, fuzzy
 msgid "Here is a list of all available languages:"
 msgstr ""
@@ -154,7 +154,7 @@ msgstr ""
 "یہ تمام دستیاب زبانوں کی فہرست ہے\n"
 "    "
 
-#: lib/gettor/i18n.py:447
+#: lib/gettor/i18n.py:449
 #, fuzzy
 msgid ""
 "    gettor+ar@torproject.org:     Arabic\n"
@@ -178,7 +178,7 @@ msgstr ""
 "+zh@torproject.org\n"
 "    "
 
-#: lib/gettor/i18n.py:459
+#: lib/gettor/i18n.py:461
 #, fuzzy
 msgid "If you select no language, you will receive the English version."
 msgstr ""
@@ -186,14 +186,14 @@ msgstr ""
 "اگر آپ نے کوئی زبان منتخب نہ کی تو آپ انگریزی ورژن حاصل کریں گے\n"
 "    "
 
-#: lib/gettor/i18n.py:461
+#: lib/gettor/i18n.py:463
 #, fuzzy
 msgid "SMALLER SIZED PACKAGES"
 msgstr ""
 "\n"
 "چھوٹے سائز کے پیکجز    "
 
-#: lib/gettor/i18n.py:463
+#: lib/gettor/i18n.py:465
 #, fuzzy
 msgid ""
 "If your bandwith is low or your provider doesn't allow you to \n"
@@ -208,14 +208,14 @@ msgstr ""
 "بجائے ایک بڑے سے کے\n"
 "    "
 
-#: lib/gettor/i18n.py:468
+#: lib/gettor/i18n.py:470
 #, fuzzy
 msgid "Simply include the keyword 'split' somewhere in your email like so:"
 msgstr ""
 "\n"
 "بس مطلوبہ الفاظ \"ٹکڑے ٹکڑے کر ڈالا\" شامل کریں, کہیں آپنے ای میل میں    "
 
-#: lib/gettor/i18n.py:470
+#: lib/gettor/i18n.py:472
 #, fuzzy
 msgid ""
 "Sending this text in an email to GetTor will cause it to send you \n"
@@ -226,7 +226,7 @@ msgstr ""
 "Bundleکوبھیجے سکتے ہیں\n"
 "    "
 
-#: lib/gettor/i18n.py:473
+#: lib/gettor/i18n.py:475
 #, fuzzy
 msgid ""
 "After having received all parts, you need to re-assemble them to \n"
@@ -237,7 +237,7 @@ msgstr ""
 "درج ذيل ہے:\n"
 "    "
 
-#: lib/gettor/i18n.py:476
+#: lib/gettor/i18n.py:478
 #, fuzzy
 msgid "1.) Save all received attachments into one folder on your disk."
 msgstr ""
@@ -245,7 +245,7 @@ msgstr ""
 "1) سب ملحقات کو ایک فولڈر میں اپنے ڈسک پر محفوظ کریں    \n"
 "    "
 
-#: lib/gettor/i18n.py:478
+#: lib/gettor/i18n.py:480
 #, fuzzy
 msgid ""
 "2.) Unzip all files ending in \".z\". If you saved all attachments to\n"
@@ -256,7 +256,7 @@ msgstr ""
 "میں محفوظ کرتے ھیں, تو اس فولڈر میں تمام فائلیں کھولیں\n"
 "    "
 
-#: lib/gettor/i18n.py:481
+#: lib/gettor/i18n.py:483
 #, fuzzy
 msgid ""
 "3.) Verify all files as described in the mail you received with \n"
@@ -267,7 +267,7 @@ msgstr ""
 "تصدیق)\n"
 "    "
 
-#: lib/gettor/i18n.py:484
+#: lib/gettor/i18n.py:486
 #, fuzzy
 msgid ""
 "4.) Now use a program that can unrar multivolume RAR archives. On\n"
@@ -280,7 +280,7 @@ msgstr ""
 "نہیں ہے تو اسے یہاں سے حاصل کرو\n"
 "    "
 
-#: lib/gettor/i18n.py:488
+#: lib/gettor/i18n.py:490
 #, fuzzy
 msgid "To unpack your Tor package, simply doubleclick the \".exe\" file."
 msgstr ""
@@ -288,7 +288,7 @@ msgstr ""
 "اپنے پیکج کو کھولنے کے لیے صرف \"exe.\" پرڈبل کلک کریں\n"
 "    "
 
-#: lib/gettor/i18n.py:490
+#: lib/gettor/i18n.py:492
 #, fuzzy
 msgid ""
 "5.) After unpacking is finished, you should find a newly created \n"
@@ -301,7 +301,7 @@ msgstr ""
 "میں سروع ہو جانا چاہے۔\n"
 "    "
 
-#: lib/gettor/i18n.py:494
+#: lib/gettor/i18n.py:496
 #, fuzzy
 msgid "6.) That's it. You're done. Thanks for using Tor and have fun!"
 msgstr ""
@@ -310,11 +310,11 @@ msgstr ""
 "ہوسکتے ہیں۔    \n"
 "    "
 
-#: lib/gettor/i18n.py:496
+#: lib/gettor/i18n.py:498
 msgid "SUPPORT"
 msgstr ""
 
-#: lib/gettor/i18n.py:501
+#: lib/gettor/i18n.py:503
 #, fuzzy
 msgid ""
 " Here's your requested software as a zip file. Please unzip the\n"
@@ -325,7 +325,7 @@ msgstr ""
 "تصدیق کریں۔\n"
 "    "
 
-#: lib/gettor/i18n.py:504
+#: lib/gettor/i18n.py:506
 #, fuzzy
 msgid ""
 "Hint: If your computer has GnuPG installed, use the gpg\n"
@@ -336,7 +336,7 @@ msgstr ""
 "کرتے ہوے زپ فائل کو کھل دو\n"
 "    "
 
-#: lib/gettor/i18n.py:507
+#: lib/gettor/i18n.py:509
 #, fuzzy
 msgid "The output should look somewhat like this:"
 msgstr ""
@@ -344,7 +344,7 @@ msgstr ""
 "اس کی پیداوار کسی حد تک اس طرح نظر آنی چا ہئے\n"
 "    "
 
-#: lib/gettor/i18n.py:509
+#: lib/gettor/i18n.py:511
 #, fuzzy
 msgid ""
 "If you're not familiar with commandline tools, try looking for\n"
@@ -354,7 +354,7 @@ msgstr ""
 "اگر اپ کمانڈ لائن طریقہ سے ناواقف ہے تو تصویر ی صارف مواجہ کو تلاش کریں\n"
 "    "
 
-#: lib/gettor/i18n.py:512
+#: lib/gettor/i18n.py:514
 #, fuzzy
 msgid ""
 "If your Internet connection blocks access to the Tor network, you\n"
@@ -372,7 +372,7 @@ msgstr ""
 "نہیں کر سکے گے۔\n"
 "    "
 
-#: lib/gettor/i18n.py:519
+#: lib/gettor/i18n.py:521
 #, fuzzy
 msgid ""
 "You can acquire a bridge by sending an email that contains \"get bridges\"\n"
@@ -383,7 +383,7 @@ msgstr ""
 "سکتے ہیں ، جس میں لکھا ہو\"پل حاصل کرو\"\n"
 "    "
 
-#: lib/gettor/i18n.py:522
+#: lib/gettor/i18n.py:524
 #, fuzzy
 msgid ""
 "It is also possible to fetch bridges with a web browser at the following\n"
@@ -394,7 +394,7 @@ msgstr ""
 "bridges.torproject.org \n"
 "    "
 
-#: lib/gettor/i18n.py:525
+#: lib/gettor/i18n.py:527
 #, fuzzy
 msgid ""
 "IMPORTANT NOTE:\n"
@@ -409,7 +409,7 @@ msgstr ""
 "دیںاور فائل کو دومرتبہ کلک کر کے کھول دیں \n"
 "    "
 
-#: lib/gettor/i18n.py:531
+#: lib/gettor/i18n.py:533
 #, fuzzy
 msgid ""
 "Packages might arrive out of order! Please make sure you received\n"
@@ -420,7 +420,7 @@ msgstr ""
 "کرلیں کہ آپ نے تمام پیکیج مصول کر لیے ہیں\n"
 "    "
 
-#: lib/gettor/i18n.py:534
+#: lib/gettor/i18n.py:536
 #, fuzzy
 msgid ""
 "Thank you for your request. \n"
@@ -433,7 +433,7 @@ msgstr ""
 "چاہئے\n"
 "    "
 
-#: lib/gettor/i18n.py:538
+#: lib/gettor/i18n.py:540
 #, fuzzy
 msgid ""
 "If it doesn't arrive, the package might be too big for your mail provider.\n"
@@ -446,7 +446,7 @@ msgstr ""
 "چھوٹی ہے.\n"
 "    "
 
-#: lib/gettor/i18n.py:541
+#: lib/gettor/i18n.py:543
 #, fuzzy
 msgid ""
 "Unfortunately we are currently experiencing problems and we can't fulfill\n"
@@ -457,6 +457,15 @@ msgstr ""
 "ابھی نہیں کر سکتے ہیں.براہ مہربانی صبر کریں ہم اس مسئلے کو حل کرنے کی کوشش "
 "ہیں\n"
 "    "
+
+#: lib/gettor/i18n.py:546
+msgid ""
+"Unfortunately there is no split package available for the package you\n"
+"requested. Please send us another package name or request the same package \n"
+"again, but remove the 'split' keyword. In that case we'll send you the "
+"whole \n"
+"package. Make sure this is what you want."
+msgstr ""
 
 #~ msgid ""
 #~ "\n"
