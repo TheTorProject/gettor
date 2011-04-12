@@ -1,4 +1,4 @@
-[torproject.gettor-gettor-pot]
+[torproject.2-gettor-gettor-pot]
 file_filter = <lang>/gettor.po
 source_file = templates/gettor.pot
 source_lang = en
