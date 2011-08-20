@@ -533,8 +533,7 @@ first file."""),
 _("""Packages might arrive out of order! Please make sure you received
 all packages before you attempt to unpack them!"""),
  # GETTOR_TEXT[38]
-_("""Thank you for your request. 
-It was successfully understood. Your request is currently being processed.
+_("""It was successfully understood. Your request is currently being processed.
 Your package should arrive within the next ten minutes."""),
  # GETTOR_TEXT[39]
 _("""If it doesn't arrive, the package might be too big for your mail provider.
