@@ -57,7 +57,7 @@ example reply would look something like the following:
 
    The output should look somewhat like this:
 
-      gpg: Good signature from "Roger Dingledine <arma@mit.edu>"
+      gpg: Good signature from "Erinn Clark <...>"
 
    If you're not familiar with commandline tools, try looking for
    a graphical user interface for GnuPG on this website:

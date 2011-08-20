@@ -64,7 +64,7 @@ def getPackageMsg(t):
              + t.gettext(i18n.GETTOR_TEXT[29]) + "\n\n" \
              + t.gettext(i18n.GETTOR_TEXT[30]) + "\n\n" \
              + t.gettext(i18n.GETTOR_TEXT[31]) + "\n\n" \
-             + "  gpg: Good signature from 'Roger Dingledine <arma@mit.edu>'" \
+             + "  gpg: Good signature from 'Erinn Clark <...>'" \
              + "\n\n" \
              + t.gettext(i18n.GETTOR_TEXT[32]) + "\n\n" \
              + "  http://www.gnupg.org/related_software/frontends.html" \
