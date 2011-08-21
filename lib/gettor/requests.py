@@ -9,6 +9,7 @@ import logging
 
 import gettor.utils
 import gettor.packages
+import gettor.filters
 
 class requestMail:
     def __init__(self, config):
@@ -33,7 +34,9 @@ class requestMail:
            in our reply should reflect that. So, use the `To:' field from the
            incoming mail, but filter out everything except the gettor@ address.
         """
-        regexGettor = '.*(<)?(gettor.*@torproject.org)+(?(1)>).*'
+        regexGettor = '.*(<)?(gettor.*@.*torproject.org)+(?(1)>).*'
+        toField = gettor.filters.doToAddressHack(toField)
+        logging.debug("toField: %s" % toField)
         match = re.match(regexGettor, toField)
         if match:
             return match.group(2)

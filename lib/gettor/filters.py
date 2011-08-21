@@ -43,3 +43,14 @@ def checkAddressHack(userAddress):
 
     # User address looks good.
     return True
+
+def doToAddressHack(toAddress):
+    """Large HACK alert: If we received an email to the address
+       'torfarsi1@torproject.org', we understand it to reply in Farsi to that
+       email.
+    """
+    if re.compile(".*torfarsi1@torproject.org.*").match(toAddress):
+        return "<gettor+fa@torproject.org>"
+    else:
+        return toAddress
+
