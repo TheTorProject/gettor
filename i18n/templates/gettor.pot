@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-27 00:10+0100\n"
+"POT-Creation-Date: 2011-08-21 21:50-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -244,24 +244,23 @@ msgstr ""
 
 #: lib/gettor/i18n.py:536
 msgid ""
-"Thank you for your request. \n"
 "It was successfully understood. Your request is currently being processed.\n"
 "Your package should arrive within the next ten minutes."
 msgstr ""
 
-#: lib/gettor/i18n.py:540
+#: lib/gettor/i18n.py:539
 msgid ""
 "If it doesn't arrive, the package might be too big for your mail provider.\n"
 "Try resending the mail from a GMAIL.COM or YAHOO.COM account."
 msgstr ""
 
-#: lib/gettor/i18n.py:543
+#: lib/gettor/i18n.py:542
 msgid ""
 "Unfortunately we are currently experiencing problems and we can't fulfill\n"
 "your request right now. Please be patient as we try to resolve this issue."
 msgstr ""
 
-#: lib/gettor/i18n.py:546
+#: lib/gettor/i18n.py:545
 msgid ""
 "Unfortunately there is no split package available for the package you\n"
 "requested. Please send us another package name or request the same package \n"
