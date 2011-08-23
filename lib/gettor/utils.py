@@ -285,3 +285,7 @@ def stripHTMLTags(string):
     """
     return re.sub(r'<[^>]*?>', '', string)
 
+def getHash(string):
+    """Return hash of given string
+    """
+    return str(hashlib.sha1(string).hexdigest())

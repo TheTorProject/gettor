@@ -5,6 +5,7 @@
 import os
 import re
 import sys
+import copy
 import smtplib
 import gettext
 import logging
@@ -112,8 +113,10 @@ class Response:
         self.config = config
         self.reqInfo = reqInfo
 
-        # Dump info
-        logging.info(str(self.reqInfo))
+        # Delete sensitive data before dumping info
+        reqInfoClean = copy.deepcopy(self.reqInfo)
+        del reqInfoClean['user']
+        logging.info(str(reqInfoClean))
 
         # Initialize locale subsystem
         self.t = i18n.getLang(self.reqInfo['locale'], config)
@@ -165,7 +168,7 @@ class Response:
         self.bList.createSublist(fname)
         if self.bList.lookupListEntry(self.reqInfo['user'], fname):
             logging.info("User %s is blacklisted for %s" \
-                                   % (self.reqInfo['user'], fname))
+                                   % (self.reqInfo['hashed_user'], fname))
             return True
         else:
             self.bList.createListEntry(self.reqInfo['user'], fname)
@@ -185,7 +188,7 @@ class Response:
         if self.isBlacklistedForMessageType("sendPackage"):
             # Don't send anything
             return False
-        logging.info("Sending out %s to %s." % (pack, to))
+        logging.info("Sending out %s." % (pack))
         f = os.path.join(self.config.BASEDIR, "packages", pack + ".z")
         txt = getPackageMsg(self.t)
         msg = self.makeMsg(txt, to, fileName=f)
@@ -205,7 +208,7 @@ class Response:
         pack = self.reqInfo['package']
         fwd = self.reqInfo['forward']
         to = self.reqInfo['user']
-        logging.info("Sending out %s to %s."  % (pack, fwd))
+        logging.info("Sending out %s."  % (pack))
         f = os.path.join(self.config.BASEDIR, "packages", pack + ".z")
         text = getPackageMsg(self.t)
         msg = self.makeMsg(text, fwd, fileName=f)
@@ -282,7 +285,7 @@ class Response:
         if self.isBlacklistedForMessageType("sendDelayAlert"):
             # Don't send anything
             return False
-        logging.info("Sending delay alert to %s" % self.reqInfo['user'])
+        logging.info("Sending delay alert to %s" % self.reqInfo['hashed_user'])
         return self.sendTextEmail(getDelayAlertMsg(self.t))
             
     def sendHelp(self):
@@ -292,7 +295,7 @@ class Response:
         if self.isBlacklistedForMessageType("sendHelp"):
             # Don't send anything
             return False
-        logging.info("Sending out help message to %s" % self.reqInfo['user'])
+        logging.info("Sending out help message to %s" % self.reqInfo['hashed_user'])
         return self.sendTextEmail(getPackageHelpMsg(self.t))
 
     def sendPackageHelp(self):
@@ -302,7 +305,7 @@ class Response:
         if self.isBlacklistedForMessageType("sendPackageHelp"):
             # Don't send anything
             return False
-        logging.info("Sending package help to %s" % self.reqInfo['user'])
+        logging.info("Sending package help to %s" % self.reqInfo['hashed_user'])
         return self.sendTextEmail(i18n.MULTILANGHELP)
 
     def sendTextEmail(self, text):
@@ -313,7 +316,7 @@ class Response:
             status = self.sendEmail(self.reqInfo['user'], message)
         except:
             logging.error("Could not send message to user %s" \
-                                                % self.reqInfo['user'])
+                                                % self.reqInfo['hashed_user'])
             status = False
 
         logging.debug("Send status: %s" % status)

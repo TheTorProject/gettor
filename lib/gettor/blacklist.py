@@ -2,7 +2,6 @@
 #                            Christian Fromme <kaner@strace.org>
 #  This is Free Software. See LICENSE for license information.
 
-import hashlib
 import os
 import re
 import glob
@@ -109,5 +108,4 @@ class BWList:
         """Return hash for a given emailaddress
         """
         emailonly = gettor.utils.stripEmail(address)
-        return str(hashlib.sha1(emailonly).hexdigest())
-
+        return gettor.utils.getHash(emailonly)

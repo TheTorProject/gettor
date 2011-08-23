@@ -32,7 +32,6 @@ def checkAddressHack(userAddress):
        XXX: This should merge somehow with the GetTor blacklisting
             mechanism at some point
     """
-    logging.debug("Checking user address %s.." % userAddress)
     if re.compile(".*@.*torproject.org.*").match(userAddress):
         return False
         
