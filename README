@@ -134,7 +134,7 @@ and should look similar to this:
 
 
     #            "bundle name": ("single file regex", "split file regex")
-    PACKAGES = { "tor-browser-bundle": 
+    PACKAGES = { "windows": 
                  ("tor-browser-.*_en-US.exe$", "tor-browser-.*_en-US_split"), }
 
 

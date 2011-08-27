@@ -18,11 +18,10 @@ def doPackageHacks(packageName, locale):
        suffix. This isn't nice because we're hard-coding package names here
        Attention: This needs to correspond to the  packages in packages.py
     """
-    if packageName == "tor-browser-bundle" \
-           or packageName == "tor-im-browser-bundle" \
-           or packageName == "linux-browser-bundle-i386" \
-           or packageName == "linux-browser-bundle-x86_64":
-        # "tor-browser-bundle" => "tor-browser-bundle_de"
+    if packageName == "windows" \
+           or packageName == "linux-i386" \
+           or packageName == "linux-x86_64":
+        # "windows" => "windows_de"
         packageName += "_" + locale
 
     return packageName
@@ -48,7 +47,7 @@ def doToAddressHack(toAddress):
        'torfarsi1@torproject.org', we understand it to reply in Farsi to that
        email.
     """
-    if re.compile(".*torfarsi1@torproject.org.*").match(toAddress):
+    if re.compile(".*torfarsi.*@torproject.org.*").match(toAddress):
         return "<gettor+fa@torproject.org>"
     else:
         return toAddress

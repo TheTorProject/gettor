@@ -18,92 +18,157 @@ from email.mime.text import MIMEText
 import gettor.blacklist
 import gettor.i18n as i18n
 
-def getPackageHelpMsg(t):
-        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[6]) + "\n\n" \
-             + """        tor-browser-bundle
-        macosx-i386-bundle
-        macosx-ppc-bundle
-        linux-browser-bundle-i386
-        linux-browser-bundle-x86_64
-        source-bundle""" + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[7]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[8]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[9]) + "\n\n" \
-             + "        gettor+zh_CN@torproject.org" + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[10]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[11]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[12]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[13]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[14]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[15]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[16]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[17]) + "\n\n" \
-             + "        tor-browser-bundle" + "\n" \
-             + "        split" + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[18]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[19]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[20]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[21]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[22]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[23]) + "\n\n" \
-             + "        http://www.win-rar.com/download.html" + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[23]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[24]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[25]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[26]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[33]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[34]) + "\n\n" \
-             + "        bridges@torproject.org" + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[34]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[35]) + "\n"
-                
+def getGreetingText(t):
+    return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[1]) + "\n\n"
+
+def getPackageHelpText(t):
+    return t.gettext(i18n.GETTOR_TEXT[6]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[46]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[47]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[48]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[49]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[50]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[52]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[53]) + "\n\n"
+
+def getLocalizedVersionHelpText(t):
+    return t.gettext(i18n.GETTOR_TEXT[8]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[9]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[10]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[12]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[13]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[14]) + "\n\n"
+
+def getBridgesHelpText(t):
+    return t.gettext(i18n.GETTOR_TEXT[32]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[33]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[34]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[35]) + "\n\n"
+
+def getGeneralHelpText(t):
+    return getGreetingText(t) \
+         + getPackageHelpText(t) \
+         + getLocalizedVersionHelpText(t) \
+         + t.gettext(i18n.GETTOR_TEXT[15]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[16]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[17]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[18]) + "\n\n" \
+         + getBridgesHelpText(t) \
+         + getSupportText(t)
+
+def getFAQText(t):
+    return t.gettext(i18n.GETTOR_TEXT[54]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[55]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[64]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[56]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[57]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[58]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[64]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[59]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[60]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[64]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[61]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[47]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[48]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[49]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[50]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[52]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[53]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[62]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[64]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[43]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[44]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[45]) + "\n\n"
+
+def getSupportText(t):
+    return t.gettext(i18n.GETTOR_TEXT[26]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" 
+
+def getSplitPackageText(t):
+    return t.gettext(i18n.GETTOR_TEXT[36]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[37]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[19]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[20]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[21]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[22]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[23]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[24]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[25]) + "\n\n" 
+
+def getUnpackingText(t):
+    return t.gettext(i18n.GETTOR_TEXT[42]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[43]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[44]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[45]) + "\n\n" \
+
+def getVerifySignatureText(t):
+    return t.gettext(i18n.GETTOR_TEXT[29]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[30]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[31]) + "\n\n"
+
+def getInitialHelpMsg(t, config):
+    """Build a help string containing all languages we know.
+    """
+    help_text = ""
+    # Hello, dirty hack! Add "en", "fa", "zh_CN" hard-coded in the front
+    # as long as Python won't let us order out dict
+    t = i18n.getLang("en", config)
+    help_text += getGeneralHelpText(t)
+    help_text += "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n\n"
+    t = i18n.getLang("fa", config)
+    help_text += getGeneralHelpText(t)
+    help_text += "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n\n"
+    t = i18n.getLang("zh_CN", config)
+    help_text += getGeneralHelpText(t)
+    help_text += "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n\n"
+    for lang in config.SUPP_LANGS.keys():
+        # Hack continued: Skip "en", "fa", "zh_CN" -- because we have those
+        # already in
+        if lang == "en" or lang == "fa" or lang == "zh_CN":
+            continue       
+        t = i18n.getLang(lang, config)
+        help_text += getGeneralHelpText(t)
+        help_text += "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n\n"
+    return help_text
+
 def getPackageMsg(t):
-        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[29]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[30]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[31]) + "\n\n" \
-             + "  gpg: Good signature from 'Erinn Clark <...>'" \
-             + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[32]) + "\n\n" \
-             + "  http://www.gnupg.org/related_software/frontends.html" \
-             + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[33]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[34]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[35]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
+    return getGreetingText(t) \
+         + t.gettext(i18n.GETTOR_TEXT[28]) + "\n\n" \
+         + getVerifySignatureText(t) \
+         + getUnpackingText(t) \
+         + getBridgesHelpText(t) \
+         + getFAQText(t) \
+         + getSupportText(t)
 
 def getSplitPackageMsg(t):
-        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[36]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[37]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[19]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[20]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[21]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[22]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[23]) + "\n\n" \
-             + "        http://www.win-rar.com/download.html" + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[24]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[25]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[26]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
+    return getGreetingText(t) \
+         + t.gettext(i18n.GETTOR_TEXT[28]) + "\n\n" \
+         + getSplitPackageText(t) \
+         + getUnpackingText(t) \
+         + getBridgesHelpText(t) \
+         + getFAQText(t) \
+         + getSupportText(t)
 
 def getDelayAlertMsg(t):
-        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[38]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[39]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
+    return getGreetingText(t) \
+         + t.gettext(i18n.GETTOR_TEXT[38]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[39]) + "\n\n" \
+         + getSupportText(t)
 
 def getNoSplitAvailable(t):
-        return t.gettext(i18n.GETTOR_TEXT[0]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[41]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[27]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[28]) + "\n"
+    return getGreetingText(t) \
+         + t.gettext(i18n.GETTOR_TEXT[1]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[41]) + "\n\n" \
+         + getSupportText(t)
+
 
 class Response:
     def __init__(self, config, reqInfo):
@@ -158,11 +223,11 @@ class Response:
         """
         # First of all, check if user is whitelisted: Whitelist beats Blacklist
         if self.wList.lookupListEntry(self.reqInfo['user'], "general"):
-            logging.info("Whitelisted user " + self.reqInfo['user'])
+            logging.info("Whitelisted user " + self.reqInfo['hashed_user'])
             return False
         # Now check general and specific blacklists, in that order
         if self.bList.lookupListEntry(self.reqInfo['user'], "general"):
-            logging.info("Blacklisted user " + self.reqInfo['user'])
+            logging.info("Blacklisted user " + self.reqInfo['hashed_user'])
             return True
         # Create a unique dir name for the requested routine
         self.bList.createSublist(fname)
@@ -291,6 +356,9 @@ class Response:
     def sendHelp(self):
         """Send a help mail. This happens when a user sent us a request we 
            didn't really understand
+
+           XXX: This routine is currently not used, since we send out the 
+                longer MULTILANGHELP message instead.
         """
         if self.isBlacklistedForMessageType("sendHelp"):
             # Don't send anything
@@ -306,7 +374,7 @@ class Response:
             # Don't send anything
             return False
         logging.info("Sending package help to %s" % self.reqInfo['hashed_user'])
-        return self.sendTextEmail(i18n.MULTILANGHELP)
+        return self.sendTextEmail(getInitialHelpMsg(self.t, self.config))
 
     def sendTextEmail(self, text):
         """Generic text message sending routine.

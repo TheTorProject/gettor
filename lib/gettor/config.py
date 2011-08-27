@@ -46,7 +46,7 @@ CONFIG_DEFAULTS = {
    'DEFAULT_LOCALE': "en",
    'SUPP_LANGS': { 'en': ("english", ), },
    'PACKAGES': { 
-       "tor-browser-bundle": 
+       "windows": 
            ("tor-browser-.*_en-US.exe$", 
             "tor-browser-.*_en-US_split"), }
 }
