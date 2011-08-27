@@ -403,6 +403,59 @@ MULTILANGHELP = """
     --
         """
 
+
+PACKAGEHELP = _("""
+    Hello, This is the "GetTor" robot.
+
+    I will mail you a Tor package, if you tell me which one you want.
+    Please select one of the following package names:
+
+        tor-browser-bundle
+        macosx-i386-bundle
+        macosx-ppc-bundle
+        linux-browser-bundle-i386
+        linux-browser-bundle-x86_64
+        source-bundle
+
+
+    Please reply to this mail (to gettor), and tell me a single package name anywhere in 
+    the body of your email. To make your decision a bit easier, here's a short explanation 
+    of what these packages are:
+
+    tor-browser-bundle:
+
+    The Tor Browser Bundle package for Windows operating systems. If you're running some 
+    version of Windows, like Windows XP, Windows Vista or Windows 7, this is the package
+    you should get.
+
+    macosx-i386-bundle:
+
+    The Tor Browser Bundle package for OS X, Intel CPU architecture. In general, newer 
+    Mac hardware will require you to use this package.
+
+    macosx-ppc-bundle:
+
+    The Tor Browser Bundle package for OS X, PowerPC CPU architecture. In general, older
+    Mac hardware will require you to use this package.
+
+    linux-browser-bundle-i386:
+
+    The Tor Browser Bundle package for Linux, 32bit versions. Note that this package is
+    rather large and needs your email provider to allow for attachments of about 30MB in
+    size.
+
+    linux-browser-bundle-x86_64:
+
+    The Tor Browser Bundle package for Linux, 64bit versions. Note that this package is
+    rather large and needs your email provider to allow for attachements of about 30MB
+    in size.
+
+    source-bundle:
+
+    The Tor source code. Only request this package if you know what you're doing. This
+    isn't the package to use for a normal user.
+""")
+
 GETTOR_TEXT = [
  # GETTOR_TEXT[0]
 _("""Hello, This is the "GetTor" robot.
