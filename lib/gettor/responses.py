@@ -142,9 +142,9 @@ def getInitialHelpMsg(t, config):
 def getPackageMsg(t):
     return getGreetingText(t) \
          + t.gettext(i18n.GETTOR_TEXT[28]) + "\n\n" \
-         + getVerifySignatureText(t) \
          + getUnpackingText(t) \
          + getBridgesHelpText(t) \
+         + getVerifySignatureText(t) \
          + getFAQText(t) \
          + getSupportText(t)
 
@@ -157,9 +157,9 @@ def getSplitPackageMsg(t):
          + getFAQText(t) \
          + getSupportText(t)
 
-def getDelayAlertMsg(t):
+def getDelayAlertMsg(t, packageInfo):
     return getGreetingText(t) \
-         + t.gettext(i18n.GETTOR_TEXT[38]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[38]) % packageInfo + "\n\n" \
          + t.gettext(i18n.GETTOR_TEXT[39]) + "\n\n" \
          + getSupportText(t)
 
@@ -305,11 +305,6 @@ class Response:
             # Inform the user
             return self.sendTextEmail(getNoSplitAvailable(self.t))
 
-        # Be a polite bot and send message that mail is on the way
-        if self.config.DELAY_ALERT:
-	    if not self.sendDelayAlert():
-	        logging.error("Failed to sent delay alert.")
-
         if self.isBlacklistedForMessageType("sendSplitPackage"):
             # Don't send anything
             return False
@@ -321,6 +316,12 @@ class Response:
         splitpack = self.reqInfo['package'] + ".split"
         splitDir = os.path.join(self.config.BASEDIR, "packages", splitpack)
         fileList = os.listdir(splitDir)
+
+        # Be a polite bot and send message that mail is on the way
+        if self.config.DELAY_ALERT:
+	    if not self.sendDelayAlert():
+	        logging.error("Failed to sent delay alert.")
+
         # Sort the files, so we can send 01 before 02 and so on..
         fileList.sort()
         nFiles = len(fileList)
@@ -344,14 +345,22 @@ class Response:
 
         return status
 
-    def sendDelayAlert(self):
-        """Send a polite delay notification
+    def sendDelayAlert(self, packageCount=1):
+        """Send a polite delay notification. Add the number of packages that
+           the user can expect to arrive.
         """
         if self.isBlacklistedForMessageType("sendDelayAlert"):
             # Don't send anything
             return False
+
+        if packageCount > 1:
+            packageInfo = "%s [%d parts]" \
+                           % (self.reqInfo['package'], packageCount)
+        else:
+            packageInfo = self.reqInfo['package']
+
         logging.info("Sending delay alert to %s" % self.reqInfo['hashed_user'])
-        return self.sendTextEmail(getDelayAlertMsg(self.t))
+        return self.sendTextEmail(getDelayAlertMsg(self.t), packageInfo)
             
     def sendHelp(self):
         """Send a help mail. This happens when a user sent us a request we 

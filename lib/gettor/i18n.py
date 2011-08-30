@@ -28,7 +28,7 @@ _("""Hello, This is the "GetTor" robot."""),
  # GETTOR_TEXT[1]
 _("""Thank you for your request."""),
  # GETTOR_TEXT[2]
-_(""" Unfortunately, we won't answer you at this address. You should make
+_("""Unfortunately, we won't answer you at this address. You should make
 an account with GMAIL.COM, YAHOO.COM or YAHOO.CN and send the mail from
 one of those."""),
  # GETTOR_TEXT[3]
@@ -62,10 +62,10 @@ _("""OBTAINING LOCALIZED VERSIONS OF TOR
 _("""To get a version of Tor translated into your language, specify the
 language you want in the address you send the mail to:
 
-    gettor+zh_CN@torproject.org"""),
+    gettor+fa@torproject.org"""),
  # GETTOR_TEXT[10]
 _("""This example will give you the requested package in a localized
-version for Chinese. Check below for a list of supported language
+version for Farsi (Persian). Check below for a list of supported language
 codes. """),
  # GETTOR_TEXT[11]
 _(""" List of supported locales:"""),
@@ -89,12 +89,12 @@ _("""If you select no language, you will receive the English version."""),
 _("""SMALLER SIZED PACKAGES
 ======================"""),
  # GETTOR_TEXT[16]
-_("""If your bandwith is low or your provider doesn't allow you to 
-receive large attachments in your email, there is a feature of 
-GetTor you can use to make it send you a number of small packages
-instead of one big one."""),
+_("""If your bandwith is low or your provider doesn't allow you to
+receive large attachments in your email, GetTor can send you several
+small packages instead of one big one."""),
  # GETTOR_TEXT[17]
-_("""Simply include the keyword 'split' somewhere in your email like so:
+_("""Simply include the keyword 'split' in a new line on its own (this part
+is important!) like so: 
         
     windows
     split"""),
@@ -130,7 +130,7 @@ _("""SUPPORT
 _("""If you have any questions or it doesn't work, you can contact a
 human at this support email address: tor-assistants@torproject.org"""),
  # GETTOR_TEXT[28]
-_(""" Here's your requested software as a zip file. Please unzip the
+_("""Here's your requested software as a zip file. Please unzip the
 package and verify the signature."""),
  # GETTOR_TEXT[29]
 _("""VERIFY SIGNATURE
@@ -177,7 +177,7 @@ _("""Packages might arrive out of order! Please make sure you received
 all packages before you attempt to unpack them!"""),
  # GETTOR_TEXT[38]
 _("""It was successfully understood. Your request is currently being processed.
-Your package should arrive within the next ten minutes."""),
+Your package (%s) should arrive within the next ten minutes."""),
  # GETTOR_TEXT[39]
 _("""If it doesn't arrive, the package might be too big for your mail provider.
 Try resending the mail from a GMAIL.COM, YAHOO.CN or YAHOO.COM account."""),
@@ -193,10 +193,9 @@ package. Make sure this is what you want."""),
 _("""UNPACKING THE FILES
 ==================="""),
  # GETTOR_TEXT[43]
-_("""To unpack the files you received, there's a number of alternatives on
-how to do it. The easiest way is to install 7-Zip, a free file compression/
-uncompression tool. If it isn't installed on your computer yet, you can
-download it here:
+_("""The easiest way to unpack the files you received is to install 7-Zip,
+a free file compression/uncompression tool. If it isn't installed on
+your computer yet, you can download it here:
 
     http://www.7-zip.org/"""),
  # GETTOR_TEXT[44]
@@ -208,9 +207,8 @@ _("""An alternative way to get the .z files extraced is to rename them to
 "windows.zip". You should then be able to extract the archive with common 
 file archiver programs that probably are already installed on your computer."""),
  # GETTOR_TEXT[46]
-_("""Please reply to this mail, and tell me a single package name anywhere in 
-the body of your email. To make your decision a bit easier, here's a 
-short explanation of what these packages are:"""),
+_("""Please reply to this mail, and tell me a single package name anywhere
+in your reply. Here's a short explanation of what these packages are:"""),
  # GETTOR_TEXT[47]
 _("""windows:
 The Tor Browser Bundle package for Windows operating systems. If you're 
@@ -222,8 +220,8 @@ The Tor Browser Bundle package for OS X, Intel CPU architecture. In
 general, newer Mac hardware will require you to use this package."""),
  # GETTOR_TEXT[49]
 _("""macos-ppc:
-This is a Vidalia Bundle for older Macs running OS X on PowerPC CPUs. 
-Note that this package will be deprecated soon."""),
+This is an older installer (the "Vidalia bundle") for older Macs running
+OS X on PowerPC CPUs. Note that this package will be deprecated soon."""),
  # GETTOR_TEXT[50]
 _("""linux-i386:
 The Tor Browser Bundle package for Linux, 32bit versions."""),
@@ -235,8 +233,7 @@ _("""linux-x86_64:
 The Tor Browser Bundle package for Linux, 64bit versions."""),
  # GETTOR_TEXT[53]
 _("""source:
-The Tor source code. Only request this package if you know what you're 
-doing. This isn't the package a normal user wants."""),
+The Tor source code, for experts. Most users do not want this package."""),
  # GETTOR_TEXT[54]
 _("""FREQUENTLY ASKED QUESTIONS
 =========================="""),

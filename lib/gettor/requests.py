@@ -153,14 +153,14 @@ class requestMail:
                 return locale
             if aliases is not None:
                 if locale in aliases:
-                    logging.debug("Request for %s via alias %s" % (lang, alias))
+                    logging.debug("Request for %s via alias %s" % (lang, locale))
                     # Return the 'official' name
                     return lang
         else:
             logging.debug("Requested language %s not supported. Fallback: %s" \
                               % (self.replyLocale, self.config.DEFAULT_LOCALE))
             self.replyLocale = self.config.DEFAULT_LOCALE
-            return
+            return self.config.DEFAULT_LOCALE
 
     def getRawMessage(self):
         return self.rawMessage

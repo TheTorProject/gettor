@@ -18,6 +18,10 @@ def doPackageHacks(packageName, locale):
        suffix. This isn't nice because we're hard-coding package names here
        Attention: This needs to correspond to the  packages in packages.py
     """
+    # If someone sent a request for a "tor-browser-bundle" (whatever that is ;)
+    # we reply with a "windows" package
+    if packageName == "tor-browser-bundle":
+       packageName = "windows"
     if packageName == "windows" \
            or packageName == "linux-i386" \
            or packageName == "linux-x86_64":
