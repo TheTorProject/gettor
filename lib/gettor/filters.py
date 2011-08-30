@@ -24,7 +24,8 @@ def doPackageHacks(packageName, locale):
        packageName = "windows"
     if packageName == "windows" \
            or packageName == "linux-i386" \
-           or packageName == "linux-x86_64":
+           or packageName == "linux-x86_64" \
+           or packageName == "osx-i386":
         # "windows" => "windows_de"
         packageName += "_" + locale
 

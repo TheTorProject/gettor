@@ -215,8 +215,6 @@ class Packages:
         self.rsync += " "
         self.rsync += "--exclude='*current*'"
         self.rsync += " "
-        self.rsync += "--exclude='*osx*'"
-        self.rsync += " "
         self.rsync += "--exclude='*rpm*'"
         self.rsync += " "
         self.rsync += "--exclude='*privoxy*'"
