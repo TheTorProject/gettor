@@ -5,15 +5,17 @@
 import os
 import re
 import glob
+import struct
 import logging
 import gettor.utils
 
 class BWList:
-    def __init__(self, blacklistDir):
+    def __init__(self, blacklistDir, blacklistThres):
         """A blacklist lives as hash files inside a directory and is simply a 
            number of files that represent hashed email addresses.
         """
         self.blacklistDir = blacklistDir
+        self.blacklistThres = blacklistThres
         # "general" is the main blacklist
         self.createSublist("general")
 
@@ -29,17 +31,39 @@ class BWList:
                 # XXX Change this to something more appropriate
                 raise IOError("Bad dir: %s" % fullDir)
 
-    def lookupListEntry(self, address, blacklistName="*"):
-        """Check to see if we have a list entry for the given address.
+    def entryExists(self, address, blacklistName="general"):
+        """Look up if a certain address is already blacklisted
         """
-        if address is None:
-           logging.error("Argument 'address' is None")
-           return False
         hashString = self.getHash(address)
         globPath = os.path.join(self.blacklistDir, blacklistName)
         hashVec = glob.glob(os.path.join(globPath, hashString))
         if len(hashVec) > 0:
-            return True
+           if os.path.isfile(hashVec[0]):
+               return True
+
+        return False
+
+    def checkAndUpdate(self, address, blacklistName="*", update=False):
+        """Check to see if we have a list entry for the given address.
+        """
+        hashString = self.getHash(address)
+        globPath = os.path.join(self.blacklistDir, blacklistName)
+        hashVec = glob.glob(os.path.join(globPath, hashString))
+        if len(hashVec) > 0:
+            count = ""
+            with open(hashVec[0], 'r') as fd:
+                count = fd.read()
+
+            i_count = int(count)
+            i_count += 1
+            count = str(i_count)
+
+            if update == True:
+                with open(hashVec[0], 'w+') as fd:
+                    fd.write("%s\n" % count)
+
+            if i_count >= self.blacklistThres:
+                return True
         return False
 
     def createListEntry(self, address, blacklistName="general"):
@@ -48,12 +72,12 @@ class BWList:
         if address is None:
            logging.error("Bad args in createListEntry()")
            return False
-        if self.lookupListEntry(address, blacklistName) == False:
+        if self.entryExists(address, blacklistName) == False:
             hashString = self.getHash(address)
             entry = os.path.join(self.blacklistDir, blacklistName, hashString)
             try:
-                fd = open(entry, 'w')
-                fd.close
+                with open(entry, 'w+') as fd:
+                    fd.write("0\n")
                 return True
             except:
                 logging.error("Creating list entry %s failed." % entry)

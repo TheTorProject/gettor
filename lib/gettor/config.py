@@ -18,6 +18,8 @@
  DUMPFILE:      Where failed mails get stored
  BLACKLIST_BY_TYPE:  Do we send every mail type to every user only once before 
                      we blacklist them for it?
+ BLACKLIST_THRES: How many packages per type do we sent to a user before we
+                  blacklist him/her?
  RSYNC_MIRROR:  Which rsync server to sync packages from
  DEFAULT_LOCALE: Default locale
  SUPP_LANGS:    Supported languages by GetTor
@@ -42,6 +44,7 @@ CONFIG_DEFAULTS = {
    'PASSFILE': "gettor.pass",
    'DUMPFILE': "./gettor.dump",
    'BLACKLIST_BY_TYPE': True,
+   'BLACKLIST_THRES': 3,
    'RSYNC_MIRROR': "rsync.torproject.org",
    'DEFAULT_LOCALE': "en",
    'SUPP_LANGS': { 'en': ("english", ), },

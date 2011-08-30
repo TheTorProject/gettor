@@ -16,6 +16,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
 import gettor.blacklist
+import gettor.utils
 import gettor.i18n as i18n
 
 def getGreetingText(t):
@@ -189,8 +190,8 @@ class Response:
         # Init black & whitelists
         wlStateDir = os.path.join(self.config.BASEDIR, "wl")
         blStateDir = os.path.join(self.config.BASEDIR, "bl")
-        self.wList = gettor.blacklist.BWList(wlStateDir)
-        self.bList = gettor.blacklist.BWList(blStateDir)
+        self.wList = gettor.blacklist.BWList(wlStateDir, config.BLACKLIST_THRES)
+        self.bList = gettor.blacklist.BWList(blStateDir, config.BLACKLIST_THRES)
 
     def sendReply(self):
         """All routing decisions take place here. Sending of mails takes place
@@ -222,21 +223,22 @@ class Response:
            type name we're looking for
         """
         # First of all, check if user is whitelisted: Whitelist beats Blacklist
-        if self.wList.lookupListEntry(self.reqInfo['user'], "general"):
+        normalized_addr = gettor.utils.normalizeAddress(self.reqInfo['user'])
+        if self.wList.entryExists(normalized_addr, "general"):
             logging.info("Whitelisted user " + self.reqInfo['hashed_user'])
             return False
         # Now check general and specific blacklists, in that order
-        if self.bList.lookupListEntry(self.reqInfo['user'], "general"):
+        if self.bList.entryExists(normalized_addr, "general"):
             logging.info("Blacklisted user " + self.reqInfo['hashed_user'])
             return True
         # Create a unique dir name for the requested routine
         self.bList.createSublist(fname)
-        if self.bList.lookupListEntry(self.reqInfo['user'], fname):
+        if self.bList.checkAndUpdate(normalized_addr, fname, True):
             logging.info("User %s is blacklisted for %s" \
                                    % (self.reqInfo['hashed_user'], fname))
             return True
         else:
-            self.bList.createListEntry(self.reqInfo['user'], fname)
+            self.bList.createListEntry(normalized_addr, fname)
             return False
 
     def sendPackage(self):
@@ -317,15 +319,16 @@ class Response:
         splitDir = os.path.join(self.config.BASEDIR, "packages", splitpack)
         fileList = os.listdir(splitDir)
 
-        # Be a polite bot and send message that mail is on the way
-        if self.config.DELAY_ALERT:
-	    if not self.sendDelayAlert():
-	        logging.error("Failed to sent delay alert.")
-
         # Sort the files, so we can send 01 before 02 and so on..
         fileList.sort()
         nFiles = len(fileList)
         num = 0
+
+        # Be a polite bot and send message that mail is on the way
+        if self.config.DELAY_ALERT:
+            if not self.sendDelayAlert(nFiles):
+                logging.error("Failed to sent delay alert.")
+
         # For each available split file, send a mail
         for filename in fileList:
             path = os.path.join(splitDir, filename)
@@ -360,7 +363,7 @@ class Response:
             packageInfo = self.reqInfo['package']
 
         logging.info("Sending delay alert to %s" % self.reqInfo['hashed_user'])
-        return self.sendTextEmail(getDelayAlertMsg(self.t), packageInfo)
+        return self.sendTextEmail(getDelayAlertMsg(self.t, packageInfo))
             
     def sendHelp(self):
         """Send a help mail. This happens when a user sent us a request we 

@@ -22,7 +22,9 @@ class requestMail:
         self.config = config
         self.request = {}
         self.request['user'] = self.parsedMessage["Return-Path"]
-        self.request['hashed_user'] = gettor.utils.getHash(self.request['user'])
+        # Normalize address before hashing
+        normalized_addr = gettor.utils.normalizeAddress(self.request['user'])
+        self.request['hashed_user'] = gettor.utils.getHash(normalized_addr)
         self.request['ouraddr'] = self.getRealTo(self.parsedMessage["to"])
         self.request['locale'] = self.getLocaleInTo(self.request['ouraddr'])
         self.request['package'] = None
