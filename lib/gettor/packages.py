@@ -12,6 +12,48 @@ import gettor.utils
 import re
 import glob
 
+# Stolen from Mike's TorCtl:
+class RouterVersion:
+  """ Represents a Router's version. Overloads all comparison operators
+      to check for newer, older, or equivalent versions. """
+  def __init__(self, version):
+    if version:
+      v = re.search("(\d+)\.(\d+)\.(\d+)\.(\d+)", version).groups()
+      self.version = int(v[0])*0x1000000 + int(v[1])*0x10000 + int(v[2])*0x100 + int(v[3])
+      self.ver_string = version
+    else:
+      self.version = version
+      self.ver_string = "unknown"
+
+  def __lt__(self, other): return self.version < other.version
+  def __gt__(self, other): return self.version > other.version
+  def __ge__(self, other): return self.version >= other.version
+  def __le__(self, other): return self.version <= other.version
+  def __eq__(self, other): return self.version == other.version
+  def __ne__(self, other): return self.version != other.version
+  def __str__(self): return self.ver_string
+
+class TBBVersion:
+  """ Represents a TBB's version. Overloads all comparison operators
+      to check for newer, older, or equivalent versions. """
+  def __init__(self, version):
+    if version:
+      v = re.search("(\d+)\.(\d+)\.(\d+)", version).groups()
+      self.version = int(v[0])*0x10000 + int(v[1])*0x100 + int(v[2])
+      self.ver_string = version
+    else:
+      self.version = version
+      self.ver_string = "unknown"
+
+  def __lt__(self, other): return self.version < other.version
+  def __gt__(self, other): return self.version > other.version
+  def __ge__(self, other): return self.version >= other.version
+  def __le__(self, other): return self.version <= other.version
+  def __eq__(self, other): return self.version == other.version
+  def __ne__(self, other): return self.version != other.version
+  def __str__(self): return self.ver_string
+
+
 class Packages:
 
     def __init__(self, config, silent=False):
@@ -32,7 +74,55 @@ class Packages:
         fileName = os.path.join(self.distDir, regex)
         fileList = glob.glob(fileName)
         if len(fileList) != 1:
-           return ""
+            # Looks like we have more than one file to choose from. Great. 
+            # Let's do some more or less intelligent tricks.
+
+            # Remove all alphas
+            fileList = gettor.utils.removeFromListByRegex(fileList, "-alpha")
+            if len(fileList) == 1:
+                return fileList[0]
+
+            # Remove all betas
+            fileList = gettor.utils.removeFromListByRegex(fileList, "-beta")
+            if len(fileList) == 1:
+                return fileList[0]
+
+            # Remove all release candidates
+            fileList = gettor.utils.removeFromListByRegex(fileList, "-rc")
+            if len(fileList) == 1:
+                return fileList[0]
+
+            # Still more than 1 file? Look at the version strings.
+            r = RouterVersion("0.0.0.0")
+            ret = None
+            for f in fileList:
+                try:
+                    if RouterVersion(f) > r:
+                        r = RouterVersion(f)
+                        ret = f
+                except:
+                    return ""
+
+            if ret is not None:
+                logging.debug("Of the list %s, I return %s" % (fileList, ret))
+                return ret
+
+            # Still no result? Sort by TBB versions
+            r = TBBVersion("0.0.0")
+            ret = None
+            for f in fileList:
+                try:
+                    if TBBVersion(f) > r:
+                        r = TBBVersion(f)
+                        ret = f
+                except:
+                    return ""
+
+            if ret is not None:
+                logging.debug("Of the list %s, I return %s" % (fileList, ret))
+                return ret
+
+            return ""
 
         return fileList[0]
 

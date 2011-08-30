@@ -289,3 +289,14 @@ def getHash(string):
     """Return hash of given string
     """
     return str(hashlib.sha1(string).hexdigest())
+
+def removeFromListByRegex(l, string):
+    """Remove entries from a list that match a certain regular expression
+    """
+    for f in l:
+        m = re.search(string, f)
+        if m:
+            l.remove(f)
+
+    return l
+
