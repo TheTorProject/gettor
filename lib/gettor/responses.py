@@ -360,7 +360,7 @@ class Response:
             packageInfo = "%s [%d parts]" \
                            % (self.reqInfo['package'], packageCount)
         else:
-            packageInfo = self.reqInfo['package']
+            packageInfo = "%s" % self.reqInfo['package']
 
         logging.info("Sending delay alert to %s" % self.reqInfo['hashed_user'])
         return self.sendTextEmail(getDelayAlertMsg(self.t, packageInfo))
