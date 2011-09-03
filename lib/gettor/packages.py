@@ -101,7 +101,7 @@ class Packages:
                         r = RouterVersion(f)
                         ret = f
                 except:
-                    return ""
+                    pass
 
             if ret is not None:
                 logging.debug("Of the list %s, I return %s" % (fileList, ret))
