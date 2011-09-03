@@ -110,7 +110,7 @@ def addWhitelistEntry(conf, address):
     wlStateDir = conf.BASEDIR + "/wl"
     logging.debug("Adding address to whitelist: %s" % address)
     try:
-        whiteList = gettor.blacklist.BWList(wlStateDir)
+        whiteList = gettor.blacklist.BWList(wlStateDir, conf.BLACKLIST_THRES)
     except IOError, e:
         logging.error("Whitelist error: %s" % e)
         return False
@@ -127,7 +127,7 @@ def addBlacklistEntry(conf, address):
     logging.debug("Adding address to blacklist: %s" % address)
     blStateDir = conf.BASEDIR + "/bl"
     try:
-        blackList = gettor.blacklist.BWList(blStateDir)
+        blackList = gettor.blacklist.BWList(blStateDir, conf.BLACKLIST_THRES)
     except IOError, e:
         logging.error("Blacklist error: %s" % e)
         return False
@@ -146,15 +146,15 @@ def lookupAddress(conf, address):
     wlStateDir = conf.BASEDIR + "/wl"
     blStateDir = conf.BASEDIR + "/bl"
     try:
-        whiteList = gettor.blacklist.BWList(wlStateDir)
-        blackList = gettor.blacklist.BWList(blStateDir)
+        whiteList = gettor.blacklist.BWList(wlStateDir, conf.BLACKLIST_THRES)
+        blackList = gettor.blacklist.BWList(blStateDir, conf.BLACKLIST_THRES)
     except IOError, e:
         logging.error("White/Blacklist error: %s" % e)
         return False
-    if whiteList.lookupListEntry(address, "general"):
+    if whiteList.checkAndUpdate(address, "general"):
         logging.info("Address '%s' is present in the whitelist." % address)
         found = True
-    if blackList.lookupListEntry(address, "general"):
+    if blackList.checkAndUpdate(address, "general"):
         logging.info("Address '%s' is present in the blacklist." % address)
         found = True
     if not found:
@@ -169,7 +169,7 @@ def clearWhitelist(conf):
     """
     wlStateDir = conf.BASEDIR + "/wl"
     try:
-        whiteList = gettor.blacklist.BWList(wlStateDir)
+        whiteList = gettor.blacklist.BWList(wlStateDir, conf.BLACKLIST_THRES)
     except IOError, e:
         logging.error("Whitelist error: %s" % e)
         return False
@@ -188,7 +188,7 @@ def clearBlacklist(conf, olderThanDays):
     logging.debug("Clearing blacklist..")
     blStateDir = conf.BASEDIR + "/bl"
     try:
-        blackList = gettor.blacklist.BWList(blStateDir)
+        blackList = gettor.blacklist.BWList(blStateDir, conf.BLACKLIST_THRES)
     except IOError, e:
         logging.error("Blacklist error: %s" % e)
         return False
@@ -262,13 +262,11 @@ def getCurrentCrontab():
     return savedTab
 
 def normalizeAddress(address):
-    """We need this because we internally store email addresses in this format
-       in the black- and whitelists
+    """This does everything from checking if the address is ok to stripping
+       dots and "+" addresses so absuing GetTor gets harder.
     """
-    if address.startswith("<"):
-        return address
-    else:
-        return "<" + address + ">"
+    address = normalizeEmail(address)
+    return "<" + address + ">"
 
 
 def stripEmail(address):
@@ -289,3 +287,87 @@ def getHash(string):
     """Return hash of given string
     """
     return str(hashlib.sha1(string).hexdigest())
+
+def removeFromListByRegex(l, string):
+    """Remove entries from a list that match a certain regular expression
+    """
+    for f in l:
+        m = re.search(string, f)
+        if m:
+            l.remove(f)
+
+    return l
+
+# The following code is more or less taken from BridgeDB
+
+class BadEmail(Exception):
+    """Exception raised when we get a bad email address."""
+    def __init__(self, msg, email):
+        Exception.__init__(self, msg)
+        self.email = email
+
+ASPECIAL = '-_+/=_~'
+
+ACHAR = r'[\w%s]' % "".join("\\%s"%c for c in ASPECIAL)
+DOTATOM = r'%s+(?:\.%s+)*'%(ACHAR,ACHAR)
+DOMAIN = r'\w+(?:\.\w+)*'
+ADDRSPEC = r'(%s)\@(%s)'%(DOTATOM, DOMAIN)
+
+SPACE_PAT = re.compile(r'\s+')
+ADDRSPEC_PAT = re.compile(ADDRSPEC)
+
+def extractAddrSpec(addr):
+    """Given an email From line, try to extract and parse the addrspec
+       portion.  Returns localpart,domain on success; raises BadEmail
+       on failure.
+    """
+    orig_addr = addr
+    addr = SPACE_PAT.sub(' ', addr)
+    addr = addr.strip()
+    # Only works on usual-form addresses; raises BadEmail on weird
+    # address form.  That's okay, since we'll only get those when
+    # people are trying to fool us.
+    if '<' in addr:
+        # Take the _last_ index of <, so that we don't need to bother
+        # with quoting tricks.
+        idx = addr.rindex('<')
+        addr = addr[idx:]
+        m = re.search(r'<([^>]*)>', addr)
+        if m is None:
+            raise BadEmail("Couldn't extract address spec", orig_addr)
+        addr = m.group(1)
+
+    # At this point, addr holds a putative addr-spec.  We only allow the
+    # following form:
+    #   addr-spec = local-part "@" domain
+    #   local-part = dot-atom
+    #   domain = dot-atom
+    #
+    # In particular, we are disallowing: obs-local-part, obs-domain,
+    # comment, obs-FWS,
+    #
+    # Other forms exist, but none of the incoming services we recognize
+    # support them.
+    addr = addr.replace(" ", "")
+    m = ADDRSPEC_PAT.match(addr)
+    if not m:
+        raise BadEmail("Bad address spec format", orig_addr)
+    localpart, domain = m.groups()
+    return localpart, domain
+
+def normalizeEmail(addr):
+    """Given the contents of a from line, and a map of supported email
+       domains (in lowercase), raise BadEmail or return a normalized
+       email address.
+    """
+    addr = addr.lower()
+    localpart, domain = extractAddrSpec(addr)
+
+    # addr+foo@ is an alias for addr@
+    idx = localpart.find('+')
+    if idx >= 0:
+        localpart = localpart[:idx]
+    localpart = localpart.replace(".", "")
+
+    return "%s@%s"%(localpart, domain)
+

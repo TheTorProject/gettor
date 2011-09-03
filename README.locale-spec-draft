@@ -33,14 +33,6 @@ This will allow the user to interact without any knowledge of locales.
 GENERATING .po/.pot FILES
 -------------------------
 
-In the top level directory of the gettor source, run the following command:
-
-    xgettext lib/gettor/i18n.py -dgettor --from-code=utf-8 -o i18n/templates/gettor.pot 
-    for i in i18n/*/gettor.po; do msgmerge -U $i i18n/templates/gettor.pot ; done
-
-Commit your pot file. Then log into the pootle server, commit any
-outstanding changes in ~/gettor/, and do an svn update. Then log into the
-pootle web interface, choose gettor, choose 'admin', click each check box
-(ugh), click 'update languages' at the bottom. Then log into the pootle
-server and do an svn commit of all the new po files.
-
+Don't worry about generating .po files anymore. All that's needed for 
+Transifex to generate the .po files for us it to push the gettor .pot file
+to gettor.git's master branch.

@@ -22,7 +22,9 @@ class requestMail:
         self.config = config
         self.request = {}
         self.request['user'] = self.parsedMessage["Return-Path"]
-        self.request['hashed_user'] = gettor.utils.getHash(self.request['user'])
+        # Normalize address before hashing
+        normalized_addr = gettor.utils.normalizeAddress(self.request['user'])
+        self.request['hashed_user'] = gettor.utils.getHash(normalized_addr)
         self.request['ouraddr'] = self.getRealTo(self.parsedMessage["to"])
         self.request['locale'] = self.getLocaleInTo(self.request['ouraddr'])
         self.request['package'] = None
@@ -107,7 +109,7 @@ class requestMail:
         """If we find 'split' somewhere we assume that the user wants a split 
            delivery
         """
-        match = re.match(".*split.*", line, re.DOTALL)
+        match = re.match("\s*split.*", line, re.DOTALL)
         if match:
             logging.debug("User requested a split delivery")
             return True
@@ -153,14 +155,14 @@ class requestMail:
                 return locale
             if aliases is not None:
                 if locale in aliases:
-                    logging.debug("Request for %s via alias %s" % (lang, alias))
+                    logging.debug("Request for %s via alias %s" % (lang, locale))
                     # Return the 'official' name
                     return lang
         else:
             logging.debug("Requested language %s not supported. Fallback: %s" \
                               % (self.replyLocale, self.config.DEFAULT_LOCALE))
             self.replyLocale = self.config.DEFAULT_LOCALE
-            return
+            return self.config.DEFAULT_LOCALE
 
     def getRawMessage(self):
         return self.rawMessage

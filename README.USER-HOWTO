@@ -31,12 +31,12 @@ choices. An example reply to a request for help follows:
    I am sorry, but your request was not understood. Please select one of the
    following package names:
 
-       panther-bundle
-       source-bundle
-       windows-bundle
-       tiger-bundle
-       tor-browser-bundle
-       tor-im-browser-bundle
+        windows
+        macosx-i386
+        macosx-ppc
+        linux-i386
+        linux-x86_64
+        source
 
    Please send me another email. It only needs a single package name anywhere
    in the body of your email.
