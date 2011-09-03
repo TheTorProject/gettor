@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-27 00:10+0100\n"
+"POT-Creation-Date: 2011-09-03 13:44+0200\n"
 "PO-Revision-Date: 2010-10-03 02:50+0200\n"
 "Last-Translator: Berglind Ósk Bergsdóttir <beggaboo85@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: lib/gettor/i18n.py:408
+#: lib/gettor/i18n.py:27
 #, fuzzy
-msgid ""
-"Hello, This is the \"GetTor\" robot.\n"
-"\n"
-"Thank you for your request."
+msgid "Hello, This is the \"GetTor\" robot."
 msgstr ""
 "\n"
 "Halló, þetta er \"Náðu í Tor\" vélmennið.\n"
@@ -30,11 +27,21 @@ msgstr ""
 "Takk fyrir beiðnina.\n"
 "    "
 
-#: lib/gettor/i18n.py:412
+#: lib/gettor/i18n.py:29
+#, fuzzy
+msgid "Thank you for your request."
+msgstr ""
+"\n"
+"Halló, þetta er \"Náðu í Tor\" vélmennið.\n"
+"\n"
+"Takk fyrir beiðnina.\n"
+"    "
+
+#: lib/gettor/i18n.py:31
 #, fuzzy
 msgid ""
-" Unfortunately, we won't answer you at this address. You should make\n"
-"an account with GMAIL.COM or YAHOO.CN and send the mail from\n"
+"Unfortunately, we won't answer you at this address. You should make\n"
+"an account with GMAIL.COM, YAHOO.COM or YAHOO.CN and send the mail from\n"
 "one of those."
 msgstr ""
 "\n"
@@ -42,7 +49,7 @@ msgstr ""
 "reikning hjá gmail.com eða yahoo.cn og senda póst frá öðrum hvorum þeirra\n"
 "    "
 
-#: lib/gettor/i18n.py:416
+#: lib/gettor/i18n.py:35
 #, fuzzy
 msgid ""
 "We only process requests from email services that support \"DKIM\",\n"
@@ -56,7 +63,7 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:420
+#: lib/gettor/i18n.py:39
 #, fuzzy
 msgid ""
 "(We apologize if you didn't ask for this mail. Since your email is from\n"
@@ -70,20 +77,7 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:424
-#, fuzzy
-msgid ""
-"Please note that currently, we can't process HTML emails or base 64\n"
-"mails. You will need to send plain text."
-msgstr ""
-"\n"
-"Vinsamlegast athugið að eins og er getum við ekki unnið úr HTML vefpóstum "
-"né\n"
-"base 64 póstum. Þú verður að senda póst með einfaldri textagerð.\n"
-"\n"
-"    "
-
-#: lib/gettor/i18n.py:427 lib/gettor/i18n.py:500
+#: lib/gettor/i18n.py:43 lib/gettor/i18n.py:130
 #, fuzzy
 msgid ""
 "If you have any questions or it doesn't work, you can contact a\n"
@@ -96,11 +90,18 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:430
+#: lib/gettor/i18n.py:46
 #, fuzzy
 msgid ""
 "I will mail you a Tor package, if you tell me which one you want.\n"
-"Please select one of the following package names:"
+"Please select one of the following package names:\n"
+"\n"
+"    windows\n"
+"    macos-i386\n"
+"    macos-ppc\n"
+"    linux-i386\n"
+"    linux-x86_64\n"
+"    source"
 msgstr ""
 "\n"
 "Ég mun senda þér Tor-pakkann ef þú segir mér hvern þú vilt fá. Vinsamlegast\n"
@@ -108,11 +109,11 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:433
+#: lib/gettor/i18n.py:56
 #, fuzzy
 msgid ""
-"Please reply to this mail (to gettor@torproject.org), and tell me\n"
-"a single package name anywhere in the body of your email."
+"Please reply to this mail, and tell me a single package name anywhere \n"
+"in the body of your email."
 msgstr ""
 "\n"
 "Vinsamlegast svaraðu á þetta netfang (gettor@torproject.org), og segðu mér\n"
@@ -120,18 +121,22 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:436
+#: lib/gettor/i18n.py:59
 #, fuzzy
-msgid " OBTAINING LOCALIZED VERSIONS OF TOR"
+msgid ""
+"OBTAINING LOCALIZED VERSIONS OF TOR\n"
+"==================================="
 msgstr ""
 "\n"
 "SÆKI STAÐFÆRÐAR ÚTGÁFUR AF TOR\n"
 
-#: lib/gettor/i18n.py:438
+#: lib/gettor/i18n.py:62
 #, fuzzy
 msgid ""
 "To get a version of Tor translated into your language, specify the\n"
-"language you want in the address you send the mail to:"
+"language you want in the address you send the mail to:\n"
+"\n"
+"    gettor+fa@torproject.org"
 msgstr ""
 "\n"
 "Til þess að fá útgáfu af Tor þýdda yfir á þitt tungumál, gerðu grein fyrir\n"
@@ -140,25 +145,25 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:441
+#: lib/gettor/i18n.py:67
 #, fuzzy
 msgid ""
 "This example will give you the requested package in a localized\n"
-"version for Chinese. Check below for a list of supported language\n"
+"version for Farsi (Persian). Check below for a list of supported language\n"
 "codes. "
 msgstr ""
 "\n"
 "Þetta dæmi mun gefa þér umbeðna pakka á staðbundinni útgáfu á kínversku. "
 "Tékkið neðar á lista yfir tungumálakóða sem eru studdir."
 
-#: lib/gettor/i18n.py:445
+#: lib/gettor/i18n.py:71
 #, fuzzy
 msgid " List of supported locales:"
 msgstr ""
 "\n"
 " Listi yfir studdar staðfærslur:\n"
 
-#: lib/gettor/i18n.py:447
+#: lib/gettor/i18n.py:73
 #, fuzzy
 msgid "Here is a list of all available languages:"
 msgstr ""
@@ -167,7 +172,7 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:449
+#: lib/gettor/i18n.py:75
 #, fuzzy
 msgid ""
 "    gettor+ar@torproject.org:     Arabic\n"
@@ -197,7 +202,7 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:461
+#: lib/gettor/i18n.py:87
 #, fuzzy
 msgid "If you select no language, you will receive the English version."
 msgstr ""
@@ -206,22 +211,23 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:463
+#: lib/gettor/i18n.py:89
 #, fuzzy
-msgid "SMALLER SIZED PACKAGES"
+msgid ""
+"SMALLER SIZED PACKAGES\n"
+"======================"
 msgstr ""
 "\n"
 "\tMINNI STÆRÐ AF PÖKKUM\n"
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:465
+#: lib/gettor/i18n.py:92
 #, fuzzy
 msgid ""
-"If your bandwith is low or your provider doesn't allow you to \n"
-"receive large attachments in your email, there is a feature of \n"
-"GetTor you can use to make it send you a number of small packages\n"
-"instead of one big one."
+"If your bandwith is low or your provider doesn't allow you to\n"
+"receive large attachments in your email, GetTor can send you several\n"
+"small packages instead of one big one."
 msgstr ""
 "\n"
 "\tEf bandvíddin þín er lág eða þú hefur ekkivöl á að fá stór viðhengi með\n"
@@ -230,18 +236,16 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:470
-#, fuzzy
-msgid "Simply include the keyword 'split' somewhere in your email like so:"
+#: lib/gettor/i18n.py:96
+msgid ""
+"Simply include the keyword 'split' in a new line on its own (this part\n"
+"is important!) like so: \n"
+"        \n"
+"    windows\n"
+"    split"
 msgstr ""
-"\n"
-"\tEinfaldlega settu inn lykilorðið 'split' einhvers staðar í tölvupóstinn "
-"þinn\n"
-"\tlíkt og:\n"
-"\n"
-"    "
 
-#: lib/gettor/i18n.py:472
+#: lib/gettor/i18n.py:102
 #, fuzzy
 msgid ""
 "Sending this text in an email to GetTor will cause it to send you \n"
@@ -253,7 +257,7 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:475
+#: lib/gettor/i18n.py:105
 #, fuzzy
 msgid ""
 "After having received all parts, you need to re-assemble them to \n"
@@ -266,7 +270,7 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:478
+#: lib/gettor/i18n.py:108
 #, fuzzy
 msgid "1.) Save all received attachments into one folder on your disk."
 msgstr ""
@@ -275,11 +279,12 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:480
+#: lib/gettor/i18n.py:110
 #, fuzzy
 msgid ""
 "2.) Unzip all files ending in \".z\". If you saved all attachments to\n"
-"a fresh folder before, simply unzip all files in that folder."
+"a fresh folder before, simply unzip all files in that folder. If you don't\n"
+"know how to unzip the .z files, please see the UNPACKING THE FILES section."
 msgstr ""
 "\n"
 "2.) Afþjappaðu allar skrár sem enda á \".z\". Ef þú vistaðir öll viðhengi í "
@@ -287,7 +292,7 @@ msgstr ""
 "\n"
 "    "
 
-#: lib/gettor/i18n.py:483
+#: lib/gettor/i18n.py:114
 #, fuzzy
 msgid ""
 "3.) Verify all files as described in the mail you received with \n"
@@ -298,64 +303,69 @@ msgstr ""
 "hverjum pakka. (gpg --verify)\n"
 "    "
 
-#: lib/gettor/i18n.py:486
-#, fuzzy
+#: lib/gettor/i18n.py:117
 msgid ""
-"4.) Now use a program that can unrar multivolume RAR archives. On\n"
-"Windows, this usually is WinRAR. If you don't have that\n"
-"installed on you computer yet, get it here:"
+"4.) Now unpack the multi-volume archive into one file by double-\n"
+"clicking the file ending in \"..split.part01.exe\". This should start the \n"
+"process automatically."
 msgstr ""
-"\n"
-" 5.) Notaðu núna forrit sem getur afþjappað RAR- skrár.Á\n"
-" Windows er vanalegast notast við Win-RAR. Ef það er ekki uppsett á tölvunni "
-"þinni geturu náð í það hér: \n"
-"\n"
 
-#: lib/gettor/i18n.py:490
-#, fuzzy
-msgid "To unpack your Tor package, simply doubleclick the \".exe\" file."
-msgstr ""
-"\n"
-" Til að afþjappa Tor-pakkanum þínum, einfaldlega tvíklikkaðu á .exe skrána.\n"
-
-#: lib/gettor/i18n.py:492
+#: lib/gettor/i18n.py:121
 msgid ""
 "5.) After unpacking is finished, you should find a newly created \n"
 "\".exe\" file in your destination folder. Simply doubleclick\n"
 "that and Tor Browser Bundle should start within a few seconds."
 msgstr ""
 
-#: lib/gettor/i18n.py:496
+#: lib/gettor/i18n.py:125
 msgid "6.) That's it. You're done. Thanks for using Tor and have fun!"
 msgstr ""
 
-#: lib/gettor/i18n.py:498
-msgid "SUPPORT"
+#: lib/gettor/i18n.py:127
+msgid ""
+"SUPPORT\n"
+"======="
 msgstr ""
 
-#: lib/gettor/i18n.py:503
+#: lib/gettor/i18n.py:133
 msgid ""
-" Here's your requested software as a zip file. Please unzip the\n"
+"Here's your requested software as a zip file. Please unzip the\n"
 "package and verify the signature."
 msgstr ""
 
-#: lib/gettor/i18n.py:506
+#: lib/gettor/i18n.py:136
 msgid ""
-"Hint: If your computer has GnuPG installed, use the gpg\n"
-"commandline tool as follows after unpacking the zip file:"
+"VERIFY SIGNATURE\n"
+"================\n"
+"If your computer has GnuPG installed, use the gpg commandline \n"
+"tool as follows after unpacking the zip file:\n"
+"\n"
+"    gpg --verify tor-browser-1.3.24_en-US.exe.asc tor-browser-1.3.24_en-US."
+"exe"
 msgstr ""
 
-#: lib/gettor/i18n.py:509
-msgid "The output should look somewhat like this:"
+#: lib/gettor/i18n.py:143
+msgid ""
+"The output should look somewhat like this:\n"
+"\n"
+"    gpg: Good signature from 'Erinn Clark <...>'"
 msgstr ""
 
-#: lib/gettor/i18n.py:511
+#: lib/gettor/i18n.py:147
 msgid ""
 "If you're not familiar with commandline tools, try looking for\n"
-"a graphical user interface for GnuPG on this website:"
+"a graphical user interface for GnuPG on this website:\n"
+"\n"
+"    http://www.gnupg.org/related_software/frontends.html"
 msgstr ""
 
-#: lib/gettor/i18n.py:514
+#: lib/gettor/i18n.py:152
+msgid ""
+"BLOCKED ACCESS / CENSORSHIP\n"
+"==========================="
+msgstr ""
+
+#: lib/gettor/i18n.py:155
 msgid ""
 "If your Internet connection blocks access to the Tor network, you\n"
 "may need a bridge relay. Bridge relays (or \"bridges\" for short)\n"
@@ -365,19 +375,21 @@ msgid ""
 "to block all the bridges."
 msgstr ""
 
-#: lib/gettor/i18n.py:521
+#: lib/gettor/i18n.py:162
 msgid ""
 "You can acquire a bridge by sending an email that contains \"get bridges\"\n"
-"in the body of the email to the following email address:"
+"in the body of the email to the following email address:\n"
+"\n"
+"    bridges@torproject.org"
 msgstr ""
 
-#: lib/gettor/i18n.py:524
+#: lib/gettor/i18n.py:167
 msgid ""
 "It is also possible to fetch bridges with a web browser at the following\n"
 "url: https://bridges.torproject.org/"
 msgstr ""
 
-#: lib/gettor/i18n.py:527
+#: lib/gettor/i18n.py:170
 msgid ""
 "IMPORTANT NOTE:\n"
 "Since this is part of a split-file request, you need to wait for\n"
@@ -386,32 +398,32 @@ msgid ""
 "first file."
 msgstr ""
 
-#: lib/gettor/i18n.py:533
+#: lib/gettor/i18n.py:176
 msgid ""
 "Packages might arrive out of order! Please make sure you received\n"
 "all packages before you attempt to unpack them!"
 msgstr ""
 
-#: lib/gettor/i18n.py:536
+#: lib/gettor/i18n.py:179
+#, python-format
 msgid ""
-"Thank you for your request. \n"
 "It was successfully understood. Your request is currently being processed.\n"
-"Your package should arrive within the next ten minutes."
+"Your package (%s) should arrive within the next ten minutes."
 msgstr ""
 
-#: lib/gettor/i18n.py:540
+#: lib/gettor/i18n.py:182
 msgid ""
 "If it doesn't arrive, the package might be too big for your mail provider.\n"
-"Try resending the mail from a GMAIL.COM or YAHOO.COM account."
+"Try resending the mail from a GMAIL.COM, YAHOO.CN or YAHOO.COM account."
 msgstr ""
 
-#: lib/gettor/i18n.py:543
+#: lib/gettor/i18n.py:185
 msgid ""
 "Unfortunately we are currently experiencing problems and we can't fulfill\n"
 "your request right now. Please be patient as we try to resolve this issue."
 msgstr ""
 
-#: lib/gettor/i18n.py:546
+#: lib/gettor/i18n.py:188
 msgid ""
 "Unfortunately there is no split package available for the package you\n"
 "requested. Please send us another package name or request the same package \n"
@@ -419,6 +431,201 @@ msgid ""
 "whole \n"
 "package. Make sure this is what you want."
 msgstr ""
+
+#: lib/gettor/i18n.py:193
+msgid ""
+"UNPACKING THE FILES\n"
+"==================="
+msgstr ""
+
+#: lib/gettor/i18n.py:196
+msgid ""
+"The easiest way to unpack the files you received is to install 7-Zip,\n"
+"a free file compression/uncompression tool. If it isn't installed on\n"
+"your computer yet, you can download it here:\n"
+"\n"
+"    http://www.7-zip.org/"
+msgstr ""
+
+#: lib/gettor/i18n.py:202
+msgid ""
+"When 7-Zip is installed, you can open the .z archive you received from\n"
+"us by double-clicking on it."
+msgstr ""
+
+#: lib/gettor/i18n.py:205
+msgid ""
+"An alternative way to get the .z files extraced is to rename them to\n"
+".zip. For example, if you recevied a file called \"windows.z\", rename it "
+"to \n"
+"\"windows.zip\". You should then be able to extract the archive with "
+"common \n"
+"file archiver programs that probably are already installed on your computer."
+msgstr ""
+
+#: lib/gettor/i18n.py:210
+#, fuzzy
+msgid ""
+"Please reply to this mail, and tell me a single package name anywhere\n"
+"in your reply. Here's a short explanation of what these packages are:"
+msgstr ""
+"\n"
+"Vinsamlegast svaraðu á þetta netfang (gettor@torproject.org), og segðu mér\n"
+"heiti á einum pakkanna einhvers staðar í meginmáli veffpóstsins.\n"
+"\n"
+"    "
+
+#: lib/gettor/i18n.py:213
+msgid ""
+"windows:\n"
+"The Tor Browser Bundle package for Windows operating systems. If you're \n"
+"running some version of Windows, like Windows XP, Windows Vista or \n"
+"Windows 7, this is the package you should get."
+msgstr ""
+
+#: lib/gettor/i18n.py:218
+msgid ""
+"macos-i386:\n"
+"The Tor Browser Bundle package for OS X, Intel CPU architecture. In \n"
+"general, newer Mac hardware will require you to use this package."
+msgstr ""
+
+#: lib/gettor/i18n.py:222
+msgid ""
+"macos-ppc:\n"
+"This is an older installer (the \"Vidalia bundle\") for older Macs running\n"
+"OS X on PowerPC CPUs. Note that this package will be deprecated soon."
+msgstr ""
+
+#: lib/gettor/i18n.py:226
+msgid ""
+"linux-i386:\n"
+"The Tor Browser Bundle package for Linux, 32bit versions."
+msgstr ""
+
+#: lib/gettor/i18n.py:229
+msgid ""
+"Note that this package is rather large and needs your email provider to \n"
+"allow for attachments of about 30MB in size."
+msgstr ""
+
+#: lib/gettor/i18n.py:232
+msgid ""
+"linux-x86_64:\n"
+"The Tor Browser Bundle package for Linux, 64bit versions."
+msgstr ""
+
+#: lib/gettor/i18n.py:235
+msgid ""
+"source:\n"
+"The Tor source code, for experts. Most users do not want this package."
+msgstr ""
+
+#: lib/gettor/i18n.py:238
+msgid ""
+"FREQUENTLY ASKED QUESTIONS\n"
+"=========================="
+msgstr ""
+
+#: lib/gettor/i18n.py:241
+msgid "What is Tor?"
+msgstr ""
+
+#: lib/gettor/i18n.py:243
+msgid "The name \"Tor\" can refer to several different components."
+msgstr ""
+
+#: lib/gettor/i18n.py:245
+msgid ""
+"The Tor software is a program you can run on your computer that helps \n"
+"keep you safe on the Internet. Tor protects you by bouncing your \n"
+"communications around a distributed network of relays run by volunteers \n"
+"all around the world: it prevents somebody watching your Internet "
+"connection \n"
+"from learning what sites you visit, and it prevents the sites you visit "
+"from \n"
+"learning your physical location. This set of volunteer relays is called "
+"the \n"
+"Tor network. You can read more about how Tor works here:\n"
+"\n"
+"    https://www.torproject.org/about/overview.html.en"
+msgstr ""
+
+#: lib/gettor/i18n.py:255
+msgid "What is the Tor Browser Bundle?"
+msgstr ""
+
+#: lib/gettor/i18n.py:257
+msgid ""
+"The Browser Bundle (TBB) is the package we recommend to most users. \n"
+"The bundle comes with everything you need to safely browse the Internet.\n"
+"Just extract it and run."
+msgstr ""
+
+#: lib/gettor/i18n.py:261
+msgid "What package should I request?"
+msgstr ""
+
+#: lib/gettor/i18n.py:263
+msgid ""
+"This depends on the operating system you use. For instance, if your\n"
+"operating system is Microsoft Windows, you should request \"windows\". Here\n"
+"is a short explanation of all packages to request and what operating \n"
+"systems there are suitable for:"
+msgstr ""
+
+#: lib/gettor/i18n.py:268
+msgid "How do I extract the file(s) you sent me?"
+msgstr ""
+
+#: lib/gettor/i18n.py:270
+msgid "QUESTION:"
+msgstr ""
+
+#: lib/gettor/i18n.py:272
+msgid "ANSWER:"
+msgstr ""
+
+#, fuzzy
+#~ msgid ""
+#~ "Please note that currently, we can't process HTML emails or base 64\n"
+#~ "mails. You will need to send plain text."
+#~ msgstr ""
+#~ "\n"
+#~ "Vinsamlegast athugið að eins og er getum við ekki unnið úr HTML vefpóstum "
+#~ "né\n"
+#~ "base 64 póstum. Þú verður að senda póst með einfaldri textagerð.\n"
+#~ "\n"
+#~ "    "
+
+#, fuzzy
+#~ msgid "Simply include the keyword 'split' somewhere in your email like so:"
+#~ msgstr ""
+#~ "\n"
+#~ "\tEinfaldlega settu inn lykilorðið 'split' einhvers staðar í tölvupóstinn "
+#~ "þinn\n"
+#~ "\tlíkt og:\n"
+#~ "\n"
+#~ "    "
+
+#, fuzzy
+#~ msgid ""
+#~ "4.) Now use a program that can unrar multivolume RAR archives. On\n"
+#~ "Windows, this usually is WinRAR. If you don't have that\n"
+#~ "installed on you computer yet, get it here:"
+#~ msgstr ""
+#~ "\n"
+#~ " 5.) Notaðu núna forrit sem getur afþjappað RAR- skrár.Á\n"
+#~ " Windows er vanalegast notast við Win-RAR. Ef það er ekki uppsett á "
+#~ "tölvunni þinni geturu náð í það hér: \n"
+#~ "\n"
+
+#, fuzzy
+#~ msgid "To unpack your Tor package, simply doubleclick the \".exe\" file."
+#~ msgstr ""
+#~ "\n"
+#~ " Til að afþjappa Tor-pakkanum þínum, einfaldlega tvíklikkaðu á .exe "
+#~ "skrána.\n"
 
 #~ msgid ""
 #~ "\n"
