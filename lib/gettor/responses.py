@@ -27,7 +27,8 @@ def getPackageHelpText(t):
     return t.gettext(i18n.GETTOR_TEXT[6]) + "\n\n" \
          + t.gettext(i18n.GETTOR_TEXT[46]) + "\n\n" \
          + t.gettext(i18n.GETTOR_TEXT[47]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[48]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[48]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
          + t.gettext(i18n.GETTOR_TEXT[49]) + "\n\n" \
          + t.gettext(i18n.GETTOR_TEXT[50]) + "\n" \
          + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
