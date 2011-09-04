@@ -96,6 +96,10 @@ class requestMail:
     def matchPackage(self, line):
         """Look up which package the user is requesting.
         """
+        # XXX HACK ALERT: This makes it possible for users to still request
+        #                 the windows bundle by its old name
+        packages_hacked = self.config.PACKAGES
+        packages_hacked['tor-browser-bundle'] = ()
         for p in self.config.PACKAGES.keys():
             matchme = ".*" + p + ".*"
             match = re.match(matchme, line, re.DOTALL)    
