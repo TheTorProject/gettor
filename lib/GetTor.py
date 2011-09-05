@@ -15,6 +15,7 @@ except ImportError:
 import os
 import sys
 import logging
+import traceback
 import gettor.opt
 import gettor.config
 import gettor.requests
@@ -47,6 +48,7 @@ def processFail(conf, rawMessage, failedAction, e=None):
     """
     logging.error("Failed to " + failedAction)
     if e is not None:
+        logging.error("%s" % traceback.format_exc())
         logging.error("Here is the exception I saw: %s" % sys.exc_info()[0])
         logging.error("Detail: %s" %e)
     if conf.DUMPFILE != "":

@@ -161,7 +161,7 @@ def getSplitPackageMsg(t):
 
 def getDelayAlertMsg(t, packageInfo):
     return getGreetingText(t) \
-         + t.gettext(i18n.GETTOR_TEXT[38]) % packageInfo + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[38] % packageInfo) + "\n\n" \
          + t.gettext(i18n.GETTOR_TEXT[39]) + "\n\n" \
          + getSupportText(t)
 
@@ -358,10 +358,10 @@ class Response:
             return False
 
         if packageCount > 1:
-            packageInfo = "%s [%d parts]" \
+            packageInfo = "Package: %s [%d parts]" \
                            % (self.reqInfo['package'], packageCount)
         else:
-            packageInfo = "%s" % self.reqInfo['package']
+            packageInfo = "Package: %s" % self.reqInfo['package']
 
         logging.info("Sending delay alert to %s" % self.reqInfo['hashed_user'])
         return self.sendTextEmail(getDelayAlertMsg(self.t, packageInfo))

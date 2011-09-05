@@ -113,7 +113,7 @@ class requestMail:
         """If we find 'split' somewhere we assume that the user wants a split 
            delivery
         """
-        match = re.match("\s*split.*", line, re.DOTALL)
+        match = re.match("^split.*", line, re.DOTALL)
         if match:
             logging.debug("User requested a split delivery")
             return True
