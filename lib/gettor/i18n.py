@@ -41,7 +41,7 @@ a service that doesn't use DKIM, we're sending a short explanation,
 and then we'll ignore this email address for the next day or so.)"""),
  # GETTOR_TEXT[5]
 _("""If you have any questions or it doesn't work, you can contact a
-human at this support email address: tor-assistants@torproject.org"""),
+human at this support email address: community-support@lists.torproject.org"""),
  # GETTOR_TEXT[6]
 _("""I will mail you a Tor package, if you tell me which one you want.
 Please select one of the following package names:
@@ -128,7 +128,7 @@ _("""SUPPORT
 ======="""),
  # GETTOR_TEXT[27]
 _("""If you have any questions or it doesn't work, you can contact a
-human at this support email address: tor-assistants@torproject.org"""),
+human at this support email address: community-support@lists.torproject.org"""),
  # GETTOR_TEXT[28]
 _("""Here's your requested software as a zip file. Please unzip the
 package and verify the signature."""),
