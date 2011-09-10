@@ -33,6 +33,10 @@ This will allow the user to interact without any knowledge of locales.
 GENERATING .po/.pot FILES
 -------------------------
 
+In the top level directory of the gettor source, run the following command:
+
+xgettext lib/gettor/i18n.py -dgettor --from-code=utf-8 -o i18n/templates/gettor.pot 
+
 Don't worry about generating .po files anymore. All that's needed for 
 Transifex to generate the .po files for us it to push the gettor .pot file
 to gettor.git's master branch.
