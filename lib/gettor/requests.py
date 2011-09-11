@@ -124,9 +124,9 @@ class requestMail:
         """Check if we have a command from the GetTor admin in this email.
            Command lines always consists of the following syntax:
            'Command: <password> <command part 1> <command part 2>'
-           For the forwarding command, part 1 is the email address of the
-           recipient, part 2 is the package name of the package that needs
-           to be forwarded.
+           For the forwarding command, part 1 is the package name of
+           the package that needs to be forwarded, part 2 is the email
+           address of the recipient.
            The password is checked against the password found in the file
            configured as cmdPassFile in the GetTor configuration.
         """
