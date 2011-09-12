@@ -12,6 +12,7 @@ def makestats(filename, configPackages):
 
     # Initialize package counter
     packageCounter = { 'None': 0}
+    dateInfo = ""
     for k in configPackages.keys():
         packageCounter[k] = 0
 
@@ -30,6 +31,21 @@ def makestats(filename, configPackages):
             reqInfo = ast.literal_eval(match.group(2))
             package = reqInfo['package']
             if package is not None:
+                match = re.match("tor-browser-bundle(_.*)", package)
+                if match:
+                    package = "windows" + match.group(1)
+                match = re.match("linux-browser-bundle(-.*)", package)
+                if match:
+                    package = "linux" + match.group(1)
+                match = re.match("(macosx-i386)(.*)", package)
+                if match:
+                    package = "macosx-i386"
+                match = re.match("(macosx-ppc)(.*)", package)
+                if match:
+                    package = "macosx-ppc"
+                match = re.match("windows-bundle", package)
+                if match:
+                    continue
                 packageCounter[package] += 1
             else:
                 packageCounter['None'] += 1
