@@ -269,5 +269,13 @@ _("""How do I extract the file(s) you sent me?"""),
  # GETTOR_TEXT[63]
 _("""QUESTION:"""),
  # GETTOR_TEXT[64]
-_("""ANSWER:""")
+_("""ANSWER:"""),
+ # GETTOR_TEXT[65]
+_("""Sorry, but the package you requested (%s) is too large for your 
+provider to accept as an attachment. Try using another provider that allows 
+for larger email attachments. Or try one of the following mirrors:
+
+  https://www.oignon.net/dist/torbrowser/
+  https://tor.beme-it.de/dist/torbrowser/
+  https://www.torservers.net/mirrors/torproject.org/dist/torbrowser/""")
 ]

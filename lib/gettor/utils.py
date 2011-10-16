@@ -298,6 +298,25 @@ def removeFromListByRegex(l, string):
 
     return l
 
+def getBase64Size(unencoded_size):
+    """Return the number of bytes a given byte sequence will expand to if it
+       is base64 (MIME) encoded.
+
+       Source for the formula: Wikipedia
+    """
+    return (unencoded_size + 814) * 1.37
+
+def getMaxAttSize(addr, config):
+    """Return the maximum attachment size allowed for a certain email 
+       provider. If the provider isn't known by us, return 0, indicating
+       an unlimited attachment size.
+    """
+    (_, domain) = emailGetLocalAndDomainPart(addr)
+    if domain in config.PROVIDER_ATTACHMENT_SIZES:
+       return config.PROVIDER_ATTACHMENT_SIZES[domain] * 1024 * 1024
+    else:
+       return 0
+
 # The following code is more or less taken from BridgeDB
 
 class BadEmail(Exception):
@@ -355,10 +374,10 @@ def extractAddrSpec(addr):
     localpart, domain = m.groups()
     return localpart, domain
 
-def normalizeEmail(addr):
-    """Given the contents of a from line, and a map of supported email
-       domains (in lowercase), raise BadEmail or return a normalized
-       email address.
+def emailGetLocalAndDomainPart(addr):
+    """For a given email address, return a touple of localpart, domainpart.
+       Example:
+       bla@foo.org -> bla, foo.org
     """
     addr = addr.lower()
     localpart, domain = extractAddrSpec(addr)
@@ -369,5 +388,10 @@ def normalizeEmail(addr):
         localpart = localpart[:idx]
     localpart = localpart.replace(".", "")
 
-    return "%s@%s"%(localpart, domain)
+    return localpart, domain
+
+def normalizeEmail(addr):
+    """Return normalized email address.
+    """
+    return "%s@%s" % emailGetLocalAndDomainPart(addr)
 

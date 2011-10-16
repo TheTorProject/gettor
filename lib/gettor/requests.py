@@ -24,13 +24,15 @@ class requestMail:
         self.request['user'] = self.parsedMessage["Return-Path"]
         # Normalize address before hashing
         normalized_addr = gettor.utils.normalizeAddress(self.request['user'])
+        max_attach = gettor.utils.getMaxAttSize(normalized_addr, config)
         self.request['hashed_user'] = gettor.utils.getHash(normalized_addr)
         self.request['ouraddr'] = self.getRealTo(self.parsedMessage["to"])
         self.request['locale'] = self.getLocaleInTo(self.request['ouraddr'])
         self.request['package'] = None
         self.request['split'] = False
         self.request['forward'] = None
-        self.request['valid'] = False # This will get set by gettor.filters
+        self.request['valid'] = False  # This will get set by gettor.filters
+        self.request['max_attach'] = max_attach
 
     def getRealTo(self, toField):
         """If someone wrote to `gettor+zh_CN@torproject.org', the `From:' field
