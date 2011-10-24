@@ -85,6 +85,9 @@ def prepPackages(conf):
     if not packs.buildPackages():
        return False
 
+    # Copy the short user manual
+    packs.copyManuals()
+
     logging.debug("Building packages done.")
     return True
 

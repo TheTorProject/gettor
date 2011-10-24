@@ -11,6 +11,7 @@ import gettor.config
 import gettor.utils
 import re
 import glob
+import shutil
 
 # Stolen from Mike's TorCtl:
 class RouterVersion:
@@ -60,6 +61,7 @@ class Packages:
         self.packageList = {}
         self.distDir = os.path.join(config.BASEDIR, "dist")
         self.packDir = os.path.join(config.BASEDIR, "packages")
+        self.docDir = os.path.join(config.BASEDIR, "doc")
         self.initRsync(config.RSYNC_MIRROR, silent)
         self.packageList = config.PACKAGES
 
@@ -193,6 +195,16 @@ class Packages:
 
         logging.debug("All split files for package %s created." % pack)
         return True
+
+    def copyManuals(self):
+        """Copy the short user manuals to their destination directory
+        """
+        manualDir = os.path.join(self.distDir, "manual")
+        gettor.utils.createDir(self.docDir)
+        for f in glob.glob(os.path.join(manualDir, "*.xhtml")):
+            copyTo = os.path.join(self.docDir, os.path.basename(f))
+            shutil.copyfile(f, copyTo)
+            logging.debug("%s copied." % f)
 
     def getPart(self, fileName):
         """Helper function: Extract the `partXX' part of the file name.

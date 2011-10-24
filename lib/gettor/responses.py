@@ -285,6 +285,7 @@ class Response:
         f = os.path.join(self.config.BASEDIR, "packages", pack + ".z")
         txt = getPackageMsg(self.t)
         msg = self.makeMsg(txt, to, fileName=f)
+        msg = self.addUserManual(msg, self.reqInfo['locale'])
         try:
             status = self.sendEmail(to, msg)
         except:
@@ -465,6 +466,31 @@ class Response:
             f = os.path.basename(fileName)
             filePart.add_header('Content-Disposition', 'attachment', filename=f)
             message.attach(filePart)
+
+        return message
+
+    def addUserManual(self, message, lang="en"):
+        """Add the short user manual to an existing message.
+        """
+        docDir = os.path.join(self.config.BASEDIR, "doc")
+        mName = "short-user-manual_" + lang + ".xhtml"
+        docName = os.path.join(docDir, mName)
+        if not os.access(docName, os.R_OK):
+            # Fall back to english if a certain locale isn't 
+            # available
+            mName = "short-user-manual_en.xhtml"
+            docName = os.path.join(docDir, mName)
+        if os.access(docName, os.R_OK):
+            filePart = MIMEBase("application", "xhtml")
+            fp = open(docName, 'rb')
+            filePart.set_payload(fp.read())
+            fp.close()
+            encoders.encode_base64(filePart)
+            # Add file part
+            filePart.add_header('Content-Disposition', 'attachment', filename=mName)
+            message.attach(filePart)
+        else:
+            logging.error("Could not open manual file %d" % docName)
 
         return message
 
