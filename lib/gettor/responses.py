@@ -165,6 +165,11 @@ def getDelayAlertMsg(t, packageInfo):
          + t.gettext(i18n.GETTOR_TEXT[39]) + "\n\n" \
          + getSupportText(t)
 
+def getSorrySizeMsg(t, packageInfo):
+    return getGreetingText(t) \
+           + t.gettext(i18n.GETTOR_TEXT[65] % packageInfo) + "\n\n" \
+           + getSupportText(t)
+
 def getNoSplitAvailable(t):
     return getGreetingText(t) \
          + t.gettext(i18n.GETTOR_TEXT[1]) + "\n\n" \
@@ -210,7 +215,27 @@ class Response:
             if self.reqInfo['split']:
                 return self.sendSplitPackage()
             else:
-                return self.sendPackage()
+                # Check if the user's allowed attachment size is okay.
+                if self.attachmentSizeOk(self.reqInfo['package'], self.reqInfo['max_attach']):
+                    return self.sendPackage()
+                else:
+                    return self.sendSorrySize()
+
+    def attachmentSizeOk(self, package, max_attach):
+        """Check if the user is allowed to receive a certain attachment size-wise.
+        """
+        if max_attach == 0:
+           return True
+
+        try:
+            package_path = os.path.join(self.config.BASEDIR, "packages", package + ".z")
+            package_size = os.path.getsize(package_path)
+            if package_size <= max_attach:
+                return True
+        except OSError:
+            log.error("Ugh, this is bad. package %s isnt available!" % package_path)
+
+        return False
 
     def isAllowed(self):
         """Do all checks necessary to decide whether the reply-to user is 
@@ -365,7 +390,19 @@ class Response:
 
         logging.info("Sending delay alert to %s" % self.reqInfo['hashed_user'])
         return self.sendTextEmail(getDelayAlertMsg(self.t, packageInfo))
-            
+
+
+    def sendSorrySize(self):
+        """Send a polite note that the user's provider doesn't support the
+           attachment size necessary for a given package.
+        """
+        if self.isBlacklistedForMessageType("sendSorrySize"):
+            # Don't send anything
+            return False
+
+        logging.info("Sending sorry size email to %s" % self.reqInfo['hashed_user']) 
+        return self.sendTextEmail(getSorrySizeMsg(self.t, self.reqInfo['package']))
+
     def sendHelp(self):
         """Send a help mail. This happens when a user sent us a request we 
            didn't really understand
