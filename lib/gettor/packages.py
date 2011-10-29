@@ -245,7 +245,7 @@ class Packages:
         if not silent:
             self.rsync += "--progress"
             self.rsync += " "
-        self.rsync += "rsync://%s/tor/dist/" % mirror
+        self.rsync += "%s/dist/" % mirror
         self.rsync += " "
         self.rsync += self.distDir + "/"
 
