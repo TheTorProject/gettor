@@ -24,7 +24,9 @@ def makestats(filename, configPackages):
 
     readData = logFile.read().split('\n')
     for line in readData:
-        matchStr = "([0-9]{4}-[0-9]{2}-[0-9]{2}).*({'.*'}).*"
+        # This is how we recognize a relevant line: Starts with a date like
+        # 2011-10-04 and has a "{" with matching "}" somewhere.
+        matchStr = "^([0-9]{4}-[0-9]{2}-[0-9]{2}).*({.*}).*"
         match = re.match(matchStr, line, re.DOTALL)
         if match:
             dateInfo = match.group(1)
@@ -39,14 +41,17 @@ def makestats(filename, configPackages):
                     package = "linux" + match.group(1)
                 match = re.match("(macosx-i386)(.*)", package)
                 if match:
-                    package = "macosx-i386"
+                    package = "macos-i386"
                 match = re.match("(macosx-ppc)(.*)", package)
                 if match:
-                    package = "macosx-ppc"
+                    package = "macos-ppc"
                 match = re.match("windows-bundle", package)
                 if match:
                     continue
-                packageCounter[package] += 1
+                if package in packageCounter.keys():
+                    packageCounter[package] += 1
+                else:
+                    packageCounter['None'] += 1
             else:
                 packageCounter['None'] += 1
 
@@ -68,8 +73,10 @@ def main():
     logDir = os.path.join(config.BASEDIR, "log")
     logFilePattern = os.path.join(logDir, config.LOGFILE + "*.log")
     fileList = glob.glob(logFilePattern)
+    fileList = sorted(fileList)
     for f in fileList:
         dateInfo, stats = makestats(f, config.PACKAGES)
+        print "File: ", f
         printStatsStdout(dateInfo, stats)
 
 if __name__ == "__main__":
