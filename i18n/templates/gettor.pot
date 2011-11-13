@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-10 01:52-0400\n"
+"POT-Creation-Date: 2011-11-13 22:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 #: lib/gettor/i18n.py:43 lib/gettor/i18n.py:130
 msgid ""
 "If you have any questions or it doesn't work, you can contact a\n"
-"human at this support email address: community-support@lists.torproject.org"
+"human at this support email address: help@rt.torproject.org"
 msgstr ""
 
 #: lib/gettor/i18n.py:46
@@ -445,4 +445,17 @@ msgstr ""
 
 #: lib/gettor/i18n.py:272
 msgid "ANSWER:"
+msgstr ""
+
+#: lib/gettor/i18n.py:274
+#, python-format
+msgid ""
+"Sorry, but the package you requested (%s) is too large for your \n"
+"provider to accept as an attachment. Try using another provider that "
+"allows \n"
+"for larger email attachments. Or try one of the following mirrors:\n"
+"\n"
+"  https://www.oignon.net/dist/torbrowser/\n"
+"  https://tor.beme-it.de/dist/torbrowser/\n"
+"  https://www.torservers.net/mirrors/torproject.org/dist/torbrowser/"
 msgstr ""
