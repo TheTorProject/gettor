@@ -76,7 +76,6 @@ def main():
     fileList = sorted(fileList)
     for f in fileList:
         dateInfo, stats = makestats(f, config.PACKAGES)
-        print "File: ", f
         printStatsStdout(dateInfo, stats)
 
 if __name__ == "__main__":
