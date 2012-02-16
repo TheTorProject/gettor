@@ -54,10 +54,6 @@ def getGeneralHelpText(t):
     return getGreetingText(t) \
          + getPackageHelpText(t) \
          + getLocalizedVersionHelpText(t) \
-         + t.gettext(i18n.GETTOR_TEXT[15]) + "\n" \
-         + t.gettext(i18n.GETTOR_TEXT[16]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[17]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[18]) + "\n\n" \
          + getBridgesHelpText(t) \
          + getSupportText(t)
 
