@@ -209,7 +209,11 @@ def setCmdPassword(conf, password):
     logging.debug("Setting command password")
     passwordHash = str(hashlib.sha1(password).hexdigest())
     # Be nice: Create dir if it's not there
-    passFile = os.path.join(conf.BASEDIR, 'etc', 'gettor', conf.PASSFILE)
+    passwordDir = os.path.join(conf.BASEDIR, 'etc', 'gettor')
+    if not createDir(passwordDir):
+        logging.error("Couldn't create password dir %s" % passwordDir)
+        return False
+    passFile = os.path.join(passwordDir, conf.PASSFILE)
     try:
         fd = open(passFile, 'w')
         fd.write(passwordHash)
