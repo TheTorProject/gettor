@@ -110,7 +110,7 @@ def installCron():
 def addWhitelistEntry(conf, address):
     """Add an entry to the global whitelist
     """
-    wlStateDir = conf.BASEDIR + "/wl"
+    wlStateDir = os.path.join(conf.BASEDIR, 'var', 'cache', 'gettor', 'wl')
     logging.debug("Adding address to whitelist: %s" % address)
     try:
         whiteList = gettor.blacklist.BWList(wlStateDir, conf.BLACKLIST_THRES)
@@ -128,7 +128,7 @@ def addBlacklistEntry(conf, address):
     """Add an entry to the global blacklist
     """
     logging.debug("Adding address to blacklist: %s" % address)
-    blStateDir = conf.BASEDIR + "/bl"
+    blStateDir = os.path.join(conf.BASEDIR, 'var', 'cache', 'gettor', 'bl')
     try:
         blackList = gettor.blacklist.BWList(blStateDir, conf.BLACKLIST_THRES)
     except IOError, e:
@@ -146,8 +146,8 @@ def lookupAddress(conf, address):
     """
     logging.debug("Lookup address: %s" % address)
     found = False
-    wlStateDir = conf.BASEDIR + "/wl"
-    blStateDir = conf.BASEDIR + "/bl"
+    wlStateDir = os.path.join(conf.BASEDIR, 'var', 'cache', 'gettor', 'wl')
+    blStateDir = os.path.join(conf.BASEDIR, 'var', 'cache', 'gettor', 'bl')
     try:
         whiteList = gettor.blacklist.BWList(wlStateDir, conf.BLACKLIST_THRES)
         blackList = gettor.blacklist.BWList(blStateDir, conf.BLACKLIST_THRES)
@@ -170,7 +170,7 @@ def lookupAddress(conf, address):
 def clearWhitelist(conf):
     """Delete all entries in the global whitelist
     """
-    wlStateDir = conf.BASEDIR + "/wl"
+    wlStateDir = os.path.join(conf.BASEDIR, 'var', 'cache', 'gettor', 'wl')
     try:
         whiteList = gettor.blacklist.BWList(wlStateDir, conf.BLACKLIST_THRES)
     except IOError, e:
@@ -189,7 +189,7 @@ def clearBlacklist(conf, olderThanDays):
        'olderThanDays' days
     """
     logging.debug("Clearing blacklist..")
-    blStateDir = conf.BASEDIR + "/bl"
+    blStateDir = os.path.join(conf.BASEDIR, 'var', 'cache', 'gettor', 'bl')
     try:
         blackList = gettor.blacklist.BWList(blStateDir, conf.BLACKLIST_THRES)
     except IOError, e:
@@ -209,7 +209,7 @@ def setCmdPassword(conf, password):
     logging.debug("Setting command password")
     passwordHash = str(hashlib.sha1(password).hexdigest())
     # Be nice: Create dir if it's not there
-    passFile = os.path.join(conf.BASEDIR, conf.PASSFILE)
+    passFile = os.path.join(conf.BASEDIR, 'etc', 'gettor', conf.PASSFILE)
     try:
         fd = open(passFile, 'w')
         fd.write(passwordHash)
@@ -227,7 +227,7 @@ def verifyPassword(conf, password):
     """
     candidateHash = str(hashlib.sha1(password).hexdigest())
     try:
-        passFile = os.path.join(conf.BASEDIR, conf.PASSFILE)
+        passFile = os.path.join(conf.BASEDIR, 'etc', 'gettor', conf.PASSFILE)
         fd = open(passFile, 'r')
         passwordHash = fd.read()
         fd.close

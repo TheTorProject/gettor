@@ -30,7 +30,7 @@ def initializeLogging(cfg):
     level = getattr(logging, level)
     extra = {}
     logfileName = cfg.LOGFILE + "-" +  strftime("%Y-%m-%d") + ".log"
-    logDir = os.path.join(cfg.BASEDIR, "log")
+    logDir = os.path.join(cfg.BASEDIR, 'var', 'log')
     if not gettor.utils.createDir(logDir):
         # Fall back to /tmp in case of an error
         logDir="/tmp"
@@ -54,7 +54,8 @@ def processFail(conf, rawMessage, failedAction, e=None):
     if conf.DUMPFILE != "":
         # Keep a copy of the failed email for later reference
         logging.info("We'll keep a record of this mail.")
-        dumpFile = os.path.join(conf.BASEDIR, conf.DUMPFILE)
+        dumpFile = os.path.join(conf.BASEDIR, 'var', 'cache', 'gettor', 
+                                conf.DUMPFILE)
         gettor.utils.dumpMessage(dumpFile, rawMessage)
 
 def processMail(conf):

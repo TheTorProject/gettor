@@ -190,8 +190,10 @@ class Response:
         self.t = i18n.getLang(self.reqInfo['locale'], config)
 
         # Init black & whitelists
-        wlStateDir = os.path.join(self.config.BASEDIR, "wl")
-        blStateDir = os.path.join(self.config.BASEDIR, "bl")
+        wlStateDir = os.path.join(self.config.BASEDIR, 'var', 'cache', 
+                                  'gettor', 'wl')
+        blStateDir = os.path.join(self.config.BASEDIR, 'var', 'cache',
+                                  'gettor', 'bl')
         self.wList = gettor.blacklist.BWList(wlStateDir, config.BLACKLIST_THRES)
         self.bList = gettor.blacklist.BWList(blStateDir, config.BLACKLIST_THRES)
 
@@ -224,7 +226,8 @@ class Response:
            return True
 
         try:
-            package_path = os.path.join(self.config.BASEDIR, "packages", package + ".z")
+            package_path = os.path.join(self.config.BASEDIR, 'var', 'cache',
+                                        'gettor', 'packages', package + ".z")
             package_size = os.path.getsize(package_path)
             if package_size <= max_attach:
                 return True
@@ -278,7 +281,8 @@ class Response:
             # Don't send anything
             return False
         logging.info("Sending out %s." % (pack))
-        f = os.path.join(self.config.BASEDIR, "packages", pack + ".z")
+        f = os.path.join(self.config.BASEDIR, 'var', 'cache', 'gettor', 
+                         'packages', pack + ".z")
         txt = getPackageMsg(self.t)
         msg = self.makeMsg(txt, to, fileName=f)
         msg = self.addUserManual(msg, self.reqInfo['locale'])
@@ -299,7 +303,8 @@ class Response:
         fwd = self.reqInfo['forward']
         to = self.reqInfo['user']
         logging.info("Sending out %s."  % (pack))
-        f = os.path.join(self.config.BASEDIR, "packages", pack + ".z")
+        f = os.path.join(self.config.BASEDIR, 'var', 'cache', 'gettor', 
+                         'packages', pack + ".z")
         text = getPackageMsg(self.t)
         msg = self.makeMsg(text, fwd, fileName=f)
         try:
@@ -339,7 +344,8 @@ class Response:
         # `package.split' -- this is stupid because we let the user configure
         # split package names in gettor.conf.
         splitpack = self.reqInfo['package'] + ".split"
-        splitDir = os.path.join(self.config.BASEDIR, "packages", splitpack)
+        splitDir = os.path.join(self.config.BASEDIR, 'var', 'cache', 'gettor',
+                                'packages', splitpack)
         fileList = os.listdir(splitDir)
 
         # Sort the files, so we can send 01 before 02 and so on..
@@ -468,7 +474,8 @@ class Response:
     def addUserManual(self, message, lang="en"):
         """Add the short user manual to an existing message.
         """
-        docDir = os.path.join(self.config.BASEDIR, "doc")
+        docDir = os.path.join(self.config.BASEDIR, 'var', 'cache', 'gettor', 
+                              'doc')
         mName = "short-user-manual_" + lang + ".xhtml"
         docName = os.path.join(docDir, mName)
         if not os.access(docName, os.R_OK):

@@ -10,7 +10,7 @@ def getLang(lang, config):
     """Return the Translation instance for a given language. If no Translation
        instance is found, return the one for 'en'
     """
-    localeDir = os.path.join(config.BASEDIR, "i18n")
+    localeDir = os.path.join(config.BASEDIR, 'share', 'i18n')
     fallback = config.DEFAULT_LOCALE
     return gettext.translation("gettor", localedir=localeDir,
                                languages=[lang], fallback=fallback)

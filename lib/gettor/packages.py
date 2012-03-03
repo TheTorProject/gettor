@@ -59,9 +59,10 @@ class Packages:
 
     def __init__(self, config, silent=False):
         self.packageList = {}
-        self.distDir = os.path.join(config.BASEDIR, "dist")
-        self.packDir = os.path.join(config.BASEDIR, "packages")
-        self.docDir = os.path.join(config.BASEDIR, "doc")
+        cache_dir = os.path.join(config.BASEDIR, 'var', 'cache', 'gettor')
+        self.distDir = os.path.join(cache_dir, 'dist')
+        self.packDir = os.path.join(cache_dir, 'packages')
+        self.docDir = os.path.join(cache_dir, 'doc')
         self.initRsync(config.RSYNC_MIRROR, silent)
         self.packageList = config.PACKAGES
 
