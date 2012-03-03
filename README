@@ -25,24 +25,23 @@ in case you need to.
 SETUP
 -----
 
-This setup descripton presumes that you have access to the latest gettor svn 
-trunk somewhere in your local file system.
+This setup descripton presumes that you have access to the latest gettor source
+code.
 
-    gettor@hostname:~/tmp$ svn co https://freehaven.net/svn/projects/gettor gettor
+    gettor@hostname:~/src$ git clone git://git.torproject.org/gettor.git
 
-After checking out the GetTor source code, you will need to install everything
-as follows:
+After obtaining the GetTor source code, you will need to install it as follows:
 
-    gettor@hostname:~/tmp$ cd gettor/
-    gettor@hostname:~/tmp/gettor$ python setup.py trans
-    gettor@hostname:~/tmp/gettor$ python setup.py install_data
-    gettor@hostname:~/tmp/gettor$ python setup.py install
+    gettor@hostname:~/src$ cd gettor/
+    gettor@hostname:~/src/gettor$ python setup.py trans
+    gettor@hostname:~/src/gettor$ python setup.py install_data
+    gettor@hostname:~/src/gettor$ python setup.py install
 
-This will copy necessary files to ~/opt/gettor.
+This will copy necessary files to where they're needed.
 
 Once you have everything installed, you'll want to initialize the file store:
 
-    gettor@hostname:~/opt/gettor$ python GetTor.py -fp
+    gettor@hostname:~/src/gettor$ GetTor.py -fp
 
 You should see an rsync and finally something like:
 
@@ -54,19 +53,19 @@ You should see an rsync and finally something like:
 Now you'll install the cronjob. This clears the blacklist and updates packages 
 daily:
 
-    gettor@hostname:~/opt/gettor$ python GetTor.py -i
+    gettor@hostname:~/src/gettor$ GetTor.py -i
 
 Set up a password for package forwarding commands if you wish to use that 
 feature:
 
-    gettor@hostname:~/opt/gettor$ python GetTor.py -s seCreTpAssworD
+    gettor@hostname:~/src/gettor$ GetTor.py -s seCreTpAssworD
 
-The secret password will be stored in whereever `PASSFILE' is configured in 
-the configuration.
+The secret password will be stored as a hash in whereever `PASSFILE' is 
+configured in the configuration.
 
 Finally, you need to setup email forwarding to the GetTor bot like so:
 
-    gettor@hostname:~$ echo "|python /home/g/opt/gettor/GetTor.py" > ~/.forward
+    gettor@hostname:~$ echo "| /home/gettor/bin/GetTor.py" > ~/.forward
 
 Now GetTor is installed, prepared and ready to serve files. Send it email!
 
@@ -75,8 +74,8 @@ TRANSLATION FILES
 Provided there is a working locale environment, GetTor will compile and setup
 locale files for you as follows:
 
-    gettor@hostname:~/opt/gettor$ python setup.py trans
-    gettor@hostname:~/opt/gettor$ python setup.py install_data
+    gettor@hostname:~/src/gettor$ python setup.py trans
+    gettor@hostname:~/src/gettor$ python setup.py install_data
 
 To add a new language to GetTor, one must create a new .po file in subversion
 in the proper directory. For Korean, one would create po/ko/ and add the
@@ -95,7 +94,7 @@ and should look similar to this:
     MAIL_FROM = "GetTor <gettor@torproject.org>"
 
     # Where it is all based at. Subdirs for GetTor start from here.
-    BASEDIR = "/home/gettor/gettor"
+    BASEDIR = "/home/gettor/run"
 
     # Should we send a `Your package will arrive soon, be patient' mail?
     DELAY_ALERT = True
@@ -151,7 +150,7 @@ FILE SIZE ISSUES
 
 Some email providers may not be happy with the files GetTor sends.
 Gmail provides documentation of their incoming and outgoing file sizes. It is
-currently 20MB (though we have sent around 21MB without issue):
+currently 25MB (though we have sent around 26MB without issue):
 
 	http://mail.google.com/support/bin/answer.py?hl=en&answer=8770
 
@@ -177,22 +176,21 @@ unique email address is allowed to mail GetTor the same type of mail once each
 sendSplitPackage. Blacklists are stored in the form of hashed email files under
 directories. In reality, that looks as follows:
 
-    gettor@hostname:~/opt/gettor$ ls -d /home/gettor/gettor/bl/*
-        /home/gettor/gettor/bl/general
-        /home/gettor/gettor/bl/sendPackage
-        /home/gettor/gettor/bl/sendSplitPackage
-        /home/gettor/gettor/bl/sendDelayAlert
-        /home/gettor/gettor/bl/sendPackageHelp
+    gettor@hostname:~/$ ls -d /home/gettor/run/bl/*
+        /home/gettor/run/bl/general
+        /home/gettor/run/bl/sendPackage
+        /home/gettor/run/bl/sendSplitPackage
+        /home/gettor/run/bl/sendDelayAlert
+        /home/gettor/run/bl/sendPackageHelp
 
-    gettor@hostname:~/opt/gettor$ ls /home/gettor/gettor/bl/sendDelayAlert \
-                                                                    | head -n 2
+    gettor@hostname:~/$ ls /home/gettor/run/bl/sendDelayAlert | head -n 2
      0154d8584c0afa6290e21098e7ab4cc635b7d50a
      02a33e16feece8671f1274de62de32068a67cf20
 
 In addition to this automatic blacklisting mechanism, there is the possibility 
 to add blacklist entries by hand as follows:
 
-    gettor@hostname:~/opt/gettor$ python GetTor.py -b someone@evil.org
+    gettor@hostname:~/$ GetTor.py -b someone@evil.org
 
 Email addresses that are added this way, go to the general/ directory in the 
 blacklist directory and will therefore be blocked from using GetTor in any way.
@@ -200,7 +198,7 @@ blacklist directory and will therefore be blocked from using GetTor in any way.
 Besides the blacklisting mechanism, there is a whitelisting mechanism. It works
 analogous to the manual blacklisting mechanism:
 
-    gettor@hostname:~/opt/gettor$ python GetTor.py -w someone@heaven.org
+    gettor@hostname:~/$ GetTor.py -w someone@heaven.org
 
 Whitelisting wins over blacklisting. If a user if blacklisted for X, but also
 whitelisted, he will be allowed to do X.
