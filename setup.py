@@ -12,7 +12,7 @@ from distutils.command.install_data import install_data as _install_data
 
 
 CONFIG_DEFAULTS = {
-   'BASEDIR':  "~/gettor",
+   'BASEDIR':  "~/",
 }
 
 class Config:
@@ -90,7 +90,8 @@ class installData(_install_data):
             if lang.startswith('.'):
                 continue
             basedirExpand = os.path.expanduser(config.BASEDIR)
-            lang_dir = os.path.join(basedirExpand, "i18n", lang, 'LC_MESSAGES')
+            lang_dir = os.path.join(basedirExpand, 'share', 'i18n', lang, 
+                                    'LC_MESSAGES')
             lang_file = os.path.join('build', 'locale', lang, 'LC_MESSAGES',
                                      'gettor.mo')
             self.data_files.append( (lang_dir, [lang_file]) )
