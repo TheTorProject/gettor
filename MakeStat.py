@@ -70,7 +70,7 @@ def main():
     stats = {}
     
     config = gettor.config.Config()
-    logDir = os.path.join(config.BASEDIR, "log")
+    logDir = os.path.join(config.BASEDIR, "var", "log")
     logFilePattern = os.path.join(logDir, config.LOGFILE + "*.log")
     fileList = glob.glob(logFilePattern)
     fileList = sorted(fileList)
