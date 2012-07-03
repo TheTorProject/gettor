@@ -26,7 +26,7 @@ def makestats(filename, configPackages):
     for line in readData:
         # This is how we recognize a relevant line: Starts with a date like
         # 2011-10-04 and has a "{" with matching "}" somewhere.
-        matchStr = "^([0-9]{4}-[0-9]{2}-[0-9]{2}).*({.*}).*"
+        matchStr = "^([0-9]{4}-[0-9]{2}-[0-9]{2}).*({'.*}).*"
         match = re.match(matchStr, line, re.DOTALL)
         if match:
             dateInfo = match.group(1)
