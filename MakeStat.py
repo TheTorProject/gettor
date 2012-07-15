@@ -60,6 +60,8 @@ def makestats(filename, configPackages):
     return dateInfo, packageCounter            
 
 def printStatsStdout(daystr, stats):
+    if daystr == "":
+        return
     print daystr + " -", 
     for pack in sorted(stats.iterkeys()):
         packstr = "%s:%s" % (pack, stats[pack])
