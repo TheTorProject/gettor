@@ -51,6 +51,11 @@ Please select one of the following package names:
     macos-ppc
     linux-i386
     linux-x86_64
+    obfs-windows
+    obfs-macos-i386
+    obfs-macos-x86_64
+    obfs-linux-i386
+    obfs-linux-x86_64
     source"""),
  # GETTOR_TEXT[7]
 _("""Please reply to this mail, and tell me a single package name anywhere 
@@ -167,81 +172,107 @@ in the body of the email to the following email address:
 _("""It is also possible to fetch bridges with a web browser at the following
 url: https://bridges.torproject.org/"""),
  # GETTOR_TEXT[36]
+_("""Another censorship circumvention tool you can request from GetTor is
+the Tor Obfsproxy Browser Bundle. Please read the package descriptions for
+which package you should request to receive this."""),
+ # GETTOR_TEXT[37]
 _("""IMPORTANT NOTE:
 Since this is part of a split-file request, you need to wait for
 all split files to be received by you before you can save them all
 into the same directory and unpack them by double-clicking the
 first file."""),
- # GETTOR_TEXT[37]
+ # GETTOR_TEXT[38]
 _("""Packages might arrive out of order! Please make sure you received
 all packages before you attempt to unpack them!"""),
- # GETTOR_TEXT[38]
+ # GETTOR_TEXT[39]
 _("""It was successfully understood. Your request is currently being processed.
 Your package (%s) should arrive within the next ten minutes."""),
- # GETTOR_TEXT[39]
+ # GETTOR_TEXT[40]
 _("""If it doesn't arrive, the package might be too big for your mail provider.
 Try resending the mail from a GMAIL.COM, YAHOO.CN or YAHOO.COM account."""),
- # GETTOR_TEXT[40]
+ # GETTOR_TEXT[41]
 _("""Unfortunately we are currently experiencing problems and we can't fulfill
 your request right now. Please be patient as we try to resolve this issue."""),
- # GETTOR_TEXT[41]
+ # GETTOR_TEXT[42]
 _("""Unfortunately there is no split package available for the package you
 requested. Please send us another package name or request the same package 
 again, but remove the 'split' keyword. In that case we'll send you the whole 
 package. Make sure this is what you want."""),
- # GETTOR_TEXT[42]
+ # GETTOR_TEXT[43]
 _("""UNPACKING THE FILES
 ==================="""),
- # GETTOR_TEXT[43]
+ # GETTOR_TEXT[44]
 _("""The easiest way to unpack the files you received is to install 7-Zip,
 a free file compression/uncompression tool. If it isn't installed on
 your computer yet, you can download it here:
 
     http://www.7-zip.org/"""),
- # GETTOR_TEXT[44]
+ # GETTOR_TEXT[45]
 _("""When 7-Zip is installed, you can open the .z archive you received from
 us by double-clicking on it."""),
- # GETTOR_TEXT[45]
+ # GETTOR_TEXT[46]
 _("""An alternative way to get the .z files extraced is to rename them to
 .zip. For example, if you recevied a file called "windows.z", rename it to 
 "windows.zip". You should then be able to extract the archive with common 
 file archiver programs that probably are already installed on your computer."""),
- # GETTOR_TEXT[46]
+ # GETTOR_TEXT[47]
 _("""Please reply to this mail, and tell me a single package name anywhere
 in your reply. Here's a short explanation of what these packages are:"""),
- # GETTOR_TEXT[47]
+ # GETTOR_TEXT[48]
 _("""windows:
 The Tor Browser Bundle package for Windows operating systems. If you're 
 running some version of Windows, like Windows XP, Windows Vista or 
 Windows 7, this is the package you should get."""),
- # GETTOR_TEXT[48]
+ # GETTOR_TEXT[49]
 _("""macos-i386:
 The Tor Browser Bundle package for OS X, Intel CPU architecture. In 
 general, newer Mac hardware will require you to use this package."""),
- # GETTOR_TEXT[49]
+ # GETTOR_TEXT[50]
 _("""macos-ppc:
 This is an older installer (the "Vidalia bundle") for older Macs running
 OS X on PowerPC CPUs. Note that this package will be deprecated soon."""),
- # GETTOR_TEXT[50]
+ # GETTOR_TEXT[51]
 _("""linux-i386:
 The Tor Browser Bundle package for Linux, 32bit versions."""),
- # GETTOR_TEXT[51]
+ # GETTOR_TEXT[52]
 _("""Note that this package is rather large and needs your email provider to 
 allow for attachments of about 30MB in size."""),
- # GETTOR_TEXT[52]
+ # GETTOR_TEXT[53]
 _("""linux-x86_64:
 The Tor Browser Bundle package for Linux, 64bit versions."""),
- # GETTOR_TEXT[53]
+ # GETTOR_TEXT[54]
+_("""obfs-windows:
+The Tor Obfsproxy Browser Bundle for Windows operating systems. If you need
+strong censorship circumvention and you are running some version of the 
+Windows, like Windows XP, Windows Vista or Windows 7, this is the package
+you should get."""),
+ # GETTOR_TEXT[55]
+_("""obfs-macos-i386:
+The Tor Obfsproxy Browser Bundle package for OS X, 32bit Intel CPU 
+architecture."""),
+ # GETTOR_TEXT[56]
+_("""obfs-macos-x86_64:
+The Tor Obfsproxy Browser Bundle package for OS X, 64bit Intel CPU 
+architecture."""),
+ # GETTOR_TEXT[57]
+_("""obfs-linux-i386:
+The Tor Obfsproxy Browser Bundle package for Linux, 32bit Intel CPU 
+architecture."""),
+ # GETTOR_TEXT[58]
+_("""obfs-linux-x86_64:
+The Tor Obfsproxy Browser Bundle package for Linux, 64bit Intel CPU 
+architecture."""),
+ # GETTOR_TEXT[59]
 _("""source:
 The Tor source code, for experts. Most users do not want this package."""),
- # GETTOR_TEXT[54]
+ # GETTOR_TEXT[60]
 _("""FREQUENTLY ASKED QUESTIONS
 =========================="""),
- # GETTOR_TEXT[55]
+ # GETTOR_TEXT[61]
 _("""What is Tor?"""),
- # GETTOR_TEXT[56]
+ # GETTOR_TEXT[62]
 _("""The name "Tor" can refer to several different components."""),
- # GETTOR_TEXT[57]
+ # GETTOR_TEXT[63]
 _("""The Tor software is a program you can run on your computer that helps 
 keep you safe on the Internet. Tor protects you by bouncing your 
 communications around a distributed network of relays run by volunteers 
@@ -251,26 +282,26 @@ learning your physical location. This set of volunteer relays is called the
 Tor network. You can read more about how Tor works here:
 
     https://www.torproject.org/about/overview.html.en"""),
- # GETTOR_TEXT[58]
+ # GETTOR_TEXT[64]
 _("""What is the Tor Browser Bundle?"""),
- # GETTOR_TEXT[59]
+ # GETTOR_TEXT[65]
 _("""The Browser Bundle (TBB) is the package we recommend to most users. 
 The bundle comes with everything you need to safely browse the Internet.
 Just extract it and run."""),
- # GETTOR_TEXT[60]
+ # GETTOR_TEXT[66]
 _("""What package should I request?"""),
- # GETTOR_TEXT[61]
+ # GETTOR_TEXT[67]
 _("""This depends on the operating system you use. For instance, if your
 operating system is Microsoft Windows, you should request "windows". Here
 is a short explanation of all packages to request and what operating 
 systems there are suitable for:"""),
- # GETTOR_TEXT[62]
+ # GETTOR_TEXT[68]
 _("""How do I extract the file(s) you sent me?"""),
- # GETTOR_TEXT[63]
+ # GETTOR_TEXT[69]
 _("""QUESTION:"""),
- # GETTOR_TEXT[64]
+ # GETTOR_TEXT[70]
 _("""ANSWER:"""),
- # GETTOR_TEXT[65]
+ # GETTOR_TEXT[71]
 _("""Sorry, but the package you requested (%s) is too large for your 
 provider to accept as an attachment. Try using another provider that allows 
 for larger email attachments. Or try one of the following mirrors:

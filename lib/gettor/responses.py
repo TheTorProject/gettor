@@ -25,16 +25,21 @@ def getGreetingText(t):
 
 def getPackageHelpText(t):
     return t.gettext(i18n.GETTOR_TEXT[6]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[46]) + "\n\n" \
          + t.gettext(i18n.GETTOR_TEXT[47]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[48]) + "\n" \
-         + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[49]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[50]) + "\n" \
-         + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[52]) + "\n" \
-         + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[53]) + "\n\n"
+         + t.gettext(i18n.GETTOR_TEXT[48]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[49]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[52]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[50]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[51]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[52]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[53]) + "\n" \
+         + t.gettext(i18n.GETTOR_TEXT[52]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[54]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[55]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[56]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[57]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[58]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[59]) + "\n\n"
 
 def getLocalizedVersionHelpText(t):
     return t.gettext(i18n.GETTOR_TEXT[8]) + "\n" \
@@ -48,7 +53,8 @@ def getBridgesHelpText(t):
     return t.gettext(i18n.GETTOR_TEXT[32]) + "\n" \
          + t.gettext(i18n.GETTOR_TEXT[33]) + "\n\n" \
          + t.gettext(i18n.GETTOR_TEXT[34]) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[35]) + "\n\n"
+         + t.gettext(i18n.GETTOR_TEXT[35]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[36]) + "\n\n"
 
 def getGeneralHelpText(t):
     return getGreetingText(t) \
@@ -58,30 +64,38 @@ def getGeneralHelpText(t):
          + getSupportText(t)
 
 def getFAQText(t):
-    return t.gettext(i18n.GETTOR_TEXT[54]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[55]) + "\n" \
+    return t.gettext(i18n.GETTOR_TEXT[60]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[69]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[61]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[70]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[62]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[69]) + "\n" \
              + t.gettext(i18n.GETTOR_TEXT[64]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[56]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[57]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[58]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[64]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[59]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[60]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[64]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[61]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[70]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[65]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[69]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[66]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[70]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[67]) + "\n\n" \
              + t.gettext(i18n.GETTOR_TEXT[47]) + "\n\n" \
              + t.gettext(i18n.GETTOR_TEXT[48]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[49]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[50]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[51]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[49]) + "\n" \
              + t.gettext(i18n.GETTOR_TEXT[52]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[53]) + "\n\n" \
-             + t.gettext(i18n.GETTOR_TEXT[63]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[62]) + "\n" \
-             + t.gettext(i18n.GETTOR_TEXT[64]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[50]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[51]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[52]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[53]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[52]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[54]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[55]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[56]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[57]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[58]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[59]) + "\n\n" \
+             + t.gettext(i18n.GETTOR_TEXT[69]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[68]) + "\n" \
+             + t.gettext(i18n.GETTOR_TEXT[70]) + "\n" \
              + t.gettext(i18n.GETTOR_TEXT[43]) + "\n\n" \
              + t.gettext(i18n.GETTOR_TEXT[44]) + "\n\n" \
              + t.gettext(i18n.GETTOR_TEXT[45]) + "\n\n"
@@ -163,7 +177,7 @@ def getDelayAlertMsg(t, packageInfo):
 
 def getSorrySizeMsg(t, packageInfo):
     return getGreetingText(t) \
-           + t.gettext(i18n.GETTOR_TEXT[65] % packageInfo) + "\n\n" \
+           + t.gettext(i18n.GETTOR_TEXT[71] % packageInfo) + "\n\n" \
            + getSupportText(t)
 
 def getNoSplitAvailable(t):
