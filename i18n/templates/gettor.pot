@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-13 22:01+0100\n"
+"POT-Creation-Date: 2013-01-19 13:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgid ""
 "and then we'll ignore this email address for the next day or so.)"
 msgstr ""
 
-#: lib/gettor/i18n.py:43 lib/gettor/i18n.py:130
+#: lib/gettor/i18n.py:43 lib/gettor/i18n.py:135
 msgid ""
 "If you have any questions or it doesn't work, you can contact a\n"
 "human at this support email address: help@rt.torproject.org"
@@ -62,22 +62,27 @@ msgid ""
 "    macos-ppc\n"
 "    linux-i386\n"
 "    linux-x86_64\n"
+"    obfs-windows\n"
+"    obfs-macos-i386\n"
+"    obfs-macos-x86_64\n"
+"    obfs-linux-i386\n"
+"    obfs-linux-x86_64\n"
 "    source"
 msgstr ""
 
-#: lib/gettor/i18n.py:56
+#: lib/gettor/i18n.py:61
 msgid ""
 "Please reply to this mail, and tell me a single package name anywhere \n"
 "in the body of your email."
 msgstr ""
 
-#: lib/gettor/i18n.py:59
+#: lib/gettor/i18n.py:64
 msgid ""
 "OBTAINING LOCALIZED VERSIONS OF TOR\n"
 "==================================="
 msgstr ""
 
-#: lib/gettor/i18n.py:62
+#: lib/gettor/i18n.py:67
 msgid ""
 "To get a version of Tor translated into your language, specify the\n"
 "language you want in the address you send the mail to:\n"
@@ -85,22 +90,22 @@ msgid ""
 "    gettor+fa@torproject.org"
 msgstr ""
 
-#: lib/gettor/i18n.py:67
+#: lib/gettor/i18n.py:72
 msgid ""
 "This example will give you the requested package in a localized\n"
 "version for Farsi (Persian). Check below for a list of supported language\n"
 "codes. "
 msgstr ""
 
-#: lib/gettor/i18n.py:71
+#: lib/gettor/i18n.py:76
 msgid " List of supported locales:"
 msgstr ""
 
-#: lib/gettor/i18n.py:73
+#: lib/gettor/i18n.py:78
 msgid "Here is a list of all available languages:"
 msgstr ""
 
-#: lib/gettor/i18n.py:75
+#: lib/gettor/i18n.py:80
 msgid ""
 "    gettor+ar@torproject.org:     Arabic\n"
 "    gettor+de@torproject.org:     German\n"
@@ -115,24 +120,24 @@ msgid ""
 "    gettor+zh@torproject.org:     Chinese"
 msgstr ""
 
-#: lib/gettor/i18n.py:87
+#: lib/gettor/i18n.py:92
 msgid "If you select no language, you will receive the English version."
 msgstr ""
 
-#: lib/gettor/i18n.py:89
+#: lib/gettor/i18n.py:94
 msgid ""
 "SMALLER SIZED PACKAGES\n"
 "======================"
 msgstr ""
 
-#: lib/gettor/i18n.py:92
+#: lib/gettor/i18n.py:97
 msgid ""
 "If your bandwith is low or your provider doesn't allow you to\n"
 "receive large attachments in your email, GetTor can send you several\n"
 "small packages instead of one big one."
 msgstr ""
 
-#: lib/gettor/i18n.py:96
+#: lib/gettor/i18n.py:101
 msgid ""
 "Simply include the keyword 'split' in a new line on its own (this part\n"
 "is important!) like so: \n"
@@ -141,66 +146,66 @@ msgid ""
 "    split"
 msgstr ""
 
-#: lib/gettor/i18n.py:102
+#: lib/gettor/i18n.py:107
 msgid ""
 "Sending this text in an email to GetTor will cause it to send you \n"
 "the Tor Browser Bundle in a number of 1,4MB attachments."
 msgstr ""
 
-#: lib/gettor/i18n.py:105
+#: lib/gettor/i18n.py:110
 msgid ""
 "After having received all parts, you need to re-assemble them to \n"
 "one package again. This is done as follows:"
 msgstr ""
 
-#: lib/gettor/i18n.py:108
+#: lib/gettor/i18n.py:113
 msgid "1.) Save all received attachments into one folder on your disk."
 msgstr ""
 
-#: lib/gettor/i18n.py:110
+#: lib/gettor/i18n.py:115
 msgid ""
 "2.) Unzip all files ending in \".z\". If you saved all attachments to\n"
 "a fresh folder before, simply unzip all files in that folder. If you don't\n"
 "know how to unzip the .z files, please see the UNPACKING THE FILES section."
 msgstr ""
 
-#: lib/gettor/i18n.py:114
+#: lib/gettor/i18n.py:119
 msgid ""
 "3.) Verify all files as described in the mail you received with \n"
 "each package. (gpg --verify)"
 msgstr ""
 
-#: lib/gettor/i18n.py:117
+#: lib/gettor/i18n.py:122
 msgid ""
 "4.) Now unpack the multi-volume archive into one file by double-\n"
 "clicking the file ending in \"..split.part01.exe\". This should start the \n"
 "process automatically."
 msgstr ""
 
-#: lib/gettor/i18n.py:121
+#: lib/gettor/i18n.py:126
 msgid ""
 "5.) After unpacking is finished, you should find a newly created \n"
 "\".exe\" file in your destination folder. Simply doubleclick\n"
 "that and Tor Browser Bundle should start within a few seconds."
 msgstr ""
 
-#: lib/gettor/i18n.py:125
+#: lib/gettor/i18n.py:130
 msgid "6.) That's it. You're done. Thanks for using Tor and have fun!"
 msgstr ""
 
-#: lib/gettor/i18n.py:127
+#: lib/gettor/i18n.py:132
 msgid ""
 "SUPPORT\n"
 "======="
 msgstr ""
 
-#: lib/gettor/i18n.py:133
+#: lib/gettor/i18n.py:138
 msgid ""
 "Here's your requested software as a zip file. Please unzip the\n"
 "package and verify the signature."
 msgstr ""
 
-#: lib/gettor/i18n.py:136
+#: lib/gettor/i18n.py:141
 msgid ""
 "VERIFY SIGNATURE\n"
 "================\n"
@@ -211,14 +216,14 @@ msgid ""
 "exe"
 msgstr ""
 
-#: lib/gettor/i18n.py:143
+#: lib/gettor/i18n.py:148
 msgid ""
 "The output should look somewhat like this:\n"
 "\n"
 "    gpg: Good signature from 'Erinn Clark <...>'"
 msgstr ""
 
-#: lib/gettor/i18n.py:147
+#: lib/gettor/i18n.py:152
 msgid ""
 "If you're not familiar with commandline tools, try looking for\n"
 "a graphical user interface for GnuPG on this website:\n"
@@ -226,13 +231,13 @@ msgid ""
 "    http://www.gnupg.org/related_software/frontends.html"
 msgstr ""
 
-#: lib/gettor/i18n.py:152
+#: lib/gettor/i18n.py:157
 msgid ""
 "BLOCKED ACCESS / CENSORSHIP\n"
 "==========================="
 msgstr ""
 
-#: lib/gettor/i18n.py:155
+#: lib/gettor/i18n.py:160
 msgid ""
 "If your Internet connection blocks access to the Tor network, you\n"
 "may need a bridge relay. Bridge relays (or \"bridges\" for short)\n"
@@ -242,7 +247,7 @@ msgid ""
 "to block all the bridges."
 msgstr ""
 
-#: lib/gettor/i18n.py:162
+#: lib/gettor/i18n.py:167
 msgid ""
 "You can acquire a bridge by sending an email that contains \"get bridges\"\n"
 "in the body of the email to the following email address:\n"
@@ -250,13 +255,20 @@ msgid ""
 "    bridges@torproject.org"
 msgstr ""
 
-#: lib/gettor/i18n.py:167
+#: lib/gettor/i18n.py:172
 msgid ""
 "It is also possible to fetch bridges with a web browser at the following\n"
 "url: https://bridges.torproject.org/"
 msgstr ""
 
-#: lib/gettor/i18n.py:170
+#: lib/gettor/i18n.py:175
+msgid ""
+"Another censorship circumvention tool you can request from GetTor is\n"
+"the Tor Obfsproxy Browser Bundle. Please read the package descriptions for\n"
+"which package you should request to receive this."
+msgstr ""
+
+#: lib/gettor/i18n.py:179
 msgid ""
 "IMPORTANT NOTE:\n"
 "Since this is part of a split-file request, you need to wait for\n"
@@ -265,32 +277,32 @@ msgid ""
 "first file."
 msgstr ""
 
-#: lib/gettor/i18n.py:176
+#: lib/gettor/i18n.py:185
 msgid ""
 "Packages might arrive out of order! Please make sure you received\n"
 "all packages before you attempt to unpack them!"
 msgstr ""
 
-#: lib/gettor/i18n.py:179
+#: lib/gettor/i18n.py:188
 #, python-format
 msgid ""
 "It was successfully understood. Your request is currently being processed.\n"
 "Your package (%s) should arrive within the next ten minutes."
 msgstr ""
 
-#: lib/gettor/i18n.py:182
+#: lib/gettor/i18n.py:191
 msgid ""
 "If it doesn't arrive, the package might be too big for your mail provider.\n"
 "Try resending the mail from a GMAIL.COM, YAHOO.CN or YAHOO.COM account."
 msgstr ""
 
-#: lib/gettor/i18n.py:185
+#: lib/gettor/i18n.py:194
 msgid ""
 "Unfortunately we are currently experiencing problems and we can't fulfill\n"
 "your request right now. Please be patient as we try to resolve this issue."
 msgstr ""
 
-#: lib/gettor/i18n.py:188
+#: lib/gettor/i18n.py:197
 msgid ""
 "Unfortunately there is no split package available for the package you\n"
 "requested. Please send us another package name or request the same package \n"
@@ -299,13 +311,13 @@ msgid ""
 "package. Make sure this is what you want."
 msgstr ""
 
-#: lib/gettor/i18n.py:193
+#: lib/gettor/i18n.py:202
 msgid ""
 "UNPACKING THE FILES\n"
 "==================="
 msgstr ""
 
-#: lib/gettor/i18n.py:196
+#: lib/gettor/i18n.py:205
 msgid ""
 "The easiest way to unpack the files you received is to install 7-Zip,\n"
 "a free file compression/uncompression tool. If it isn't installed on\n"
@@ -314,13 +326,13 @@ msgid ""
 "    http://www.7-zip.org/"
 msgstr ""
 
-#: lib/gettor/i18n.py:202
+#: lib/gettor/i18n.py:211
 msgid ""
 "When 7-Zip is installed, you can open the .z archive you received from\n"
 "us by double-clicking on it."
 msgstr ""
 
-#: lib/gettor/i18n.py:205
+#: lib/gettor/i18n.py:214
 msgid ""
 "An alternative way to get the .z files extraced is to rename them to\n"
 ".zip. For example, if you recevied a file called \"windows.z\", rename it "
@@ -330,13 +342,13 @@ msgid ""
 "file archiver programs that probably are already installed on your computer."
 msgstr ""
 
-#: lib/gettor/i18n.py:210
+#: lib/gettor/i18n.py:219
 msgid ""
 "Please reply to this mail, and tell me a single package name anywhere\n"
 "in your reply. Here's a short explanation of what these packages are:"
 msgstr ""
 
-#: lib/gettor/i18n.py:213
+#: lib/gettor/i18n.py:222
 msgid ""
 "windows:\n"
 "The Tor Browser Bundle package for Windows operating systems. If you're \n"
@@ -344,59 +356,96 @@ msgid ""
 "Windows 7, this is the package you should get."
 msgstr ""
 
-#: lib/gettor/i18n.py:218
+#: lib/gettor/i18n.py:227
 msgid ""
 "macos-i386:\n"
 "The Tor Browser Bundle package for OS X, Intel CPU architecture. In \n"
 "general, newer Mac hardware will require you to use this package."
 msgstr ""
 
-#: lib/gettor/i18n.py:222
+#: lib/gettor/i18n.py:231
 msgid ""
 "macos-ppc:\n"
 "This is an older installer (the \"Vidalia bundle\") for older Macs running\n"
 "OS X on PowerPC CPUs. Note that this package will be deprecated soon."
 msgstr ""
 
-#: lib/gettor/i18n.py:226
+#: lib/gettor/i18n.py:235
 msgid ""
 "linux-i386:\n"
 "The Tor Browser Bundle package for Linux, 32bit versions."
 msgstr ""
 
-#: lib/gettor/i18n.py:229
+#: lib/gettor/i18n.py:238
 msgid ""
 "Note that this package is rather large and needs your email provider to \n"
 "allow for attachments of about 30MB in size."
 msgstr ""
 
-#: lib/gettor/i18n.py:232
+#: lib/gettor/i18n.py:241
 msgid ""
 "linux-x86_64:\n"
 "The Tor Browser Bundle package for Linux, 64bit versions."
 msgstr ""
 
-#: lib/gettor/i18n.py:235
+#: lib/gettor/i18n.py:244
+msgid ""
+"obfs-windows:\n"
+"The Tor Obfsproxy Browser Bundle for Windows operating systems. If you need\n"
+"strong censorship circumvention and you are running some version of the \n"
+"Windows, like Windows XP, Windows Vista or Windows 7, this is the package\n"
+"you should get."
+msgstr ""
+
+#: lib/gettor/i18n.py:250
+msgid ""
+"obfs-macos-i386:\n"
+"The Tor Obfsproxy Browser Bundle package for OS X, 32bit Intel CPU \n"
+"architecture."
+msgstr ""
+
+#: lib/gettor/i18n.py:254
+msgid ""
+"obfs-macos-x86_64:\n"
+"The Tor Obfsproxy Browser Bundle package for OS X, 64bit Intel CPU \n"
+"architecture."
+msgstr ""
+
+#: lib/gettor/i18n.py:258
+msgid ""
+"obfs-linux-i386:\n"
+"The Tor Obfsproxy Browser Bundle package for Linux, 32bit Intel CPU \n"
+"architecture."
+msgstr ""
+
+#: lib/gettor/i18n.py:262
+msgid ""
+"obfs-linux-x86_64:\n"
+"The Tor Obfsproxy Browser Bundle package for Linux, 64bit Intel CPU \n"
+"architecture."
+msgstr ""
+
+#: lib/gettor/i18n.py:266
 msgid ""
 "source:\n"
 "The Tor source code, for experts. Most users do not want this package."
 msgstr ""
 
-#: lib/gettor/i18n.py:238
+#: lib/gettor/i18n.py:269
 msgid ""
 "FREQUENTLY ASKED QUESTIONS\n"
 "=========================="
 msgstr ""
 
-#: lib/gettor/i18n.py:241
+#: lib/gettor/i18n.py:272
 msgid "What is Tor?"
 msgstr ""
 
-#: lib/gettor/i18n.py:243
+#: lib/gettor/i18n.py:274
 msgid "The name \"Tor\" can refer to several different components."
 msgstr ""
 
-#: lib/gettor/i18n.py:245
+#: lib/gettor/i18n.py:276
 msgid ""
 "The Tor software is a program you can run on your computer that helps \n"
 "keep you safe on the Internet. Tor protects you by bouncing your \n"
@@ -412,22 +461,22 @@ msgid ""
 "    https://www.torproject.org/about/overview.html.en"
 msgstr ""
 
-#: lib/gettor/i18n.py:255
+#: lib/gettor/i18n.py:286
 msgid "What is the Tor Browser Bundle?"
 msgstr ""
 
-#: lib/gettor/i18n.py:257
+#: lib/gettor/i18n.py:288
 msgid ""
 "The Browser Bundle (TBB) is the package we recommend to most users. \n"
 "The bundle comes with everything you need to safely browse the Internet.\n"
 "Just extract it and run."
 msgstr ""
 
-#: lib/gettor/i18n.py:261
+#: lib/gettor/i18n.py:292
 msgid "What package should I request?"
 msgstr ""
 
-#: lib/gettor/i18n.py:263
+#: lib/gettor/i18n.py:294
 msgid ""
 "This depends on the operating system you use. For instance, if your\n"
 "operating system is Microsoft Windows, you should request \"windows\". Here\n"
@@ -435,19 +484,19 @@ msgid ""
 "systems there are suitable for:"
 msgstr ""
 
-#: lib/gettor/i18n.py:268
+#: lib/gettor/i18n.py:299
 msgid "How do I extract the file(s) you sent me?"
 msgstr ""
 
-#: lib/gettor/i18n.py:270
+#: lib/gettor/i18n.py:301
 msgid "QUESTION:"
 msgstr ""
 
-#: lib/gettor/i18n.py:272
+#: lib/gettor/i18n.py:303
 msgid "ANSWER:"
 msgstr ""
 
-#: lib/gettor/i18n.py:274
+#: lib/gettor/i18n.py:305
 #, python-format
 msgid ""
 "Sorry, but the package you requested (%s) is too large for your \n"
