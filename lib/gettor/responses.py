@@ -171,8 +171,8 @@ def getSplitPackageMsg(t):
 
 def getDelayAlertMsg(t, packageInfo):
     return getGreetingText(t) \
-         + t.gettext(i18n.GETTOR_TEXT[38] % packageInfo) + "\n\n" \
-         + t.gettext(i18n.GETTOR_TEXT[39]) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[39] % packageInfo) + "\n\n" \
+         + t.gettext(i18n.GETTOR_TEXT[40]) + "\n\n" \
          + getSupportText(t)
 
 def getSorrySizeMsg(t, packageInfo):
