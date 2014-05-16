@@ -1,0 +1,107 @@
+   Google Summer of Code 2014 GetTor Revamp - Code module
+   Author: Israel Leiva - <israel.leiva@usach.cl>
+   Last update: 2014-05-16
+   Version: 0.01
+   Changes: First version
+ 
+1. Preface
+ 
+   Since GetTor was created it has been a collection of functions and
+   classes separated in various modules. As its main purpose was
+   to serve files over SMTP, almost all current files have SMTP-related
+   procedures, including address normalization, message composition, etc.
+   The proposed design for the core module intends to separate GetTor 
+   main functionalities which are independent of the service that 
+   transports the bundles.
+   
+2. Core module
+
+   The main functionalities the core module should provide are:
+   
+      * Receive a request with OS version, architecture, bundle 
+        language, and respond with the respective links.
+      * Generate links, per request or at demand, depending on if the
+        former is accepted as part of the new design.
+      * Log anonymous transactions.
+        
+3. Design
+
+   The new design should consist of the following files, directories and 
+   functions:
+   
+      * core.conf: Configuration values, e.g. base directory.
+      
+      * providers/: Directory for providers configuration.
+   
+         ----- providersList.txt: list of valid providers. 
+         ----- provider1.conf: configuration for provider1.
+         ----- provider2.conf: configuration for provider2.
+      
+         All this data is added manually.
+    
+      * mirrors.txt: Contains official mirrors. One per line. Added manually.
+   
+      * logs/: Directory for logs. Added automatically.
+   
+         ----- yyyy-mm-dd.log: daily log of requests.
+   
+      * lib/gettor/core.py: Core module of GetTor.
+   
+         getLinks(os_version, arch, locale)
+            Returns links for os_version (in both archs) in locale language.
+            This will read the providers list and call __generateLinks() 
+            for each one of them, plus calling to __getMirrors().
+         
+            Example: getLinks('OSX', 'en')
+         
+         __generateLinks(options, provider)
+            Generate links for a specific provider according to the options
+            received (os_version, locale). This will try to import the 
+            provider module and call the uploadBundle function.
+         
+            Example (within the module): __generateLinks(options, 'dropbox')
+     
+         __getMirrors() 
+             Obtains mirrors from mirrors.txt. 
+          
+         __logRequest(options)
+             Log information about the request for future stats (e.g. which
+             OS from which service is the most required).
+ 
+      * lib/gettor/providers/provider.py: There should be one module per
+        provider with the uploadBundle public function. There should be 
+        at least three modules at the end of GSoC: dropbox.py, drive.py, 
+        github.py
+     
+          uploadBundle(options)
+             Calls the provider internal functions to upload the required 
+             bundle according to the options received. This internal 
+             functions will depend solely on the API requirements from 
+             the provider.
+   
+4. Roadmap
+
+   An example of how the core module work:
+   
+   a. The SMTP service receives a request. 
+   b. The SMTP calls getLinks() with the options sent by the user.
+   c. getLinks() calls to __generateLinks() and then to __getMirrors()
+   d. getLinks() constructs a message with the information obtained.
+   e. getLinks() calls to __logRequest().
+   f. getLinks() returns the message previously constructed.
+   g. The SMTP service creates a message with the links obtained and 
+      send it to the user.
+   
+5. Discussion
+   
+5.1 Cache 
+
+   The above design was thought for per request links generation. Another
+   way of doing this would be to maintain a cache of generated links and
+   call __generateLinks() depending on the cache last modified time.
+   Reading links from this cache should consider to check if the given 
+   links still exists.
+
+5.2 Logs
+
+   Should we mantain separate logs for successful and fail requests?

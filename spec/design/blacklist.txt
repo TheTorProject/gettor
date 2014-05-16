@@ -1,0 +1,74 @@
+   Google Summer of Code 2014 GetTor Revamp - Blacklist module
+   Author: Israel Leiva - <israel.leiva@usach.cl>
+   Last update: 2014-05-16
+   Version: 0.01
+   Changes: First version
+ 
+1. Preface
+ 
+   Since GetTor was created it has been a collection of functions and
+   classes separated in various modules. As its main purpose was
+   to serve files over SMTP, almost all current files have SMTP-related
+   procedures, including black and white lists. The proposed design for 
+   the blacklist module intends to separate GetTor services from the 
+   blacklist procedures.
+   
+2. Blacklist module
+
+   The main functionalities the blacklist module should provide are:
+   
+      * Check if a given entry is blacklisted for a given service
+      * Add/update/remove entries.
+      * Provide a standard critera to prevent flood.
+        
+3. Design
+
+   The new design should consist of the following files, directories and 
+   functions:
+   
+   * lib/gettor/blacklist/: Directory for storing blacklisted users of 
+     different services.
+     
+        ----- service1.blacklist: users blocked for service1
+        ----- service2.blacklist: users blocked for service2
+   
+   * lib/gettor/blacklist.py: Blacklist module of GetTor.
+         
+      isBlacklisted(address, provider)
+         Check if the given address is in the blacklist of provider and
+         if it acomplish certain restrictions. For example, it could
+         check when was the last time it was updated on the blacklist.
+            
+   
+4. Roadmap
+
+   A possible example of how the blacklist module could work:
+   
+   a. A service receives a request and call the blacklist module. 
+   b. The blacklist module check the blacklist for that service.
+   c. If the user (hashed) is present in the blacklist, it checks when 
+      was the last time it was updated. If this date is more than X days 
+      ago, updates the entry with the current date and returns false. If 
+      not, returns true. If the user is not present in the file, it adds 
+      the user with the current date and returns false.
+   
+   
+5. Discussion
+
+5.1 Mistakes
+
+   Mistakes concerning the package requested should be consider. If I 
+   send a message asking for a Linux 'es' request but I write 'en' instead 
+   of 'es', should I be able to ask again? or wait until I'm no longer 
+   blacklisted?
+
+5.2 Users
+
+   The method presented above (Roadmap) should consider weekly or monthly
+   clean-up of the list.
+
+5.3 SorryMessage
+
+   May be when a user tries to send too many requests we could send him 
+   a message saying that he won't be able to ask for packages in the next
+   X days.

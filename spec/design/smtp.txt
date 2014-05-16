@@ -1,0 +1,118 @@
+   Google Summer of Code 2014 GetTor Revamp - SMTP module
+   Author: Israel Leiva - <israel.leiva@usach.cl>
+   Last update: 2014-05-16
+   Version: 0.01
+   Changes: First version
+ 
+1. Preface
+ 
+   Since GetTor was created it has been a collection of functions and
+   classes separated in various modules. As its main purpose was
+   to serve files over SMTP, almost all current files have SMTP-related
+   procedures, including address normalization, message composition, etc.
+   The proposed design for the SMTP module intends to separate GetTor 
+   main functionalities from the services, in this case, SMTP.
+   
+2. SMTP module
+
+   The main functionalities the SMTP module should provide are:
+   
+      * Receive requests via mail. 
+      * Identify user instructions, such as ask for help or for a specific
+        bundle (OS version, language).
+      * Get the required links from the core module.
+      * Send different types of answers to the user.
+      * Manage black lists to avoid flood.
+      * Log requests for stats (anonymous).
+        
+3. Design
+
+   The new design should consist of the following files, directories and 
+   functions:
+   
+   * lib/gettor/services/smtp.py: SMTP module of GetTor.
+
+      __init__(configuration path)
+         Creates an object according to the configuration values.
+         
+      processEmail(email object)
+         Process emails received (by forwarding). 
+    
+      __parseEmail(email object)
+         Parse the raw email sent by processMail(). Check for multi-part
+         emails and then parse the text part. It also tries to get the
+         locale information from the user's address.
+         
+      __parseText(email object)
+         Parse the text part of an email looking for the package requested.
+         
+      __getFrom(email object)
+         Returns the from address of an email object.
+      
+      __getLocale(address)
+         Tries to get the locale information from an email address.
+         
+      __checkBlacklist(address)
+         Check if the given address is blacklisted by comparing the
+         hashed address. If address is not present, it's added. If present,
+         check for the date when it was added. Yet to define how many
+         days will be considered for blacklisting or if another method
+         will be used. For this it uses the blacklist module.
+         
+      __sendReply(address)
+         Sends a reply to the user with the links required. It asks for
+         the links to the core module.
+      
+      __sendDelayAlert(address)
+         If enabled (on configuration), sends a delay message to the user
+         letting him know that the links are on their way.
+         
+      __sendHelp(address)
+         Sends a message to the user with help instructions.
+         
+      __createEmail(from, to, subject, body)
+         Creates an email object.
+         
+      __logRequest(options)
+         Log information about the request for future stats (e.g. which
+         OS and language are the most required). If this is called
+         after a failure, a copy of the email should be stored.
+         
+   * BASE_DIR/logs/: Directory for logs. The BASE_DIR should be in the
+     configuration file.
+   
+         ----- yyyy-mm-dd.log: daily log of requests.
+            
+   
+4. Roadmap
+
+   An example of how the SMTP module should work:
+   
+   a. The SMTP service receives a request (via forwarding). 
+   b. The email sender is checked for blacklisting (comparing hashes).
+   c. The email is parsed, obtaining the package requested and the 
+      locale information.
+   d. If the email was asking for help, a help reply is sent.
+   e. If the email was invalid, the process break. This fail is logged
+      and the email that triggered it, too.
+   f. If the email was valid and the delay alert is set, then a reply 
+      informing the links are on their way is sent.
+   g. If the email was valid, the SMTP service asks for the links to the 
+      code module.
+   h. After that, a reply is sent to the user.
+   i. In all cases the request is logged (with no user information).
+   
+   
+5. Discussion
+   
+5.1 Email forwarding
+
+   Are we going to support forwarding emails as ForwardPackage() did in 
+   the old GetTor?
+
+5.2 Blacklist sublists
+
+   Now with less types of request (two if no forwarding is added), creating
+   sublists for different types of requests necessary to blacklist and 
+   email address? Or should we blacklist it if it floods anything?
+

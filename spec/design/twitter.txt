@@ -1,0 +1,99 @@
+   Google Summer of Code 2014 GetTor Revamp - Twitter module
+   Author: Israel Leiva - <israel.leiva@usach.cl>
+   Last update: 2014-05-16
+   Version: 0.01
+   Changes: First version
+ 
+1. Preface
+ 
+   Since GetTor was created it has been a collection of functions and
+   classes separated in various modules. As its main purpose was
+   to serve files over SMTP, almost all current files have SMTP-related
+   procedures, including address normalization, message composition, etc.
+   The proposed design for the Twitter module intends to separate GetTor 
+   main functionalities from the services, in this case, Twitter.
+   
+2. Twitter module
+
+   The main functionalities the Twitter module should provide are:
+   
+      * Receive requests via direct messages. 
+      * Identify user instructions, such as ask for help or for a specific
+        bundle (OS version, language).
+      * Get the required links from the core module.
+      * Send different types of answers to the user.
+      * Split answers to fit Twitter's format.
+      * Manage black lists to avoid flood.
+      * Log requests for stats (anonymous).
+        
+3. Design
+
+   The new design should consist of the following files, directories and 
+   functions:
+   
+   * lib/gettor/services/Twitter.py: Twitter module of GetTor.
+
+      __init__(configuration path)
+         Creates an object according to the configuration values.
+         
+      processDM(message)
+         Process direct messages received. 
+    
+      __parseDM(message)
+         Parse the direct message received. Check for the package requested
+         and the locale information.
+         
+      __getUser(message)
+         Gets the user from the message sent. 
+         
+      __checkBlacklist(user)
+         Check if the given user is blacklisted by comparing the
+         hashed user. Yet to define how many days will be considered for 
+         blacklisting or if another method will be used. For this it uses 
+         the blacklist module.
+         
+      __sendReply(user)
+         Sends a reply to the user with the links required. It asks for
+         the links to the core module and then split them.
+         
+      __sendHelp(user)
+         Sends a message to the user with help instructions.
+      
+      __splitMessage(message)
+         Receives the links message and split it according to Twitter's
+         format.
+         
+      __CheckNewFollowers()
+         In order to ask for links the user has to follow the GetTor 
+         account. The Twitter module will be constantly checking for
+         new followers and follow them back.
+         
+      __FollowUser(user)
+         Follow the given user.
+         
+      __logRequest(options)
+         Log information about the request for future stats (e.g. which
+         OS and language are the most required). If this is called
+         after a failure, a copy of the DM should be stored.
+         
+   * BASE_DIR/logs/: Directory for logs. BASE_DIR should be in the 
+     configuration file.
+   
+         ----- yyyy-mm-dd.log: daily log of requests.
+            
+   
+4. Roadmap
+
+   An example of how the Twitter module should work:
+   
+   a. The Twitter account receives a DM.
+   b. The Twitter service check if is a valid message and if the user is
+      in the blacklist, and then tries to obtain the package requested and 
+      the locale information.
+   c. The Twitter service asks for the links to the core module, then it
+      splits the message received to adopt Twitter's format.
+   d. One or more DMs are sent back to the user.
+   e. For all this, the user must follow the GetTor account. The Twitter
+      service will be constantly checking for new followers and following
+      them back.
+   
