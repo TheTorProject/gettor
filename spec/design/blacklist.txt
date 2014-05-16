@@ -35,7 +35,7 @@
    * lib/gettor/blacklist.py: Blacklist module of GetTor.
          
       isBlacklisted(address, provider)
-         Check if the given address is in the blacklist of provider and
+         Check if the given address is in the blacklist of services and
          if it acomplish certain restrictions. For example, it could
          check when was the last time it was updated on the blacklist.
             
