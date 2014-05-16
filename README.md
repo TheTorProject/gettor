@@ -1,4 +1,5 @@
 gettor
 ======
 
-GetTor
+GetTor Revamp.
+Google Summer of Code 2014.
