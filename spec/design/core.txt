@@ -47,7 +47,7 @@
    
       * lib/gettor/core.py: Core module of GetTor.
    
-         getLinks(os_version, arch, locale)
+         getLinks(os_version, locale)
             Returns links for os_version (in both archs) in locale language.
             This will read the providers list and call __generateLinks() 
             for each one of them, plus calling to __getMirrors().
