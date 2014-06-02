@@ -1,8 +1,12 @@
-   Google Summer of Code 2014 GetTor Revamp - Code module
+   Google Summer of Code 2014 GetTor Revamp - Core module
    Author: Israel Leiva - <israel.leiva@usach.cl>
-   Last update: 2014-05-16
-   Version: 0.01
-   Changes: First version
+   Last update: 2014-06-01
+   Version: 0.02
+   Changes: Combine official mirrors with providers links (as another provider).
+            Eliminated on demand link generation. Now it reads from files.
+            Modified description according to PEP-8.
+            First version.
+            
  
 1. Preface
  
@@ -18,90 +22,109 @@
 
    The main functionalities the core module should provide are:
    
-      * Receive a request with OS version, architecture, bundle 
-        language, and respond with the respective links.
-      * Generate links, per request or at demand, depending on if the
-        former is accepted as part of the new design.
+      * Receive a request with OS version, bundle language, and respond 
+        with the respective links.
+      * Read links from providers files.
       * Log anonymous transactions.
         
 3. Design
 
    The new design should consist of the following files, directories and 
-   functions:
+   methods:
    
       * core.conf: Configuration values, e.g. base directory.
       
-      * providers/: Directory for providers configuration.
+      * providers/: Directory for generated links.
    
-         ----- providersList.txt: list of valid providers. 
-         ----- provider1.conf: configuration for provider1.
-         ----- provider2.conf: configuration for provider2.
+         ----- provider1.links: links from provider1.
+         ----- provider2.links: links from provider2.
+         ----- mirrors.links: links of official mirrors.
       
-         All this data is added manually.
-    
-      * mirrors.txt: Contains official mirrors. One per line. Added manually.
+         All this data is generated automatically.
    
       * logs/: Directory for logs. Added automatically.
    
-         ----- yyyy-mm-dd.log: daily log of requests.
+         ----- core_yyyy-mm-dd.log: daily log of requests.
    
-      * lib/gettor/core.py: Core module of GetTor.
+      * Core module of GetTor.
    
-         getLinks(os_version, locale)
-            Returns links for os_version (in both archs) in locale language.
-            This will read the providers list and call __generateLinks() 
-            for each one of them, plus calling to __getMirrors().
+         get_links(operating_system, locale)
+            Public method to obtain the links. Returns links for 
+            operating_system in locale language. It checks if the operating
+            system and locale are supported and then calls the private 
+            method _get_links()
+            
          
-            Example: getLinks('OSX', 'en')
+            Example: get_links('linux', 'en')
          
-         __generateLinks(options, provider)
-            Generate links for a specific provider according to the options
-            received (os_version, locale). This will try to import the 
-            provider module and call the uploadBundle function.
-         
-            Example (within the module): __generateLinks(options, 'dropbox')
+         _get_links(operating_system, locale)
+            Gets the links for a specific operating system and locale 
+            according to the options received. It reads all the .links 
+            files inside the providers directory. Each one of these files 
+            contains the provider's name in the first line and all the 
+            links after. The format of these files is as following:
+            
+            PROVIDER NAME
+            operating_system locale link package_signature key_fingerprint
+            
+            Example:
+            
+            Dropbox
+            linux en https://foo.bar https://foo.bar.asc 111-222-333-444
+            osx es https://bar.baz https://bar.baz.asc 555-666-777-888
+            
+            The key fingerprint is joined by '-' characters for convenience,
+            but it's sent back to the service module separated by spaces.
+            
+            The official mirrors are considered as just another provider.
      
-         __getMirrors() 
-             Obtains mirrors from mirrors.txt. 
           
-         __logRequest(options)
+         _log_request(operating_system, locale)
              Log information about the request for future stats (e.g. which
-             OS from which service is the most required).
+             OS from which service is the most required). All logging 
+             should be done with the logging module.
  
-      * lib/gettor/providers/provider.py: There should be one module per
-        provider with the uploadBundle public function. There should be 
-        at least three modules at the end of GSoC: dropbox.py, drive.py, 
-        github.py
-     
-          uploadBundle(options)
-             Calls the provider internal functions to upload the required 
-             bundle according to the options received. This internal 
-             functions will depend solely on the API requirements from 
-             the provider.
+      * Providers: There should be one module/script per provider in charge
+        of generating the .links file with the proper format, including
+        the official mirrors.
+
    
 4. Roadmap
 
    An example of how the core module work:
    
    a. The SMTP service receives a request. 
-   b. The SMTP calls getLinks() with the options sent by the user.
-   c. getLinks() calls to __generateLinks() and then to __getMirrors()
-   d. getLinks() constructs a message with the information obtained.
-   e. getLinks() calls to __logRequest().
-   f. getLinks() returns the message previously constructed.
+   b. The SMTP calls core.get_links() with the options sent by the user.
+   c. get_links() calls to _log_request().
+   d. get_links() calls to _get_links().
+   e. get_links() constructs a message with the information obtained.
+   f. get_links() returns the message previously constructed.
    g. The SMTP service creates a message with the links obtained and 
       send it to the user.
    
 5. Discussion
    
-5.1 Cache 
+5.1 On demand generation 
 
-   The above design was thought for per request links generation. Another
-   way of doing this would be to maintain a cache of generated links and
-   call __generateLinks() depending on the cache last modified time.
-   Reading links from this cache should consider to check if the given 
-   links still exists.
+   Now we consider links generation over a period of time, say, once a week.
+   Generating links on demand don't seem to be necessary and it would 
+   certainly be resource consuming. The core module doesn't care about
+   how links are generated, it just assumes they exist. Is there any case
+   where on demand link generation should be considered?
 
-5.2 Logs
+5.2 Core class
+    
+    Should the Core be a module on its own, or a class of GetTor? 
+    Currently it's just a class, after realizing that
+    
+    core = gettor.core.core()
+    
+    Was too much. It's better to do
+    
+    core = gettor.Core()
+    
+    Isn't?
+
+5.3 Logs
 
    Should we mantain separate logs for successful and fail requests?
