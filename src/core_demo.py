@@ -14,6 +14,3 @@ except ValueError as e:
     print "Value error! " + str(e)
 except RuntimeError as e:
     print "Internal error! " + str(e)
-
-
-    
