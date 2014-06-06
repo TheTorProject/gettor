@@ -1,10 +1,16 @@
    Google Summer of Code 2014 GetTor Revamp - Core module
-   Author: Israel Leiva - <israel.leiva@usach.cl>
-   Last update: 2014-06-01
-   Version: 0.02
-   Changes: Combine official mirrors with providers links (as another provider).
+   Author: Israel Leiva - <israel.leiva@usach.cl, ilv@riseup.net>
+   Last update: 2014-06-06
+   Version: 0.03
+   Changes: [0.03]
+            Changed proposed format for link files to RFC 882 (ConfigParser).
+            Read configuration from file with ConfigParser.
+            Added logging.
+            [0.02]
+            Combine official mirrors with providers links (as another provider).
             Eliminated on demand link generation. Now it reads from files.
             Modified description according to PEP-8.
+            [0.01]
             First version.
             
  
@@ -32,9 +38,10 @@
    The new design should consist of the following files, directories and 
    methods:
    
-      * core.conf: Configuration values, e.g. base directory.
+      * gettor.cfg: Configuration values, e.g. base directory.
       
-      * providers/: Directory for generated links.
+      * providers/: Directory for generated links. Should be specified on
+                    gettor.cfg.
    
          ----- provider1.links: links from provider1.
          ----- provider2.links: links from provider2.
@@ -42,12 +49,16 @@
       
          All this data is generated automatically.
    
-      * logs/: Directory for logs. Added automatically.
+      * logs/: Directory for logs. Should be specified on gettor.cfg
    
          ----- core_yyyy-mm-dd.log: daily log of requests.
    
       * Core module of GetTor.
    
+         __init(config_file)__
+            Creates a new Core object. It reads its configuration from
+            the config_file using ConfigParser.
+            
          get_links(operating_system, locale)
             Public method to obtain the links. Returns links for 
             operating_system in locale language. It checks if the operating
@@ -61,17 +72,31 @@
             Gets the links for a specific operating system and locale 
             according to the options received. It reads all the .links 
             files inside the providers directory. Each one of these files 
-            contains the provider's name in the first line and all the 
-            links after. The format of these files is as following:
+            should follow the ConfigParser's format. There should be a 
+            section [provider] with the option 'name' for the provider's 
+            name (e.g. Dropbox)
+
+            Following sections should specify the operating system and 
+            its options should be the locale. When more than one link is 
+            available per operating system and locale (always) the links 
+            should be specified as a multiline value. Each link has the 
+            format:
+
+            link link_signature key_fingerprint
+            
+            Example:
+
+            [provider]
+            name: Dropbox
+
+            [linux]
+            en: https://foo.bar https://foo.bar.asc 111-222-333-444,
+                https://foo.bar https://foo.bar.asc 555-666-777-888
+
+            es: https://bar.baz https://bar.baz.asc 555-666-777-888
             
             PROVIDER NAME
             operating_system locale link package_signature key_fingerprint
-            
-            Example:
-            
-            Dropbox
-            linux en https://foo.bar https://foo.bar.asc 111-222-333-444
-            osx es https://bar.baz https://bar.baz.asc 555-666-777-888
             
             The key fingerprint is joined by '-' characters for convenience,
             but it's sent back to the service module separated by spaces.
