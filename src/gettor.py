@@ -2,6 +2,22 @@ import os
 import re
 import inspect
 import logging
+import ConfigParser
+
+"""
+    GetTor main module.
+
+    Classes:
+        Core: Get links from providers.
+
+    Methods:
+        Core.get_links(): Get the links. It throws ValueError and 
+                          RuntimeError on failure.
+
+    Exceptions:
+        ValueError: Request for an unsupported locale/operating system.
+        RuntimeError: Something went wrong internally.
+"""
 
 
 class Core:
@@ -13,19 +29,39 @@ class Core:
             get_links(operating_system, locale)
     """
 
-    def __init__(self):
+    def __init__(self, config_file):
     	"""
             Initialize a Core object by reading a configuration file.
+
+            Raises a RuntimeError if the configuration file doesn't exists.
 
             Parameters: none
         """
 
-        # Read configuration file
+        logging.basicConfig()
+        logger = logging.getLogger(__name__)
 
-        # Dummy info. This should be read from a configuration file.
-        self.basedir = './providers/'
-        self.supported_locales = ['en', 'es']
-        self.supported_os = ['windows', 'linux', 'osx']
+        config = ConfigParser.ConfigParser()
+
+        if os.path.isfile(config_file):
+            logger.debug("Reading configuration from %s" % config_file)
+            config.read(config_file)
+        else:
+            logger.error("Error while trying to read %s" % config_file)
+            raise RuntimeError("Couldn't read the configuration file %s"
+                               % config_file)
+
+        # To do: check for unspecified sections and/or options
+        self.basedir = config.get('general', 'basedir')
+        self.linksdir = config.get('links', 'linksdir')
+        self.supported_locales = config.get('links', 'locales').split(', ')
+        self.supported_os = config.get('links', 'os').split(', ')
+        self.loglevel = config.get('log', 'loglevel')
+        self.logdir = config.get('log', 'logdir')
+        self.logger = logger
+        self.logger.setLevel(logging.getLevelName(self.loglevel))
+
+        self.logger.debug("New core object created")
 
     def get_links(self, operating_system, locale):
         """
@@ -39,13 +75,15 @@ class Core:
             (e.g. SMTP).
         """
 
-        # Log requests
         self._log_request(operating_system, locale)
 
         if locale not in self.supported_locales:
+            self.logger.warning("Request for unsupported locale: %s" % locale)
             raise ValueError("Locale %s not supported at the moment" % locale)
 
         if operating_system not in self.supported_os:
+            self.logger.warning("Request for unsupported operating system: %s"
+                                % operating_system)
             raise ValueError("Operating system %s not supported at the moment"
                              % operating_system)
 
@@ -53,8 +91,10 @@ class Core:
         links = self._get_links(operating_system, locale)
 
         if links is None:
+            self.logger.error("Couldn't get the links", exc_info=True)
             raise RuntimeError("Something went wrong with GetTor's core")
 
+        self.logger.info("Returning the links")
         return links
 
     def _get_links(self, operating_system, locale):
@@ -70,18 +110,29 @@ class Core:
                 locale: string describing the locale
         """
 
-        # There should be a 'providers' directory inside self.basedir
+        # We read the links files from the 'linksdir' inside 'basedir'
         #
-        # Each .links file begins with a string describing the provider.
-        # After that, every line should have the following format:
+        # Each .links file uses the ConfigParser's format.
+        # There should be a section [provider] with the option 'name' for
+        # the provider's name (e.g. Dropbox)
         #
-        # operating_system locale link package_signature key_fingerprint
+        # Following sections should specify the operating system and its
+        # options should be the locale. When more than one link is available
+        # per operating system and locale (always) the links should be
+        # specified as a multiline value. Each link has the format:
+        #
+        # link link_signature key_fingerprint
         #
         # e.g.
         #
-        # Dropbox
-        # linux en https://foo.bar https://foo.bar.asc 111-222-333-444
-        # osx es https://bar.baz https://bar.baz.asc 555-666-777-888
+        # [provider]
+        # name: Dropbox
+        #
+        # [linux]
+        # en: https://foo.bar https://foo.bar.asc 111-222-333-444,
+        #     https://foo.bar https://foo.bar.asc 555-666-777-888
+        #
+        # es: https://bar.baz https://bar.baz.asc 555-666-777-888
         #
         links = []
 
@@ -98,20 +149,13 @@ class Core:
         # to check if no links were found.
         providers = {}
 
+        self.logger.info("Reading links from providers directory")
         # We trust links have been generated properly
+        config = ConfigParser.ConfigParser()
         for name in links:
-            link_file = open(name, 'r')
-            provider_name = link_file.readline()
-
-            for line in link_file:
-                words = line.split(' ')
-                if words[0] == operating_system and words[1] == locale:
-                    providers.setdefault(provider_name, []).append(
-                        "%s %s %s" %
-                        (words[2], words[3], words[4].replace('-', ' '))
-                    )
-
-            link_file.close()
+            config.read(name)
+            provider_name = config.get('provider', 'name')
+            providers[provider_name] = config.get(operating_system, locale)
 
         # Create the final links list with all providers
         all_links = []
@@ -136,6 +180,5 @@ class Core:
         caller = inspect.stack()[2]
         module = inspect.getmodule(caller[0])
 
-        # Dummy print for now. Should be done with logging
-        print "\nCalled by %s\nOS: %s\nLocale: %s\n" % \
-              (str(module), operating_system, locale)
+        self.logger.info("\n%s did a request for %s, %s\n" %
+                         (str(module), operating_system, locale))
