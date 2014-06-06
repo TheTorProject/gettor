@@ -5,12 +5,11 @@
 
 import gettor
 
-core = gettor.Core()
-
 try:
+    core = gettor.Core('gettor.cfg')
     links = core.get_links('linux', 'en')
     print links
 except ValueError as e:
-    print "Value error! " + str(e)
+    print "Value error: " + str(e)
 except RuntimeError as e:
-    print "Internal error! " + str(e)
+    print "Internal error: " + str(e)
