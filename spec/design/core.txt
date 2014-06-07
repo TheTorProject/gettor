@@ -5,7 +5,6 @@
    Changes: [0.03]
             Changed proposed format for link files to RFC 882 (ConfigParser).
             Read configuration from file with ConfigParser.
-            Added logging.
             [0.02]
             Combine official mirrors with providers links (as another provider).
             Eliminated on demand link generation. Now it reads from files.
