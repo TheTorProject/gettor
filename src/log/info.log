@@ -1,0 +1,13 @@
+
+[   INFO] 2014-06-13 23:36:47 - Redirecting logging to ./log/
+[   INFO] 2014-06-13 23:36:47 - <module '__main__' from 'core_demo.py'> did a request for linux, en.
+[   INFO] 2014-06-13 23:36:47 - Reading links from providers directory
+[   INFO] 2014-06-13 23:36:47 - Returning the links
+[   INFO] 2014-06-13 23:38:27 - Redirecting logging to ./log/
+[   INFO] 2014-06-13 23:38:27 - <module '__main__' from 'core_demo.py'> did a request for linux, en.
+[   INFO] 2014-06-13 23:38:27 - Reading links from providers directory
+[   INFO] 2014-06-13 23:38:27 - Returning the links
+[   INFO] 2014-06-13 23:39:20 - Redirecting logging to ./log/
+[   INFO] 2014-06-13 23:39:20 - <module '__main__' from 'core_demo.py'> did a request for linux, en.
+[   INFO] 2014-06-13 23:39:20 - Reading links from providers directory
+[   INFO] 2014-06-13 23:39:20 - Returning the links

@@ -1,0 +1,37 @@
+
+[   INFO] 2014-06-13 23:36:47 - Redirecting logging to ./log/
+[  DEBUG] 2014-06-13 23:36:47 - New core object created
+[   INFO] 2014-06-13 23:36:47 - <module '__main__' from 'core_demo.py'> did a request for linux, en.
+[   INFO] 2014-06-13 23:36:47 - Reading links from providers directory
+[  DEBUG] 2014-06-13 23:36:47 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/mirrors.links
+[  DEBUG] 2014-06-13 23:36:47 - -- Checking if Official mirrors has links for linux in en
+[  DEBUG] 2014-06-13 23:36:47 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/dropbox.links
+[  DEBUG] 2014-06-13 23:36:47 - -- Checking if Dropbox has links for linux in en
+[  DEBUG] 2014-06-13 23:36:47 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/gdrive.links
+[  DEBUG] 2014-06-13 23:36:47 - -- Checking if Google Drive has links for linux in en
+[  DEBUG] 2014-06-13 23:36:47 - Joining all links found for linux in en
+[   INFO] 2014-06-13 23:36:47 - Returning the links
+[   INFO] 2014-06-13 23:38:27 - Redirecting logging to ./log/
+[  DEBUG] 2014-06-13 23:38:27 - New core object created
+[   INFO] 2014-06-13 23:38:27 - <module '__main__' from 'core_demo.py'> did a request for linux, en.
+[   INFO] 2014-06-13 23:38:27 - Reading links from providers directory
+[  DEBUG] 2014-06-13 23:38:27 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/mirrors.links
+[  DEBUG] 2014-06-13 23:38:27 - -- Checking if Official mirrors has links for linux in en
+[  DEBUG] 2014-06-13 23:38:27 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/dropbox.links
+[  DEBUG] 2014-06-13 23:38:27 - -- Checking if Dropbox has links for linux in en
+[  DEBUG] 2014-06-13 23:38:27 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/gdrive.links
+[  DEBUG] 2014-06-13 23:38:27 - -- Checking if Google Drive has links for linux in en
+[  DEBUG] 2014-06-13 23:38:27 - Joining all links found for linux in en
+[   INFO] 2014-06-13 23:38:27 - Returning the links
+[   INFO] 2014-06-13 23:39:20 - Redirecting logging to ./log/
+[  DEBUG] 2014-06-13 23:39:20 - New core object created
+[   INFO] 2014-06-13 23:39:20 - <module '__main__' from 'core_demo.py'> did a request for linux, en.
+[   INFO] 2014-06-13 23:39:20 - Reading links from providers directory
+[  DEBUG] 2014-06-13 23:39:20 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/mirrors.links
+[  DEBUG] 2014-06-13 23:39:20 - -- Checking if Official mirrors has links for linux in en
+[  DEBUG] 2014-06-13 23:39:20 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/dropbox.links
+[  DEBUG] 2014-06-13 23:39:20 - -- Checking if Dropbox has links for linux in en
+[  DEBUG] 2014-06-13 23:39:20 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/gdrive.links
+[  DEBUG] 2014-06-13 23:39:20 - -- Checking if Google Drive has links for linux in en
+[  DEBUG] 2014-06-13 23:39:20 - Joining all links found for linux in en
+[   INFO] 2014-06-13 23:39:20 - Returning the links
