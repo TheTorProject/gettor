@@ -8,16 +8,50 @@ import ConfigParser
     GetTor main module.
 
     Classes:
+        SingleLevelFilter: Filter logging levels.
         Core: Get links from providers.
 
     Methods:
-        Core.get_links(): Get the links. It throws ValueError and 
+        SingleLevelFilter.filter(): Filter logging levels. All except
+                                    the one specified will be filtered.
+
+        Core.get_links(): Get the links. It throws ValueError and
                           RuntimeError on failure.
 
     Exceptions:
         ValueError: Request for an unsupported locale/operating system.
         RuntimeError: Something went wrong internally.
 """
+
+
+class SingleLevelFilter(logging.Filter):
+
+    """
+        Filter logging levels to create separated logs.
+
+        Public methods:
+            filter(record)
+    """
+
+    def __init__(self, passlevel, reject):
+        """
+            Initialize a new object with level to be filtered.
+
+            If reject value is false, all but the passlevel will be
+            filtered. Useful for logging in separated files.
+        """
+
+        self.passlevel = passlevel
+        self.reject = reject
+
+    def filter(self, record):
+        """
+            Do the actual filtering.
+        """
+        if self.reject:
+            return (record.levelno != self.passlevel)
+        else:
+            return (record.levelno == self.passlevel)
 
 
 class Core:
@@ -31,36 +65,110 @@ class Core:
 
     def __init__(self, config_file):
     	"""
-            Initialize a Core object by reading a configuration file.
+            Initialize a new object by reading a configuration file.
 
-            Raises a RuntimeError if the configuration file doesn't exists.
+            Raises a RuntimeError if the configuration file doesn't exists
+            or if something goes wrong while reading options from it.
 
-            Parameters: none
+            Parameters:
+                config_file: path for the configuration file
         """
 
-        logging.basicConfig()
+        logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s',
+                            datefmt="%Y-%m-%d %H:%M:%S")
         logger = logging.getLogger(__name__)
-
         config = ConfigParser.ConfigParser()
 
         if os.path.isfile(config_file):
-            logger.debug("Reading configuration from %s" % config_file)
+            logger.info("Reading configuration from %s" % config_file)
             config.read(config_file)
         else:
             logger.error("Error while trying to read %s" % config_file)
             raise RuntimeError("Couldn't read the configuration file %s"
                                % config_file)
 
-        # To do: check for unspecified sections and/or options
-        self.basedir = config.get('general', 'basedir')
-        self.linksdir = config.get('links', 'linksdir')
-        self.supported_locales = config.get('links', 'locales').split(', ')
-        self.supported_os = config.get('links', 'os').split(', ')
-        self.loglevel = config.get('log', 'loglevel')
-        self.logdir = config.get('log', 'logdir')
+        # Handle the gets internally to catch proper exceptions
+        try:
+            self.basedir = self._get_config_option('general',
+                                                   'basedir', config)
+        except RuntimeError as e:
+            logger.warning("%s misconfigured. %s" % (config_file, str(e)))
+        try:
+            self.linksdir = self._get_config_option('links', 'dir', config)
+            self.linksdir = os.path.join(self.basedir, self.linksdir)
+        except RuntimeError as e:
+            logger.warning("%s misconfigured. %s" % (config_file, str(e)))
+
+        try:
+            self.supported_locales = self._get_config_option('links',
+                                                             'locales',
+                                                             config)
+        except RuntimeError as e:
+            logger.warning("%s misconfigured. %s" % (config_file, str(e)))
+
+        try:
+            self.supported_os = self._get_config_option('links', 'os', config)
+        except RuntimeError as e:
+            logger.warning("%s misconfigured. %s" % (config_file, str(e)))
+
+        try:
+            self.loglevel = self._get_config_option('log', 'level', config)
+        except RuntimeError as e:
+            logger.warning("%s misconfigured. %s" % (config_file, str(e)))
+
+        try:
+            self.logdir = self._get_config_option('log', 'dir', config)
+            self.logdir = os.path.join(self.basedir, self.logdir)
+        except RuntimeError as e:
+            logger.warning("%s misconfigured. %s" % (config_file, str(e)))
+
+        # Better log format
+        string_format = '[%(levelname)7s] %(asctime)s - %(message)s'
+        formatter = logging.Formatter(string_format, '%Y-%m-%d %H:%M:%S')
+
+        # Keep logs separated (and filtered)
+        # all.log depends on level specified on configuration file
+        all_log = logging.FileHandler(os.path.join(self.logdir, 'all.log'),
+                                      mode='a+')
+        all_log.setLevel(logging.getLevelName(self.loglevel))
+        all_log.setFormatter(formatter)
+
+        debug_log = logging.FileHandler(os.path.join(self.logdir, 'debug.log'),
+                                        mode='a+')
+        debug_log.setLevel('DEBUG')
+        debug_log.addFilter(SingleLevelFilter(logging.DEBUG, False))
+        debug_log.setFormatter(formatter)
+
+        info_log = logging.FileHandler(os.path.join(self.logdir, 'info.log'),
+                                       mode='a+')
+        info_log.setLevel('INFO')
+        debug_log.addFilter(SingleLevelFilter(logging.INFO, False))
+        info_log.setFormatter(formatter)
+
+        warn_log = logging.FileHandler(os.path.join(self.logdir, 'warn.log'),
+                                       mode='a+')
+        warn_log.setLevel('WARNING')
+        debug_log.addFilter(SingleLevelFilter(logging.WARNING, False))
+        warn_log.setFormatter(formatter)
+
+        error_log = logging.FileHandler(os.path.join(self.logdir, 'error.log'),
+                                        mode='a+')
+        error_log.setLevel('ERROR')
+        debug_log.addFilter(SingleLevelFilter(logging.ERROR, False))
+        error_log.setFormatter(formatter)
+
+        logger.addHandler(all_log)
+        logger.addHandler(info_log)
+        logger.addHandler(debug_log)
+        logger.addHandler(warn_log)
+        logger.addHandler(error_log)
+
         self.logger = logger
         self.logger.setLevel(logging.getLevelName(self.loglevel))
+        logger.info('Redirecting logging to %s' % self.logdir)
 
+        # Stop logging on stdout from now on
+        logger.propagate = False
         self.logger.debug("New core object created")
 
     def get_links(self, operating_system, locale):
@@ -75,7 +183,11 @@ class Core:
             (e.g. SMTP).
         """
 
-        self._log_request(operating_system, locale)
+        # Figure out which module called us and what was asking for
+        caller = inspect.stack()[1]
+        module = inspect.getmodule(caller[0])
+        self.logger.info("%s did a request for %s, %s." %
+                         (str(module), operating_system, locale))
 
         if locale not in self.supported_locales:
             self.logger.warning("Request for unsupported locale: %s" % locale)
@@ -92,7 +204,8 @@ class Core:
 
         if links is None:
             self.logger.error("Couldn't get the links", exc_info=True)
-            raise RuntimeError("Something went wrong with GetTor's core")
+            raise RuntimeError("Something went wrong internally. See logs for \
+                                detailed info.")
 
         self.logger.info("Returning the links")
         return links
@@ -110,37 +223,15 @@ class Core:
                 locale: string describing the locale
         """
 
-        # We read the links files from the 'linksdir' inside 'basedir'
-        #
-        # Each .links file uses the ConfigParser's format.
-        # There should be a section [provider] with the option 'name' for
-        # the provider's name (e.g. Dropbox)
-        #
-        # Following sections should specify the operating system and its
-        # options should be the locale. When more than one link is available
-        # per operating system and locale (always) the links should be
-        # specified as a multiline value. Each link has the format:
-        #
-        # link link_signature key_fingerprint
-        #
-        # e.g.
-        #
-        # [provider]
-        # name: Dropbox
-        #
-        # [linux]
-        # en: https://foo.bar https://foo.bar.asc 111-222-333-444,
-        #     https://foo.bar https://foo.bar.asc 555-666-777-888
-        #
-        # es: https://bar.baz https://bar.baz.asc 555-666-777-888
-        #
+        # Read the links files using ConfigParser
+        # See the README for more details on the format used
         links = []
 
         # Look for files ending with .links
         p = re.compile('.*\.links$')
 
-        for name in os.listdir(self.basedir):
-            path = os.path.abspath(os.path.join(self.basedir, name))
+        for name in os.listdir(self.linksdir):
+            path = os.path.abspath(os.path.join(self.linksdir, name))
             if os.path.isfile(path) and p.match(path):
                 links.append(path)
 
@@ -153,13 +244,30 @@ class Core:
         # We trust links have been generated properly
         config = ConfigParser.ConfigParser()
         for name in links:
+            self.logger.debug("-- Reading %s" % name)
+            # We're reading files listed on linksdir, so they must exist!
             config.read(name)
-            provider_name = config.get('provider', 'name')
-            providers[provider_name] = config.get(operating_system, locale)
+
+            try:
+                pname = self._get_config_option('provider',
+                                                'name', config)
+            except RuntimeError as e:
+                self.logger.warning("Links misconfiguration %s" % str(e))
+
+            self.logger.debug("-- Checking if %s has links for %s in %s" %
+                              (pname, operating_system, locale))
+
+            try:
+                providers[pname] = self._get_config_option(operating_system,
+                                                           locale, config)
+            except RuntimeError as e:
+                self.logger.warning("Links misconfiguration %s" % str(e))
 
         # Create the final links list with all providers
         all_links = []
 
+        self.logger.debug("Joining all links found for %s in %s" %
+                          (operating_system, locale))
         for key in providers.keys():
             all_links.append(
                 "\n%s\n%s\n" % (key, ''.join(providers[key]))
@@ -168,17 +276,37 @@ class Core:
         if all_links:
             return "".join(all_links)
         else:
+            self.logger.warning("Trying to get supported os and locales, but \
+                                 no links were found")
             return None
 
-    def _log_request(self, operating_system, locale):
+    def _get_config_option(self, section, option, config):
         """
-            Private method to log what service module called to get the links.
+            Private method to get configuration options.
 
-            Parameters: none
+            It tries to obtain a value from a section in config using
+            ConfigParser. It catches possible exceptions and raises
+            RuntimeError if something goes wrong.
+
+            Parameters:
+                config: ConfigParser object
+                section: section inside config
+                option: option inside section
+
+            Returns the value of the option inside the section in the
+            config object.
         """
 
-        caller = inspect.stack()[2]
-        module = inspect.getmodule(caller[0])
-
-        self.logger.info("\n%s did a request for %s, %s\n" %
-                         (str(module), operating_system, locale))
+        try:
+            value = config.get(section, option)
+            return value
+        # This exceptions should appear when messing with the configuration
+        except (ConfigParser.NoSectionError,
+                ConfigParser.NoOptionError,
+                ConfigParser.InterpolationError,
+                ConfigParser.MissingSectionHeaderError,
+                ConfigParser.ParsingError) as e:
+            raise RuntimeError("%s" % str(e))
+        # No other errors should occurr, unless something's terribly wrong
+        except ConfigParser.Error as e:
+            raise RuntimeError("Unexpected error: %s" % str(e))
