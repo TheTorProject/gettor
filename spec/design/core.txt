@@ -1,8 +1,12 @@
    Google Summer of Code 2014 GetTor Revamp - Core module
    Author: Israel Leiva - <israel.leiva@usach.cl, ilv@riseup.net>
-   Last update: 2014-06-06
-   Version: 0.03
-   Changes: [0.03]
+   Last update: 2014-06-20
+   Version: 0.04
+   Changes: [0.04]
+            Changed log format in 'Design'
+            Added section 'Features'
+            Deleted stuff from 'Discussion' and added some others
+            [0.03]
             Changed proposed format for link files to RFC 882 (ConfigParser).
             Read configuration from file with ConfigParser.
             [0.02]
@@ -50,7 +54,11 @@
    
       * logs/: Directory for logs. Should be specified on gettor.cfg
    
-         ----- core_yyyy-mm-dd.log: daily log of requests.
+         ----- all.log
+         ----- info.log
+         ----- debug.log
+         ----- warn.log
+         ----- error.log
    
       * Core module of GetTor.
    
@@ -125,30 +133,17 @@
    f. get_links() returns the message previously constructed.
    g. The SMTP service creates a message with the links obtained and 
       send it to the user.
-   
+
 5. Discussion
+
+5.1 Daily logs
+
+   Currently, logs are separated by level of information (debug, info, error).
+   Is it necessary to do this by days/weeks too?
    
-5.1 On demand generation 
+6. Features
 
-   Now we consider links generation over a period of time, say, once a week.
-   Generating links on demand don't seem to be necessary and it would 
-   certainly be resource consuming. The core module doesn't care about
-   how links are generated, it just assumes they exist. Is there any case
-   where on demand link generation should be considered?
+   Possible features to be added in the future (open to discussion)
+   
+   a. Send HTTP links (currently some official mirrors are HTTP only). 
 
-5.2 Core class
-    
-    Should the Core be a module on its own, or a class of GetTor? 
-    Currently it's just a class, after realizing that
-    
-    core = gettor.core.core()
-    
-    Was too much. It's better to do
-    
-    core = gettor.Core()
-    
-    Isn't?
-
-5.3 Logs
-
-   Should we mantain separate logs for successful and fail requests?
