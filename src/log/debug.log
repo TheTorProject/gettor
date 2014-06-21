@@ -1,1 +1,12 @@
 
+[  DEBUG] 2014-06-20 20:51:38 - New core object created
+[  DEBUG] 2014-06-20 20:51:43 - New core object created
+[  DEBUG] 2014-06-20 20:51:43 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/mirrors.links
+[  DEBUG] 2014-06-20 20:51:43 - -- Checking if Official mirrors has links for linux in es
+[  DEBUG] 2014-06-20 20:51:43 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/dropbox.links
+[  DEBUG] 2014-06-20 20:51:43 - -- Checking if Dropbox has links for linux in es
+[  DEBUG] 2014-06-20 20:51:43 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/gdrive.links
+[  DEBUG] 2014-06-20 20:51:43 - -- Checking if Google Drive has links for linux in es
+[  DEBUG] 2014-06-20 20:51:43 - -- Reading /home/ilv/Proyectos/github/gettor/src/providers/github.links
+[  DEBUG] 2014-06-20 20:51:43 - -- Checking if Github has links for linux in es
+[  DEBUG] 2014-06-20 20:51:43 - Joining all links found for linux in es
