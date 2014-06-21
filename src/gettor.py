@@ -2,6 +2,7 @@ import os
 import re
 import inspect
 import logging
+import tempfile
 import ConfigParser
 
 """
@@ -17,6 +18,11 @@ import ConfigParser
 
         Core.get_links(): Get the links. It throws ValueError and
                           RuntimeError on failure.
+                          
+        Core.create_links_file(): Create a file to store links of a given
+                                  provider.
+                                  
+        Core.add_link(): Add a link to a links file of a given provider.
 
     Exceptions:
         ValueError: Request for an unsupported locale/operating system.
@@ -70,7 +76,7 @@ class Core:
             Raises a RuntimeError if the configuration file doesn't exists
             or if something goes wrong while reading options from it.
 
-            Parameters:
+            Arguments:
                 config_file: path for the configuration file
         """
 
@@ -142,19 +148,19 @@ class Core:
         info_log = logging.FileHandler(os.path.join(self.logdir, 'info.log'),
                                        mode='a+')
         info_log.setLevel('INFO')
-        debug_log.addFilter(SingleLevelFilter(logging.INFO, False))
+        info_log.addFilter(SingleLevelFilter(logging.INFO, False))
         info_log.setFormatter(formatter)
 
         warn_log = logging.FileHandler(os.path.join(self.logdir, 'warn.log'),
                                        mode='a+')
         warn_log.setLevel('WARNING')
-        debug_log.addFilter(SingleLevelFilter(logging.WARNING, False))
+        warn_log.addFilter(SingleLevelFilter(logging.WARNING, False))
         warn_log.setFormatter(formatter)
 
         error_log = logging.FileHandler(os.path.join(self.logdir, 'error.log'),
                                         mode='a+')
         error_log.setLevel('ERROR')
-        debug_log.addFilter(SingleLevelFilter(logging.ERROR, False))
+        error_log.addFilter(SingleLevelFilter(logging.ERROR, False))
         error_log.setFormatter(formatter)
 
         logger.addHandler(all_log)
@@ -241,11 +247,10 @@ class Core:
         providers = {}
 
         self.logger.info("Reading links from providers directory")
-        # We trust links have been generated properly
-        config = ConfigParser.ConfigParser()
         for name in links:
             self.logger.debug("-- Reading %s" % name)
             # We're reading files listed on linksdir, so they must exist!
+            config = ConfigParser.ConfigParser()
             config.read(name)
 
             try:
@@ -288,7 +293,7 @@ class Core:
             ConfigParser. It catches possible exceptions and raises
             RuntimeError if something goes wrong.
 
-            Parameters:
+            Arguments:
                 config: ConfigParser object
                 section: section inside config
                 option: option inside section
@@ -310,3 +315,105 @@ class Core:
         # No other errors should occurr, unless something's terribly wrong
         except ConfigParser.Error as e:
             raise RuntimeError("Unexpected error: %s" % str(e))
+
+    def create_links_file(self, provider):
+        """
+            Public method to create a links file for a provider.
+
+            This should be used by all providers since it writes the links
+            file with the proper format. It backs up the old links file 
+            (if exists) and creates a new one. The name for the links file 
+            is the provider's name in lowercase. It raises a general 
+            exception if something goes wrong while creating the new file.
+            
+            Arguments: 
+                provider: Provider's name. The links file will use this
+                          name in lower case.
+        """
+        linksfile = os.path.join(self.linksdir, provider.lower() + '.links')
+        linksfile_backup = ""
+        self.logger.info("Request to create new %s" % linksfile)
+
+        if os.path.isfile(linksfile):
+            # Backup the old file in case something fails
+            linksfile_backup = linksfile + '.backup'
+            self.logger.info("Backing up %s to %s" 
+                              % (linksfile, linksfile_backup))
+            os.rename(linksfile, linksfile_backup)
+
+        try:
+            # This creates an empty links file (with no links)
+            content = ConfigParser.RawConfigParser()
+            content.add_section('provider')
+            content.set('provider', 'name', provider)
+            content.add_section('linux')
+            content.add_section('windows')
+            content.add_section('osx')
+            with open(linksfile, 'w+') as f:
+                content.write(f)
+                self.logger.info("New %s created" % linksfile)
+        except Exception as e:
+            if linksfile_backup:
+                os.rename(linksfile_backup, linksfile)
+                
+    def add_link(self, provider, operating_system, locale, link):
+        """
+            Public method to add a link to a provider's links file.
+           
+            It uses ConfigParser to add a link into the operating_system
+            section, under the locale option. It check for valid format;
+            the provider's script should use the right format (see design).
+            It raises ValueError in case the operating_system or locale
+            are not supported (see config file for supported ones), or if
+            if there is not a section for the operating_system in the 
+            links file, or if there is no links file for the given provider.
+        """
+        linksfile = os.path.join(self.linksdir, provider.lower() + '.links')
+        
+        # Don't try to add unsupported stuff
+        if locale not in self.supported_locales:
+            self.logger.warning("Trying to add link for unsupported locale: %s"
+                                % locale)
+            raise ValueError("Locale %s not supported at the moment" % locale)
+
+        if operating_system not in self.supported_os:
+            self.logger.warning("Trying to add link for unsupported operating \
+                                system: %s" % operating_system)
+            raise ValueError("Operating system %s not supported at the moment"
+                             % operating_system)
+                             
+        # Check if seems legit format
+        # e.g. https://foo.bar https://foo.bar.asc 111-222-333-444
+        #p = re.compile('^https://\.+\shttps://\.+\s\.+$')
+
+        #if p.match(link):
+        #    self.logger.warning("Trying to add an invalid link: %s" 
+        #                         % link)
+        #    raise ValueError("The link %s doesn't seem to have a valid format"
+        #                      % link)
+        
+        if os.path.isfile(linksfile):
+            content = ConfigParser.RawConfigParser()
+            content.readfp(open(linksfile))
+            # Check if exists and entry for locale; if not, create it
+            try:
+                links = content.get(operating_system, locale)
+                links = links + ",\n" + link
+                content.set(operating_system, locale, links)
+                with open(linksfile, 'w') as f:    
+                    content.write(f)
+                self.logger.info("Link %s added to %s %s in %s"
+                                 % (link, operating_system, locale, provider))
+            except ConfigParser.NoOptionError:
+                content.set(operating_system, locale, link)
+                with open(linksfile, 'w') as f:    
+                    content.write(f)
+                self.logger.info("Link %s added to %s-%s in %s"
+                                 % (link, operating_system, locale, provider))
+            except ConfigParser.NoSectionError:
+                # This shouldn't happen, but just in case
+                self.logger.error("Unknown section %s in links file")
+                raise ValueError("Unknown %s section in links file"
+                                  % operating_system)
+        else:
+            raise ValueError("There is no links file for %s" % provider)
