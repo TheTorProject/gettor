@@ -18,10 +18,10 @@ import ConfigParser
 
         Core.get_links(): Get the links. It throws ValueError and
                           RuntimeError on failure.
-                          
+
         Core.create_links_file(): Create a file to store links of a given
                                   provider.
-                                  
+
         Core.add_link(): Add a link to a links file of a given provider.
 
     Exceptions:
@@ -321,12 +321,12 @@ class Core:
             Public method to create a links file for a provider.
 
             This should be used by all providers since it writes the links
-            file with the proper format. It backs up the old links file 
-            (if exists) and creates a new one. The name for the links file 
-            is the provider's name in lowercase. It raises a general 
+            file with the proper format. It backs up the old links file
+            (if exists) and creates a new one. The name for the links file
+            is the provider's name in lowercase. It raises a general
             exception if something goes wrong while creating the new file.
-            
-            Arguments: 
+
+            Arguments:
                 provider: Provider's name. The links file will use this
                           name in lower case.
         """
@@ -337,8 +337,8 @@ class Core:
         if os.path.isfile(linksfile):
             # Backup the old file in case something fails
             linksfile_backup = linksfile + '.backup'
-            self.logger.info("Backing up %s to %s" 
-                              % (linksfile, linksfile_backup))
+            self.logger.info("Backing up %s to %s"
+                             % (linksfile, linksfile_backup))
             os.rename(linksfile, linksfile_backup)
 
         try:
@@ -355,21 +355,21 @@ class Core:
         except Exception as e:
             if linksfile_backup:
                 os.rename(linksfile_backup, linksfile)
-                
+
     def add_link(self, provider, operating_system, locale, link):
         """
             Public method to add a link to a provider's links file.
-           
+
             It uses ConfigParser to add a link into the operating_system
             section, under the locale option. It check for valid format;
             the provider's script should use the right format (see design).
             It raises ValueError in case the operating_system or locale
             are not supported (see config file for supported ones), or if
-            if there is not a section for the operating_system in the 
+            if there is not a section for the operating_system in the
             links file, or if there is no links file for the given provider.
         """
         linksfile = os.path.join(self.linksdir, provider.lower() + '.links')
-        
+
         # Don't try to add unsupported stuff
         if locale not in self.supported_locales:
             self.logger.warning("Trying to add link for unsupported locale: %s"
@@ -381,17 +381,17 @@ class Core:
                                 system: %s" % operating_system)
             raise ValueError("Operating system %s not supported at the moment"
                              % operating_system)
-                             
+
         # Check if seems legit format
         # e.g. https://foo.bar https://foo.bar.asc 111-222-333-444
-        #p = re.compile('^https://\.+\shttps://\.+\s\.+$')
+        # p = re.compile('^https://\.+\shttps://\.+\s\.+$')
 
-        #if p.match(link):
-        #    self.logger.warning("Trying to add an invalid link: %s" 
+        # if p.match(link):
+        #    self.logger.warning("Trying to add an invalid link: %s"
         #                         % link)
         #    raise ValueError("The link %s doesn't seem to have a valid format"
         #                      % link)
-        
+
         if os.path.isfile(linksfile):
             content = ConfigParser.RawConfigParser()
             content.readfp(open(linksfile))
@@ -400,13 +400,13 @@ class Core:
                 links = content.get(operating_system, locale)
                 links = links + ",\n" + link
                 content.set(operating_system, locale, links)
-                with open(linksfile, 'w') as f:    
+                with open(linksfile, 'w') as f:
                     content.write(f)
                 self.logger.info("Link %s added to %s %s in %s"
                                  % (link, operating_system, locale, provider))
             except ConfigParser.NoOptionError:
                 content.set(operating_system, locale, link)
-                with open(linksfile, 'w') as f:    
+                with open(linksfile, 'w') as f:
                     content.write(f)
                 self.logger.info("Link %s added to %s-%s in %s"
                                  % (link, operating_system, locale, provider))
@@ -414,6 +414,6 @@ class Core:
                 # This shouldn't happen, but just in case
                 self.logger.error("Unknown section %s in links file")
                 raise ValueError("Unknown %s section in links file"
-                                  % operating_system)
+                                 % operating_system)
         else:
             raise ValueError("There is no links file for %s" % provider)
