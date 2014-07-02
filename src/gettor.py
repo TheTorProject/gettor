@@ -31,7 +31,6 @@ import ConfigParser
 
 
 class SingleLevelFilter(logging.Filter):
-
     """
         Filter logging levels to create separated logs.
 
@@ -60,8 +59,7 @@ class SingleLevelFilter(logging.Filter):
             return (record.levelno == self.passlevel)
 
 
-class Core:
-
+class Core(object):
     """
         Gets links from providers and delivers them to other modules.
 
