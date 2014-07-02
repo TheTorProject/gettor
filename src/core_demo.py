@@ -7,7 +7,7 @@ import gettor
 
 try:
     core = gettor.Core('gettor.cfg')
-    links = core.get_links('linux', 'en')
+    links = core.get_links('dummy service', 'linux', 'es')
     print links
 except ValueError as e:
     print "Value error: " + str(e)

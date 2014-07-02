@@ -175,7 +175,7 @@ class Core(object):
         logger.propagate = False
         self.logger.debug("New core object created")
 
-    def get_links(self, operating_system, locale):
+    def get_links(self, service, operating_system, locale):
         """
             Public method to obtain links.
 
@@ -187,11 +187,9 @@ class Core(object):
             (e.g. SMTP).
         """
 
-        # Figure out which module called us and what was asking for
-        caller = inspect.stack()[1]
-        module = inspect.getmodule(caller[0])
+        # Which module called us and what was asking for?
         self.logger.info("%s did a request for %s, %s." %
-                         (str(module), operating_system, locale))
+                         (service, operating_system, locale))
 
         if locale not in self.supported_locales:
             self.logger.warning("Request for unsupported locale: %s" % locale)
