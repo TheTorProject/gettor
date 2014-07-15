@@ -263,8 +263,8 @@ class Core(object):
                                                            locale, config)
             except RuntimeError as e:
                 self.logger.warning("-- Links misconfiguration %s" % str(e))
-                
-            # Each provider must have a fingerprint of the key used to 
+
+            # Each provider must have a fingerprint of the key used to
             # sign the uploaded packages
             try:
                 self.logger.debug("-- Trying to get fingerprint from %s",
@@ -287,7 +287,7 @@ class Core(object):
             all_links.append(
                 "\n%s\n%s\n" % (key, ''.join(providers[key]))
             )
-        
+
         if all_links:
             return "".join(all_links)
         else:
@@ -334,9 +334,9 @@ class Core(object):
             file with the proper format. It backs up the old links file
             (if exists) and creates a new one. The name for the links file
             is the provider's name in lowercase. It receives the fingerprint
-            of the key that signed the packages. 
-            
-            It raises a general exception if something goes wrong while 
+            of the key that signed the packages.
+
+            It raises a general exception if something goes wrong while
             creating the new file.
 
             Arguments:
