@@ -262,7 +262,21 @@ class Core(object):
                 providers[pname] = self._get_config_option(operating_system,
                                                            locale, config)
             except RuntimeError as e:
-                self.logger.warning("Links misconfiguration %s" % str(e))
+                self.logger.warning("-- Links misconfiguration %s" % str(e))
+                
+            # Each provider must have a fingerprint of the key used to 
+            # sign the uploaded packages
+            try:
+                self.logger.debug("-- Trying to get fingerprint from %s",
+                                  pname)
+                fingerprint = self._get_config_option('key', 'fingerprint',
+                                                      config)
+                providers[pname] = providers[pname] + "\nFingerprint: "
+                providers[pname] = providers[pname] + fingerprint
+                self.logger.debug("-- Fingerprint added %s", fingerprint)
+            except ValueError as e:
+                self.logger.warning("-- No fingerprint found for provider %s" %
+                                    pname)
 
         # Create the final links list with all providers
         all_links = []
@@ -273,7 +287,7 @@ class Core(object):
             all_links.append(
                 "\n%s\n%s\n" % (key, ''.join(providers[key]))
             )
-
+        
         if all_links:
             return "".join(all_links)
         else:
@@ -312,19 +326,24 @@ class Core(object):
         except ConfigParser.Error as e:
             raise RuntimeError("Unexpected error: %s" % str(e))
 
-    def create_links_file(self, provider):
+    def create_links_file(self, provider, fingerprint):
         """
             Public method to create a links file for a provider.
 
             This should be used by all providers since it writes the links
             file with the proper format. It backs up the old links file
             (if exists) and creates a new one. The name for the links file
-            is the provider's name in lowercase. It raises a general
-            exception if something goes wrong while creating the new file.
+            is the provider's name in lowercase. It receives the fingerprint
+            of the key that signed the packages. 
+            
+            It raises a general exception if something goes wrong while 
+            creating the new file.
 
             Arguments:
                 provider: Provider's name. The links file will use this
                           name in lower case.
+                fingerprint: Fingerprint of the key that signed the packages
+                             to be uploaded to the provider.
         """
         linksfile = os.path.join(self.linksdir, provider.lower() + '.links')
         linksfile_backup = ""
@@ -342,6 +361,8 @@ class Core(object):
             content = ConfigParser.RawConfigParser()
             content.add_section('provider')
             content.set('provider', 'name', provider)
+            content.add_section('key')
+            content.set('key', 'fingerprint', fingerprint)
             content.add_section('linux')
             content.add_section('windows')
             content.add_section('osx')

@@ -1,8 +1,11 @@
    Google Summer of Code 2014 GetTor Revamp - Core module
    Author: Israel Leiva - <israel.leiva@usach.cl, ilv@riseup.net>
-   Last update: 2014-06-20
-   Version: 0.04
-   Changes: [0.04]
+   Last update: 2014-07-15
+   Version: 0.05
+   Changes: 
+            [0.05]
+            Added fingerprint support
+            [0.04]
             Changed log format in 'Design'
             Added section 'Features'
             Deleted stuff from 'Discussion' and added some others
@@ -81,7 +84,9 @@
             files inside the providers directory. Each one of these files 
             should follow the ConfigParser's format. There should be a 
             section [provider] with the option 'name' for the provider's 
-            name (e.g. Dropbox)
+            name (e.g. Dropbox), and a section [key] with the option
+            'fingerprint' for the key's fingerprint that signed the
+            uploaded packages.
 
             Following sections should specify the operating system and 
             its options should be the locale. When more than one link is 
@@ -89,32 +94,33 @@
             should be specified as a multiline value. Each link has the 
             format:
 
-            link link_signature key_fingerprint
+            link link_signature
             
             Example:
 
             [provider]
             name: Dropbox
 
+            [key]
+            fingerprint: 123A 456B 789C 012D 345E 678F 901G 234H 567I 890J
+            
             [linux]
-            en: https://foo.bar https://foo.bar.asc 111-222-333-444,
-                https://foo.bar https://foo.bar.asc 555-666-777-888
+            en: https://foo.bar https://foo.bar.asc,
+                https://foo.bar https://foo.bar.asc
 
-            es: https://bar.baz https://bar.baz.asc 555-666-777-888
+            es: https://bar.baz https://bar.baz.asc
             
             PROVIDER NAME
-            operating_system locale link package_signature key_fingerprint
+            operating_system locale link package_signature
             
-            The key fingerprint is joined by '-' characters for convenience,
-            but it's sent back to the service module separated by spaces.
-            
-            The official mirrors are considered as just another provider.
+            NOTE: For now, the official mirrors are considered just as 
+            another provider.
      
           
          _log_request(operating_system, locale)
-             Log information about the request for future stats (e.g. which
-             OS from which service is the most required). All logging 
-             should be done with the logging module.
+            Log information about the request for future stats (e.g. which
+            OS from which service is the most required). All logging 
+            should be done with the logging module.
  
       * Providers: There should be one module/script per provider in charge
         of generating the .links file with the proper format, including

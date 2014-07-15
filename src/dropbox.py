@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import re
 import os
+import gnupg
 import dropbox
 import gettor
 
@@ -58,9 +59,7 @@ def upload_files(basedir, client):
 
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
-        if os.path.isfile(path)
-        and p.match(path)
-        and valid_bundle_format(name):
+        if os.path.isfile(path) and p.match(path) and valid_bundle_format(name):
             files.append(name)
 
     for file in files:
@@ -89,27 +88,42 @@ def upload_files(basedir, client):
     return files
 
 # Test app for now
+# TO DO: use config file
 app_key = ''
 app_secret = ''
 access_token = ''
-# Should we use a dropbox.cfg?
 upload_dir = 'upload/'
+tbb_key = 'tbb-key.asc'
 
 client = dropbox.client.DropboxClient(access_token)
 
+# Import key that signed the packages and get fingerprint
+gpg = gnupg.GPG()
+key_data = open(tbb_key).read()
+import_result = gpg.import_keys(key_data)
+fingerprint = import_result.results[0]['fingerprint']
+# Make groups of four characters to make fingerprint more readable
+# e.g. 123A 456B 789C 012D 345E 678F 901G 234H 567I 890J
+readable = ' '.join(fingerprint[i:i+4] for i in xrange(0, len(fingerprint), 4))
+
 try:
     uploaded_files = upload_files(upload_dir, client)
-    # Fingerprint generation pending...
-    fingerprint = '111-222-333-444'
     core = gettor.Core('gettor.cfg')
-    # Erase the old links file
-    core.create_links_file('Dropbox')
+    # This erases the old links file
+    core.create_links_file('Dropbox', readable)
 
     for file in uploaded_files:
+        # build file names
         asc = file + '.asc'
+        abs_file = os.path.abspath(os.path.join(upload_dir, file))
+        abs_asc = os.path.abspath(os.path.join(upload_dir, asc))
+        
+        # build links
         link_file = client.share(file)
         link_asc = client.share(asc)
-        link = link_file[u'url'] + ' ' + link_asc[u'url'] + ' ' + fingerprint
+        link = link_file[u'url'] + ' ' + link_asc[u'url']
+        
+        # add links
         operating_system, locale = get_bundle_info(file)
         core.add_link('Dropbox', operating_system, locale, link)
 except (ValueError, RuntimeError) as e:
