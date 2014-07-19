@@ -1,0 +1,65 @@
+domain "es"
+
+#: Links subject
+msgid "links_subject"
+msgstr "[GetTor] Enlaces para tu petición"
+
+#: Help subject
+msgid "help_subject"
+msgstr "[GetTor] Ayuda"
+
+#: Delay subject
+msgid "delay_subject"
+msgstr "[GetTor] Mensaje de demora"
+
+#: Links message
+msgid "links_msg"
+msgstr """Gracias por tu petición para %s-%s.\n\
+\n\
+Aquí están los links de descarga:\n\
+\n\
+===\n\
+Tor Browser Bundle:\n\
+===\n\
+%s\n\
+===\n\
+Pluggable Transport Bundle:\n\
+===\n\
+%s\n\
+Tip: Si estás en Iran, China, o bajo fuerte censura, necesitas el\n\
+Pluggable Transport Bundle.\n\
+\n\
+===\n\
+Soporte:\n\
+===\n\
+\n\
+¿Aún necesitas ayuda? Si tienes dudas, problemas para conectarte a la\n\
+red Tor, o necesitas hablar con un humano, por favor contacta a nuestro\n\
+equipo de soporte a:\n\
+\n\
+    help@rt.torproject.org\n\
+\n\
+Estamos listos para responder tus consultas en Inglés, Farsi, Chino,\n\
+Arábico, Francés y Español."""
+
+#: Help message
+msgid "help_msg"
+msgstr "Hola, este es el robot 'GetTor'.\n\
+\n\
+Gracias por tu petición. Estoy aquí para ayudarte a descargar la última\n\
+versión del Tor Browser Bundle.\n\
+\n\
+Por favor responde a este mensaje con una de las siguientes opciones:\n\
+\n\
+    windows\n\
+    linux\n\
+    osx\n\
+\n\
+Y te enviaré las instrucciones de descarga.\n\
+\n\
+Tip: Sólo envía una respuesta en blanco a este mensaje si no estás\n\
+seguro."
+
+#: Delay message
+msgid "delay_msg"
+msgstr "Mensaje de demora."
