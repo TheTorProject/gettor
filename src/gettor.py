@@ -295,6 +295,14 @@ class Core(object):
                                  no links were found")
             return None
 
+    def get_supported_os(self):
+        """
+            Public method to obtain the list of supported operating systems
+
+            Returns a list of strings
+        """
+        return self.supported_os.split(',')
+
     def _get_config_option(self, section, option, config):
         """
             Private method to get configuration options.
@@ -383,7 +391,8 @@ class Core(object):
             It raises ValueError in case the operating_system or locale
             are not supported (see config file for supported ones), or if
             if there is not a section for the operating_system in the
-            links file, or if there is no links file for the given provider.
+            links file, or if there is no links file for the given provider,
+            or if the link format doesn't seem legit.
         """
         linksfile = os.path.join(self.linksdir, provider.lower() + '.links')
 
@@ -399,15 +408,15 @@ class Core(object):
             raise ValueError("Operating system %s not supported at the moment"
                              % operating_system)
 
-        # Check if seems legit format
-        # e.g. https://foo.bar https://foo.bar.asc 111-222-333-444
-        # p = re.compile('^https://\.+\shttps://\.+\s\.+$')
+        # Check if the link has a legit format
+        # e.g. https://db.tt/JjfUTb04 https://db.tt/MEfUTb04
+        p = re.compile('^https://.+\shttps://.+$')
 
-        # if p.match(link):
-        #    self.logger.warning("Trying to add an invalid link: %s"
-        #                         % link)
-        #    raise ValueError("The link %s doesn't seem to have a valid format"
-        #                      % link)
+        if not p.match(link):
+            self.logger.warning("Trying to add an invalid link: %s"
+                                % link)
+            raise ValueError("Link '%s' doesn't seem to have a valid format"
+                             % link)
 
         if os.path.isfile(linksfile):
             content = ConfigParser.RawConfigParser()
