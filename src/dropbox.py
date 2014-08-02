@@ -1,9 +1,13 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# This file is part of GetTor, a Tor Browser Bundle distribution system.
+#
 import re
 import os
 import gnupg
+import hashlib
 import dropbox
-import gettor
+import gettor.core
 
 
 def valid_bundle_format(file):
@@ -24,12 +28,12 @@ def valid_bundle_format(file):
 
 
 def get_bundle_info(file):
-    """
-        Get the operating system and locale from a bundle string.
+    """Get the operating system and locale from a bundle string.
 
-        it raises a ValueError if the bundle doesn't have a valid format
-        (although you should probably call valid_bundle_format first).
-        It returns the pair of strings operating system, locale.
+    it raises a ValueError if the bundle doesn't have a valid format
+    (although you should probably call valid_bundle_format first).
+    It returns the pair of strings operating system, locale.
+
     """
     m = re.search(
         'tor-browser-(\w+)\d\d-\d\.\d\.\d_(\w\w)-\w+\.tar\.xz',
@@ -41,17 +45,33 @@ def get_bundle_info(file):
     else:
         raise ValueError("Bundle invalid format %s" % file)
 
+def get_file_sha1(file):
+    """Get the sha1 of a file.
+    
+    Desc.
+    
+    """
+    
+    # as seen on the internet
+    BLOCKSIZE = 65536
+    hasher = hashlib.sha1()
+    with open(file, 'rb') as afile:
+        buf = afile.read(BLOCKSIZE)
+        while len(buf) > 0:
+            hasher.update(buf)
+            buf = afile.read(BLOCKSIZE)
+    return hasher.hexdigest()
 
 def upload_files(basedir, client):
-    """
-        Upload files from 'basedir' to Dropbox.
+    """Upload files from 'basedir' to Dropbox.
 
-        It looks for files ending with 'tar.xz' inside 'basedir'. It
-        raises ValueError in case the given file doesn't have a .asc file.
-        It raises UploadError if something goes wrong while uploading the
-        files to Dropbox. All files are uploaded to '/'.
+    It looks for files ending with 'tar.xz' inside 'basedir'. It
+    raises ValueError in case the given file doesn't have a .asc file.
+    It raises UploadError if something goes wrong while uploading the
+    files to Dropbox. All files are uploaded to '/'.
 
-        Returns a list with the names of the uploaded files.
+    Returns a list with the names of the uploaded files.
+
     """
     files = []
 
@@ -87,46 +107,53 @@ def upload_files(basedir, client):
 
     return files
 
-# Test app for now
-# TO DO: use config file
-app_key = ''
-app_secret = ''
-access_token = ''
-upload_dir = 'upload/'
-tbb_key = 'tbb-key.asc'
+if __name__ == '__main__':
+    # to-do: use config file
+    app_key = ''
+    app_secret = ''
+    access_token = ''
+    upload_dir = 'upload/'
 
-client = dropbox.client.DropboxClient(access_token)
+    # important: this must be the key that signed the packages
+    tbb_key = 'tbb-key.asc'
 
-# Import key that signed the packages and get fingerprint
-gpg = gnupg.GPG()
-key_data = open(tbb_key).read()
-import_result = gpg.import_keys(key_data)
-fingerprint = import_result.results[0]['fingerprint']
-# Make groups of four characters to make fingerprint more readable
-# e.g. 123A 456B 789C 012D 345E 678F 901G 234H 567I 890J
-readable = ' '.join(fingerprint[i:i+4] for i in xrange(0, len(fingerprint), 4))
+    client = dropbox.client.DropboxClient(access_token)
 
-try:
-    uploaded_files = upload_files(upload_dir, client)
-    core = gettor.Core('gettor.cfg')
-    # This erases the old links file
-    core.create_links_file('Dropbox', readable)
+    # import key fingerprint
+    gpg = gnupg.GPG()
+    key_data = open(tbb_key).read()
+    import_result = gpg.import_keys(key_data)
+    fp = import_result.results[0]['fingerprint']
 
-    for file in uploaded_files:
-        # build file names
-        asc = file + '.asc'
-        abs_file = os.path.abspath(os.path.join(upload_dir, file))
-        abs_asc = os.path.abspath(os.path.join(upload_dir, asc))
+    # make groups of four characters to make fingerprint more readable
+    # e.g. 123A 456B 789C 012D 345E 678F 901G 234H 567I 890J
+    readable = ' '.join(fp[i:i+4] for i in xrange(0, len(fp), 4))
+
+    try:
+        uploaded_files = upload_files(upload_dir, client)
+        # use default config
+        core = gettor.core.Core()
         
-        # build links
-        link_file = client.share(file)
-        link_asc = client.share(asc)
-        link = link_file[u'url'] + ' ' + link_asc[u'url']
-        
-        # add links
-        operating_system, locale = get_bundle_info(file)
-        core.add_link('Dropbox', operating_system, locale, link)
-except (ValueError, RuntimeError) as e:
-    print str(e)
-except dropbox.rest.ErrorResponse as e:
-    print str(e)
+        # erase old links
+        core.create_links_file('Dropbox', readable)
+
+        for file in uploaded_files:            
+            # build file names
+            asc = file + '.asc'
+            abs_file = os.path.abspath(os.path.join(upload_dir, file))
+            abs_asc = os.path.abspath(os.path.join(upload_dir, asc))
+            
+            sha1_file = get_file_sha1(abs_file)
+            
+            # build links
+            link_file = client.share(file)
+            link_asc = client.share(asc)
+            link = link_file[u'url'] + ' ' + link_asc[u'url'] + ' ' + sha1_file
+            
+            # add links
+            operating_system, locale = get_bundle_info(file)
+            core.add_link('Dropbox', operating_system, locale, link)
+    except (ValueError, RuntimeError) as e:
+        print str(e)
+    except dropbox.rest.ErrorResponse as e:
+        print str(e)

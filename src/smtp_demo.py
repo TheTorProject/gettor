@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import sys
 
-import smtp
+import gettor.smtp
 
-service = smtp.SMTP('smtp.cfg')
+service = gettor.smtp.SMTP()
 
 # For now we simulate mails reading from stdin
 # In linux test as follows:
@@ -14,7 +14,9 @@ try:
     print "Email received!"
     service.process_email(incoming)
     print "Email sent!"
-except ValueError as e:
-    print "Value error: " + str(e)
-except RuntimeError as e:
-    print "Runtime error: " + str(e)
+except gettor.smtp.ConfigurationError as e:
+    print "Misconfiguration: " + str(e)
+except gettor.smtp.SendEmailError as e:
+    print "SMTP not working: " + str(e)
+except gettor.smtp.InternalError as e:
+    print "Core module not working: " + str(e)
