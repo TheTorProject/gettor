@@ -408,7 +408,7 @@ class SMTP(object):
         links_subject = _('links_subject')
         links_msg = _('links_msg')
         links_msg = links_msg % (operating_system, locale, links, links)
-        
+
         # Don't forget to check if user did a PT request
         if pt:
             # If so, we get the links message + info about PT included.
