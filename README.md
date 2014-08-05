@@ -19,7 +19,7 @@ $ pip install dropbox gnupg
 
 4) Run the script:
 
-$ cd providers/;rm *.links;cd ../src; python dropbox.py
+$ cd src/providers/;rm *.links;cd ..; python dropbox.py
 
 If everything works good, you should see a dropbox.links file inside the 'providers' directory. The script will take the files on upload_dir (default to 'upload/') which end up on .xz and .xz.asc respectively. To add more locales for testing do the following (example for german):
 
