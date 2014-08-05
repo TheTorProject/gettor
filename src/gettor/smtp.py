@@ -496,7 +496,7 @@ class SMTP(object):
         """
 
         # Obtain the content in english and send it
-        t = gettext.translation(locale, './i18n', languages=['en'])
+        t = gettext.translation('en', './i18n', languages=['en'])
         _ = t.ugettext
 
         unsupported_locale_subject = _('unsupported_locale_subject')
@@ -580,15 +580,16 @@ class SMTP(object):
                     links = self.core.get_links('SMTP', request['os'],
                                                 request['locale'])
 
-                except UnsupportedOSError as e:
+                except core.UnsupportedOSError as e:
                     self.logger.info("Request for unsupported OS: %s (%s)" %
                                      (request['os'], str(e)))
                     # if we got here, the address of the sender should be valid
                     # so we send him/her a message about the unsupported OS
                     self._send_unsupported_os(request['os'], request['locale'],
                                               self.our_addr, norm_from_addr)
+                    return
 
-                except UnsupportedLocaleError as e:
+                except core.UnsupportedLocaleError as e:
                     self.logger.info("Request for unsupported locale: %s (%s)"
                                      % (request['locale'], str(e)))
                     # if we got here, the address of the sender should be valid
@@ -596,9 +597,10 @@ class SMTP(object):
                     self._send_unsupported_locale(request['locale'],
                                                   request['os'], self.our_addr,
                                                   norm_from_addr)
+                    return
 
                 # if core fails, we fail too
-                except (InternalError, ConfigurationError) as e:
+                except (core.InternalError, core.ConfigurationError) as e:
                     self.logger.error("Something's wrong with the Core module:"
                                       " %s" % str(e))
                     raise InternalError("Error obtaining the links.")
@@ -606,7 +608,8 @@ class SMTP(object):
                 # make sure we can send emails
                 try:
                     self._send_links(links, request['locale'], request['os'],
-                                     self.our_addr, norm_from_addr)
+                                     self.our_addr, norm_from_addr,
+                                     request['pt'])
                 except SendEmailError as e:
                     raise SendEmailError("Something's wrong with the SMTP "
                                          "server: %s" % str(e))
