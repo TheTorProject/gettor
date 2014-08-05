@@ -4,6 +4,10 @@ domain "en"
 msgid "links_subject"
 msgstr "[GetTor] Links for your request"
 
+#: Links subject (PT)
+msgid "links_pt_subject"
+msgstr "[GetTor] Links for your request"
+
 #: Help subject
 msgid "help_subject"
 msgstr "[GetTor] Help"
@@ -12,8 +16,45 @@ msgstr "[GetTor] Help"
 msgid "delay_subject"
 msgstr "[GetTor] Delay message"
 
+# Unsupported locale subject
+msgid "unsupported_locale_subject"
+msgstr "[GetTor] Unsupported locale"
+
+# Unsupported locale message
+msgid "unsupported_locale_msg"
+msgstr "The locale you requested '%s' is not supported."
+
 #: Links message
 msgid "links_msg"
+msgstr "Thank you for your request for %s-%s.\n\
+\n\
+Here are the download links:\n\
+\n\
+===\n\
+Tor Browser Bundle:\n\
+===\n\
+%s\n\
+===\n\
+Pluggable Transport Bundle:\n\
+===\n\
+%s\n\
+Tip: If you are in Iran, China, or under heavy censorship, you need the\n\
+Pluggable Transport Bundle.\n\
+\n\
+===\n\
+Support:\n\
+===\n\
+\n\
+Still need help? If you have any questions, trouble connecting to Tor\n\
+network, or need to talk to a human, please contact our support team at:\n\
+\n\
+    help@rt.torproject.org\n\
+\n\
+We are ready to answer your queries in English, Farsi, Chinese, Arabic,\n\
+French and Spanish."
+
+#: Links message (PT)
+msgid "links_pt_msg"
 msgstr "Thank you for your request for %s-%s.\n\
 \n\
 Here are the download links:\n\

@@ -4,6 +4,10 @@ domain "es"
 msgid "links_subject"
 msgstr "[GetTor] Enlaces para tu petición"
 
+#: Links subject (PT)
+msgid "links_pt_subject"
+msgstr "[GetTor] Enlaces para tu petición"
+
 #: Help subject
 msgid "help_subject"
 msgstr "[GetTor] Ayuda"
@@ -12,8 +16,46 @@ msgstr "[GetTor] Ayuda"
 msgid "delay_subject"
 msgstr "[GetTor] Mensaje de demora"
 
+# Unsupported locale subject
+msgid "unsupported_locale_subject"
+msgstr "[GetTor] Locale no soportado"
+
+# Unsupported locale message
+msgid "unsupported_locale_msg"
+msgstr "El locale especificado %s no está soportado."
+
 #: Links message
 msgid "links_msg"
+msgstr """Gracias por tu petición para %s-%s.\n\
+\n\
+Aquí están los links de descarga:\n\
+\n\
+===\n\
+Tor Browser Bundle:\n\
+===\n\
+%s\n\
+===\n\
+Pluggable Transport Bundle:\n\
+===\n\
+%s\n\
+Tip: Si estás en Iran, China, o bajo fuerte censura, necesitas el\n\
+Pluggable Transport Bundle.\n\
+\n\
+===\n\
+Soporte:\n\
+===\n\
+\n\
+¿Aún necesitas ayuda? Si tienes dudas, problemas para conectarte a la\n\
+red Tor, o necesitas hablar con un humano, por favor contacta a nuestro\n\
+equipo de soporte a:\n\
+\n\
+    help@rt.torproject.org\n\
+\n\
+Estamos listos para responder tus consultas en Inglés, Farsi, Chino,\n\
+Arábico, Francés y Español."""
+
+#: Links message (PT)
+msgid "links_pt_msg"
 msgstr """Gracias por tu petición para %s-%s.\n\
 \n\
 Aquí están los links de descarga:\n\
