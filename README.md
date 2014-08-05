@@ -59,6 +59,14 @@ $ python xmpp_demo.py
 
 4) To communicate with the bot using Pidgin click on Friends -> New instant message. There are still some issues with bot responses.
 
+The xmpp module has been used in the following providers:
+
+ * dukgo.com (works)
+ * riseup.net (works)
+ * jabber.ccc.de (works)
+ * jit.si (worked for a while, not any longer)
+
+ 
 
 
 
