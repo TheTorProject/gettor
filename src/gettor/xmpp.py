@@ -264,7 +264,7 @@ class XMPP(object):
         t = gettext.translation(locale, './xmpp/i18n', languages=[locale])
         _ = t.ugettext
 
-        unsupported_locale_msg = _('internal_error_msg')
+        internal_error_msg = _('internal_error_msg')
         return internal_error_msg
 
     def _get_links_msg(self, locale, operating_system, pt, links):
@@ -286,7 +286,7 @@ class XMPP(object):
         else:
             links_msg = _('links_msg')
 
-        links_msg = links_msg % (locale, operating_system, links)
+        links_msg = links_msg % links
 
         return links_msg
 
@@ -307,6 +307,7 @@ class XMPP(object):
         request['locale'] = 'en'
         request['os'] = 'windows'
         request['type'] = 'help'
+        request['pt'] = False
         found_locale = False
         found_os = False
 
@@ -328,10 +329,10 @@ class XMPP(object):
                         request['os'] = operating_system
                         request['type'] = 'links'
                         self.logger.debug("Found OS: %s" % operating_system)
-                if re.match("[obfs|plugabble transport|pt]", word,
-                            re.IGNORECASE):
-                    request['pt'] = True
-                    self.logger.debug("Found PT request")
+            if re.match("obfs|plugabble transport|pt", word,
+                        re.IGNORECASE):
+                request['pt'] = True
+                self.logger.debug("Found PT request")
 
         return request
 
@@ -357,22 +358,20 @@ class XMPP(object):
             return_msg = self._get_help_msg(request['locale'])
         elif request['type'] == 'links':
             try:
-                links = self.core._get_links("XMPP", 
-                                             request['operating_system'],
-                                             request['locale'])
+                links = self.core.get_links("XMPP", request['os'],
+                                            request['locale'])
 
-                return_msg = self._get_links_msg(request['locale'],
-                                                 request['operating_system'],
-                                                 request['pt'], links)
+                return_msg = self._get_links_msg(request['locale'], 
+                                                 request['os'], request['pt'],
+                                                 links)
 
-            except (ConfigurationError, InternalError) as e:
-                return_msg = self.core._get_internal_error_msg(
-                                                request['locale'])
+            except (core.ConfigurationError, core.InternalError) as e:
+                return_msg = self._get_internal_error_msg(request['locale'])
 
-            except UnsupportedLocaleError as e:
+            except core.UnsupportedLocaleError as e:
                 self.core._get_unsupported_locale_msg(request['locale'])
 
-            except UnsupportedOSError as e:
+            except core.UnsupportedOSError as e:
                 self.core._get_unsupported_os_msg(request['locale'])
 
         return return_msg
