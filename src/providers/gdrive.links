@@ -1,8 +1,0 @@
-[provider]
-name: Google Drive
-
-[linux]
-en: https://foo.bar https://foo.bar.asc 111-222-333-444,
-    https://baz.foo https://baz.foo.asc 999-111-222-333
-    
-es: https://bar.baz https://bar.baz.asc 555-666-777-888
