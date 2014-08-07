@@ -45,8 +45,8 @@ def get_bundle_info(file):
     else:
         raise ValueError("Bundle invalid format %s" % file)
 
-def get_file_sha1(file):
-    """Get the sha1 of a file.
+def get_file_sha256(file):
+    """Get the sha256 of a file.
     
     Desc.
     
@@ -54,7 +54,7 @@ def get_file_sha1(file):
     
     # as seen on the internet
     BLOCKSIZE = 65536
-    hasher = hashlib.sha1()
+    hasher = hashlib.sha256()
     with open(file, 'rb') as afile:
         buf = afile.read(BLOCKSIZE)
         while len(buf) > 0:
@@ -143,12 +143,12 @@ if __name__ == '__main__':
             abs_file = os.path.abspath(os.path.join(upload_dir, file))
             abs_asc = os.path.abspath(os.path.join(upload_dir, asc))
             
-            sha1_file = get_file_sha1(abs_file)
+            sha_file = get_file_sha256(abs_file)
             
             # build links
             link_file = client.share(file)
             link_asc = client.share(asc)
-            link = link_file[u'url'] + ' ' + link_asc[u'url'] + ' ' + sha1_file
+            link = link_file[u'url'] + ' ' + link_asc[u'url'] + ' ' + sha_file
             
             # add links
             operating_system, locale = get_bundle_info(file)

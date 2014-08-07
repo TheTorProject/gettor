@@ -169,18 +169,18 @@ class XMPP(object):
         xmpp.connect()
         xmpp.process(block=True)
 
-    def _get_sha1(self, string):
-        """Get sha1 of a string.
+    def _get_sha256(self, string):
+        """Get sha256 of a string.
 
         Used whenever we want to do things with accounts (log, blacklist,
         etc.)
 
-        Params: The string to be sha1'ed.
+        Params: The string to be hashed.
 
-        Returns: sha1 of string.
+        Returns: sha256 of string.
 
         """
-        return str(hashlib.sha1(string).hexdigest())
+        return str(hashlib.sha256(string).hexdigest())
 
     def _check_blacklist(self, account):
         """Check if an account is blacklisted.
@@ -192,7 +192,7 @@ class XMPP(object):
         Params: account - the account we want to check.
 
         """
-        anon_account = self._get_sha1(account)
+        anon_account = self._get_sha256(account)
         self.logger.debug("Checking if address %s is blacklisted" %
                           anon_account)
 

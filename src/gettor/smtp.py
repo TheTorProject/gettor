@@ -133,18 +133,18 @@ class SMTP(object):
         logger.propagate = False
         self.logger.debug("New smtp object created")
 
-    def _get_sha1(self, string):
-        """Get sha1 of a string.
+    def _get_sha256(self, string):
+        """Get sha256 of a string.
 
         Used whenever we want to do things with addresses (log, blacklist,
         etc.)
 
-        Params: The string to be sha1'ed.
+        Params: The string to be hashed.
 
-        Returns: sha1 of string.
+        Returns: sha256 of string.
 
         """
-        return str(hashlib.sha1(string).hexdigest())
+        return str(hashlib.sha256(string).hexdigest())
 
     def _log_request(self, addr, raw_msg):
         """Log a request.
@@ -163,9 +163,9 @@ class SMTP(object):
         # to do: obtain content of msg, not the entire email
         content = raw_msg
 
-        # We store the sha1 of the original address in order to know when
+        # We store the sha256 of the original address in order to know when
         # specific addresses are doing weird requests
-        log_addr = self._get_sha1(addr)
+        log_addr = self._get_sha256(addr)
         filename = str(time.time()) + '.log'
         path = self.logdir_emails + filename
         abs_path = os.path.abspath(path)
@@ -191,7 +191,7 @@ class SMTP(object):
         Params: addr - the address we want to check.
 
         """
-        anon_addr = self._get_sha1(addr)
+        anon_addr = self._get_sha256(addr)
         self.logger.debug("Checking if address %s is blacklisted" %
                           anon_addr)
 
@@ -242,7 +242,7 @@ class SMTP(object):
             m = re.search(r'<([^>]*)>', addr)
             if m is None:
                 raise AddressError("Couldn't extract normalized address "
-                                   "from %s" % self_get_sha1(addr))
+                                   "from %s" % self_get_sha256(addr))
             addr = m.group(1)
         return addr
 
@@ -542,7 +542,7 @@ class SMTP(object):
 
         if norm_from_addr:
             try:
-                self._check_blacklist(self._get_sha1(norm_from_addr))
+                self._check_blacklist(self._get_sha256(norm_from_addr))
             except BlacklistError as e:
                 # This shouldn't stop us from receiving other requests
                 self.logger.warning(str(e))
