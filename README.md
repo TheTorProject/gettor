@@ -2,6 +2,7 @@ gettor
 ======
 
 GetTor Revamp (on development).
+
 Google Summer of Code 2014.
 
 * To get the current repo:
@@ -57,7 +58,13 @@ $ pip install sleekxmpp
 
 $ python xmpp_demo.py
 
-4) To communicate with the bot using Pidgin click on Friends -> New instant message. There are still some issues with bot responses.
+4) To communicate with the bot using Pidgin click on Friends -> New instant message -> Enter the address used in xmpp.cfg to start comunicating with it. Current commands are as follows:
+
+operating_system locale: it'll get you links for operating system in the locale specified e.g. linux en
+
+help locale: it'll get you help info in locale e.g. help es
+
+Default locale is en, and default response is help.
 
 The xmpp module has been used in the following providers:
 
