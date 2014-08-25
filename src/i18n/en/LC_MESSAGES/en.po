@@ -35,11 +35,6 @@ Tor Browser Bundle:\n\
 ===\n\
 %s\n\
 ===\n\
-Pluggable Transport Bundle:\n\
-===\n\
-%s\n\
-Tip: If you are in Iran, China, or under heavy censorship, you need the\n\
-Pluggable Transport Bundle.\n\
 \n\
 ===\n\
 Support:\n\
@@ -64,11 +59,7 @@ Tor Browser Bundle:\n\
 ===\n\
 %s\n\
 ===\n\
-Pluggable Transport Bundle:\n\
-===\n\
-%s\n\
-Tip: If you are in Iran, China, or under heavy censorship, you need the\n\
-Pluggable Transport Bundle.\n\
+Info about pluggable transports.\n\
 \n\
 ===\n\
 Support:\n\

@@ -2,6 +2,13 @@
 #
 # This file is part of GetTor, a Tor Browser Bundle distribution system.
 #
+# :authors: Israel Leiva <ilv@riseup.net>
+#           see also AUTHORS file
+#
+# :copyright:   (c) 2008-2014, The Tor Project, Inc.
+#               (c) 2014, Israel Leiva
+#
+# :license: This is Free Software. See LICENSE for license information.
 
 import os
 import re
@@ -10,6 +17,7 @@ import logging
 import tempfile
 import ConfigParser
 
+import db
 import utils
 
 """Core module for getting links from providers."""
@@ -48,7 +56,7 @@ class Core(object):
         create_links_file(): Create a file to store links of a provider.
         add_link(): Add a link to a links file of a provider.
         get_supported_os(): Get a list of supported operating systems.
-        get_supported_locale(): Get a list of supported locales.
+        get_supported_lc(): Get a list of supported locales.
 
     Exceptions:
 
@@ -89,6 +97,14 @@ class Core(object):
             self.basedir = config.get('general', 'basedir')
         except ConfigParser.Error as e:
             logger.warning("Couldn't read 'basedir' from 'general' (%s)" % cfg)
+            raise ConfigurationError("Error with conf. See log file.")
+
+        try:
+            dbname = config.get('general', 'db')
+            dbname = os.path.join(self.basedir, dbname)
+            self.db = db.DB(dbname)
+        except ConfigParser.Error as e:
+            logger.warning("Couldn't read 'db' from 'general' (%s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
 
         try:
@@ -273,7 +289,7 @@ class Core(object):
         """
         return self.supported_os.split(',')
 
-    def get_supported_locales(self):
+    def get_supported_lc(self):
         """Public method to get the list of supported locales.
 
         Returns: List of strings.
@@ -400,3 +416,20 @@ class Core(object):
                                     % operating_system)
         else:
             raise LinkFileError("There is no links file for %s" % provider)
+
+    def add_request_to_db(self, service, type, os, lc, pt, status, logfile):
+        """Add request to database.
+
+        This is for keeping stats about what is the most, less requested
+        and stuff like that. Hopefully it will help to improve user experience.
+
+        :param: type (string) the type of the request.
+        :param: os (string) the operating system.
+        :param: lc (string) the locale.
+        :param: pt (bool) true if the user asked about pt, false otherwise.
+        :param: status (string) short text describing the status.
+        :param: logfile (string) path of the logfile of the email in case
+                something went really wrong (address blacklisted/malformed).
+
+        """
+        self.db.add_request(service, type, os, lc, pt, status, logfile)

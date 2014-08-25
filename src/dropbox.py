@@ -2,6 +2,14 @@
 #
 # This file is part of GetTor, a Tor Browser Bundle distribution system.
 #
+# :authors: Israel Leiva <ilv@riseup.net>
+#           see also AUTHORS file
+#
+# :copyright:   (c) 2008-2014, The Tor Project, Inc.
+#               (c) 2014, Israel Leiva
+#
+# :license: This is Free Software. See LICENSE for license information.
+
 import re
 import os
 import gnupg
@@ -46,11 +54,7 @@ def get_bundle_info(file):
         raise ValueError("Bundle invalid format %s" % file)
 
 def get_file_sha256(file):
-    """Get the sha256 of a file.
-    
-    Desc.
-    
-    """
+    """Get the sha256 of a file."""
     
     # as seen on the internet
     BLOCKSIZE = 65536

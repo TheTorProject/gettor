@@ -2,9 +2,17 @@
 #
 # This file is part of GetTor, a Tor Browser Bundle distribution system.
 #
+# :authors: Israel Leiva <ilv@riseup.net>
+#           see also AUTHORS file
+#
+# :copyright:   (c) 2008-2014, The Tor Project, Inc.
+#               (c) 2014, Israel Leiva
+#
+# :license: This is Free Software. See LICENSE for license information.
 
 import os
 import logging
+import hashlib
 
 """Common utilities for GetTor modules."""
 
@@ -23,7 +31,7 @@ class SingleLevelFilter(logging.Filter):
         If reject value is false, all but the passlevel will be filtered. 
         Useful for logging in separated files.
         
-        Params: passlevel - name of a logging level.
+        :param: passlevel (string) the name of a logging level.
 
         """
 
@@ -40,11 +48,11 @@ class SingleLevelFilter(logging.Filter):
 def filter_logging(logger, dir, level):
     """Create separated files for each level of logging.
     
-    Params: logger - a logging object.
-            dir - directory to put the log files.
-            level - the level of logging for the all.log file.
+    :param: logger (object) a logging object.
+    :param: dir (string) directory to put the log files.
+    :param: level (string) the level of logging for the all.log file.
             
-    Returns: logger object.
+    :return: (object) a logging object.
 
     """
     # Keep a good format
@@ -85,3 +93,12 @@ def filter_logging(logger, dir, level):
     
     return logger
 
+def get_sha256(string):
+    """Get sha256 of a string.
+
+    :param: (string) the string to be hashed.
+
+    :return: (string) the sha256 of string.
+
+    """
+    return str(hashlib.sha256(string).hexdigest())

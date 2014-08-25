@@ -1,26 +1,22 @@
 domain "es"
 
 #: Links
-msgid "links_msg"
-msgstr "Links:\n %s"
+msgid "links"
+msgstr "Enlaces para %s-%s:\n %s"
 
 #: Links
-msgid "links_pt_msg"
-msgstr "Links-PT:\n %s"
+msgid "links_pt"
+msgstr "Enlaces-PT para %s-%s:\n %s"
 
 #: Help
-msgid "help_msg"
+msgid "help"
 msgstr "ayuda"
 
-#: Unsupported OS
-msgid "unsupported_os_msg"
-msgstr "SO no soportado"
-
 #: Unsupported locale
-msgid "unsupported_locale_msg"
+msgid "unsupported_lc"
 msgstr "Locale no soportado"
 
 #: Internal error
-msgid "internal_error_msg"
+msgid "internal_error"
 msgstr "Error interno"
 

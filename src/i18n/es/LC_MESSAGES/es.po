@@ -31,15 +31,8 @@ msgstr """Gracias por tu petición para %s-%s.\n\
 Aquí están los links de descarga:\n\
 \n\
 ===\n\
-Tor Browser Bundle:\n\
-===\n\
 %s\n\
 ===\n\
-Pluggable Transport Bundle:\n\
-===\n\
-%s\n\
-Tip: Si estás en Iran, China, o bajo fuerte censura, necesitas el\n\
-Pluggable Transport Bundle.\n\
 \n\
 ===\n\
 Soporte:\n\
@@ -61,15 +54,9 @@ msgstr """Gracias por tu petición para %s-%s.\n\
 Aquí están los links de descarga:\n\
 \n\
 ===\n\
-Tor Browser Bundle:\n\
-===\n\
 %s\n\
 ===\n\
-Pluggable Transport Bundle:\n\
-===\n\
-%s\n\
-Tip: Si estás en Iran, China, o bajo fuerte censura, necesitas el\n\
-Pluggable Transport Bundle.\n\
+Tip: Información sobre pluggable transports.\n\
 \n\
 ===\n\
 Soporte:\n\

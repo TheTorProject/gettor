@@ -2,6 +2,13 @@
 #
 # This file is part of GetTor, a Tor Browser Bundle distribution system.
 #
+# :authors: Israel Leiva <ilv@riseup.net>
+#           see also AUTHORS file
+#
+# :copyright:   (c) 2008-2014, The Tor Project, Inc.
+#               (c) 2014, Israel Leiva
+#
+# :license: This is Free Software. See LICENSE for license information.
 
 import os
 import re
@@ -15,8 +22,9 @@ import ConfigParser
 from sleekxmpp import ClientXMPP
 from sleekxmpp.exceptions import IqError, IqTimeout
 
-import utils
 import core
+import utils
+import blacklist
 
 
 """XMPP module for processing requests."""
@@ -61,10 +69,6 @@ class ConfigurationError(Exception):
     pass
 
 
-class BlacklistError(Exception):
-    pass
-
-
 class InternalError(Exception):
     pass
 
@@ -80,7 +84,6 @@ class XMPP(object):
     Exceptions:
 
         ConfigurationError: Bad configuration.
-        BlacklistError: User is blacklisted.
         InternalError: Something went wrong internally.
 
     """
@@ -88,74 +91,106 @@ class XMPP(object):
     def __init__(self, cfg=None):
     	"""Create new object by reading a configuration file.
 
-        Params: cfg - path of the configuration file.
+        :param: cfg (string) the path of the configuration file.
 
         """
-        # Define a set of default values
+        # define a set of default values
         DEFAULT_CONFIG_FILE = 'xmpp.cfg'
 
         logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s',
                             datefmt="%Y-%m-%d %H:%M:%S")
-        logger = logging.getLogger(__name__)
+        log = logging.getLogger(__name__)
         config = ConfigParser.ConfigParser()
 
         if cfg is None or not os.path.isfile(cfg):
             cfg = DEFAULT_CONFIG_FILE
-            logger.info("Using default configuration")
+            log.info("Using default configuration")
 
-        logger.info("Reading configuration file %s" % cfg)
+        log.info("Reading configuration file %s" % cfg)
         config.read(cfg)
 
         try:
             self.user = config.get('account', 'user')
         except ConfigParser.Error as e:
-            logger.warning("Couldn't read 'user' from 'account' (%s)" % cfg)
+            log.warning("Couldn't read 'user' from 'account' (%s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
 
         try:
             self.password = config.get('account', 'password')
         except ConfigParser.Error as e:
-            logger.warning("Couldn't read 'password' from 'account' (%s)" %
-                           cfg)
+            log.warning("Couldn't read 'password' from 'account' (%s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
 
         try:
             self.basedir = config.get('general', 'basedir')
         except ConfigParser.Error as e:
-            logger.warning("Couldn't read 'basedir' from 'general' (%s)" % cfg)
+            log.warning("Couldn't read 'basedir' from 'general' (%s)" % cfg)
+            raise ConfigurationError("Error with conf. See log file.")
+
+        try:
+            self.core_cfg = config.get('general', 'core_cfg')
+        except ConfigParser.Error as e:
+            log.warning("Couldn't read 'core_cfg' from 'general' (%s)" % cfg)
+            raise ConfigurationError("Error with conf. See log file.")
+
+        try:
+            blacklist_cfg = config.get('blacklist', 'cfg')
+            self.bl = blacklist_cfg
+        except ConfigParser.Error as e:
+            log.warning("Couldn't read 'cfg' from 'blacklist' (%s)" % cfg)
+            raise ConfigurationError("Error with conf. See log file.")
+
+        try:
+            self.bl_max_req = config.get('blacklist', 'max_requests')
+            self.bl_max_req = int(self.bl_max_req)
+        except ConfigParser.Error as e:
+            log.warning("Couldn't read 'max_requests' from 'blacklist' (%s)"
+                        % cfg)
+            raise ConfigurationError("Error with conf. See log file.")
+
+        try:
+            self.bl_wait_time = config.get('blacklist', 'wait_time')
+            self.bl_wait_time = int(self.bl_wait_time)
+        except ConfigParser.Error as e:
+            log.warning("Couldn't read 'wait_time' from 'blacklist' (%s)"
+                        % cfg)
+            raise ConfigurationError("Error with conf. See log file.")
+
+        try:
+            self.i18ndir = config.get('i18n', 'dir')
+            self.i18ndir = os.path.join(self.basedir, self.i18ndir)
+        except ConfigParser.Error as e:
+            log.warning("Couldn't read 'dir' from 'i18n' (%s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
 
         try:
             self.logdir = config.get('log', 'dir')
             self.logdir = os.path.join(self.basedir, self.logdir)
         except ConfigParser.Error as e:
-            logger.warning("Couldn't read 'dir' from 'log' (%s)" % cfg)
+            log.warning("Couldn't read 'dir' from 'log' (%s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
 
         try:
             self.logdir_msgs = config.get('log', 'msgs_dir')
             self.logdir_msgs = os.path.join(self.logdir, self.logdir_msgs)
         except ConfigParser.Error as e:
-            logger.warning("Couldn't read 'msgs_dir' from 'log' (%s)" % cfg)
+            log.warning("Couldn't read 'msgs_dir' from 'log' (%s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
 
         try:
             self.loglevel = config.get('log', 'level')
         except ConfigParser.Error as e:
-            logger.warning("Couldn't read 'level' from 'log' (%s)" % cfg)
+            log.warning("Couldn't read 'level' from 'log' (%s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
 
-        # Use default values
-        self.core = core.Core()
+        # keep log levels separated
+        self.log = utils.filter_logging(log, self.logdir, self.loglevel)
+        self.log.setLevel(logging.getLevelName(self.loglevel))
+        log.debug('Redirecting logging to %s' % self.logdir)
 
-        # Keep log levels separated
-        self.logger = utils.filter_logging(logger, self.logdir, self.loglevel)
-        self.logger.setLevel(logging.getLevelName(self.loglevel))
-        logger.debug('Redirecting logging to %s' % self.logdir)
-
-        # Stop logging on stdout from now on
-        logger.propagate = False
-        self.logger.debug("New xmpp object created")
+        # stop logging on stdout from now on
+        log.propagate = False
+        self.log.debug("New xmpp object created")
 
     def start_bot(self):
         """Start the bot for handling requests.
@@ -164,177 +199,104 @@ class XMPP(object):
 
         """
 
-        self.logger.debug("Calling sleekmppp bot")
+        self.log.debug("Calling sleekmppp bot")
         xmpp = Bot(self.user, self.password, self)
         xmpp.connect()
         xmpp.process(block=True)
 
-    def _get_sha256(self, string):
-        """Get sha256 of a string.
+    def _is_blacklisted(self, account):
+        """Check if a user is blacklisted.
 
-        Used whenever we want to do things with accounts (log, blacklist,
-        etc.)
+        :param: addr (string) the hashed address of the user.
 
-        Params: The string to be hashed.
-
-        Returns: sha256 of string.
+        :return: true is the address is blacklisted, false otherwise.
 
         """
-        return str(hashlib.sha256(string).hexdigest())
+        anon_acc = utils.get_sha256(account)
+        bl = blacklist.Blacklist(self.bl)
+        self.log.debug("Checking if address %s is blacklisted" % anon_acc)
 
-    def _check_blacklist(self, account):
-        """Check if an account is blacklisted.
+        try:
+            bl.is_blacklisted(anon_acc, 'XMPP', self.bl_max_req,
+                              self.bl_wait_time)
+            return False
+        except blacklist.BlacklistError as e:
+            self.log.info("Blacklisted address %s. Reason: %s" % (anon_acc, e))
+            return True
 
-        Look for the account in the file of blacklisted accounts.
+    def _get_msg(self, msgid, lc):
+        """Get message identified by msgid in a specific locale.
 
-        Raises: BlacklistError if the user is blacklisted.
+        :param: msgid (string) the identifier of a string.
+        :param: lc (string) the locale.
 
-        Params: account - the account we want to check.
-
-        """
-        anon_account = self._get_sha256(account)
-        self.logger.debug("Checking if address %s is blacklisted" %
-                          anon_account)
-
-        # if blacklisted:
-        #    raise BlacklistError("Account %s is blacklisted!" % anon_account)
-
-    def _get_help_msg(self, locale):
-        """Get help message for a given locale.
-
-        Get the message in the proper language (according to the locale),
-        replace variables (if any) and return the message.
-
-        Return: a string containing the message.
+        :return: (string) the message from the .po file.
 
         """
-        self.logger.debug("Getting help message")
-        # Obtain the content in the proper language
-        t = gettext.translation(locale, './xmpp/i18n', languages=[locale])
+        self.log.debug("Getting message '%s' for locale %s" % (msgid, lc))
+        # obtain the content in the proper language
+        t = gettext.translation(lc, self.i18ndir, languages=[lc])
         _ = t.ugettext
 
-        help_msg = _('help_msg')
-        return help_msg
+        msgstr = _(msgid)
+        return msgstr
 
-    def _get_unsupported_locale_msg(self, locale):
-        """Get unsupported locale message for a given locale.
-
-        Get the message in the proper language (according to the locale),
-        replace variables (if any) and return the message.
-
-        Return: a string containing the message.
-
-        """
-        self.logger.debug("Getting unsupported locale message")
-        # Obtain the content in the proper language
-        t = gettext.translation(locale, './xmpp/i18n', languages=[locale])
-        _ = t.ugettext
-
-        unsupported_locale_msg = _('unsupported_locale_msg')
-        return unsupported_locale_msg
-
-    def _get_unsupported_os_msg(self, locale):
-        """Get unsupported OS message for a given locale.
-
-        Get the message in the proper language (according to the locale),
-        replace variables (if any) and return the message.
-
-        Return: a string containing the message.
-
-        """
-        self.logger.debug("Getting unsupported os message")
-        # Obtain the content in the proper language
-        t = gettext.translation(locale, './xmpp/i18n', languages=[locale])
-        _ = t.ugettext
-
-        unsupported_os_msg = _('unsupported_os_msg')
-        return unsupported_os_msg
-
-    def _get_internal_error_msg(self, locale):
-        """Get internal error message for a given locale.
-
-        Get the message in the proper language (according to the locale),
-        replace variables (if any) and return the message.
-
-        Return: a string containing the message.
-
-        """
-        self.logger.debug("Getting internal error message")
-        # Obtain the content in the proper language
-        t = gettext.translation(locale, './xmpp/i18n', languages=[locale])
-        _ = t.ugettext
-
-        internal_error_msg = _('internal_error_msg')
-        return internal_error_msg
-
-    def _get_links_msg(self, locale, operating_system, pt, links):
-        """Get links message for a given locale, operating system and PT
-        request.
-
-        Get the message in the proper language (according to the locale),
-        replace variables (if any) and return the message.
-
-        Return: a string containing the message.
-        """
-        self.logger.debug("Getting links message")
-        # Obtain the content in the proper language
-        t = gettext.translation(locale, './xmpp/i18n', languages=[locale])
-        _ = t.ugettext
-
-        if pt:
-            links_msg = _('links_pt_msg')
-        else:
-            links_msg = _('links_msg')
-
-        links_msg = links_msg % links
-
-        return links_msg
-
-    def _parse_text(self, msg):
+    def _parse_text(self, msg, core_obj):
         """Parse the text part of a message.
 
         Split the message in words and look for patterns for locale,
         operating system and built-in pluggable transport info.
 
+        :param: msg (string) the message received.
+        :param: core_obj (object) the object of gettor core module.
+
+        :return: request (list) 4-tuple with locale, os, type of request
+                 and pt info.
+
         """
-        self.logger.debug("Starting text parsing")
+        self.log.debug("Starting text parsing")
         # core knows what OS are supported
-        supported_os = self.core.get_supported_os()
-        supported_locales = self.core.get_supported_locales()
+        supported_os = core_obj.get_supported_os()
+        supported_lc = core_obj.get_supported_lc()
 
         # default values
-        request = {}
-        request['locale'] = 'en'
-        request['os'] = 'windows'
-        request['type'] = 'help'
-        request['pt'] = False
-        found_locale = False
+        req = {}
+        req['lc'] = 'en'
+        req['os'] = ''
+        req['type'] = 'help'
+        req['pt'] = False
+        found_lc = False
         found_os = False
+        found_help = False
 
         # analyze every word
         # request shouldn't be more than 10 words long, so there should
         # be a limit for the amount of words
         for word in msg.split(' '):
+            # check for help request
+            if not found_os and re.match('help', word, re.IGNORECASE):
+                self.log.info("Request for help found")
+                req['type'] = 'help'
+                found_help = True
             # look for locale, os and pt
-            if not found_locale:
-                for locale in supported_locales:
-                    if re.match(locale, word, re.IGNORECASE):
-                        found_locale = True
-                        request['locale'] = locale
-                        self.logger.debug("Found locale: %s" % locale)
-            if not found_os:
-                for operating_system in supported_os:
-                    if re.match(operating_system, word, re.IGNORECASE):
+            if not found_lc:
+                for lc in supported_lc:
+                    if re.match(lc, word, re.IGNORECASE):
+                        found_lc = True
+                        req['lc'] = lc
+                        self.log.debug("Found locale: %s" % lc)
+            if not found_os and not found_help:
+                for os in supported_os:
+                    if re.match(os, word, re.IGNORECASE):
                         found_os = True
-                        request['os'] = operating_system
-                        request['type'] = 'links'
-                        self.logger.debug("Found OS: %s" % operating_system)
-            if re.match("obfs|plugabble transport|pt", word,
-                        re.IGNORECASE):
-                request['pt'] = True
-                self.logger.debug("Found PT request")
+                        req['os'] = os
+                        req['type'] = 'links'
+                        self.log.debug("Found OS: %s" % os)
+            if re.match("obfs|plugabble|transport|pt", word, re.IGNORECASE):
+                req['pt'] = True
+                self.log.debug("Found PT request")
 
-        return request
+        return req
 
     def parse_request(self, account, msg):
         """Process the request received.
@@ -342,36 +304,75 @@ class XMPP(object):
         Check if the user is not blacklisted and then check the body of
         the message to find out what is asking.
 
-        Params: account - the account that did the request.
-                msg - the body of the message sent to us.
+        :param: account (string) the account that did the request.
+        :param: msg (string) the body of the message sent to us.
+
+        :return: (string/None) the message to be sent to the user via the
+                 bot, or None if the user is blacklisted.
 
         """
+        bogus_request = False
+        reply = ''
+        logfile = ''
+        status = ''
+        req = None
+        core_obj = core.Core(self.core_cfg)
+
         try:
-            self._check_blacklist(str(account))
-        except BlacklistError as e:
-            return None
+            if self._is_blacklisted(str(account)):
+                status = 'blacklisted'
+                bogus_request = True
 
-        # let's try to guess what the user is asking
-        request = self._parse_text(str(msg))
+            if not bogus_request:
+                self.log.debug("Request seems legit, let's parse it")
+                # let's try to guess what the user is asking
+                req = self._parse_text(str(msg), core_obj)
 
-        if request['type'] == 'help':
-            return_msg = self._get_help_msg(request['locale'])
-        elif request['type'] == 'links':
-            try:
-                links = self.core.get_links("XMPP", request['os'],
-                                            request['locale'])
+                if req['type'] == 'help':
+                    status = 'success'
+                    self.log.debug("Got a help request")
+                    reply = self._get_msg('help', req['lc'])
+                elif req['type'] == 'links':
+                    self.log.debug("Got a links request")
+                    try:
+                        links = core_obj.get_links("XMPP", req['os'],
+                                                   req['lc'])
+                        # did the user asked for PT stuff?
+                        if req['pt']:
+                            self.log.debug("Also asked for PT info")
+                            reply = self._get_msg('links_pt', req['lc'])
+                            reply = reply % (req['os'], req['lc'], links)
+                        else:
+                            reply = self._get_msg('links', req['lc'])
+                            reply = reply % (req['os'], req['lc'], links)
 
-                return_msg = self._get_links_msg(request['locale'], 
-                                                 request['os'], request['pt'],
-                                                 links)
+                        status = 'success'
+                    except (core.ConfigurationError, core.InternalError) as e:
+                        # if core failes, send the user an error message, but
+                        # keep going
+                        status = 'core_error'
+                        self.log.debug("Something went wrong with Core")
+                        reply = self._get_msg('internal_error', req['lc'])
 
-            except (core.ConfigurationError, core.InternalError) as e:
-                return_msg = self._get_internal_error_msg(request['locale'])
+                    # if the user asked for an unsupported locale, warn him
+                    # and keep going
+                    except core.UnsupportedLocaleError as e:
+                        status = 'unsupported_lc'
+                        self.log.debug("User asked for unsupported locale")
+                        reply = self._get_msg('unsupported_lc', req['lc'])
+        finally:
+            # keep stats
+            self.log.debug("Request processed, saving stats.")
 
-            except core.UnsupportedLocaleError as e:
-                self.core._get_unsupported_locale_msg(request['locale'])
+            if req:
+                core_obj.add_request_to_db('XMPP',
+                                           req['type'], req['os'],
+                                           req['lc'], req['pt'],
+                                           status, logfile)
+            else:
+                # invalid request, so no info about it
+                # logfiles were created for this
+                core_obj.add_request_to_db('XMPP', '', '', '', '',
+                                           status, logfile)
 
-            except core.UnsupportedOSError as e:
-                self.core._get_unsupported_os_msg(request['locale'])
-
-        return return_msg
+            return reply
