@@ -72,13 +72,12 @@ class Core(object):
     def __init__(self, cfg=None):
     	"""Create a new core object by reading a configuration file.
 
-        Raises: ConfigurationError if the configuration file doesn't exists
+        :param: cfg (string) the path of the configuration file.
+        :raise: ConfigurationError if the configuration file doesn't exists
                 or if something goes wrong while reading options from it.
 
-        Params: cfg - path of the configuration file.
-
         """
-        # Define a set of default values
+        # define a set of default values
         DEFAULT_CONFIG_FILE = 'core.cfg'
 
         logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s',
@@ -115,7 +114,7 @@ class Core(object):
             raise ConfigurationError("Error with conf. See log file.")
 
         try:
-            self.supported_locales = config.get('links', 'locales')
+            self.supported_lc = config.get('links', 'locales')
         except ConfigParser.Error as e:
             logger.warning("Couldn't read 'locales' from 'links' (%s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
@@ -139,79 +138,74 @@ class Core(object):
             logger.warning("Couldn't read 'dir' from 'log' %s)" % cfg)
             raise ConfigurationError("Error with conf. See log file.")
 
-        # Keep log levels separated
-        self.logger = utils.filter_logging(logger, self.logdir, self.loglevel)
-        # self.logger.setLevel(logging.getLevelName(self.loglevel))
-        self.logger.info('Redirecting logging to %s' % self.logdir)
+        # keep log levels separated
+        self.log = utils.filter_logging(logger, self.logdir, self.loglevel)
+        # self.log.setLevel(logging.getLevelName(self.loglevel))
+        self.log.info('Redirecting logging to %s' % self.logdir)
 
-        # Stop logging on stdout from now on
-        self.logger.propagate = False
-        self.logger.debug("New core object created")
+        # stop logging on stdout from now on
+        self.log.propagate = False
+        self.log.debug("New core object created")
 
-    def get_links(self, service, operating_system, locale):
+    def get_links(self, service, os, lc):
         """Get links for OS in locale.
 
         This method should be called from the services modules of
         GetTor (e.g. SMTP). To make it easy we let the module calling us
         specify the name of the service (for stats purpose).
 
-        Raises: UnsupportedOSError: if the operating system is not supported.
-                UnsupportedLocaleError: if the locale is not supported.
-                InternalError: if something goes wrong while internally.
+        :param: service (string) the service trying to get the links.
+        :param: os (string) the operating system.
+        :param: lc (string) tthe locale.
 
-        Params: service - the name of the service trying to get the links.
-                operating_system - the name of the operating system.
-                locale - two-character string representing the locale.
+        :raise: UnsupportedOSError if the operating system is not supported.
+        :raise: UnsupportedLocaleError if the locale is not supported.
+        :raise: InternalError if something goes wrong while internally.
 
-        Returns: String with links.
+        :return: (string) the links.
 
         """
 
         # Which module called us and what was asking for?
-        self.logger.info("%s did a request for %s, %s." %
-                         (service, operating_system, locale))
+        self.log.info("%s did a request for %s, %s." % (service, os, lc))
 
-        if locale not in self.supported_locales:
-            self.logger.warning("Request for unsupported locale: %s" % locale)
-            raise UnsupportedLocaleError("Locale %s not supported at the "
-                                         "moment" % locale)
+        if lc not in self.supported_lc:
+            self.log.warning("Request for unsupported locale: %s" % lc)
+            raise UnsupportedLocaleError("Locale %s not supported" % lc)
 
-        if operating_system not in self.supported_os:
-            self.logger.warning("Request for unsupported operating system: %s"
-                                % operating_system)
-            raise UnsupportedOSError("Operating system %s not supported at the"
-                                     "moment" % operating_system)
+        if os not in self.supported_os:
+            self.log.warning("Request for unsupported OS: %s" % os)
+            raise UnsupportedOSError("OS %s not supported " % os)
 
-        # This could change in the future, let's leave it isolated.
-        links = self._get_links(operating_system, locale)
+        # this could change in the future, let's leave it isolated.
+        links = self._get_links(os, lc)
 
         if links is None:
-            self.logger.error("Couldn't get the links", exc_info=True)
+            self.log.error("Couldn't get the links", exc_info=True)
             raise InternalError("Something went wrong internally. See logs for"
                                 " detailed info.")
 
-        self.logger.info("Returning the links")
+        self.log.info("Returning the links")
         return links
 
-    def _get_links(self, operating_system, locale):
+    def _get_links(self, os, lc):
         """Internal method to get the links.
 
         Looks for the links inside each provider file. This should only be
         called from get_links() method.
 
-        Returns: String with the links on success.
-                 None on failure.
+        :param: os (string) the operating system.
+        :param: lc (string) the locale.
 
-        Params: operating_system - name of the operating system
-                locale: two-character string representing the locale.
+        :return: (string/None) links on success, None otherwise.
 
         """
 
-        # Read the links files using ConfigParser
-        # See the README for more details on the format used
+        # read the links files using ConfigParser
+        # see the README for more details on the format used
         links = []
 
-        # Look for files ending with .links
+        # look for files ending with .links
         p = re.compile('.*\.links$')
 
         for name in os.listdir(self.linksdir):
@@ -219,14 +213,14 @@ class Core(object):
             if os.path.isfile(path) and p.match(path):
                 links.append(path)
 
-        # Let's create a dictionary linking each provider with the links
-        # found for operating_system and locale. This way makes it easy
-        # to check if no links were found
+        # let's create a dictionary linking each provider with the links
+        # found for os and lc. This way makes it easy to check if no
+        # links were found
         providers = {}
 
-        self.logger.info("Reading links from providers directory")
+        self.log.info("Reading links from providers directory")
         for name in links:
-            self.logger.debug("Reading %s" % name)
+            self.log.debug("Reading %s" % name)
             # We're reading files listed on linksdir, so they must exist!
             config = ConfigParser.ConfigParser()
             config.read(name)
@@ -234,41 +228,40 @@ class Core(object):
             try:
                 pname = config.get('provider', 'name')
             except ConfigParser.Error as e:
-                self.logger.warning("Couldn't get 'name' from 'provider' (%s)"
-                                    % name)
+                self.log.warning("Couldn't get 'name' from 'provider' (%s)"
+                                 % name)
                 raise InternalError("Error while reading %s links file. See "
                                     "log file" % name)
 
-            self.logger.debug("Checking if %s has links for %s in %s" %
-                              (pname, operating_system, locale))
+            self.log.debug("Checking if %s has links for %s in %s" %
+                           (pname, os, lc))
 
             try:
-                providers[pname] = config.get(operating_system, locale)
+                providers[pname] = config.get(os, lc)
             except ConfigParser.Error as e:
-                self.logger.warning("Couldn't get %s from %s (%s)" %
-                                    (locale, operating_system, name))
+                self.log.warning("Couldn't get %s from %s (%s)" %
+                                 (lc, os, name))
                 raise InternalError("Error while reading %s links file. See "
                                     "log file" % name)
 
-            # Each provider must have a fingerprint of the key used to
+            # each provider must have a fingerprint of the key used to
             # sign the uploaded packages
             try:
-                self.logger.debug("Trying to get fingerprint from %s", pname)
+                self.log.debug("Trying to get fingerprint from %s", pname)
                 fingerprint = config.get('key', 'fingerprint')
                 providers[pname] = providers[pname] + "\nFingerprint: "
                 providers[pname] = providers[pname] + fingerprint
-                self.logger.debug("Fingerprint added %s", fingerprint)
+                self.log.debug("Fingerprint added %s", fingerprint)
             except ConfigParser.Error as e:
-                self.logger.warning("Couldn't get 'fingerprint' from 'key' "
-                                    "(%s)" % name)
+                self.log.warning("Couldn't get 'fingerprint' from 'key' "
+                                 "(%s)" % name)
                 raise InternalError("Error while reading %s links file. See "
                                     "log file" % name)
 
-        # Create the final links list with all providers
+        # create the final links list with all providers
         all_links = []
 
-        self.logger.debug("Joining all links found for %s in %s" %
-                          (operating_system, locale))
+        self.log.debug("Joining all links found for %s in %s" % (os, lc))
         for key in providers.keys():
             all_links.append(
                 "\n%s\n%s\n" % (key, ''.join(providers[key]))
@@ -277,14 +270,14 @@ class Core(object):
         if all_links:
             return "".join(all_links)
         else:
-            self.logger.warning("Trying to get supported os and locales, but"
-                                " no links were found")
+            self.log.warning("Trying to get supported os and locales, but"
+                             " no links were found")
             return None
 
     def get_supported_os(self):
         """Public method to get the list of supported operating systems.
 
-        Returns: List of strings.
+        :return: (list) the supported operating systems.
 
         """
         return self.supported_os.split(',')
@@ -292,10 +285,10 @@ class Core(object):
     def get_supported_lc(self):
         """Public method to get the list of supported locales.
 
-        Returns: List of strings.
+        :return: (list) the supported locales.
 
         """
-        return self.supported_locales.split(',')
+        return self.supported_lc.split(',')
 
     def create_links_file(self, provider, fingerprint):
         """Public method to create a links file for a provider.
@@ -304,116 +297,107 @@ class Core(object):
         file with the proper format. It backs up the old links file
         (if exists) and creates a new one.
 
-        Params: provider - provider's name (links file will use this
-                name in lower case).
-
-                fingerprint: fingerprint of the key that signed the packages
-                to be uploaded to the provider.
+        :param: provider (string) the provider (links file will use this
+                name in slower case).
+        :param: fingerprint (string) the fingerprint of the key that signed
+                the packages to be uploaded to the provider.
 
         """
         linksfile = os.path.join(self.linksdir, provider.lower() + '.links')
         linksfile_backup = ""
-        self.logger.info("Request to create new %s" % linksfile)
+        self.log.info("Request to create new %s" % linksfile)
 
         if os.path.isfile(linksfile):
-            # Backup the old file in case something fails
+            # backup the old file in case something fails
             linksfile_backup = linksfile + '.backup'
-            self.logger.info("Backing up %s to %s"
-                             % (linksfile, linksfile_backup))
+            self.log.info("Backing up %s (%s)" % (linksfile, linksfile_backup))
             os.rename(linksfile, linksfile_backup)
 
         try:
-            # This creates an empty links file (with no links)
+            # this creates an empty links file (with no links)
             content = ConfigParser.RawConfigParser()
             content.add_section('provider')
             content.set('provider', 'name', provider)
             content.add_section('key')
             content.set('key', 'fingerprint', fingerprint)
-            content.add_section('linux')
-            content.add_section('windows')
-            content.add_section('osx')
+            for os in self.supported_os:
+                content.add_section(os)
             with open(linksfile, 'w+') as f:
                 content.write(f)
-                self.logger.info("New %s created" % linksfile)
+                self.log.info("New %s created" % linksfile)
         except Exception as e:
             if linksfile_backup:
                 os.rename(linksfile_backup, linksfile)
             raise LinkFileError("Error while trying to create new links file.")
 
-    def add_link(self, provider, operating_system, locale, link):
+    def add_link(self, provider, os, lc, link):
         """Public method to add a link to a provider's links file.
 
-        Use ConfigParser to add a link into the operating_system
-        section, under the locale option. It checks for valid format;
-        the provider's script should use the right format (see design).
+        Use ConfigParser to add a link into the os section, under the lc
+        option. It checks for valid format; the provider's script should
+        use the right format (see design).
 
-        Raises: UnsupportedOSError: if the operating system is not supported.
-                UnsupportedLocaleError: if the locale is not supported.
-                LinkFileError: if there is no links file for the provider.
-                LinkFormatError: if the link format doesn't seem legit.
-                InternalError: if the links file doesn't have a section for the
-                               OS requested. This *shouldn't* happen because
-                               it means the file wasn't created correctly.
-
-        Params: provider - name of the provider.
-                operating_system - name of the operating system.
-                locale - two-character string representing the locale.
-                link - string to be added. The format should be as follows:
+        :param: provider (string) the provider.
+        :param: os (string) the operating system.
+        :param: lc (string) the locale.
+        :param: link (string) link to be added. The format should be as
+                follows:
 
                 https://pkg_url https://asc_url
 
                 where pkg_url is the url for the bundle and asc_url is the
                 url for the asc of the bundle.
 
+        :raise: UnsupportedOSError if the operating system is not supported.
+        :raise: UnsupportedLocaleError if the locale is not supported.
+        :raise: LinkFileError if there is no links file for the provider.
+        :raise: LinkFormatError if the link format doesn't seem legit.
+        :raise: InternalError if the links file doesn't have a section for
+                the OS requested. This *shouldn't* happen because it means
+                the file wasn't created correctly.
+
         """
         linksfile = os.path.join(self.linksdir, provider.lower() + '.links')
 
-        # Don't try to add unsupported stuff
-        if locale not in self.supported_locales:
-            self.logger.warning("Trying to add link for unsupported locale: %s"
-                                % locale)
-            raise UnsupportedLocaleError("Locale %s not supported at the "
-                                         "moment" % locale)
+        # don't try to add unsupported stuff
+        if lc not in self.supported_lc:
+            self.log.warning("Can't add link for unsupported lc: %s" % lc)
+            raise UnsupportedLocaleError("Locale %s not supported" % lc)
 
-        if operating_system not in self.supported_os:
-            self.logger.warning("Trying to add link for unsupported operating "
-                                "system: %s" % operating_system)
-            raise UnsupportedOSError("Operating system %s not supported at the"
-                                     " moment" % operating_system)
+        if os not in self.supported_os:
+            self.log.warning("Can't add link for unsupported os: %s" % os)
+            raise UnsupportedOSError("OS %s not supported" % os)
 
-        # Check if the link has a legit format
+        # check if the link has a legit format
         # e.g. https://db.tt/JjfUTb04 https://db.tt/MEfUTb04
         p = re.compile('^https://.+\shttps://.+$')
 
         if not p.match(link):
-            self.logger.warning("Trying to add an invalid link: %s"
-                                % link)
-            raise LinkFormatError("Link '%s' doesn't seem to have a valid "
-                                  "format" % link)
+            self.log.warning("Can't add an invalid link: %s" % link)
+            raise LinkFormatError("Link '%s' doesn't seem legit" % link)
 
         if os.path.isfile(linksfile):
             content = ConfigParser.RawConfigParser()
             content.readfp(open(linksfile))
-            # Check if exists and entry for locale; if not, create it
+            # check if exists and entry for locale; if not, create it
             try:
-                links = content.get(operating_system, locale)
+                links = content.get(os, lc)
                 links = links + ",\n" + link
-                content.set(operating_system, locale, links)
+                content.set(oc, lc, links)
                 with open(linksfile, 'w') as f:
                     content.write(f)
-                self.logger.info("Link %s added to %s %s in %s"
-                                 % (link, operating_system, locale, provider))
+                self.log.info("Link %s added to %s %s in %s" %
+                              (link, os, lc, provider))
             except ConfigParser.NoOptionError:
-                content.set(operating_system, locale, link)
+                content.set(os, lc, link)
                 with open(linksfile, 'w') as f:
                     content.write(f)
-                self.logger.info("Link %s added to %s-%s in %s"
-                                 % (link, operating_system, locale, provider))
+                self.log.info("Link %s added to %s-%s in %s" %
+                              (link, os, lc, provider))
             except ConfigParser.NoSectionError:
-                # This shouldn't happen, but just in case
-                self.logger.error("Unknown section %s in links file")
-                raise InternalError("Unknown %s section in links file"
-                                    % operating_system)
+                # this shouldn't happen, but just in case
+                self.log.error("Unknown section %s in links file")
+                raise InternalError("Unknown %s section in links file" % os)
         else:
             raise LinkFileError("There is no links file for %s" % provider)
 
