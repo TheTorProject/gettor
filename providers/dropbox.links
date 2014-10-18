@@ -1,0 +1,25 @@
+[provider]
+name = Dropbox
+
+[key]
+fingerprint = 8738 A680 B84B 3031 A630 F2DB 416F 0610 63FE E659
+
+[linux]
+en = Package (64-bit): https://www.dropbox.com/s/p2l6keaoly2kzce/tor-browser-linux64-3.6.2_en-EN.tar.xz?dl=0
+	ASC signature (64-bit): https://www.dropbox.com/s/b85ecxkoz9126j3/tor-browser-linux64-3.6.2_en-EN.tar.xz.asc?dl=0
+	Package SHA256 checksum (64-bit): 98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4,
+	Package (32-bit): https://www.dropbox.com/s/rxfczlz7j8gn6pi/tor-browser-linux32-3.6.2_en-EN.tar.xz?dl=0
+	ASC signature (32-bit): https://www.dropbox.com/s/g5g0havjgunf1un/tor-browser-linux32-3.6.2_en-EN.tar.xz.asc?dl=0
+	Package SHA256 checksum (32-bit): 98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
+es = Package (32-bit): https://www.dropbox.com/s/xkv4dvmeuppscs2/tor-browser-linux32-3.6.2_es-ES.tar.xz?dl=0
+	ASC signature (32-bit): https://www.dropbox.com/s/66c5x6jnzrs67vw/tor-browser-linux32-3.6.2_es-ES.tar.xz.asc?dl=0
+	Package SHA256 checksum (32-bit): 98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
+	
+
+[windows]
+en = Package (32-bit): https://www.dropbox.com/s/oocrw3joj4d8kn8/tor-browser-windows32-3.6.2_en-EN.tar.xz?dl=0
+	ASC signature (32-bit): https://www.dropbox.com/s/gwbepymnaxvhm94/tor-browser-windows32-3.6.2_en-EN.tar.xz.asc?dl=0
+	Package SHA256 checksum (32-bit): 98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
+
+[osx]
+
