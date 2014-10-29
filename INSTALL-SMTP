@@ -1,0 +1,16 @@
+1) Get the current repo:
+
+$ git clone https://github.com/ileiva/gettor.git
+
+2) Create the SQLite database:
+
+$ python scripts/create_db.py -c /path/to/db
+
+3) Modify the core.cfg, smtp.cfg, and blacklist.cfg accordingly.
+
+4) Check if supported locales ared in /etc/aliases. If not, add it.
+
+5) Add the following line to ~/.forward (in gettor home's directory)
+
+|"python2.7 /path/to/gettor/smtp_demo.py"
+

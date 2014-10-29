@@ -1,0 +1,20 @@
+1) Get the current repo:
+
+$ git clone https://github.com/ileiva/gettor.git
+
+2) Check if you have Dropbox and GnuPG Python modules. If not, install them:
+
+$ pip install dropbox gnupg
+
+4) Get the PGP key that signs the Tor Browser Bundles.
+
+3) Change general configuration and account info in dropbox.cfg.
+
+3) Run the script:
+
+$ python dropbox.py
+
+If everything works fine, you should see a dropbox.links file inside the
+'providers' directory. The script will take the files on upload_dir
+(dropbox.cfg) that end up on .xz and .xz.asc respectively. A script for
+getting the latest bundles from dist.tp.o is pending.
