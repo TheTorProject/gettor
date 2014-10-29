@@ -176,9 +176,9 @@ if __name__ == '__main__':
             # build links
             link_file = client.share(file, short_url=False)
             # if someone finds how to do this with the API, please tell me!
-            link_file = link_file.replace('?dl=0', '?dl=1')
+            link_file[u'url'] = link_file[u'url'].replace('?dl=0', '?dl=1')
             link_asc = client.share(asc, short_url=False)
-            link_asc = link_asc.replace('?dl=0', '?dl=1')
+            link_asc[u'url'] = link_asc[u'url'].replace('?dl=0', '?dl=1')
             osys, arch, lc = get_bundle_info(file)
 
             link = "Package (%s-bit): %s\nASC signature (%s-bit): %s\n"\
