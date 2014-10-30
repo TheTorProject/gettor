@@ -1,0 +1,12 @@
+================================== CURRENT ====================================
+
+* Dropbox: Implemented.
+
+================================== TO BE IMPLEMENTED  =========================
+
+* Google Drive: Not implemented yet. 
+
+================================== IDEAS  =====================================
+
+* Dropbox: it is known that one can download tarballs from Github. Maybe we
+can have an official gettor account and a folder synchronized with dist.tp.o.
