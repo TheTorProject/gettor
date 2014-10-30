@@ -4,7 +4,6 @@
 
 * XMPP: this one is ready and tested. We'll probably deploy SMTP, tough.
 
-
 ================================== IN DEVELOPMENT =============================
 
 * Twitter: This one is half done. I forked a twitter bot from wfn's work on
@@ -13,9 +12,8 @@ bot *had* to follow someone back to send him/her DMs, but it turns out that
 you just need to be followed, not follow back (thanks to mrphs for pointing
 out this).
 
-
-
 ================================== (CRAZY) IDEAS ==============================
 
-* Dropbox: This is just a thought, I haven't done proper research. What if
+* Duckduckgo: This is just a thought, I haven't done proper research. What if
 someone could ask for gettor links like this: "!gettor"?
+
