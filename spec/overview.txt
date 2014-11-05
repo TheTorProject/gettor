@@ -1,0 +1,94 @@
+   Google Summer of Code 2014 GetTor Revamp - Overview
+   Author: Israel Leiva - <israel.leiva@usach.cl>
+   Last update: 2014-05-16
+   Version: 0.01
+   Changes: First version
+
+1. Background
+
+   GetTor was created as a program for serving Tor and related files over 
+   SMTP, thus avoiding direct and indirect censorship of Tor's software, 
+   in particular, the Tor Browser Bundle (TBB). Users interact with GetTor 
+   by sending emails to a specific email address. In the past, after the 
+   user specified his OS and language, GetTor would send him an attachment 
+   with the required package. This worked until the bundles were too large 
+   to be sent as attachments in most email providers. In order to fix this 
+   GetTor started to send links instead.
+
+2. Current status
+
+   The GetTor status can be summarized in the following points:
+
+      * Emails are sent to gettor@torproject.org
+      * The GetTor reply contains: TBB links, signatures (with text guides
+        for verification), mirrors, support instructions in six languages.
+      * Dropbox links are sent to download the TBB and signatures.
+      * Users can not ask for packages in their language.
+      * English-only replies are sent.
+      * Any email directed to GetTor is replied with the same information, 
+        there is no recognition of instructions.
+      * Links generation is not fully automated.
+      * All code is written in Python. Various parts are not currently used.
+      * Current repositories are [0] and [1].
+   
+3. Proposal
+
+   The accepted proposal [2] for Google Summer of Code (GSoC) 2014 proposes 
+   rewriting the current GetTor using a modular design, with a core module 
+   that handles the main GetTor functionalities, and several other modules, 
+   one for each service (e.g. SMTP), which can interact with the core and 
+   send replies to the users. Three modules will be developed for the 
+   purposes of GSoC: SMTP, Twitter, Skype|XMPP. 
+   
+3.1. Goals
+
+   The main goals of this proposal are the following:
+
+      * Provide old GetTor functionalites, such as replies in several
+        languages and recognize user instructions.
+      * Send fewer information in each reply.
+      * Support more providers for uploading the TBB packages.
+      * Automate links generation.
+      * Clearer, modular and well-documented code.
+      * Possibilty to create new modules for other common services.
+   
+3.2. Design
+
+   Preliminar designs for the core module and the services can be found 
+   in the design/ folder. All services consider creating a python script
+   to add the logic for using them. For example, there should be a script 
+   that receives the emails and uses the SMTP module. For simplicity,
+   I've tried to specify mostly the main functions of every module; there 
+   are some functions, like opening and writing files, that were not 
+   considered in this preliminar phase.
+     
+4. Discussion
+
+4.1. Skype
+
+   My co-mentor for GSoC, Nima, has publicly rejected the idea of creating
+   a module for Skype and proposed to implement one for XMPP instead.
+   I've chosen Skype for its popularity, but I have no other main reason 
+   to maintain this option, so it's probable that XMPP transport will be 
+   implemented.
+
+4.2. Storing links
+
+   My original proposal considered the fact that links could be stored 
+   somewhere with restricted access, ideally a git repository. Nima 
+   mentioned that ideally the links shouldn't be stored. May be this idea 
+   could be used only to the mirrors and providers configuration (see
+   core module design).
+
+4.3. Generating unique URLs
+
+   Nima mentioned that unique URLs could be generated for each request, 
+   and in case the user don't have access to SSL, these links could be 
+   served and later deleted or recycled. I like this idea.
+
+4. References
+
+   [0] https://gitweb.torproject.org/gettor.git
+   [1] https://gitweb.torproject.org/user/sukhbir/gettor.git
+   [2] https://ileiva.github.io/gettor_proposal.html
+   

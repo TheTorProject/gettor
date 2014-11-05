@@ -1,0 +1,155 @@
+   Google Summer of Code 2014 GetTor Revamp - Core module
+   Author: Israel Leiva - <israel.leiva@usach.cl, ilv@riseup.net>
+   Last update: 2014-07-15
+   Version: 0.05
+   Changes: 
+            [0.05]
+            Added fingerprint support
+            [0.04]
+            Changed log format in 'Design'
+            Added section 'Features'
+            Deleted stuff from 'Discussion' and added some others
+            [0.03]
+            Changed proposed format for link files to RFC 882 (ConfigParser).
+            Read configuration from file with ConfigParser.
+            [0.02]
+            Combine official mirrors with providers links (as another provider).
+            Eliminated on demand link generation. Now it reads from files.
+            Modified description according to PEP-8.
+            [0.01]
+            First version.
+            
+ 
+1. Preface
+ 
+   Since GetTor was created it has been a collection of functions and
+   classes separated in various modules. As its main purpose was
+   to serve files over SMTP, almost all current files have SMTP-related
+   procedures, including address normalization, message composition, etc.
+   The proposed design for the core module intends to separate GetTor 
+   main functionalities which are independent of the service that 
+   transports the bundles.
+   
+2. Core module
+
+   The main functionalities the core module should provide are:
+   
+      * Receive a request with OS version, bundle language, and respond 
+        with the respective links.
+      * Read links from providers files.
+      * Log anonymous transactions.
+        
+3. Design
+
+   The new design should consist of the following files, directories and 
+   methods:
+   
+      * gettor.cfg: Configuration values, e.g. base directory.
+      
+      * providers/: Directory for generated links. Should be specified on
+                    gettor.cfg.
+   
+         ----- provider1.links: links from provider1.
+         ----- provider2.links: links from provider2.
+         ----- mirrors.links: links of official mirrors.
+      
+         All this data is generated automatically.
+   
+      * logs/: Directory for logs. Should be specified on gettor.cfg
+   
+         ----- all.log
+         ----- info.log
+         ----- debug.log
+         ----- warn.log
+         ----- error.log
+   
+      * Core module of GetTor.
+   
+         __init(config_file)__
+            Creates a new Core object. It reads its configuration from
+            the config_file using ConfigParser.
+            
+         get_links(operating_system, locale)
+            Public method to obtain the links. Returns links for 
+            operating_system in locale language. It checks if the operating
+            system and locale are supported and then calls the private 
+            method _get_links()
+            
+         
+            Example: get_links('linux', 'en')
+         
+         _get_links(operating_system, locale)
+            Gets the links for a specific operating system and locale 
+            according to the options received. It reads all the .links 
+            files inside the providers directory. Each one of these files 
+            should follow the ConfigParser's format. There should be a 
+            section [provider] with the option 'name' for the provider's 
+            name (e.g. Dropbox), and a section [key] with the option
+            'fingerprint' for the key's fingerprint that signed the
+            uploaded packages.
+
+            Following sections should specify the operating system and 
+            its options should be the locale. When more than one link is 
+            available per operating system and locale (always) the links 
+            should be specified as a multiline value. Each link has the 
+            format:
+
+            link link_signature
+            
+            Example:
+
+            [provider]
+            name: Dropbox
+
+            [key]
+            fingerprint: 123A 456B 789C 012D 345E 678F 901G 234H 567I 890J
+            
+            [linux]
+            en: https://foo.bar https://foo.bar.asc,
+                https://foo.bar https://foo.bar.asc
+
+            es: https://bar.baz https://bar.baz.asc
+            
+            PROVIDER NAME
+            operating_system locale link package_signature
+            
+            NOTE: For now, the official mirrors are considered just as 
+            another provider.
+     
+          
+         _log_request(operating_system, locale)
+            Log information about the request for future stats (e.g. which
+            OS from which service is the most required). All logging 
+            should be done with the logging module.
+ 
+      * Providers: There should be one module/script per provider in charge
+        of generating the .links file with the proper format, including
+        the official mirrors.
+
+   
+4. Roadmap
+
+   An example of how the core module work:
+   
+   a. The SMTP service receives a request. 
+   b. The SMTP calls core.get_links() with the options sent by the user.
+   c. get_links() calls to _log_request().
+   d. get_links() calls to _get_links().
+   e. get_links() constructs a message with the information obtained.
+   f. get_links() returns the message previously constructed.
+   g. The SMTP service creates a message with the links obtained and 
+      send it to the user.
+
+5. Discussion
+
+5.1 Daily logs
+
+   Currently, logs are separated by level of information (debug, info, error).
+   Is it necessary to do this by days/weeks too?
+   
+6. Features
+
+   Possible features to be added in the future (open to discussion)
+   
+   a. Send HTTP links (currently some official mirrors are HTTP only). 
+
