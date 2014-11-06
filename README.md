@@ -9,7 +9,7 @@ What is GetTor?
 ===============
 
 GetTor was created as a program for serving Tor and related files over SMTP,
-thus avoiding direct and indirect censorship of Tor's software, in particular,
+thus avoiding direct and indirect _censorship_ of Tor's software, in particular,
 the Tor Browser Bundle (TBB). Users interacted with GetTor by sending emails
 to a specific email address. After the user specified his OS and language,
 GetTor would send him an email with an attachment containing the requested
@@ -22,22 +22,26 @@ What are the goals of the new GetTor?
 
 Here is a list of the main goals the new GetTor should accomplish:
 
- * Safe. Remember we are serving people under heavy censorship.
+ * Safe. Remember we are serving people under _heavy censorship_.
  * Easy to use. The fewer user interactions, the better.
  * Clean code. It should be clear to other developers/contributors how GetTor
- works and how can it be improved.
+ works and how it can be improved.
  * Automated. We should try to automate things as much as possible.
  * Language and provider friendly. It should be easy to support new languages
  and to add new providers for storing packages and generate links.
 
- How does the new GetTor works?
- ==============================
 
-Links files: Currently links are saved in files with the '.links' extension,
+How does the new GetTor works?
+==============================
+
+Below are some specifications and core concepts on how the new GetTor works.
+
+*Links files*: Currently links are saved in files with the '.links' extension,
 using the ConfigParser format (RFC 882). A sample link file should look like
 this:
 
-  --- BEGIN FILE ---
+--- BEGIN FILE ---
+
   [provider]
   name = CoolCloudProvider
 
@@ -57,44 +61,45 @@ this:
 
   [osx]
   ...
-  --- END FILE ---
+
+--- END FILE ---
 
 You can also check providers/dropbox.links for a better example.
 
-Core: the heart of GetTor. Receives requests for links for a certain OS and
+*Core*: the heart of GetTor. Receives requests for links for a certain OS and
 language and respond accordingly. It also presents an easy way for scripts
 to create links file.
 
-SMTP: Receives requests via email, process them, contact the core module if
+*SMTP*: Receives requests via email, process them, contact the core module if
 necessary and respond to the user in the specified language. People can send
 blank or dummy emails to it to receive a help message describing how to ask
 for links. Email forwarding is used to redirect the emails to GetTor.
 
-XMPP: Same as above, but via XMPP (account needed). It has been tested with
+*XMPP*: Same as above, but via XMPP (account needed). It has been tested with
 dukgo.com, jabber.ccc.de, riseup.net. It doesn't seem to be able to interact
 with gtalk users.
 
-Twitter: Receive requests via Twitter direct messages, contact the core module
+*Twitter*: Receive requests via Twitter direct messages, contact the core module
 if necessary and respond to the user in the specified language. Unfinished.
 
-DB: Store anonymous info about the people that interact with GetTor in order
+*DB*: Store anonymous info about the people that interact with GetTor in order
 to keep count of the number of requests per person and avoid malicious users
 that try to collapse the service. It also keeps count of how many requests
 GetTor has received during its lifetime. A lot of other data was being saved
 in the original gsoc project, but it was changed to save the minimum. 
 
-Blacklist: Provide a mechanism to avoid flood and deny interaction to
+*Blacklist*: Provide a mechanism to avoid flood and deny interaction to
 malicious users.
 
-Providers scripts: every supported provider should have a script to
+*Providers scripts*: every supported provider should have a script to
 automatically upload packages to 'the cloud' and create the corresponding
 links files. The script should consider the following steps:
 
-  1) Upload the packages.
-  2) Get the sha256 checksum of the files uploaded.
-  3) Get the PGP key fingerprint that signed the files.
-  4) Check for .asc file for every package uploaded.
-  5) Put all together in a '.link' file (using the core module).
+ * Upload the packages.
+ * Get the sha256 checksum of the files uploaded.
+ * Get the PGP key fingerprint that signed the files.
+ * Check for .asc file for every package uploaded.
+ * Put all together in a '.link' file (using the core module).
 
 
 What is the current status of the new GetTor?
@@ -112,13 +117,13 @@ you can send me an e-mail to ilv _at_ riseup _dot_ net. For openning tickets
 you should use the trac[0] and select the GetTor component. Some neat ideas we
 could use are the following:
 
-0) Report bugs!
-1) Create script for new providers, namely: Google Drive, Github. Check 
+ * Report bugs!
+ * Create script for new providers, namely: Google Drive, Github. Check 
 providers.txt
-2) Create a new module for distributing links. Check distribution_methods.txt
-3) Finish the Twitter module.
-5) Propose code/behaviour improvements.
-4) Update the specs.
+ * Create a new module for distributing links. Check distribution_methods.txt
+ * Finish the Twitter module.
+ * Propose code/behaviour improvements.
+ * Update the specs.
 
 
 References
