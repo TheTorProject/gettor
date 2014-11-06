@@ -112,9 +112,10 @@ How can I help?
 ================
 
 If you have ideas to improve GetTor and/or add new providers, please tell us!
-I'm currently the lead developer on this, so if you comments/doubts on the code
-you can send me an e-mail to ilv _at_ riseup _dot_ net. For openning tickets
-you should use the trac[0] and select the GetTor component. Some neat ideas we
+I'm currently the lead developer on this, so if you have any comments/doubts/
+ideas you can send me an e-mail to ilv _at_ riseup _dot_ net or ping me (ilv),
+or sukhe or mrphs at #tor-dev in the OFTC IRC network. For openning tickets you
+should use the trac[0] and select the GetTor component. Some neat ideas we
 could use are the following:
 
  * Report bugs!
