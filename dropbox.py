@@ -98,7 +98,7 @@ def upload_files(basedir, client):
     """
     files = []
 
-    p = re.compile('.*\.tar.xz$')
+    p = re.compile('.*(\.tar.xz|\.mar)$')
 
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
