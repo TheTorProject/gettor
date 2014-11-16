@@ -19,46 +19,67 @@ import ConfigParser
 import dropbox
 import gettor.core
 
-def valid_format(file):
+def valid_format(file, exe=False):
     """Check for valid bundle format
 
     Check if the given file has a valid bundle format
     (e.g. tor-browser-linux32-3.6.2_es-ES.tar.xz)
 
     :param: file (string) the name of the file.
+    :param: exe (boolean) flag for exe files.
 
     :return: (boolean) true if the bundle format is valid, false otherwise.
 
     """
-    m = re.search(
-        'tor-browser-(\w+)\d\d-\d\.\d\.\d_(\w\w|\w\w-\w\w)(\.tar\.xz|\.mar)',
-        file)
+    if(exe):
+        m = re.search(
+            'torbrowser-install-\d\.\d\.\d_\w\w(-\w\w)?\.exe',
+            file)
+    else:
+        m = re.search(
+            'tor-browser-(\w+)\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?(\.tar\.xz|\.mar)',
+            file)
     if m:
         return True
     else:
         return False
 
 
-def get_bundle_info(file):
+def get_bundle_info(file, exe=False):
     """Get the os, arch and lc from a bundle string.
 
     :param: file (string) the name of the file.
+    :param: exe (boolean) flag for exe files.
 
     :raise: ValueError if the bundle doesn't have a valid bundle format.
 
     :return: (list) the os, arch and lc.
 
     """
-    m = re.search(
-        'tor-browser-(\w+)(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?(\.tar\.xz|\.mar)',
-        file)
-    if m:
-        os = m.group(1)
-        arch = m.group(2)
-        lc = m.group(3)
-        return os, arch, lc
+    if(exe):
+        m = re.search(
+            'torbrowser-install-\d\.\d\.\d_(\w\w)(-\w\w)?\.exe',
+            file)
+        if m:
+            os = 'windows'
+            arch = '32/64'
+            lc = m.group(1)
+            return os, arch, lc
+        else:
+            raise ValueError("Invalid bundle format %s" % file)
     else:
-        raise ValueError("Invalid bundle format %s" % file)
+        m = re.search(
+            'tor-browser-(\w+)(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?(\.tar\.xz|\.mar)',
+            file)
+        if m:
+            os = m.group(1)
+            arch = m.group(2)
+            lc = m.group(3)
+            if os == 'win':
+                os = 'windows'
+            return os, arch, lc
+        else:
+            raise ValueError("Invalid bundle format %s" % file)
 
 
 def get_file_sha256(file):
@@ -105,13 +126,21 @@ def upload_files(basedir, client):
         if os.path.isfile(path) and p.match(path) and valid_format(name):
             files.append(name)
 
+    p = re.compile('.*\.exe$')
+    for name in os.listdir(basedir):
+        path = os.path.abspath(os.path.join(basedir, name))
+        if os.path.isfile(path) and p.match(path)\
+        and valid_format(name, exe=True):
+            files.append(name)
+
     for file in files:
         asc = "%s.asc" % file
         abs_file = os.path.abspath(os.path.join(basedir, file))
         abs_asc = os.path.abspath(os.path.join(basedir, asc))
 
         if not os.path.isfile(abs_asc):
-            raise ValueError("%s doesn't exist!" % asc)
+            # there are some .mar files that don't have .asc, don't upload it
+            continue
 
         # chunk upload for big files
         to_upload = open(abs_file, 'rb')
@@ -164,6 +193,10 @@ if __name__ == '__main__':
         # erase old links
         core.create_links_file('Dropbox', readable)
 
+        # recognize if the file is download only or installation
+        bundlep = re.compile('.*(\.tar.xz|\.mar)$')
+        installp = re.compile('.*\.exe$')
+
         for file in uploaded_files:
             # build file names
             asc = "%s.asc" % file
@@ -178,13 +211,17 @@ if __name__ == '__main__':
             link_file[u'url'] = link_file[u'url'].replace('?dl=0', '?dl=1')
             link_asc = client.share(asc, short_url=False)
             link_asc[u'url'] = link_asc[u'url'].replace('?dl=0', '?dl=1')
-            osys, arch, lc = get_bundle_info(file)
+            if(installp.match(file)):
+                osys, arch, lc = get_bundle_info(file, exe=True)
+            else:
+                osys, arch, lc = get_bundle_info(file)
 
             link = "Package (%s-bit): %s\nASC signature (%s-bit): %s\n"\
                    "Package SHA256 checksum (%s-bit): %s\n" %\
                    (arch, link_file[u'url'], arch, link_asc[u'url'],
                     arch, sha_file)
 
+            # note that you should only upload bundles for supported locales
             core.add_link('Dropbox', osys, lc, link)
     except (ValueError, RuntimeError) as e:
         print str(e)
