@@ -50,7 +50,7 @@ def get_bundle_info(file):
 
     """
     m = re.search(
-        'tor-browser-(\w+)(\d\d)-\d\.\d\.\d_(\w\w)-\w+\.tar\.xz',
+        'tor-browser-(\w+)(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?(\.tar\.xz|\.mar)',
         file)
     if m:
         os = m.group(1)
