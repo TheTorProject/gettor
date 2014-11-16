@@ -19,7 +19,7 @@ import ConfigParser
 import dropbox
 import gettor.core
 
-udef valid_format(file):
+def valid_format(file):
     """Check for valid bundle format
 
     Check if the given file has a valid bundle format
