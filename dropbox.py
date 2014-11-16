@@ -19,25 +19,29 @@ import ConfigParser
 import dropbox
 import gettor.core
 
-def valid_format(file, exe=False):
+def valid_format(file, osys):
     """Check for valid bundle format
 
     Check if the given file has a valid bundle format
     (e.g. tor-browser-linux32-3.6.2_es-ES.tar.xz)
 
     :param: file (string) the name of the file.
-    :param: exe (boolean) flag for exe files.
+    :param: osys (string) the OS.
 
     :return: (boolean) true if the bundle format is valid, false otherwise.
 
     """
-    if(exe):
+    if(osys == 'windows'):
         m = re.search(
             'torbrowser-install-\d\.\d\.\d_\w\w(-\w\w)?\.exe',
             file)
-    else:
+    elif(osys == 'linux'):
         m = re.search(
-            'tor-browser-(\w+)\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?(\.tar\.xz|\.mar)',
+            'tor-browser-linux\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
+            file)
+    elif(osys == 'osx'):
+        m = re.search(
+            'TorBrowser-\d\.\d\.\d-osx\d\d_(\w\w)(-\w\w)?\.dmg',     
             file)
     if m:
         return True
@@ -45,39 +49,45 @@ def valid_format(file, exe=False):
         return False
 
 
-def get_bundle_info(file, exe=False):
+def get_bundle_info(file, osys):
     """Get the os, arch and lc from a bundle string.
 
     :param: file (string) the name of the file.
-    :param: exe (boolean) flag for exe files.
+    :param: osys (string) the OS.
 
     :raise: ValueError if the bundle doesn't have a valid bundle format.
 
     :return: (list) the os, arch and lc.
 
     """
-    if(exe):
+    if(osys == 'windows'):
         m = re.search(
             'torbrowser-install-\d\.\d\.\d_(\w\w)(-\w\w)?\.exe',
             file)
         if m:
-            os = 'windows'
-            arch = '32/64'
             lc = m.group(1)
-            return os, arch, lc
+            return 'windows', '32/64', lc
         else:
             raise ValueError("Invalid bundle format %s" % file)
-    else:
+    elif(osys == 'linux'):
         m = re.search(
-            'tor-browser-(\w+)(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?(\.tar\.xz|\.mar)',
+            'tor-browser-linux(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
             file)
         if m:
-            os = m.group(1)
-            arch = m.group(2)
-            lc = m.group(3)
-            if os == 'win':
-                os = 'windows'
-            return os, arch, lc
+            arch = m.group(1)
+            lc = m.group(2)
+            return 'linux', arch, lc
+        else:
+            raise ValueError("Invalid bundle format %s" % file)
+    elif(osys == 'osx'):
+        m = re.search(
+            'TorBrowser-\d\.\d\.\d-osx(\d\d)_(\w\w)(-\w\w)?\.dmg',
+            file)
+        if m:
+            os = 'osx'
+            arch = m.group(1)
+            lc = m.group(2)
+            return 'osx', arch, lc
         else:
             raise ValueError("Invalid bundle format %s" % file)
 
@@ -119,18 +129,25 @@ def upload_files(basedir, client):
     """
     files = []
 
-    p = re.compile('.*(\.tar.xz|\.mar)$')
-
+    p = re.compile('.*\.tar.xz$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
-        if os.path.isfile(path) and p.match(path) and valid_format(name):
+        if os.path.isfile(path) and p.match(path)\
+        and valid_format(name, 'linux'):
             files.append(name)
 
     p = re.compile('.*\.exe$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
         if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, exe=True):
+        and valid_format(name, 'windows'):
+            files.append(name)
+
+    p = re.compile('.*\.dmg$')
+    for name in os.listdir(basedir):
+        path = os.path.abspath(os.path.join(basedir, name))
+        if os.path.isfile(path) and p.match(path)\
+        and valid_format(name, 'osx'):
             files.append(name)
 
     for file in files:
@@ -193,9 +210,10 @@ if __name__ == '__main__':
         # erase old links
         core.create_links_file('Dropbox', readable)
 
-        # recognize if the file is download only or installation
-        bundlep = re.compile('.*(\.tar.xz|\.mar)$')
-        installp = re.compile('.*\.exe$')
+        # recognize file OS by its extension
+        p1 = re.compile('.*\.tar.xz$')
+        p2 = re.compile('.*\.exe$')
+        p3 = re.compile('.*\.dmg$')
 
         for file in uploaded_files:
             # build file names
@@ -211,10 +229,12 @@ if __name__ == '__main__':
             link_file[u'url'] = link_file[u'url'].replace('?dl=0', '?dl=1')
             link_asc = client.share(asc, short_url=False)
             link_asc[u'url'] = link_asc[u'url'].replace('?dl=0', '?dl=1')
-            if(installp.match(file)):
-                osys, arch, lc = get_bundle_info(file, exe=True)
-            else:
-                osys, arch, lc = get_bundle_info(file)
+            if p1.match(file):
+                osys, arch, lc = get_bundle_info(file, 'linux')
+            elif p2.match(file):
+                osys, arch, lc = get_bundle_info(file, 'windows')
+            elif p3.match(file):
+                osys, arch, lc = get_bundle_info(file, 'osx')
 
             link = "Package (%s-bit): %s\nASC signature (%s-bit): %s\n"\
                    "Package SHA256 checksum (%s-bit): %s\n" %\
