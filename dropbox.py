@@ -31,7 +31,7 @@ def valid_format(file):
 
     """
     m = re.search(
-        'tor-browser-(\w+)\d\d-\d\.\d\.\d_(\w\w)-\w+\.tar\.xz',
+        'tor-browser-(\w+)\d\d-\d\.\d\.\d_(\w\w|\w\w-\w\w)(\.tar\.xz|\.mar)',
         file)
     if m:
         return True
