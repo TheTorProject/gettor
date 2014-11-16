@@ -12,7 +12,6 @@
 
 import os
 import re
-import inspect
 import logging
 import tempfile
 import ConfigParser
