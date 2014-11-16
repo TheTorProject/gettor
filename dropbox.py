@@ -19,6 +19,8 @@ import ConfigParser
 import dropbox
 import gettor.core
 
+class UploadError(Exception):
+    pass
 
 def valid_format(file):
     """Check for valid bundle format
