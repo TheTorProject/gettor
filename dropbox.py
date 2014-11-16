@@ -121,7 +121,7 @@ def upload_files(basedir, client):
         while uploader.offset < size:
             try:
                 upload = uploader.upload_chunked()
-            except rest.ErrorResponse, e:
+            except dropbox.rest.ErrorResponse, e:
                 UploadError("An error ocurred while uploading %s" % abs_file)
         uploader.finish(file)
         print "Uploading %s" % file
