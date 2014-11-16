@@ -19,10 +19,7 @@ import ConfigParser
 import dropbox
 import gettor.core
 
-class UploadError(Exception):
-    pass
-
-def valid_format(file):
+udef valid_format(file):
     """Check for valid bundle format
 
     Check if the given file has a valid bundle format
@@ -124,7 +121,7 @@ def upload_files(basedir, client):
             try:
                 upload = uploader.upload_chunked()
             except dropbox.rest.ErrorResponse, e:
-                UploadError("An error ocurred while uploading %s" % abs_file)
+                print("An error ocurred while uploading %s: %s" % abs_file, e)
         uploader.finish(file)
         print "Uploading %s" % file
 
