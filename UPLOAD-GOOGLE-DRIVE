@@ -1,0 +1,21 @@
+1) Clone into the latest version of gettor:
+
+$ git clone https://github.com/ileiva/gettor.git
+
+2) Get the PGP key that signs the Tor Browser Bundle
+
+2) Visit https://console.developers.google.com//start/api?id=drive&credential=client_key and follow OAUTH2 process to get client ID and client secret for 'other' desktop application.
+
+3) Edit drive.cfg to with new client-id and secret. Leave refresh_token empty.
+
+4) Install the google drive API python client:
+
+$ pip install --upgrade google-api-python-client 
+
+5) Run the script:
+
+$ python bundles2drive.py
+
+The first time the script is run, you will have to authorize it through a web browser. You will be prompted with a URL. Once that is done, a refresh token will be stored locally so that re-authorzing is unnesaccary.
+
+The script will then look for files in upload_dir (as specified in drive.cfg) and upload them to google drive. If no errors occur, it will then add formatted links and hash information to the drive.links file.
