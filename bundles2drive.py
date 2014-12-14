@@ -23,6 +23,8 @@ import gettor.core
 import httplib2
 from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
+from apiclient import errors
+from oauth2client.client import FlowExchangeError
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.client import Credentials
 
@@ -178,8 +180,8 @@ def upload_files(client, basedir):
         print "Uploading '%s'..." % file
         try:
             file_data = drive_service.files().insert(body=body, media_body=file_body).execute()
-        except:
-            raise UploadError
+        except HttpError, e:
+            print str(e)
 
         # upload signature
         asc_body = MediaFileUpload(abs_asc, resumable=True)
@@ -189,8 +191,8 @@ def upload_files(client, basedir):
         print "Uploading '%s'..." % asc
         try:
             asc_data = drive_service.files().insert(body=asc_head, media_body=asc_body).execute()
-        except:
-            raise UploadError
+        except HttpError, e:
+            print str(e)
 
         # add filenames and file id to dict
         files_dict[file] = file_data['id']
@@ -259,7 +261,10 @@ if __name__ == '__main__':
        authorize_url = flow.step1_get_authorize_url()
        print 'Go to the following link in your browser: ' + authorize_url
        code = raw_input('Enter verification code: ').strip()
-       credentials = flow.step2_exchange(code)
+       try:
+           credentials = flow.step2_exchange(code)
+       except FlowExchangeError as e:
+           print str(e)
 
        # oauth2 credentials instance must be stored as json string
        config.set('app', 'refresh_token', credentials.to_json())
