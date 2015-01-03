@@ -180,7 +180,7 @@ def upload_files(client, basedir):
         print "Uploading '%s'..." % file
         try:
             file_data = drive_service.files().insert(body=body, media_body=file_body).execute()
-        except HttpError, e:
+        except errors.HttpError, e:
             print str(e)
 
         # upload signature
@@ -191,7 +191,7 @@ def upload_files(client, basedir):
         print "Uploading '%s'..." % asc
         try:
             asc_data = drive_service.files().insert(body=asc_head, media_body=asc_body).execute()
-        except HttpError, e:
+        except errors.HttpError, e:
             print str(e)
 
         # add filenames and file id to dict
