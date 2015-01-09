@@ -1,0 +1,25 @@
+[provider]
+name = Drive
+
+[key]
+fingerprint = A3C4 F0F9 79CA A22C DBA8 F512 EE8C BC9E 886D DD89
+
+[linux]
+en = Package (32-bit): https://docs.google.com/uc?id=0B7humfJYX-LjNTJPanBRekI5Slk&export=download
+	ASC signature (32-bit): https://docs.google.com/uc?id=0B7humfJYX-LjTXVONkhvZ1VRY2c&export=download
+	Package SHA256 checksum (32-bit): 03a4ecab9ffb4b579c9d03a0f800d9bcd4446b49eff21eb3e1db255fa9d9b930,
+	Package (64-bit): https://docs.google.com/uc?id=0B7humfJYX-LjbXp2MUh5RmxTa28&export=download
+	ASC signature (64-bit): https://docs.google.com/uc?id=0B7humfJYX-LjNTVZVnJUTnNCOEk&export=download
+	Package SHA256 checksum (64-bit): 03a4ecab9ffb4b579c9d03a0f800d9bcd4446b49eff21eb3e1db255fa9d9b930
+	
+
+[windows]
+en = Package (32/64-bit): https://docs.google.com/uc?id=0B7humfJYX-LjakM4a21iRlQzQVE&export=download
+	ASC signature (32/64-bit): https://docs.google.com/uc?id=0B7humfJYX-LjZy1FLVpTLW9INFU&export=download
+	Package SHA256 checksum (32/64-bit): 21e54d964366e8a67f379ed402007f59cb3aebfddbc3a30dacc3ac64171145a6
+
+[osx]
+en = Package (32-bit): https://docs.google.com/uc?id=0B7humfJYX-LjenRobzJtcWw0UnM&export=download
+	ASC signature (32-bit): https://docs.google.com/uc?id=0B7humfJYX-LjZ0R4Z0I1ZlBRUHc&export=download
+	Package SHA256 checksum (32-bit): dd86727270ba236d85673194782b4cc9860bd886e4abdf2dfc6d716dabddb68f
+
