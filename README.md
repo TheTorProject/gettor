@@ -105,7 +105,7 @@ links files. The script should consider the following steps:
 What is the current status of the new GetTor?
 =============================================
 
-Tested internally, and currently waiting to be deployed.
+Deployed and working.
 
 
 How can I help?
