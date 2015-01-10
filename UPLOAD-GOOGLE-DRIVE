@@ -1,6 +1,6 @@
 1) Clone into the latest version of gettor:
 
-$ git clone https://github.com/ileiva/gettor.git
+$ git clone https://github.com/ilv/gettor.git
 
 2) Get the PGP key that signs the Tor Browser Bundle
 
