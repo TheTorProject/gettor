@@ -42,8 +42,8 @@ config.read('latest_torbrowser.cfg')
 current_version = config.get('version', 'current')
 
 if current_version != latest_version:
-    
-    # in wget we trust    
+
+    # in wget we trust
     mirror = '%s%s' % (dist_tpo, latest_version)
     # download files for windows, osx, linux, signatures and checksums
     params = '-nH --cut-dirs=1 -L 1 --accept exe,dmg,tar.xz,asc,txt'
@@ -55,12 +55,12 @@ if current_version != latest_version:
     shutil.move('latest', 'latest_backup')
     shutil.move(latest_version, 'latest')
     shutil.rmtree('latest_backup')
-    
+
     # latest version of Tor Browser has been syncronized
     # let's upload it
     for provider in UPLOAD_SCRIPTS:
         os.sytem('python2.7 %s' % UPLOAD_SCRIPTS[provider])
-    
+
     # if everything is OK, update the current version delivered by GetTor
     config.set('version', 'current', latest_version)
     with open(r'latest_torbrowser.cfg', 'wb') as config_file:
