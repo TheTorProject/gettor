@@ -111,10 +111,10 @@ if __name__ == '__main__':
     # steps: 1) create dir for the new version, copy the latest Tor Browser
     # files there, add the files via git, make a commit for the new version
     # and push the changes (easier with system calls)
-    # os.system('mkdir %s' % version)
-    # os.system('cp latest/* %s' % version)
-    # os.system('git add %s;git commit -m "%s"' % (version, version))
-    # os.system('cd %s;git push %s %s' % (version, remote, branch))
+    os.system('mkdir %s' % version)
+    os.system('cp latest/* %s' % version)
+    os.system('git add %s;git commit -m "%s"' % (version, version))
+    os.system('cd %s;git push %s %s' % (version, remote, branch))
 
     gh = github.GitHub(gh_token, None)
     repocontent = gh.repo(
