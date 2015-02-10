@@ -1,0 +1,25 @@
+[provider]
+name = GitHub
+
+[key]
+fingerprint = 8738 A680 B84B 3031 A630 F2DB 416F 0610 63FE E659
+
+[linux]
+en = Package (32-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/tor-browser-linux32-4.0.3_en.tar.xz
+	ASC signature (32-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/tor-browser-linux32-4.0.3_en.tar.xz.asc
+	Package SHA256 checksum (32-bit): 7df98c47a629c78f648537b975c827ac83181ed1f82ac03759e8e3337aae00f3,
+	Package (64-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/tor-browser-linux64-4.0.3_en.tar.xz
+	ASC signature (64-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/tor-browser-linux64-4.0.3_en.tar.xz.asc
+	Package SHA256 checksum (64-bit): 7df98c47a629c78f648537b975c827ac83181ed1f82ac03759e8e3337aae00f3
+
+[windows]
+ar = Package (32/64-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/torbrowser-install-4.0.3_ar.exe
+	ASC signature (32/64-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/torbrowser-install-4.0.3_ar.exe.asc
+	Package SHA256 checksum (32/64-bit): f4be40da212f5d0dc53dbcc254ec44a0a3a91c521c7df211b8d6d936ebdf42a6
+	
+
+[osx]
+en = Package (32-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/TorBrowser-4.0.3-osx32_en.dmg
+	ASC signature (32-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/TorBrowser-4.0.3-osx32_en.dmg.asc
+	Package SHA256 checksum (32-bit): 55f5e4102c240d74e2dd2a48c55660426f17a226053aaaff172aaa13b7ae2b1d
+
