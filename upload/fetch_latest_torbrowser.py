@@ -37,8 +37,8 @@ def main():
 
     Fetch the latest version of Tor Browser and upload it to the supported
     providers (e.g. Dropbox). Ideally, this script should be executed with
-    a cron in order to automate of updating the files served by GetTor when
-    a new version of Tor Browser is released.
+    a cron in order to automate the updating of the files served by GetTor
+    when a new version of Tor Browser is released.
 
     Usage: python2.7 fetch.py --os=<OS> --lc=<LC>
 
@@ -51,7 +51,7 @@ def main():
         $ python2.7 fetch.py --os=linux
 
     Fetch Tor Browser only for Windows and in US English:
-        $ python2.7 fetch.py --os=windows --lc=en-EN
+        $ python2.7 fetch.py --os=windows --lc=en-US
 
     Fetch Tor Browser for all platforms, but only in Spanish:
         $ python2.7 fetch.py --lc=es-ES
