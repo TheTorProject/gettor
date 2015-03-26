@@ -123,7 +123,7 @@ def main():
         # latest version of Tor Browser has been syncronized
         # let's upload it
         for provider in UPLOAD_SCRIPTS:
-            os.sytem('python2.7 %s' % UPLOAD_SCRIPTS[provider])
+            os.system('python2.7 %s' % UPLOAD_SCRIPTS[provider])
 
         # if everything is OK, update the current version delivered by GetTor
         config.set('version', 'current', latest_version)
