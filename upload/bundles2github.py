@@ -12,8 +12,11 @@
 #
 
 import os
-import sys
 import re
+import sh
+import sys
+import time
+import shutil
 import hashlib
 
 from libsaas.services import github
@@ -83,10 +86,10 @@ if __name__ == '__main__':
     version = sys.argv[1]
 
     # the token allow us to run this script without GitHub user/pass
-    gh_token = 'secret-token'
+    gh_token = ''
 
     # path to the fingerprint that signed the packages
-    tb_key = 'upload/torbrowser-key.asc'
+    tb_key = os.path.abspath('tbb-key.asc')
 
     # import key fingerprint
     gpg = gnupg.GPG()
@@ -99,31 +102,42 @@ if __name__ == '__main__':
     readable_fp = ' '.join(fp[i:i+4] for i in xrange(0, len(fp), 4))
 
     # we should have previously created a repository on GitHub where we
-    # want to push the files using a SSH key (to avoid using user/pass)
+    # want to push the files using an SSH key (to avoid using user/pass)
     remote = 'origin'
     branch = 'master'
-    user = 'ilv'
-    repo = 'gettor'
-    path = 'upload'
-    raw_content = 'https://raw.githubusercontent.com/%s/%s/%s/%s/' %\
-                  (user, repo, branch, path)
+    user = 'gettorbrowser'
+    repo = 'dl'
+    raw_content = 'https://raw.githubusercontent.com/%s/%s/%s/' %\
+                  (user, repo, branch)
 
-    # steps: 1) create dir for the new version, copy the latest Tor Browser
-    # files there, add the files via git, make a commit for the new version
-    # and push the changes (easier with system calls)
-    os.system('mkdir %s' % version)
-    os.system('cp latest/* %s' % version)
-    os.system('git add %s;git commit -m "%s"' % (version, version))
-    os.system('cd %s;git push %s %s' % (version, remote, branch))
+    # steps:
+    # 1) copy folder with latest version of Tor Browser
+    # 2) add files via sh.git
+    # 3) make a commit for the new version
+    # 4) push the changes
+    
+    shutil.copytree(
+        os.path.abspath('upload/latest'),
+        os.path.abspath('dl/%s' %version)
+    )
+
+    git = sh.git.bake(_cwd=os.path.abspath('dl'))
+    git.add('%s' % version)
+    git.commit(m=version)
+    git.push()
+
+    # it takes a while to process the recently pushed files
+    print "Wait a few seconds before asking for the links to Github..."
+    time.sleep(10)
 
     gh = github.GitHub(gh_token, None)
     repocontent = gh.repo(
         user,
         repo
-    ).contents().get('%s/%s' % (path, version))
+    ).contents().get('%s' % version)
 
     core = gettor.core.Core(
-        '/path/to/gettor/core.cfg'
+        os.path.abspath('core.cfg')
     )
 
     # erase old links, if any
@@ -151,7 +165,11 @@ if __name__ == '__main__':
                 # don't care about other files (asc or txt)
                 continue
 
-            sha256 = get_file_sha256('%s/%s/%s' % (path, version, filename))
+            sha256 = get_file_sha256(
+                os.path.abspath(
+                    'dl/%s/%s' % (version, filename)
+                )
+            )
 
             # since the url is easy to construct and it doesn't involve any
             # kind of unique hash or identifier, we get the link for the
@@ -167,3 +185,4 @@ if __name__ == '__main__':
             core.add_link('GitHub', osys, lc, link)
 
     print "Github links updated!"
+
