@@ -91,6 +91,15 @@ if __name__ == '__main__':
     # path to the fingerprint that signed the packages
     tb_key = os.path.abspath('tbb-key.asc')
 
+    # path to the latest version of Tor Browser
+    tb_path = os.path.abspath('upload/latest')
+
+    # path to the repository where we upload Tor Browser
+    repo_path = os.path.abspath('dl')
+
+    # wait time between pushing the files to GH and asking for its links
+    wait_time = 10
+
     # import key fingerprint
     gpg = gnupg.GPG()
     key_data = open(tb_key).read()
@@ -115,20 +124,20 @@ if __name__ == '__main__':
     # 2) add files via sh.git
     # 3) make a commit for the new version
     # 4) push the changes
-    
+
     shutil.copytree(
-        os.path.abspath('upload/latest'),
-        os.path.abspath('dl/%s' %version)
+        tb_path,
+        os.path.abspath('%s/%s' % (repo_path, version))
     )
 
-    git = sh.git.bake(_cwd=os.path.abspath('dl'))
+    git = sh.git.bake(_cwd=repo_path)
     git.add('%s' % version)
     git.commit(m=version)
     git.push()
 
     # it takes a while to process the recently pushed files
     print "Wait a few seconds before asking for the links to Github..."
-    time.sleep(10)
+    time.sleep(wait_time)
 
     gh = github.GitHub(gh_token, None)
     repocontent = gh.repo(
@@ -144,7 +153,7 @@ if __name__ == '__main__':
     core.create_links_file('GitHub', readable_fp)
 
     for file in repocontent:
-        # e.g. https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/TorBrowser-4.0.3-osx32_en.dmg
+        # e.g. https://raw.githubusercontent.com/gettorbrowser/dl/master/4.0.7/TorBrowser-4.0.4-osx32_en-US.dmg
         m = re.search('%s.*\/(.*)' % raw_content, file[u'download_url'])
         if m:
             filename = m.group(1)
@@ -185,4 +194,3 @@ if __name__ == '__main__':
             core.add_link('GitHub', osys, lc, link)
 
     print "Github links updated!"
-
