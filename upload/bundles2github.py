@@ -185,8 +185,9 @@ if __name__ == '__main__':
             # asc signature just by adding '.asc'
             link_asc = file[u'download_url'].replace(filename, filename_asc)
 
-            link = "Package (%s-bit): %s\nASC signature (%s-bit): %s\n"\
-                   "Package SHA256 checksum (%s-bit): %s\n" %\
+            link = "Tor Browser %s-bit:\n%s$Tor Browser's signature %s-bit:"\
+                    "\n%s$SHA256 checksum of Tor Browser %s-bit (advanced):"\
+                    "\n%s$" %\
                    (arch, file[u'download_url'], arch, link_asc,
                     arch, sha256)
 
