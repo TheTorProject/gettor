@@ -236,8 +236,9 @@ if __name__ == '__main__':
             elif p3.match(file):
                 osys, arch, lc = get_bundle_info(file, 'osx')
 
-            link = "Package (%s-bit): %s\nASC signature (%s-bit): %s\n"\
-                   "Package SHA256 checksum (%s-bit): %s\n" %\
+            link = "Tor Browser %s-bit:\n%s$Tor Browser's signature %s-bit:"\
+                    "\n%s$SHA256 checksum of Tor Browser %s-bit (advanced):"\
+                    "\n%s$" %\
                    (arch, link_file[u'url'], arch, link_asc[u'url'],
                     arch, sha_file)
 

@@ -13,6 +13,7 @@
 import os
 import re
 import logging
+import gettext
 import tempfile
 import ConfigParser
 
@@ -121,6 +122,11 @@ class Core(object):
             loglevel = config.get('log', 'level')
         except ConfigParser.Error as e:
             raise ConfigError("Couldn't read 'level' from 'log'")
+        
+        try:
+            self.i18ndir = config.get('i18n', 'dir')
+        except ConfigParser.Error as e:
+            raise ConfigError("Couldn't read 'dir' from 'i18n'")
 
         try:
             logdir = config.get('log', 'dir')
@@ -136,6 +142,22 @@ class Core(object):
 
         # stop logging on stdout from now on
         log.propagate = False
+
+    def _get_msg(self, msgid, lc):
+        """Get message identified by msgid in a specific locale.
+
+        :param: msgid (string) the identifier of a string.
+        :param: lc (string) the locale.
+
+        :return: (string) the message from the .po file.
+
+        """
+        # obtain the content in the proper language
+        t = gettext.translation(lc, self.i18ndir, languages=[lc])
+        _ = t.ugettext
+
+        msgstr = _(msgid)
+        return msgstr
 
     def get_links(self, service, os, lc):
         """Get links for OS in locale.
@@ -201,6 +223,9 @@ class Core(object):
         # links were found
         providers = {}
 
+        # separator
+        spt = '=' * 72
+
         # reading links from providers directory
         for name in links:
             # we're reading files listed on linksdir, so they must exist!
@@ -216,17 +241,17 @@ class Core(object):
             try:
                 providers[pname] = config.get(osys, lc)
                 # avoid showing it all together
-                providers[pname] = providers[pname].replace(",", "\n")
+                providers[pname] = providers[pname].replace(",", "")
+                providers[pname] = providers[pname].replace("$", "\n\n")
             except ConfigParser.Error as e:
                 raise InternalError("Couldn't get %s from %s (%s)" %
                                     (lc, osys, name))
 
-            # each provider must have a fingerprint of the key used to
-            # sign the uploaded packages
+            # all packages are signed with the same key (Tor Browser developers)
             try:
                 fingerprint = config.get('key', 'fingerprint')
-                providers[pname] = "%s\n\nFingerprint: %s" %\
-                                   (providers[pname], fingerprint)
+                fingerprint_msg = self._get_msg('fingerprint', lc)
+                fingerprint_msg = fingerprint_msg % fingerprint
             except ConfigParser.Error as e:
                 raise InternalError("Couldn't get 'fingerprint' from 'key'")
 
@@ -234,9 +259,17 @@ class Core(object):
         all_links = []
 
         for key in providers.keys():
+            # get more friendly description of the provider
+            provider_desc = self._get_msg('provider_desc', lc)
+            provider_desc = provider_desc % key
+
             all_links.append(
-                "\n%s\n\n%s\n" % (key, ''.join(providers[key]))
+                "%s\n%s\n\n%s%s\n\n\n" %
+                (provider_desc, spt, ''.join(providers[key]), spt)
             )
+
+        # add fingerprint after the links
+        all_links.append(fingerprint_msg)
 
         if all_links:
             return "".join(all_links)

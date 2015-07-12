@@ -4,17 +4,9 @@ domain "en"
 msgid "links_subject"
 msgstr "[GetTor] Links for your request"
 
-#: Links subject (PT)
-msgid "links_pt_subject"
-msgstr "[GetTor] Links for your request"
-
 #: Help subject
 msgid "help_subject"
 msgstr "[GetTor] Help"
-
-#: Delay subject
-msgid "delay_subject"
-msgstr "[GetTor] Delay message"
 
 # Unsupported locale subject
 msgid "unsupported_locale_subject"
@@ -26,44 +18,11 @@ msgstr "The locale you requested '%s' is not supported."
 
 #: Links message
 msgid "links_msg"
-msgstr "Thank you for your request for %s-%s.\n\
+msgstr "Hello there! this is the 'GetTor' robot.\n\
 \n\
-Here are the download links:\n\
+Below are the links for your request (Tor Browser for %s, %s package):\n\
 \n\
-===\n\
-Tor Browser Bundle:\n\
-===\n\
 %s\n\
-===\n\
-\n\
-===\n\
-Support:\n\
-===\n\
-\n\
-Still need help? If you have any questions, trouble connecting to Tor\n\
-network, or need to talk to a human, please contact our support team at:\n\
-\n\
-    help@rt.torproject.org\n\
-\n\
-We are ready to answer your queries in English, Farsi, Chinese, Arabic,\n\
-French and Spanish."
-
-#: Links message (PT)
-msgid "links_pt_msg"
-msgstr "Thank you for your request for %s-%s.\n\
-\n\
-Here are the download links:\n\
-\n\
-===\n\
-Tor Browser Bundle:\n\
-===\n\
-%s\n\
-===\n\
-Info about pluggable transports.\n\
-\n\
-===\n\
-Support:\n\
-===\n\
 \n\
 Still need help? If you have any questions, trouble connecting to Tor\n\
 network, or need to talk to a human, please contact our support team at:\n\
@@ -75,10 +34,10 @@ French and Spanish."
 
 #: Help message
 msgid "help_msg"
-msgstr "Hello, this is the 'GetTor' robot.\n\
+msgstr "Hello there! this is the 'GetTor' robot.\n\
 \n\
 Thank you for your request. I am here to help you download the latest\n\
-Tor Browser Bundle.\n\
+Tor Browser.\n\
 \n\
 Please reply to this message with one of the options below:\n\
 \n\
@@ -89,7 +48,3 @@ Please reply to this message with one of the options below:\n\
 And I will send you the download instructions quickly.\n\
 \n\
 Tip: Just send a blank reply to this message if you are not sure."
-
-#: Delay message
-msgid "delay_msg"
-msgstr "Delay message."
