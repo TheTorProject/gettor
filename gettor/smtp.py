@@ -22,7 +22,10 @@ import smtplib
 import datetime
 import ConfigParser
 
+from email import Encoders
+from email.MIMEBase import MIMEBase
 from email.mime.text import MIMEText
+from email.MIMEMultipart import MIMEMultipart
 
 import core
 import utils
@@ -69,74 +72,60 @@ class SMTP(object):
         :param: cfg (string) path of the configuration file.
 
         """
-        # define a set of default values
-        DEFAULT_CONFIG_FILE = 'smtp.cfg'
-
-        logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s',
-                            datefmt="%Y-%m-%d %H:%M:%S")
-        log = logging.getLogger(__name__)
+        default_cfg = 'smtp.cfg'
         config = ConfigParser.ConfigParser()
 
         if cfg is None or not os.path.isfile(cfg):
             cfg = DEFAULT_CONFIG_FILE
 
-        config.read(cfg)
+        try:
+            with open(cfg) as f:
+                config.readfp(f)
+        except IOError:
+            raise ConfigError("File %s not found!" % cfg)
 
         try:
             self.our_domain = config.get('general', 'our_domain')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'our_domain' from 'general'")
-
-        try:
-            core_cfg = config.get('general', 'core_cfg')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'core_cfg' from 'general'")
-
-        try:
-            blacklist_cfg = config.get('blacklist', 'cfg')
-            self.bl = blacklist.Blacklist(blacklist_cfg)
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'cfg' from 'blacklist'")
-
-        try:
-            self.bl_max_req = config.get('blacklist', 'max_requests')
-            self.bl_max_req = int(self.bl_max_req)
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'max_requests' from 'blacklist'")
-
-        try:
-            self.bl_wait_time = config.get('blacklist', 'wait_time')
-            self.bl_wait_time = int(self.bl_wait_time)
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'wait_time' from 'blacklist'")
-
-        try:
+            self.mirrors = config.get('general', 'mirrors')
             self.i18ndir = config.get('i18n', 'dir')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'dir' from 'i18n'")
 
-        try:
             logdir = config.get('log', 'dir')
             logfile = os.path.join(logdir, 'smtp.log')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'dir' from 'log'")
-
-        try:
             loglevel = config.get('log', 'level')
+
+            blacklist_cfg = config.get('blacklist', 'cfg')
+            self.bl = blacklist.Blacklist(blacklist_cfg)
+            self.bl_max_req = config.get('blacklist', 'max_requests')
+            self.bl_max_req = int(self.bl_max_req)
+            self.bl_wait_time = config.get('blacklist', 'wait_time')
+            self.bl_wait_time = int(self.bl_wait_time)
+
+            core_cfg = config.get('general', 'core_cfg')
+            self.core = core.Core(core_cfg)
+
         except ConfigParser.Error as e:
-            raise ConfigurationError("Couldn't read 'level' from 'log'")
+            raise ConfigError("Configuration error: %s" % str(e))
+        except blacklist.ConfigError as e:
+            raise InternalError("Blacklist error: %s" % str(e))
+        except core.ConfigError as e:
+            raise InternalError("Core error: %s" % str(e))
 
-        # use default values
-        self.core = core.Core(core_cfg)
+        # logging
+        log = logging.getLogger(__name__)
 
-        # establish log level and redirect to log file
-        log.info('Redirecting logging to %s' % logfile)
+        logging_format = utils.get_logging_format()
+        date_format = utils.get_date_format()
+        formatter = logging.Formatter(logging_format, date_format)
+
+        log.info('Redirecting SMTP logging to %s' % logfile)
         logfileh = logging.FileHandler(logfile, mode='a+')
+        logfileh.setFormatter(formatter)
         logfileh.setLevel(logging.getLevelName(loglevel))
         log.addHandler(logfileh)
 
         # stop logging on stdout from now on
         log.propagate = False
+        self.log = log
 
     def _is_blacklisted(self, addr):
         """Check if a user is blacklisted.
@@ -148,8 +137,9 @@ class SMTP(object):
         """
 
         try:
-            self.bl.is_blacklisted(addr, 'SMTP', self.bl_max_req,
-                                   self.bl_wait_time)
+            self.bl.is_blacklisted(
+                addr, 'SMTP', self.bl_max_req, self.bl_wait_time
+            )
             return False
         except blacklist.BlacklistError as e:
             return True
@@ -228,11 +218,14 @@ class SMTP(object):
 
         """
         # obtain the content in the proper language
-        t = gettext.translation(lc, self.i18ndir, languages=[lc])
-        _ = t.ugettext
+        try:
+            t = gettext.translation(lc, self.i18ndir, languages=[lc])
+            _ = t.ugettext
 
-        msgstr = _(msgid)
-        return msgstr
+            msgstr = _(msgid)
+            return msgstr
+        except IOError as e:
+            raise ConfigError("%s" % str(e))
 
     def _parse_email(self, msg, addr):
         """Parse the email received.
@@ -270,17 +263,23 @@ class SMTP(object):
         # core knows what OS are supported
         supported_os = self.core.get_supported_os()
 
-        # if no OS is found, help request by default
-        found_os = False
+        # search for OS or mirrors request
+        # if nothing is found, help by default
+        found_request = False
         lines = msg.split(' ')
         for word in lines:
-            if not found_os:
+            if not found_request:
+                # OS first
                 for os in supported_os:
                     if re.match(os, word, re.IGNORECASE):
                         req['os'] = os
                         req['type'] = 'links'
-                        found_os = True
+                        found_request = True
                         break
+                # mirrors
+                if re.match("mirrors?", word, re.IGNORECASE):
+                    req['type'] = 'mirrors'
+                    found_request = True
             else:
                 break
         return req
@@ -298,15 +297,18 @@ class SMTP(object):
         :return: (object) the email object.
 
         """
-        email_obj = MIMEText(msg)
+        email_obj = MIMEMultipart()
         email_obj.set_charset("utf-8")
         email_obj['Subject'] = subject
         email_obj['From'] = from_addr
         email_obj['To'] = to_addr
 
+        msg_attach = MIMEText(msg, 'text')
+        email_obj.attach(msg_attach)
+
         return email_obj
 
-    def _send_email(self, from_addr, to_addr, subject, msg):
+    def _send_email(self, from_addr, to_addr, subject, msg, attach=None):
         """Send an email.
 
         Take a 'from' and 'to' addresses, a subject and the content, creates
@@ -316,9 +318,26 @@ class SMTP(object):
         :param: to_addr (string) the address of the recipient.
         :param: subject (string) the subject of the email.
         :param: msg (string) the content of the email.
+        :param: attach (string) the path of the mirrors list.
 
         """
         email_obj = self._create_email(from_addr, to_addr, subject, msg)
+
+        if(attach):
+            # for now, the only email with attachment is the one for mirrors
+            try:
+                part = MIMEBase('application', "octet-stream")
+                part.set_payload(open(attach, "rb").read())
+                Encoders.encode_base64(part)
+
+                part.add_header(
+                    'Content-Disposition',
+                    'attachment; filename="mirrors.txt"'
+                )
+
+                email_obj.attach(part)
+            except IOError as e:
+                raise SendEmailError('Error with mirrors: %s' % str(e))
 
         try:
             s = smtplib.SMTP("localhost")
@@ -341,14 +360,46 @@ class SMTP(object):
 
         """
         # obtain the content in the proper language and send it
-        links_subject = self._get_msg('links_subject', lc)
-        links_msg = self._get_msg('links_msg', lc)
-        links_msg = links_msg % (os, lc, links)
-
         try:
-            self._send_email(from_addr, to_addr, links_subject, links_msg)
+            links_subject = self._get_msg('links_subject', lc)
+            links_msg = self._get_msg('links_msg', lc)
+            links_msg = links_msg % (os, lc, links)
+
+            self._send_email(
+                from_addr,
+                to_addr,
+                links_subject,
+                links_msg,
+                None
+            )
+        except ConfigError as e:
+            raise InternalError("Error while getting message %s" % str(e))
         except SendEmailError as e:
             raise InternalError("Error while sending links message")
+
+    def _send_mirrors(self, lc, from_addr, to_addr):
+        """Send mirrors message.
+
+        Get the message in the proper language (according to the locale),
+        replace variables (if any) and send the email.
+
+        :param: lc (string) the locale.
+        :param: from_addr (string) the address of the sender.
+        :param: to_addr (string) the address of the recipient.
+
+        """
+        # obtain the content in the proper language and send it
+        try:
+            mirrors_subject = self._get_msg('mirrors_subject', lc)
+            mirrors_msg = self._get_msg('mirrors_msg', lc)
+
+            self._send_email(
+                from_addr, to_addr, mirrors_subject, mirrors_msg, self.mirrors
+            )
+        except ConfigError as e:
+            raise InternalError("Error while getting message %s" % str(e))
+        except SendEmailError as e:
+            raise InternalError("Error while sending mirrors message")
 
     def _send_help(self, lc, from_addr, to_addr):
         """Send help message.
@@ -362,37 +413,15 @@ class SMTP(object):
 
         """
         # obtain the content in the proper language and send it
-        help_subject = self._get_msg('help_subject', lc)
-        help_msg = self._get_msg('help_msg', lc)
-
         try:
-            self._send_email(from_addr, to_addr, help_subject, help_msg)
+            help_subject = self._get_msg('help_subject', lc)
+            help_msg = self._get_msg('help_msg', lc)
+
+            self._send_email(from_addr, to_addr, help_subject, help_msg, None)
+        except ConfigError as e:
+            raise InternalError("Error while getting message %s" % str(e))
         except SendEmailError as e:
             raise InternalError("Error while sending help message")
-
-    def _send_unsupported_lc(self, lc, os, from_addr, to_addr):
-        """Send unsupported locale message.
-
-        Get the message for unsupported locale in english, replace variables
-        (if any) and send the email.
-
-        :param: lc (string) the locale.
-        :param: os (string) the operating system.
-        :param: from_addr (string) the address of the sender.
-        :param: to_addr (string) the address of the recipient.
-
-        """
-
-        # obtain the content in english and send it
-        un_lc_subject = self._get_msg('unsupported_lc_subject', 'en')
-        un_lc_msg = self._get_msg('unsupported_lc_msg', 'en')
-        un_lc_msg = un_lc_msg % lc
-
-        try:
-            self._send_email(from_addr, to_addr, un_lc_subject, un_lc_msg)
-
-        except SendEmailError as e:
-            raise InternalError("Error while sending unsupported lc message")
 
     def process_email(self, raw_msg):
         """Process the email received.
@@ -411,6 +440,7 @@ class SMTP(object):
                 links to the Core module.
 
         """
+        self.log.debug("Processing email")
         parsed_msg = email.message_from_string(raw_msg)
         content = self._get_content(parsed_msg)
         from_addr = parsed_msg['From']
@@ -423,71 +453,96 @@ class SMTP(object):
             # two ways for a request to be bogus: address malformed or
             # blacklisted
             try:
+                self.log.debug("Normalizing address...")
                 norm_from_addr = self._get_normalized_address(from_addr)
             except AddressError as e:
                 status = 'malformed'
                 bogus_request = True
+                self.log.debug("Address is malformed!")
                 # it might be interesting to know what triggered this
                 # we are not logging this for now
                 # logfile = self._log_email('malformed', content)
 
             if norm_from_addr:
+                self.log.debug("Anonymizing address...")
                 anon_addr = utils.get_sha256(norm_from_addr)
 
                 if self._is_blacklisted(anon_addr):
                     status = 'blacklisted'
                     bogus_request = True
+                    self.log.debug("Address is blacklisted!")
                     # it might be interesting to know extra info
                     # we are not logging this for now
                     # logfile = self._log_email(anon_addr, content)
 
             if not bogus_request:
                 # try to figure out what the user is asking
+                self.log.debug("Request seems legit; parsing it...")
                 req = self._parse_email(content, to_addr)
 
                 # our address should have the locale requested
                 our_addr = "gettor+%s@%s" % (req['lc'], self.our_domain)
+                self.log.debug("Replying from %s" % our_addr)
 
-                # two possible options: asking for help or for the links
+                # possible options: help, links, mirrors
                 if req['type'] == 'help':
+                    self.log.debug("Type of request: help")
+                    self.log.debug("Trying to send help...")
                     # make sure we can send emails
                     try:
                         self._send_help(req['lc'], our_addr, norm_from_addr)
+                        status = 'success'
                     except SendEmailError as e:
                         status = 'internal_error'
+                        self.log.debug("FAILED: %s" % str(e))
                         raise InternalError("Something's wrong with the SMTP "
                                             "server: %s" % str(e))
 
-                elif req['type'] == 'links':
+                elif req['type'] == 'mirrors':
+                    self.log.debug("Type of request: mirrors")
+                    self.log.debug("Trying to send the mirrors...")
+                    # make sure we can send emails
                     try:
-                        links = self.core.get_links('SMTP', req['os'],
-                                                    req['lc'])
+                        self._send_mirrors(req['lc'], our_addr, norm_from_addr)
+                        status = 'success'
+                    except SendEmailError as e:
+                        status = 'internal_error'
+                        self.log.debug("FAILED: %s" % str(e))
+                        raise SendEmailError("Something's wrong with the SMTP "
+                                             "server: %s" % str(e))
 
-                    except core.UnsupportedLocaleError as e:
-                        # if we got here, the address of the sender should
-                        # be valid so we send him/her a message about the
-                        # unsupported locale
-                        status = 'unsupported_lc'
-                        self._send_unsupported_lc(req['lc'], req['os'],
-                                                  our_addr, norm_from_addr)
-                        return
-
+                elif req['type'] == 'links':
+                    self.log.debug("Type of request: links")
+                    self.log.debug("Trying to obtain the links...")
+                    try:
+                        links = self.core.get_links(
+                            'SMTP', req['os'], req['lc']
+                        )
                     # if core fails, we fail too
                     except (core.InternalError, core.ConfigurationError) as e:
                         status = 'core_error'
+                        self.log.debug("FAILED: %s" % str(e))
                         # something went wrong with the core
                         raise InternalError("Error obtaining the links")
 
                     # make sure we can send emails
+                    self.log.debug("Trying to send the links...")
                     try:
                         self._send_links(links, req['lc'], req['os'], our_addr,
                                          norm_from_addr)
+                        status = 'success'
                     except SendEmailError as e:
                         status = 'internal_error'
+                        self.log.debug("FAILED: %s" % str(e))
                         raise SendEmailError("Something's wrong with the SMTP "
                                              "server: %s" % str(e))
-                status = 'success'
+                self.log.debug("Mail sent!")
         finally:
             # keep stats
             if req:
-                self.core.add_request_to_db()
+                self.log.debug("Adding request to database... ")
+                try:
+                    self.core.add_request_to_db()
+                    self.log.debug("Request added")
+                except InternalError as e:
+                    self.log.debug("FAILED: %s" % str(e))
