@@ -2,7 +2,7 @@ domain "en"
 
 #: Fingerprint message
 msgid "fingerprint"
-msgstr "Fingerprint of the key used to sign Tor Browser:\n%s"
+msgstr "Fingerprint of key used to sign Tor Browser (advanced): %s"
 
 #: Provider description
 msgid "provider_desc"

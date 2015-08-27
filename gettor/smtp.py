@@ -76,7 +76,7 @@ class SMTP(object):
         config = ConfigParser.ConfigParser()
 
         if cfg is None or not os.path.isfile(cfg):
-            cfg = DEFAULT_CONFIG_FILE
+            cfg = default_cfg
 
         try:
             with open(cfg) as f:
@@ -240,7 +240,12 @@ class SMTP(object):
         """
         req = self._parse_text(msg)
         lc = self._get_lc(addr)
-        req['lc'] = lc
+        supported_lc = self.core.get_supported_lc()
+
+        if lc in supported_lc:
+            req['lc'] = lc
+        else:
+            req['lc'] = 'en'
 
         return req
 
@@ -361,8 +366,8 @@ class SMTP(object):
         """
         # obtain the content in the proper language and send it
         try:
-            links_subject = self._get_msg('links_subject', lc)
-            links_msg = self._get_msg('links_msg', lc)
+            links_subject = self._get_msg('links_subject', 'en')
+            links_msg = self._get_msg('links_msg', 'en')
             links_msg = links_msg % (os, lc, links)
 
             self._send_email(
@@ -490,7 +495,7 @@ class SMTP(object):
                     self.log.debug("Trying to send help...")
                     # make sure we can send emails
                     try:
-                        self._send_help(req['lc'], our_addr, norm_from_addr)
+                        self._send_help('en', our_addr, norm_from_addr)
                         status = 'success'
                     except SendEmailError as e:
                         status = 'internal_error'
@@ -503,7 +508,7 @@ class SMTP(object):
                     self.log.debug("Trying to send the mirrors...")
                     # make sure we can send emails
                     try:
-                        self._send_mirrors(req['lc'], our_addr, norm_from_addr)
+                        self._send_mirrors('en', our_addr, norm_from_addr)
                         status = 'success'
                     except SendEmailError as e:
                         status = 'internal_error'
@@ -519,7 +524,7 @@ class SMTP(object):
                             'SMTP', req['os'], req['lc']
                         )
                     # if core fails, we fail too
-                    except (core.InternalError, core.ConfigurationError) as e:
+                    except (core.InternalError, core.ConfigError) as e:
                         status = 'core_error'
                         self.log.debug("FAILED: %s" % str(e))
                         # something went wrong with the core

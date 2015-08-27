@@ -197,7 +197,18 @@ class Core(object):
 
         # read the links files using ConfigParser
         # see the README for more details on the format used
-        links = []
+        links_files = []
+        
+        links32 = {}
+        links64 = {}
+        
+        # for the message to be sent
+        if osys == 'windows':
+            arch = '32/64'
+        elif osys == 'osx':
+            arch = '64'
+        else:
+            arch = '32'
 
         # look for files ending with .links
         p = re.compile('.*\.links$')
@@ -205,7 +216,7 @@ class Core(object):
         for name in os.listdir(self.linksdir):
             path = os.path.abspath(os.path.join(self.linksdir, name))
             if os.path.isfile(path) and p.match(path):
-                links.append(path)
+                links_files.append(path)
 
         # let's create a dictionary linking each provider with the links
         # found for os and lc. This way makes it easy to check if no
@@ -216,7 +227,7 @@ class Core(object):
         spt = '=' * 72
 
         # reading links from providers directory
-        for name in links:
+        for name in links_files:
             # we're reading files listed on linksdir, so they must exist!
             config = ConfigParser.ConfigParser()
             # but just in case they don't
@@ -231,14 +242,34 @@ class Core(object):
 
                 # check if current provider pname has links for os in lc
                 providers[pname] = config.get(osys, lc)
-                # avoid showing it all together
-                providers[pname] = providers[pname].replace(",", "")
-                providers[pname] = providers[pname].replace("$", "\n\n")
+            except ConfigParser.Error as e:
+                # we should at least have the english locale available
+                self.log.error("Request for %s, returning 'en' instead" % lc)
+                providers[pname] = config.get(osys, 'en')
+            try:
+                #test = providers[pname].split("$")
+                #self.log.debug(test)
+                if osys == 'linux':
+                    t32, t64 = [t for t in providers[pname].split(",") if t]
+                    
+                    link, signature, chs32 = [l for l in t32.split("$") if l]
+                    links32[link] = signature
+
+                    link, signature, chs64 = [l for l in t64.split("$") if l]
+                    links64[link] = signature
+                    
+                else:
+                    link, signature, chs32 = [l for l in providers[pname].split("$") if l]
+                    links32[link] = signature
+                    
+                #providers[pname] = providers[pname].replace(",", "")
+                #providers[pname] = providers[pname].replace("$", "\n\n")
 
                 # all packages are signed with same key
                 # (Tor Browser developers)
                 fingerprint = config.get('key', 'fingerprint')
-                fingerprint_msg = self._get_msg('fingerprint', lc)
+                # for now, english messages only
+                fingerprint_msg = self._get_msg('fingerprint', 'en')
                 fingerprint_msg = fingerprint_msg % fingerprint
             except ConfigParser.Error as e:
                 raise InternalError("%s" % str(e))
@@ -246,10 +277,47 @@ class Core(object):
         # create the final links list with all providers
         all_links = []
 
+        msg = "Tor Browser %s-bit:" % arch
+        for link in links32:
+            msg = "%s\n%s" % (msg, link)
+            
+        all_links.append(msg)
+        
+        if osys == 'linux':
+            msg = "\n\n\nTor Browser 64-bit:"
+            for link in links64:
+                msg = "%s\n%s" % (msg, link)
+        
+            all_links.append(msg)
+        
+        msg = "\n\n\nTor Browser's signature %s-bit (in the same order):" %\
+              arch
+        for link in links32:
+            msg = "%s\n%s" % (msg, links32[link])
+        
+        all_links.append(msg)
+        
+        if osys == 'linux':
+            msg = "\n\n\nTor Browser's signature 64-bit:"
+            for link in links64:
+                msg = "%s\n%s" % (msg, links64[link])
+            
+            all_links.append(msg)
+        
+        msg = "\n\n\nSHA256 of Tor Browser %s-bit (advanced): %s\n" %\
+              (arch, chs32)
+        all_links.append(msg)
+        
+        if osys == 'linux':
+            msg = "SHA256 of Tor Browser 64-bit (advanced): %s\n" % chs64
+            all_links.append(msg)
+
+        """
         for key in providers.keys():
             # get more friendly description of the provider
             try:
-                provider_desc = self._get_msg('provider_desc', lc)
+                # for now, english messages only
+                provider_desc = self._get_msg('provider_desc', 'en')
                 provider_desc = provider_desc % key
 
                 all_links.append(
@@ -258,6 +326,7 @@ class Core(object):
                 )
             except ConfigError as e:
                 raise InternalError("%s" % str(e))
+        """
 
         # add fingerprint after the links
         all_links.append(fingerprint_msg)
@@ -405,6 +474,7 @@ class Core(object):
         """Add request to database."""
         self.log.debug("Trying to add request to database")
         try:
+            self.db.connect()
             self.db.add_request()
             self.log.debug("Request added!")
         except db.DBError as e:

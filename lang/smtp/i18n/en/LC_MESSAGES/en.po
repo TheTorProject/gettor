@@ -28,6 +28,7 @@ Below are the links for your request (Tor Browser for %s, %s package):\n\
 \n\
 %s\n\
 \n\
+===========================================================================\n\
 Still need help? If you have any questions, trouble connecting to Tor\n\
 network, or need to talk to a human, please contact our support team at:\n\
 \n\
@@ -63,7 +64,8 @@ Please reply to this message with one of the options below:\n\
     windows\n\
     linux\n\
     osx\n\
+    mirrors\n\
 \n\
-And I will send you the download instructions quickly.\n\
+And I will send you the download/access instructions quickly.\n\
 \n\
 Tip: Just send a blank reply to this message if you are not sure."
