@@ -13,11 +13,16 @@
 import os
 import re
 import sys
+import potr
 import time
 import gettext
 import hashlib
 import logging
+import potr.crypt
 import ConfigParser
+
+from base64 import b64encode, b64decode
+from potr.compatcrypto import generateDefaultKey
 
 from sleekxmpp import ClientXMPP
 from sleekxmpp.xmlstream.stanzabase import JID
@@ -31,12 +36,104 @@ import blacklist
 """XMPP module for processing requests."""
 
 
+DEFAULT_POLICY_FLAGS = {
+  'ALLOW_V1': False,
+  'ALLOW_V2': True,
+  'REQUIRE_ENCRYPTION': False,
+}
+
+
+PROTOCOL='xmpp'
+MMS=1024
+
+
 class ConfigError(Exception):
     pass
 
 
 class InternalError(Exception):
     pass
+
+
+class OTRContext(potr.context.Context):
+    def __init__(self, account, client, peer):
+        super(OTRContext, self).__init__(account, peer)
+        self.account = account
+        self.client = client
+        self.peer = peer
+
+    # This method has should return True or False for a variety of policies.
+    # to start off, 'ALLOW_V1', 'ALLOW_V2', and 'REQUIRE_ENCRYPTION' seemed 
+    # like the minimum
+    def getPolicy(self, key):
+        if key in DEFAULT_POLICY_FLAGS:
+            return DEFAULT_POLICY_FLAGS[key]
+        else:
+            return False
+
+    def inject(self, msg, appdata=None):
+        msg_to_send = self.xmpp.parse_request(
+            msg['from'],
+            msg['body']
+        )
+
+        self.client.send_message(
+            mto=self.peer,
+            mbody=msg_to_send,
+        )
+        # This method is called when potr needs to inject a message into the
+        # stream. For instance, upon receiving an initiating stanza, potr 
+        # will inject the key exchange messages here is where you should hook
+        # into your app and actually send the message potr gives you
+
+    def setState(self, newstate):
+        # Overriding this method is not strictly necessary, but this is a 
+        # good place to hook state changes for notifying your app, to give 
+        # your user feedback. I used this method to set icon state and insert 
+        # a message into chat history, notifying the user that encryption is 
+        # or is not enabled. Don't forget to call the base class method
+        super(OTRContext, self).setState(newstate)
+
+
+class OTRAccount(potr.context.Account):
+
+    def __init__(self, jid, pk=None):
+        global PROTOCOL, MMS
+        super(OTRAccount, self).__init__(jid, PROTOCOL, MMS)
+        #self.keyFilePath = os.path.join("./otr-test", jid)
+
+        if pk is None:
+            pkb64 = b64encode(generateDefaultKey().serializePrivateKey())
+            msg = 'A base64-encoded DSA OTR private key for the XMPP' \
+                  'account is required. Here is a fresh one you can use: \n'
+            raise ValueError(msg + pkb64)
+        else:
+            self.pk = potr.crypt.PK.parsePrivateKey(b64decode(pk))[0]
+
+    def loadPrivkey(self):
+        return self.pk
+
+    def savePrivkey(self):
+        pass
+
+
+class OTRContextManager:
+    # The jid parameter is the logged in user's jid.  I use it to instantiate 
+    # an object of the *potr.context.Account* subclass described earlier.
+    def __init__(self, account):
+        self.account = account
+        self.contexts = {}
+
+    # This method starts a context with a peer if none exists, or returns it 
+    # otherwise
+    def start_context(self, client, other):
+        if not other in self.contexts:
+            self.contexts[other] = OTRContext(self.account, client, other)
+        return self.contexts[other]
+
+    # just an alias for start_context
+    def get_context_for_user(self, client, other):
+        return self.start_context(client, other)
 
 
 class Bot(ClientXMPP):
@@ -52,6 +149,9 @@ class Bot(ClientXMPP):
         self.xmpp = xmpp_obj
         self.add_event_handler("session_start", self.session_start)
         self.add_event_handler("message", self.message)
+
+        self.otr_account = OTRAccount(jid, self.xmpp.pk)
+        self.otr_manager = OTRContextManager(self.otr_account)
 
     def session_start(self, event):
         self.send_presence()
@@ -69,10 +169,63 @@ class Bot(ClientXMPP):
             self.disconnect()
 
     def message(self, msg):
-        if msg['type'] in ('chat', 'normal'):
-            msg_to_send = self.xmpp.parse_request(msg['from'], msg['body'])
-            if msg_to_send:
+        otrctx = self.otr_manager.get_context_for_user(self, str(msg['from']))
+
+        self.xmpp.log.info("New message received")
+        encrypted = True
+        try:
+            # Attempt to pass the msg via *potr.context.Context.receiveMessage*
+            # there are a couple of possible cases
+            res = otrctx.receiveMessage(msg["body"])
+        except potr.context.UnencryptedMessage, message:
+            # potr raises an UnencryptedMessage exception when a message is
+            # unencrypted but the context is encrypted this indicates a
+            # plaintext message came through a supposedly encrypted channel
+            # it is appropriate here to warn your user!
+            encrypted = False
+        except potr.context.NotEncryptedError:
+            # potr auto-responds saying we didn't expect an encrypted message
+            return
+
+        if encrypted == False:
+            self.xmpp.log.debug("Unencrypted message received. Replying...")
+            if msg['type'] in ('chat', 'normal'):
+                # Here is where you handle plain text messages
+                msg_to_send = self.xmpp.parse_request(
+                    msg['from'],
+                    msg['body']
+                )
                 msg.reply(msg_to_send).send()
+        else:
+            self.xmpp.log.debug("Encrypted message received. Replying...")
+            if res[0] != None:
+                # Here is where you handle decrypted messages. receiveMessage()
+                # will return a tuple, the first part of which will be the
+                # decrypted message
+                otrctx = self.otr_manager.get_context_for_user(
+                    self,
+                    str(msg['from'])
+                )
+                if otrctx.state == potr.context.STATE_ENCRYPTED:
+                    self.xmpp.log.debug("Encrypting...")
+                    # The context state should currently be encrypted, so
+                    # encrypt outgoing message passing the plain text message
+                    # into Context.sendMessage will trigger Context.inject with
+                    # an encrypted message.
+                    msg_to_send = self.xmpp.parse_request(
+                        msg['from'],
+                        msg['body']
+                    )
+                    otrctx.sendMessage(0, msg_to_send)
+                else:
+                    # The outgoing state is not encrypted, so send it plain
+                    # text, if that is supported in your app
+                    self.xmpp.log.debug("Sending unencrypted message...")
+                    msg_to_send = self.xmpp.parse_request(
+                        msg['from'],
+                        msg['body']
+                    )
+                    msg.reply(msg_to_send).send()
 
 
 class XMPP(object):
@@ -112,6 +265,7 @@ class XMPP(object):
         try:
             self.user = config.get('account', 'user')
             self.password = config.get('account', 'password')
+            self.pk = config.get('account', 'pk')
 
             self.mirrors = config.get('general', 'mirrors')
             self.max_words = config.get('general', 'max_words')
