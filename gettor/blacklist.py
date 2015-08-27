@@ -120,44 +120,41 @@ class Blacklist(object):
         :raise: BlacklistError if the user is blacklisted
 
         """
-        r = self.db.get_user(user, service)
-        if r:
-            # permanently blacklisted
-            if r['blocked']:
-                try:
+        try:
+            self.log.info("Trying to get info from user")
+            self.db.connect()
+            r = self.db.get_user(user, service)
+            if r:
+                # permanently blacklisted
+                if r['blocked']:
+                    self.log.warning("Request from user permanently blocked")
                     self.db.update_user(user, service, r['times']+1, 1)
                     raise BlacklistError("Blocked user")
-                except db.DBError as e:
-                    raise InternalError("Can't update user (%s)" % str(e))
-            # don't be greedy
-            elif r['times'] >= max_req:
-                last = datetime.datetime.fromtimestamp(
-                    float(r['last_request'])
-                )
-                next = last + datetime.timedelta(minutes=wait_time)
+                # don't be greedy
+                elif r['times'] >= max_req:
+                    last = datetime.datetime.fromtimestamp(
+                        float(r['last_request'])
+                    )
+                    next = last + datetime.timedelta(minutes=wait_time)
 
-                if datetime.datetime.now() < next:
-                    # too many requests from the same user
-                    try:
+                    if datetime.datetime.now() < next:
+                        self.log.warning("Too many requests from same user")
                         self.db.update_user(user, service, r['times']+1, 0)
                         raise BlacklistError("Too many requests")
-                    except db.DBError as e:
-                        raise InternalError("Can't update user (%s)" % str(e))
-                else:
-                    # fresh user again!
-                    try:
+                    else:
+                        # fresh user again!
+                        self.log.info("Updating counter for existing user")
                         self.db.update_user(user, service, 1, 0)
-                    except db.DBError as e:
-                        raise InternalError("Can't update user (%s)" % str(e))
-            else:
-                # adding up a request for user
-                try:
+                else:
+                    # adding up a request for user
+                    self.log.info("Request from existing user")
                     self.db.update_user(user, service, r['times']+1, 0)
-                except db.DBError as e:
-                    raise InternalError("Can't update user (%s)" % str(e))
-        else:
-            # new request for user
-            try:
+            else:
+                # new request for user
+                self.log.info("Request from new user")
                 self.db.add_user(user, service, 0)
-            except db.DBError as e:
-                raise InternalError("Can't add new user (%s)" % str(e))
+        except db.DBError as e:
+            self.log.error("Something failed!")
+            raise InternalError("Error with database (%s)" % str(e))
+        except BlacklistError as e:
+            raise BlacklistError(e)

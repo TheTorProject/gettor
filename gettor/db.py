@@ -44,8 +44,13 @@ class DB(object):
         :param: dbname (string) the path of the database.
 
         """
+        self.dbname = dbname
+
+
+    def connect(self):
+        """ """
         try:
-            self.con = sqlite3.connect(dbname)
+            self.con = sqlite3.connect(self.dbname)
             self.con.row_factory = sqlite3.Row
         except sqlite3.Error as e:
             raise DBError("%s" % str(e))
