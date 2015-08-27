@@ -44,15 +44,15 @@ def valid_format(file, osys):
     """
     if(osys == 'windows'):
         m = re.search(
-            'torbrowser-install-\d\.\d\.\d_\w\w(-\w\w)?\.exe',
+            'torbrowser-install-\d\.\d\.?\d?_\w\w(-\w\w)?\.exe',
             file)
     elif(osys == 'linux'):
         m = re.search(
-            'tor-browser-linux\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
+            'tor-browser-linux\d\d-\d\.\d\.?\d?_(\w\w)(-\w\w)?\.tar\.xz',
             file)
     elif(osys == 'osx'):
         m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx\d\d_(\w\w)(-\w\w)?\.dmg',
+            'TorBrowser-\d\.\d\.?\d?-osx\d\d_(\w\w)(-\w\w)?\.dmg',
             file)
     if m:
         return True
@@ -73,7 +73,7 @@ def get_bundle_info(file, osys):
     """
     if(osys == 'windows'):
         m = re.search(
-            'torbrowser-install-\d\.\d\.\d_(\w\w)(-\w\w)?\.exe',
+            'torbrowser-install-\d\.\d\.?\d?_(\w\w)(-\w\w)?\.exe',
             file)
         if m:
             lc = m.group(1)
@@ -82,7 +82,7 @@ def get_bundle_info(file, osys):
             raise ValueError("Invalid bundle format %s" % file)
     elif(osys == 'linux'):
         m = re.search(
-            'tor-browser-linux(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
+            'tor-browser-linux(\d\d)-\d\.\d\.?\d?_(\w\w)(-\w\w)?\.tar\.xz',
             file)
         if m:
             arch = m.group(1)
@@ -92,7 +92,7 @@ def get_bundle_info(file, osys):
             raise ValueError("Invalid bundle format %s" % file)
     elif(osys == 'osx'):
         m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx(\d\d)_(\w\w)(-\w\w)?\.dmg',
+            'TorBrowser-\d\.\d\.?\d?-osx(\d\d)_(\w\w)(-\w\w)?\.dmg',
             file)
         if m:
             os = 'osx'
@@ -351,10 +351,10 @@ if __name__ == '__main__':
             elif p3.match(file):
                 osys, arch, lc = get_bundle_info(file, 'osx')
 
-            link = "Package (%s-bit): %s\nASC signature (%s-bit): %s\n"\
-                   "Package SHA256 checksum (%s-bit): %s\n" %\
-                   (arch, link_file, arch, link_asc,
-                    arch, sha_file)
+            link = "Tor Browser %s-bit:\n%s$Tor Browser's signature %s-bit:"\
+                    "\n%s$SHA256 checksum of Tor Browser %s-bit (advanced):"\
+                    "\n%s$" %\
+                   (arch, link_file, arch, link_asc, arch, sha_file)
 
             # note that you should only upload bundles for supported locales
             core.add_link('Drive', osys, lc, link)
