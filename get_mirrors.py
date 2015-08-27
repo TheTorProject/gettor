@@ -158,6 +158,15 @@ def is_json(my_json):
     return True
 
 
+def add_tpo_link(url):
+    """Add the download link for Tor Browser."""
+    uri = 'projects/torbrowser.html.en#downloads'
+    if url.endswith('/'):
+        return "%s%s" % (url, uri)
+    else:
+        return "%s/%s" % (url, uri)
+
+
 def add_entry(mirrors, columns, elements):
     """Add entry to mirrors list."""
     entry = {}
@@ -172,9 +181,15 @@ def add_entry(mirrors, columns, elements):
 
 def add_mirror(file, entry, proto):
     """Add mirror to mirrors list."""
+    # if proto requested is http(s), we add link to download section
+    if PROTOS[proto] == 'http' or PROTOS[proto] == 'https':
+        uri = add_tpo_link(entry[proto])
+    else:
+        uri = entry[proto]
+    
     file.write(
         "%s - by %s (%s)\n" % (
-            entry[proto],
+            uri,
             entry['orgName'],
             entry['subRegion'],
         )
