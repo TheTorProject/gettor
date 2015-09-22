@@ -1,8 +1,0 @@
-# This is the default .prefs file and should be symlinked/copied into
-# /var/lib/pootle/PROJETNAME/LOCALE/pootle-PROJECTNAME-LOCALE.prefs
-# Example:
-# /var/lib/pootle/torbutton/de_DE/pootle-torbutton-de_DE.prefs
-
-rights:
-  default = u'view, suggest, translate, review, pocompile, assign, commit'
-  nobody = u'view'
