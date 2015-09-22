@@ -1,0 +1,22 @@
+domain "es"
+
+#: Links
+msgid "links"
+msgstr "Enlaces para %s-%s:\n %s"
+
+#: Links
+msgid "links_pt"
+msgstr "Enlaces-PT para %s-%s:\n %s"
+
+#: Help
+msgid "help"
+msgstr "ayuda"
+
+#: Unsupported locale
+msgid "unsupported_lc"
+msgstr "Locale no soportado"
+
+#: Internal error
+msgid "internal_error"
+msgstr "Error interno"
+
