@@ -271,8 +271,8 @@ class SMTP(object):
         # search for OS or mirrors request
         # if nothing is found, help by default
         found_request = False
-        lines = msg.split(' ')
-        for word in lines:
+        words = re.split('\s+', test.strip())
+        for word in words:
             if not found_request:
                 # OS first
                 for os in supported_os:
