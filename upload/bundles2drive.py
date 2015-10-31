@@ -17,6 +17,7 @@ import os
 import gnupg
 import hashlib
 import logging
+import argparse
 import ConfigParser
 import gettor.core
 
@@ -242,11 +243,56 @@ def share_file(service, file_id):
     except errors.HttpError, error:
         print('Error occured while fetch public link for file: %s' % file_id)
 
-    print("Uploaded to %s" % file['webContentLink'])
+    print "Uploaded %s to %s" % (file['title'], file['webContentLink'])
     return file['webContentLink']
 
 
+def get_files_links(service, v):
+    """Print links of uploaded files.
+
+    :param: service (object): Goolge Drive service object.
+    :param: v (string): Version of Tor Browser to look for.
+
+    """
+    
+    windows_re = 'torbrowser-install-%s_\w\w(-\w\w)?\.exe(\.asc)?' % v
+    linux_re = 'tor-browser-linux\d\d-%s_(\w\w)(-\w\w)?\.tar\.xz(\.asc)?' % v
+    osx_re = 'TorBrowser-%s-osx\d\d_(\w\w)(-\w\w)?\.dmg(\.asc)?' % v
+
+    # dictionary to store file names and IDs
+    files_dict = dict()
+    
+    print "Trying to fetch links of uploaded files..."
+    links = service.files().list().execute()
+    items = links.get('items', [])
+
+    if not items:
+        raise ValueError('No files found.')
+
+    else:
+        for item in items:
+            if re.search(windows_re, item['title']):
+                files_dict[item['title']] = item['id']
+            elif re.search(linux_re, item['title']):
+                files_dict[item['title']] = item['id']
+            elif re.search(osx_re, item['title']):
+                files_dict[item['title']] = item['id']
+        return files_dict
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Utility to upload Tor Browser to Google Drive.'
+    )
+    
+    # if no LC specified, download all
+    parser.add_argument(
+        '-l', '--links', default=None,
+        help='Create links file with files already uploaded and '\
+             'matching the specified version. '
+    )
+
+    args = parser.parse_args()
+
     config = ConfigParser.ConfigParser()
     config.read('drive.cfg')
 
@@ -310,7 +356,14 @@ if __name__ == '__main__':
     readable = ' '.join(fp[i:i+4] for i in xrange(0, len(fp), 4))
 
     try:
-        uploaded_files = upload_files(drive_service, upload_dir)
+        # helpful when something fails but files are uploaded.
+        if args.links:
+            uploaded_files = get_files_links(drive_service, args.links)
+
+            if not uploaded_files:
+                raise ValueError("There are no files for that version")
+        else:
+            uploaded_files = upload_files(drive_service, upload_dir)
         # use default config
         core = gettor.core.Core('/home/gettor/core.cfg')
 
@@ -351,10 +404,7 @@ if __name__ == '__main__':
             elif p3.match(file):
                 osys, arch, lc = get_bundle_info(file, 'osx')
 
-            link = "Tor Browser %s-bit:\n%s$Tor Browser's signature %s-bit:"\
-                    "\n%s$SHA256 checksum of Tor Browser %s-bit (advanced):"\
-                    "\n%s$" %\
-                   (arch, link_file, arch, link_asc, arch, sha_file)
+            link = "%s$%s$%s$" % (link_file, link_asc, sha_file)
 
             # note that you should only upload bundles for supported locales
             core.add_link('Drive', osys, lc, link)
