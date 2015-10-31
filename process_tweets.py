@@ -7,22 +7,9 @@ import logging
 import gettor.twitter
 
 def main():
-    """Quick way of running the thing.
-
-    Note that default right now is 'no async', which means, function won't
-    return; on the other hand everything "will just work."
-
-    If async is off, then we can:
-    >>> from quick_run import quick_run
-    >>> bot = quick_run() # authenticate, subscribe to streaming api, get handle
-    """
-
     try:
-        bot = TwitterBot()
-        bot.authenticate()
-        # bot.api.update_status('hello world!')
-        bot.subscribeToStreams()
-        return bot
+        bot = gettor.twitter.TwitterBot()
+        bot.start()
     except gettor.twitter.ConfigError as e:
         print "Configuration error: %s" % str(e)
     except gettor.twitter.InternalError as e:
