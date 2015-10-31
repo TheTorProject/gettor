@@ -18,6 +18,7 @@ import sys
 import time
 import shutil
 import hashlib
+import argparse
 
 from libsaas.services import github
 import gnupg
@@ -80,22 +81,39 @@ def get_bundle_info(file, osys):
             return 'osx', arch, lc
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Utility to upload Tor Browser to Github.'
+    )
+    
+    # with this we only get the links of files already uploaded
+    # useful when somethings fail after uploading
+    parser.add_argument(
+        '-l', '--links', default=None,
+        help='Create links file with files already uploaded.'
+    )
+
+    parser.add_argument(
+        '-v', '--version', default=None,
+        help='Version of Tor Browser.'
+    )
+
+    args = parser.parse_args()
 
     # this script should be called after fetching the latest Tor Browser,
     # and specifying the latest version
-    version = sys.argv[1]
+    version = args.version
 
     # the token allow us to run this script without GitHub user/pass
     gh_token = ''
 
     # path to the fingerprint that signed the packages
-    tb_key = os.path.abspath('tbb-key.asc')
+    tb_key = os.path.abspath('tbb-key-torbrowserteam.asc')
 
     # path to the latest version of Tor Browser
     tb_path = os.path.abspath('upload/latest')
 
     # path to the repository where we upload Tor Browser
-    repo_path = os.path.abspath('dl')
+    repo_path = os.path.abspath('gettorbrowser')
 
     # wait time between pushing the files to GH and asking for its links
     wait_time = 10
@@ -114,8 +132,8 @@ if __name__ == '__main__':
     # want to push the files using an SSH key (to avoid using user/pass)
     remote = 'origin'
     branch = 'master'
-    user = 'gettorbrowser'
-    repo = 'dl'
+    user = 'TheTorProject'
+    repo = 'gettorbrowser'
     raw_content = 'https://raw.githubusercontent.com/%s/%s/%s/' %\
                   (user, repo, branch)
 
@@ -125,20 +143,22 @@ if __name__ == '__main__':
     # 3) make a commit for the new version
     # 4) push the changes
 
-    shutil.copytree(
-        tb_path,
-        os.path.abspath('%s/%s' % (repo_path, version))
-    )
+    if not args.links:
+        shutil.copytree(
+            tb_path,
+            os.path.abspath('%s/%s' % (repo_path, version))
+        )
 
-    git = sh.git.bake(_cwd=repo_path)
-    git.add('%s' % version)
-    git.commit(m=version)
-    git.push()
+        git = sh.git.bake(_cwd=repo_path)
+        git.add('%s' % version)
+        git.commit(m=version)
+        git.push()
 
-    # it takes a while to process the recently pushed files
-    print "Wait a few seconds before asking for the links to Github..."
-    time.sleep(wait_time)
+        # it takes a while to process the recently pushed files
+        print "Wait a few seconds before asking for the links to Github..."
+        time.sleep(wait_time)
 
+    print "Trying to get the links"
     gh = github.GitHub(gh_token, None)
     repocontent = gh.repo(
         user,
@@ -176,7 +196,7 @@ if __name__ == '__main__':
 
             sha256 = get_file_sha256(
                 os.path.abspath(
-                    'dl/%s/%s' % (version, filename)
+                    '%s/%s/%s' % (repo, version, filename)
                 )
             )
 
@@ -185,11 +205,7 @@ if __name__ == '__main__':
             # asc signature just by adding '.asc'
             link_asc = file[u'download_url'].replace(filename, filename_asc)
 
-            link = "Tor Browser %s-bit:\n%s$Tor Browser's signature %s-bit:"\
-                    "\n%s$SHA256 checksum of Tor Browser %s-bit (advanced):"\
-                    "\n%s$" %\
-                   (arch, file[u'download_url'], arch, link_asc,
-                    arch, sha256)
+            link = "%s$%s$%s$" % (file[u'download_url'], link_asc, sha256)
 
             print "Adding %s" % file[u'download_url']
             core.add_link('GitHub', osys, lc, link)

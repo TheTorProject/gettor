@@ -16,10 +16,12 @@ import re
 import os
 import gnupg
 import hashlib
+import logging
+import argparse
 import ConfigParser
 import gettor.core
 
-#import google drive libs
+# import google drive libs
 import httplib2
 from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
@@ -43,15 +45,15 @@ def valid_format(file, osys):
     """
     if(osys == 'windows'):
         m = re.search(
-            'torbrowser-install-\d\.\d\.\d_\w\w(-\w\w)?\.exe',
+            'torbrowser-install-\d\.\d\.?\d?_\w\w(-\w\w)?\.exe',
             file)
     elif(osys == 'linux'):
         m = re.search(
-            'tor-browser-linux\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
+            'tor-browser-linux\d\d-\d\.\d\.?\d?_(\w\w)(-\w\w)?\.tar\.xz',
             file)
     elif(osys == 'osx'):
         m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx\d\d_(\w\w)(-\w\w)?\.dmg',     
+            'TorBrowser-\d\.\d\.?\d?-osx\d\d_(\w\w)(-\w\w)?\.dmg',
             file)
     if m:
         return True
@@ -72,7 +74,7 @@ def get_bundle_info(file, osys):
     """
     if(osys == 'windows'):
         m = re.search(
-            'torbrowser-install-\d\.\d\.\d_(\w\w)(-\w\w)?\.exe',
+            'torbrowser-install-\d\.\d\.?\d?_(\w\w)(-\w\w)?\.exe',
             file)
         if m:
             lc = m.group(1)
@@ -81,7 +83,7 @@ def get_bundle_info(file, osys):
             raise ValueError("Invalid bundle format %s" % file)
     elif(osys == 'linux'):
         m = re.search(
-            'tor-browser-linux(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
+            'tor-browser-linux(\d\d)-\d\.\d\.?\d?_(\w\w)(-\w\w)?\.tar\.xz',
             file)
         if m:
             arch = m.group(1)
@@ -91,7 +93,7 @@ def get_bundle_info(file, osys):
             raise ValueError("Invalid bundle format %s" % file)
     elif(osys == 'osx'):
         m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx(\d\d)_(\w\w)(-\w\w)?\.dmg',
+            'TorBrowser-\d\.\d\.?\d?-osx(\d\d)_(\w\w)(-\w\w)?\.dmg',
             file)
         if m:
             os = 'osx'
@@ -143,21 +145,21 @@ def upload_files(client, basedir):
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
         if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'linux'):
+           and valid_format(name, 'linux'):
             files.append(name)
 
     p = re.compile('.*\.exe$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
         if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'windows'):
+           and valid_format(name, 'windows'):
             files.append(name)
 
     p = re.compile('.*\.dmg$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
         if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'osx'):
+           and valid_format(name, 'osx'):
             files.append(name)
 
     # dictionary to store file names and IDs
@@ -173,32 +175,43 @@ def upload_files(client, basedir):
             continue
 
         # upload tor browser installer
-        file_body = MediaFileUpload(abs_file, resumable=True)
+        file_body = MediaFileUpload(
+            abs_file,
+            mimetype="application/octet-stream",
+            resumable=True
+        )
         body = {
-          'title': file
+            'title': file
         }
         print "Uploading '%s'..." % file
         try:
-            file_data = drive_service.files().insert(body=body, media_body=file_body).execute()
+            file_data = drive_service.files().insert(
+                body=body,
+                media_body=file_body
+                ).execute()
         except errors.HttpError, e:
             print str(e)
 
         # upload signature
         asc_body = MediaFileUpload(abs_asc, resumable=True)
         asc_head = {
-           'title': "%s.asc" % file
+            'title': "%s.asc" % file
         }
         print "Uploading '%s'..." % asc
         try:
-            asc_data = drive_service.files().insert(body=asc_head, media_body=asc_body).execute()
+            asc_data = drive_service.files().insert(
+                body=asc_head,
+                media_body=asc_body
+                ).execute()
         except errors.HttpError, e:
             print str(e)
 
         # add filenames and file id to dict
         files_dict[file] = file_data['id']
-        files_dict[asc]  = asc_data['id']
+        files_dict[asc] = asc_data['id']
 
     return files_dict
+
 
 def share_file(service, file_id):
     """Make files public
@@ -207,32 +220,79 @@ def share_file(service, file_id):
     link to file.
 
     :param: file_id (string)
-    
+
     :return: (string) url to shared file
-   
+
     """
     permission = {
-         'type': "anyone",
-         'role': "reader",
-         'withLink': True
+        'type': "anyone",
+        'role': "reader",
+        'withLink': True
     }
-    
+
     try:
         service.permissions().insert(
-               fileId=file_id, body=permission).execute()
+            fileId=file_id,
+            body=permission
+            ).execute()
     except errors.HttpError, error:
-           print('An error occured while sharing: %s' % file_id)
+        print('An error occured while sharing: %s' % file_id)
 
     try:
         file = service.files().get(fileId=file_id).execute()
     except errors.HttpError, error:
-           print('Error occured while fetch public link for file: %s' % file_id)
+        print('Error occured while fetch public link for file: %s' % file_id)
 
-    print("Uploaded to %s" % file['webContentLink'])
+    print "Uploaded %s to %s" % (file['title'], file['webContentLink'])
     return file['webContentLink']
 
 
+def get_files_links(service, v):
+    """Print links of uploaded files.
+
+    :param: service (object): Goolge Drive service object.
+    :param: v (string): Version of Tor Browser to look for.
+
+    """
+    
+    windows_re = 'torbrowser-install-%s_\w\w(-\w\w)?\.exe(\.asc)?' % v
+    linux_re = 'tor-browser-linux\d\d-%s_(\w\w)(-\w\w)?\.tar\.xz(\.asc)?' % v
+    osx_re = 'TorBrowser-%s-osx\d\d_(\w\w)(-\w\w)?\.dmg(\.asc)?' % v
+
+    # dictionary to store file names and IDs
+    files_dict = dict()
+    
+    print "Trying to fetch links of uploaded files..."
+    links = service.files().list().execute()
+    items = links.get('items', [])
+
+    if not items:
+        raise ValueError('No files found.')
+
+    else:
+        for item in items:
+            if re.search(windows_re, item['title']):
+                files_dict[item['title']] = item['id']
+            elif re.search(linux_re, item['title']):
+                files_dict[item['title']] = item['id']
+            elif re.search(osx_re, item['title']):
+                files_dict[item['title']] = item['id']
+        return files_dict
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Utility to upload Tor Browser to Google Drive.'
+    )
+    
+    # if no LC specified, download all
+    parser.add_argument(
+        '-l', '--links', default=None,
+        help='Create links file with files already uploaded and '\
+             'matching the specified version. '
+    )
+
+    args = parser.parse_args()
+
     config = ConfigParser.ConfigParser()
     config.read('drive.cfg')
 
@@ -250,29 +310,33 @@ if __name__ == '__main__':
 
     print "Authenticating..."
 
-    flow = OAuth2WebServerFlow(client_id, app_secret, OAUTH_SCOPE,
-                           redirect_uri=REDIRECT_URI)
+    flow = OAuth2WebServerFlow(
+        client_id,
+        app_secret,
+        OAUTH_SCOPE,
+        redirect_uri=REDIRECT_URI
+    )
 
     # If no valid token found, need to prompt user.
     # this should only occur once
     if not refresh_token:
-       flow.params['access_type'] = 'offline'
-       flow.params['approval_prompt'] = 'force'
-       authorize_url = flow.step1_get_authorize_url()
-       print 'Go to the following link in your browser: ' + authorize_url
-       code = raw_input('Enter verification code: ').strip()
-       try:
-           credentials = flow.step2_exchange(code)
-       except FlowExchangeError as e:
-           print str(e)
+        flow.params['access_type'] = 'offline'
+        flow.params['approval_prompt'] = 'force'
+        authorize_url = flow.step1_get_authorize_url()
+        print 'Go to the following link in your browser: ' + authorize_url
+        code = raw_input('Enter verification code: ').strip()
+        try:
+            credentials = flow.step2_exchange(code)
+        except FlowExchangeError as e:
+            print str(e)
 
-       # oauth2 credentials instance must be stored as json string
-       config.set('app', 'refresh_token', credentials.to_json())
-       with open('drive.cfg', 'wb') as configfile:
+        # oauth2 credentials instance must be stored as json string
+        config.set('app', 'refresh_token', credentials.to_json())
+        with open('drive.cfg', 'wb') as configfile:
             config.write(configfile)
     else:
-       # we already have a valid token
-       credentials = Credentials.new_from_json(refresh_token)
+        # we already have a valid token
+        credentials = Credentials.new_from_json(refresh_token)
 
     # authenticate with oauth2
     http = httplib2.Http()
@@ -280,7 +344,6 @@ if __name__ == '__main__':
 
     # initialize drive instance
     drive_service = build('drive', 'v2', http=http)
-
 
     # import key fingerprint
     gpg = gnupg.GPG()
@@ -293,7 +356,14 @@ if __name__ == '__main__':
     readable = ' '.join(fp[i:i+4] for i in xrange(0, len(fp), 4))
 
     try:
-        uploaded_files = upload_files(drive_service, upload_dir)
+        # helpful when something fails but files are uploaded.
+        if args.links:
+            uploaded_files = get_files_links(drive_service, args.links)
+
+            if not uploaded_files:
+                raise ValueError("There are no files for that version")
+        else:
+            uploaded_files = upload_files(drive_service, upload_dir)
         # use default config
         core = gettor.core.Core('/home/gettor/core.cfg')
 
@@ -309,7 +379,7 @@ if __name__ == '__main__':
         for file in uploaded_files.keys():
             # only run for tor browser installers
             if p4.match(file):
-               continue
+                continue
             asc = "%s.asc" % file
             abs_file = os.path.abspath(os.path.join(upload_dir, file))
             abs_asc = os.path.abspath(os.path.join(upload_dir, asc))
@@ -317,10 +387,15 @@ if __name__ == '__main__':
             sha_file = get_file_sha256(abs_file)
 
             # build links
-            link_file = share_file(drive_service,
-                                   uploaded_files[file])
-            link_asc  = share_file(drive_service,
-                                   uploaded_files["%s.asc" % file])
+            link_file = share_file(
+                drive_service,
+                uploaded_files[file]
+            )
+
+            link_asc = share_file(
+                drive_service,
+                uploaded_files["%s.asc" % file]
+            )
 
             if p1.match(file):
                 osys, arch, lc = get_bundle_info(file, 'linux')
@@ -329,10 +404,7 @@ if __name__ == '__main__':
             elif p3.match(file):
                 osys, arch, lc = get_bundle_info(file, 'osx')
 
-            link = "Package (%s-bit): %s\nASC signature (%s-bit): %s\n"\
-                   "Package SHA256 checksum (%s-bit): %s\n" %\
-                   (arch, link_file, arch, link_asc,
-                    arch, sha_file)
+            link = "%s$%s$%s$" % (link_file, link_asc, sha_file)
 
             # note that you should only upload bundles for supported locales
             core.add_link('Drive', osys, lc, link)
