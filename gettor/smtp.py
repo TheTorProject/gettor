@@ -308,7 +308,7 @@ class SMTP(object):
         email_obj['From'] = from_addr
         email_obj['To'] = to_addr
 
-        msg_attach = MIMEText(msg, 'text')
+        msg_attach = MIMEText(msg, 'plain')
         email_obj.attach(msg_attach)
 
         return email_obj
