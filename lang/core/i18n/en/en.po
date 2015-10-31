@@ -1,9 +1,0 @@
-domain "en"
-
-#: Fingerprint message
-msgid "fingerprint"
-msgstr "Fingerprint of key used to sign Tor Browser (advanced): %s"
-
-#: Provider description
-msgid "provider_desc"
-msgstr "[From %s]"
