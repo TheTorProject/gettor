@@ -5,21 +5,24 @@ name = GitHub
 fingerprint = 8738 A680 B84B 3031 A630 F2DB 416F 0610 63FE E659
 
 [linux]
-en = Package (32-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/tor-browser-linux32-4.0.3_en.tar.xz
-	ASC signature (32-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/tor-browser-linux32-4.0.3_en.tar.xz.asc
-	Package SHA256 checksum (32-bit): 7df98c47a629c78f648537b975c827ac83181ed1f82ac03759e8e3337aae00f3,
-	Package (64-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/tor-browser-linux64-4.0.3_en.tar.xz
-	ASC signature (64-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/tor-browser-linux64-4.0.3_en.tar.xz.asc
-	Package SHA256 checksum (64-bit): 7df98c47a629c78f648537b975c827ac83181ed1f82ac03759e8e3337aae00f3
+en = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux32-5.0.3_en-US.tar.xz$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux32-5.0.3_en-US.tar.xz.asc$0e94498cb83a07895bf8becf76d3c3b071d8cfadd50048971f701819f80a56aa$,
+	https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux64-5.0.3_en-US.tar.xz$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux64-5.0.3_en-US.tar.xz.asc$4b7fed9499915fd95497ccf13af00f6b5226d7066d24f6396d00666a5b8c1ad3$
+fa = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux32-5.0.3_fa.tar.xz$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux32-5.0.3_fa.tar.xz.asc$5666669aaeb695045a9263775d108a9fbe04899d3ef70aa27906a58245d713f4$,
+	https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux64-5.0.3_fa.tar.xz$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux64-5.0.3_fa.tar.xz.asc$40ade5f6883a70af77de37da8a50bd72b533b1b65d198a0d8f02c2d5f4791355$
+tr = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux32-5.0.3_tr.tar.xz$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux32-5.0.3_tr.tar.xz.asc$44bdcd53aaefc894f8556258b42fadc5fd10458db01f568734a47a9f6d070e5c$,
+	https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux64-5.0.3_tr.tar.xz$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux64-5.0.3_tr.tar.xz.asc$79270b1cdcf41a251eb980281c29c2465ac06f299e0bacb9fd0190f87338d167$
+zh = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux32-5.0.3_zh-CN.tar.xz$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux32-5.0.3_zh-CN.tar.xz.asc$f1d5a0084d06e838a5acfe4352995c40c54ac4488006acb014ab7cf81360f62e$,
+	https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux64-5.0.3_zh-CN.tar.xz$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/tor-browser-linux64-5.0.3_zh-CN.tar.xz.asc$d35a2f1dca74428f167bea96cc49c0c7351274904fafc30194592aa74201376a$
 
 [windows]
-ar = Package (32/64-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/torbrowser-install-4.0.3_ar.exe
-	ASC signature (32/64-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/torbrowser-install-4.0.3_ar.exe.asc
-	Package SHA256 checksum (32/64-bit): f4be40da212f5d0dc53dbcc254ec44a0a3a91c521c7df211b8d6d936ebdf42a6
-	
+en = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/torbrowser-install-5.0.3_en-US.exe$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/torbrowser-install-5.0.3_en-US.exe.asc$443b38f4aa1194125ca3c79157272d5c64006928c9128127788c1cdefa642d85$
+fa = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/torbrowser-install-5.0.3_fa.exe$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/torbrowser-install-5.0.3_fa.exe.asc$15f06a3ad256042dde071690f4d4e53a5952fe9260592d5546cabda779eb8a47$
+tr = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/torbrowser-install-5.0.3_tr.exe$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/torbrowser-install-5.0.3_tr.exe.asc$eff7885186fe3e5fc3bcc404d671175d279707d8e1e05d203a12a176aa4ea189$
+zh = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/torbrowser-install-5.0.3_zh-CN.exe$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/torbrowser-install-5.0.3_zh-CN.exe.asc$54443a66e16c8ffe02d10fe00e3bec50800eb4a93e2360a7d1b8a10f3bb77c0e$
 
 [osx]
-en = Package (32-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/TorBrowser-4.0.3-osx32_en.dmg
-	ASC signature (32-bit): https://raw.githubusercontent.com/ilv/gettor/master/upload/4.0.3/TorBrowser-4.0.3-osx32_en.dmg.asc
-	Package SHA256 checksum (32-bit): 55f5e4102c240d74e2dd2a48c55660426f17a226053aaaff172aaa13b7ae2b1d
+en = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/TorBrowser-5.0.3-osx64_en-US.dmg$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/TorBrowser-5.0.3-osx64_en-US.dmg.asc$f6a38fa3a72c9c60a457be6412f79e1efacd7ff5d993c48791550cc285ff164a$
+fa = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/TorBrowser-5.0.3-osx64_fa.dmg$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/TorBrowser-5.0.3-osx64_fa.dmg.asc$5af13ce9f4d71195a204491ac30dea0a1cf75de41533fb2c3281fd7cbc3fb55d$
+tr = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/TorBrowser-5.0.3-osx64_tr.dmg$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/TorBrowser-5.0.3-osx64_tr.dmg.asc$9363e252cee1a783a85dbdb000fc403da57cf2e32d63cf60d4e6f8a508e4bec4$
+zh = https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/TorBrowser-5.0.3-osx64_zh-CN.dmg$https://raw.githubusercontent.com/TheTorProject/gettorbrowser/master/5.0.3/TorBrowser-5.0.3-osx64_zh-CN.dmg.asc$eda5b7377b1a24fc918d9b16d4400a8b64975e57649623aea1e5e8b6b4f27dc6$
 

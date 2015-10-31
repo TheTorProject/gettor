@@ -2,24 +2,27 @@
 name = Dropbox
 
 [key]
-fingerprint = 8738 A680 B84B 3031 A630 F2DB 416F 0610 63FE E659
+fingerprint = EF6E 286D DA85 EA2A 4BA7 DE68 4E2C 6E87 9329 8290
 
 [linux]
-en = Package (64-bit): https://www.dropbox.com/s/p2l6keaoly2kzce/tor-browser-linux64-3.6.2_en-EN.tar.xz?dl=1
-	ASC signature (64-bit): https://www.dropbox.com/s/b85ecxkoz9126j3/tor-browser-linux64-3.6.2_en-EN.tar.xz.asc?dl=1
-	Package SHA256 checksum (64-bit): 98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4,
-	Package (32-bit): https://www.dropbox.com/s/rxfczlz7j8gn6pi/tor-browser-linux32-3.6.2_en-EN.tar.xz?dl=1
-	ASC signature (32-bit): https://www.dropbox.com/s/g5g0havjgunf1un/tor-browser-linux32-3.6.2_en-EN.tar.xz.asc?dl=1
-	Package SHA256 checksum (32-bit): 98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
-es = Package (32-bit): https://www.dropbox.com/s/xkv4dvmeuppscs2/tor-browser-linux32-3.6.2_es-ES.tar.xz?dl=1
-	ASC signature (32-bit): https://www.dropbox.com/s/66c5x6jnzrs67vw/tor-browser-linux32-3.6.2_es-ES.tar.xz.asc?dl=1
-	Package SHA256 checksum (32-bit): 98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
-	
+en = https://www.dropbox.com/s/n99f4vh2pfvvsyv/tor-browser-linux64-5.0.3_en-US.tar.xz?dl=1$https://www.dropbox.com/s/jw8qtn6yujocx8m/tor-browser-linux64-5.0.3_en-US.tar.xz.asc?dl=1$4b7fed9499915fd95497ccf13af00f6b5226d7066d24f6396d00666a5b8c1ad3$,
+	https://www.dropbox.com/s/ljj2szpgozshye5/tor-browser-linux32-5.0.3_en-US.tar.xz?dl=1$https://www.dropbox.com/s/g0bvsimq5otmku1/tor-browser-linux32-5.0.3_en-US.tar.xz.asc?dl=1$0e94498cb83a07895bf8becf76d3c3b071d8cfadd50048971f701819f80a56aa$
+fa = https://www.dropbox.com/s/6pn7arw9zunuzqh/tor-browser-linux32-5.0.3_fa.tar.xz?dl=1$https://www.dropbox.com/s/wdp8gy4dv2l4pta/tor-browser-linux32-5.0.3_fa.tar.xz.asc?dl=1$5666669aaeb695045a9263775d108a9fbe04899d3ef70aa27906a58245d713f4$,
+	https://www.dropbox.com/s/ry0o0faa0kwgy1o/tor-browser-linux64-5.0.3_fa.tar.xz?dl=1$https://www.dropbox.com/s/3mawfqt8wmvdjaz/tor-browser-linux64-5.0.3_fa.tar.xz.asc?dl=1$40ade5f6883a70af77de37da8a50bd72b533b1b65d198a0d8f02c2d5f4791355$
+tr = https://www.dropbox.com/s/idya31ldqpjqb0z/tor-browser-linux32-5.0.3_tr.tar.xz?dl=1$https://www.dropbox.com/s/nao0ly0ymg3sxam/tor-browser-linux32-5.0.3_tr.tar.xz.asc?dl=1$44bdcd53aaefc894f8556258b42fadc5fd10458db01f568734a47a9f6d070e5c$,
+	https://www.dropbox.com/s/iaupd5h9em0gj1o/tor-browser-linux64-5.0.3_tr.tar.xz?dl=1$https://www.dropbox.com/s/cwgb5ccm8pn8ygh/tor-browser-linux64-5.0.3_tr.tar.xz.asc?dl=1$79270b1cdcf41a251eb980281c29c2465ac06f299e0bacb9fd0190f87338d167$
+zh = https://www.dropbox.com/s/xpqzfu8atgzlr5k/tor-browser-linux64-5.0.3_zh-CN.tar.xz?dl=1$https://www.dropbox.com/s/xmdru6c3ajpgfun/tor-browser-linux64-5.0.3_zh-CN.tar.xz.asc?dl=1$d35a2f1dca74428f167bea96cc49c0c7351274904fafc30194592aa74201376a$,
+	https://www.dropbox.com/s/342siwbhr4iayv9/tor-browser-linux32-5.0.3_zh-CN.tar.xz?dl=1$https://www.dropbox.com/s/14om59ti9h7n0s6/tor-browser-linux32-5.0.3_zh-CN.tar.xz.asc?dl=1$f1d5a0084d06e838a5acfe4352995c40c54ac4488006acb014ab7cf81360f62e$
 
 [windows]
-en = Package (32-bit): https://www.dropbox.com/s/oocrw3joj4d8kn8/tor-browser-windows32-3.6.2_en-EN.tar.xz?dl=1
-	ASC signature (32-bit): https://www.dropbox.com/s/gwbepymnaxvhm94/tor-browser-windows32-3.6.2_en-EN.tar.xz.asc?dl=1
-	Package SHA256 checksum (32-bit): 98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
+en = https://www.dropbox.com/s/v4sm1m3sh4mr610/torbrowser-install-5.0.3_en-US.exe?dl=1$https://www.dropbox.com/s/lvu54ihfcsd3yez/torbrowser-install-5.0.3_en-US.exe.asc?dl=1$443b38f4aa1194125ca3c79157272d5c64006928c9128127788c1cdefa642d85$
+fa = https://www.dropbox.com/s/09bdha17zy9c6kw/torbrowser-install-5.0.3_fa.exe?dl=1$https://www.dropbox.com/s/exaaccp2yx2rke7/torbrowser-install-5.0.3_fa.exe.asc?dl=1$15f06a3ad256042dde071690f4d4e53a5952fe9260592d5546cabda779eb8a47$
+tr = https://www.dropbox.com/s/tx0vfk426qep9cs/torbrowser-install-5.0.3_tr.exe?dl=1$https://www.dropbox.com/s/nwbdj8zruymua8j/torbrowser-install-5.0.3_tr.exe.asc?dl=1$eff7885186fe3e5fc3bcc404d671175d279707d8e1e05d203a12a176aa4ea189$
+zh = https://www.dropbox.com/s/y3rw3b8twdpbgff/torbrowser-install-5.0.3_zh-CN.exe?dl=1$https://www.dropbox.com/s/lbh81p8ve75cdrn/torbrowser-install-5.0.3_zh-CN.exe.asc?dl=1$54443a66e16c8ffe02d10fe00e3bec50800eb4a93e2360a7d1b8a10f3bb77c0e$
 
 [osx]
+tr = https://www.dropbox.com/s/g2i2v1y14qmzmtx/TorBrowser-5.0.3-osx64_tr.dmg?dl=1$https://www.dropbox.com/s/hyxlm0lb6rjhefg/TorBrowser-5.0.3-osx64_tr.dmg.asc?dl=1$9363e252cee1a783a85dbdb000fc403da57cf2e32d63cf60d4e6f8a508e4bec4$
+en = https://www.dropbox.com/s/l0vg38jznpf2cty/TorBrowser-5.0.3-osx64_en-US.dmg?dl=1$https://www.dropbox.com/s/zxxgk6qffsx4ede/TorBrowser-5.0.3-osx64_en-US.dmg.asc?dl=1$f6a38fa3a72c9c60a457be6412f79e1efacd7ff5d993c48791550cc285ff164a$
+fa = https://www.dropbox.com/s/omi2u8s8z8nf9p9/TorBrowser-5.0.3-osx64_fa.dmg?dl=1$https://www.dropbox.com/s/0g5zhnmpkv5qtsa/TorBrowser-5.0.3-osx64_fa.dmg.asc?dl=1$5af13ce9f4d71195a204491ac30dea0a1cf75de41533fb2c3281fd7cbc3fb55d$
+zh = https://www.dropbox.com/s/hh9353slx9qfgi2/TorBrowser-5.0.3-osx64_zh-CN.dmg?dl=1$https://www.dropbox.com/s/q2wmc2nrkdyhjvh/TorBrowser-5.0.3-osx64_zh-CN.dmg.asc?dl=1$eda5b7377b1a24fc918d9b16d4400a8b64975e57649623aea1e5e8b6b4f27dc6$
 
