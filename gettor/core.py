@@ -290,7 +290,7 @@ class Core(object):
         
             all_links.append(msg)
         
-        msg = "\n\n\nTor Browser's signature %s-bit (in the same order):" %\
+        msg = "\n\n\nTor Browser's signature %s-bit:" %\
               arch
         for link in links32:
             msg = "%s\n%s" % (msg, links32[link])
@@ -300,7 +300,7 @@ class Core(object):
         if osys == 'linux':
             msg = "\n\n\nTor Browser's signature 64-bit:"
             for link in links64:
-                msg = "%s\n%s" % (msg, links64[link])
+                msg = "%s%s" % (msg, links64[link])
             
             all_links.append(msg)
         
