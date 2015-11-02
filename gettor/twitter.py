@@ -95,7 +95,6 @@ class TwitterBot(object):
             raise InternalError("Core error: %s" % str(e))
 
         # logging
-        """
         log = logging.getLogger(__name__)
 
         logging_format = utils.get_logging_format()
@@ -109,8 +108,8 @@ class TwitterBot(object):
         log.addHandler(logfileh)
 
         # stop logging on stdout from now on
-        log.propagate = False
-        #self.log = log"""
+        #log.propagate = False
+        self.log = log
     
     def _is_blacklisted(self, username):
         """Check if a user is blacklisted.
@@ -221,18 +220,18 @@ class TwitterBot(object):
 
         try:
             if self._is_blacklisted(str(sender_id)):
-                #self.log.info("Request from blacklisted account!")
+                self.log.info("Request from blacklisted account!")
                 status = 'blacklisted'
                 bogus_request = True
 
             if not bogus_request:
-                #self.log.debug("Request seems legit, let's parse it")
+                self.log.debug("Request seems legit, let's parse it")
                 # let's try to guess what the user is asking
                 request = self.parse_text(str(msg))
         
                 # possible options: links, mirrors, help
                 if request['type'] == 'links':
-                    #self.log.debug("Type of request: help")
+                    self.log.debug("Type of request: links")
                     links = self.core.get_links(
                         'Twitter',
                         request['os'],
@@ -244,7 +243,7 @@ class TwitterBot(object):
                     
 
                 elif request['type'] == 'mirrors':
-                    #self.log.debug("Type of request: mirrors")
+                    self.log.debug("Type of request: mirrors")
                     status = 'success'
                     reply = self._get_msg('mirrors', 'en')
                     try:
@@ -256,7 +255,7 @@ class TwitterBot(object):
                         reply = self._get_msg('mirrors_unavailable', 'en')
 
                 else:
-                    #self.log.debug("Type of request: help")
+                    self.log.debug("Type of request: help")
                     status = 'success'
                     reply = self._get_msg('help', 'en')
                 
@@ -267,14 +266,14 @@ class TwitterBot(object):
 
         except (core.ConfigError, core.InternalError) as e:
             # if core failes, send the user an error message, but keep going
-            #self.log.error("Something went wrong internally: %s" % str(e))
+            self.log.error("Something went wrong internally: %s" % str(e))
             status = 'core_error'
             reply = self._get_msg('internal_error', 'en')
 
         finally:
             # keep stats
             if request:
-                #self.log.debug("Adding request to database... ")
+                self.log.debug("Adding request to database... ")
                 self.core.add_request_to_db()    
 
     def start(self):
