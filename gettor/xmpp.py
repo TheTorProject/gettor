@@ -283,7 +283,7 @@ class XMPP(object):
 
             # first let's find out how many words are in the message
             # request shouldn't be longer than 3 words, but just in case
-            words = msg.split(' ')
+            words = re.split('\s+', msg.strip())
             if len(words) > self.max_words:
                 bogus_request = True
                 self.log.info("Message way too long")

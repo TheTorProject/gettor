@@ -271,7 +271,7 @@ class SMTP(object):
         # search for OS or mirrors request
         # if nothing is found, help by default
         found_request = False
-        words = re.split('\s+', test.strip())
+        words = re.split('\s+', msg.strip())
         for word in words:
             if not found_request:
                 # OS first
