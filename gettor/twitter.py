@@ -24,6 +24,7 @@ import blacklist
 
 """Twitter channel for distributing links to download Tor Browser."""
 
+
 class ConfigError(Exception):
     pass
 
@@ -51,7 +52,7 @@ class TwitterBot(object):
 
         :param: cfg (string) the path of the configuration file.
         """
-        
+
         default_cfg = 'twitter.cfg'
         config = ConfigParser.ConfigParser()
 
@@ -107,10 +108,8 @@ class TwitterBot(object):
         logfileh.setLevel(logging.getLevelName(loglevel))
         log.addHandler(logfileh)
 
-        # stop logging on stdout from now on
-        #log.propagate = False
         self.log = log
-    
+
     def _is_blacklisted(self, username):
         """Check if a user is blacklisted.
 
@@ -141,7 +140,6 @@ class TwitterBot(object):
         Return: a string containing the given message.
 
         """
-        #self.log.debug("Getting message '%s' for locale %s" % (msgid, lc))
         try:
             t = gettext.translation(lc, self.i18ndir, languages=[lc])
             _ = t.ugettext
@@ -161,7 +159,7 @@ class TwitterBot(object):
 
         :return: request (list) 3-tuple with locale, os and type of request.
         """
-        
+
         # core knows what OS are supported
         supported_os = self.core.get_supported_os()
         supported_lc = self.core.get_supported_lc()
@@ -198,7 +196,7 @@ class TwitterBot(object):
                     req['type'] = 'mirrors'
             if (found_lc and found_os) or (found_lc and found_mirrors):
                 break
-            
+
         return req
 
     def parse_request(self, dm):
@@ -220,31 +218,30 @@ class TwitterBot(object):
 
         try:
             if self._is_blacklisted(str(sender_id)):
-                self.log.info("Request from blacklisted account!")
-                status = 'blacklisted'
+                self.log.info('REQUEST: blacklist; OS: none; LC: none')
                 bogus_request = True
 
             if not bogus_request:
                 self.log.debug("Request seems legit, let's parse it")
                 # let's try to guess what the user is asking
                 request = self.parse_text(str(msg))
-        
+
                 # possible options: links, mirrors, help
                 if request['type'] == 'links':
-                    self.log.debug("Type of request: links")
+                    self.log.info('REQUEST: links; OS: %s; LC: %s' %
+                                  (req['os'], req['lc']))
                     links = self.core.get_links(
                         'Twitter',
                         request['os'],
                         request['lc']
                     )
-                    
+
                     reply = self._get_msg('links', 'en')
                     reply = reply % (request['os'], request['lc'], links)
-                    
 
                 elif request['type'] == 'mirrors':
-                    self.log.debug("Type of request: mirrors")
-                    status = 'success'
+                    self.log.info('REQUEST: mirrors; OS: none; LC: %s' %
+                                  req['lc'])
                     reply = self._get_msg('mirrors', 'en')
                     try:
                         with open(self.mirrors, "r") as list_mirrors:
@@ -255,10 +252,10 @@ class TwitterBot(object):
                         reply = self._get_msg('mirrors_unavailable', 'en')
 
                 else:
-                    self.log.debug("Type of request: help")
-                    status = 'success'
+                    self.log.info('REQUEST: help; OS: none; LC: %s' %
+                                  req['lc'])
                     reply = self._get_msg('help', 'en')
-                
+
                 self.api.send_direct_message(
                     user_id=sender_id,
                     text=reply
@@ -267,14 +264,7 @@ class TwitterBot(object):
         except (core.ConfigError, core.InternalError) as e:
             # if core failes, send the user an error message, but keep going
             self.log.error("Something went wrong internally: %s" % str(e))
-            status = 'core_error'
             reply = self._get_msg('internal_error', 'en')
-
-        finally:
-            # keep stats
-            if request:
-                self.log.debug("Adding request to database... ")
-                self.core.add_request_to_db()    
 
     def start(self):
         """ Start the bot for handling requests.
@@ -282,10 +272,10 @@ class TwitterBot(object):
         Start a new Twitter bot.
         """
         self.auth = tweepy.OAuthHandler(
-            self.api_key, 
+            self.api_key,
             self.api_secret
         )
-        
+
         self.auth.set_access_token(
             self.access_token,
             self.token_secret
@@ -293,11 +283,10 @@ class TwitterBot(object):
 
         self.api = tweepy.API(self.auth)
         self.bot_info = self.api.me()
-         
+
         stream = tweepy.Stream(
-            auth = self.api.auth,
+            auth=self.api.auth,
             listener=GetTorStreamListener(self)
         )
-        
-        stream.userstream()
 
+        stream.userstream()

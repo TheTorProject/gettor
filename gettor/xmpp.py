@@ -277,8 +277,7 @@ class XMPP(object):
         self.log.debug("Parsing request")
         try:
             if self._is_blacklisted(str(account)):
-                self.log.info("Request from blacklisted account!")
-                status = 'blacklisted'
+                self.log.info('REQUEST: blacklist; OS: none; LC: none')
                 bogus_request = True
 
             # first let's find out how many words are in the message
@@ -287,7 +286,7 @@ class XMPP(object):
             if len(words) > self.max_words:
                 bogus_request = True
                 self.log.info("Message way too long")
-                status = 'error'
+                self.log.info('REQUEST: invalid; OS: none; LC: none')
                 reply = self._get_msg('message_error', 'en')
 
             if not bogus_request:
@@ -296,13 +295,13 @@ class XMPP(object):
                 req = self._parse_text(str(msg))
 
                 if req['type'] == 'help':
-                    self.log.debug("Type of request: help")
-                    status = 'success'
+                    self.log.info('REQUEST: help; OS: none; LC: %s' %
+                                  req['lc'])
                     reply = self._get_msg('help', 'en')
 
                 elif req['type'] == 'mirrors':
-                    self.log.debug("Type of request: mirrors")
-                    status = 'success'
+                    self.log.info('REQUEST: mirrors; OS: none; LC: %s' %
+                                  req['lc'])
                     reply = self._get_msg('mirrors', 'en')
                     try:
                         with open(self.mirrors, "r") as list_mirrors:
@@ -312,7 +311,8 @@ class XMPP(object):
                         reply = self._get_msg('mirrors_unavailable', 'en')
 
                 elif req['type'] == 'links':
-                    self.log.debug("Type of request: help")
+                    self.log.info('REQUEST: links; OS: %s; LC: %s' %
+                                  (req['os'], req['lc']))
                     links = self.core.get_links(
                         "XMPP",
                         req['os'],
@@ -321,22 +321,10 @@ class XMPP(object):
                     reply = self._get_msg('links', 'en')
                     reply = reply % (req['os'], req['lc'], links)
 
-                    status = 'success'
-
         except (core.ConfigError, core.InternalError) as e:
             # if core failes, send the user an error message, but keep going
             self.log.error("Something went wrong internally: %s" % str(e))
-            status = 'core_error'
             reply = self._get_msg('internal_error', req['lc'])
 
         finally:
-            # keep stats
-            if req:
-                self.log.debug("Adding request to database... ")
-                self.core.add_request_to_db()
-
-            if reply:
-                self.log.debug("Everything seems OK. Sending back the reply")
-            else:
-                self.log.debug("Nothing to reply!")
             return reply

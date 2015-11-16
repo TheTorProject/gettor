@@ -461,24 +461,15 @@ class SMTP(object):
                 self.log.debug("Normalizing address...")
                 norm_from_addr = self._get_normalized_address(from_addr)
             except AddressError as e:
-                status = 'malformed'
                 bogus_request = True
-                self.log.debug("Address is malformed!")
-                # it might be interesting to know what triggered this
-                # we are not logging this for now
-                # logfile = self._log_email('malformed', content)
+                self.log.info('REQUEST: invalid; OS: none; LC: none')
 
             if norm_from_addr:
-                self.log.debug("Anonymizing address...")
                 anon_addr = utils.get_sha256(norm_from_addr)
 
                 if self._is_blacklisted(anon_addr):
-                    status = 'blacklisted'
                     bogus_request = True
-                    self.log.debug("Address is blacklisted!")
-                    # it might be interesting to know extra info
-                    # we are not logging this for now
-                    # logfile = self._log_email(anon_addr, content)
+                    self.log.info('REQUEST: blacklist; OS: none; LC: none')
 
             if not bogus_request:
                 # try to figure out what the user is asking
@@ -487,45 +478,43 @@ class SMTP(object):
 
                 # our address should have the locale requested
                 our_addr = "gettor+%s@%s" % (req['lc'], self.our_domain)
-                self.log.debug("Replying from %s" % our_addr)
 
                 # possible options: help, links, mirrors
                 if req['type'] == 'help':
-                    self.log.debug("Type of request: help")
                     self.log.debug("Trying to send help...")
+                    self.log.info('REQUEST: help; OS: none; LC: %s' %
+                                  req['lc'])
                     # make sure we can send emails
                     try:
                         self._send_help('en', our_addr, norm_from_addr)
-                        status = 'success'
                     except SendEmailError as e:
-                        status = 'internal_error'
                         self.log.debug("FAILED: %s" % str(e))
                         raise InternalError("Something's wrong with the SMTP "
                                             "server: %s" % str(e))
 
                 elif req['type'] == 'mirrors':
-                    self.log.debug("Type of request: mirrors")
                     self.log.debug("Trying to send the mirrors...")
+                    self.log.info('REQUEST: mirrors; OS: none; LC: %s' %
+                                  req['lc'])
                     # make sure we can send emails
                     try:
                         self._send_mirrors('en', our_addr, norm_from_addr)
-                        status = 'success'
                     except SendEmailError as e:
-                        status = 'internal_error'
                         self.log.debug("FAILED: %s" % str(e))
                         raise SendEmailError("Something's wrong with the SMTP "
                                              "server: %s" % str(e))
 
                 elif req['type'] == 'links':
-                    self.log.debug("Type of request: links")
                     self.log.debug("Trying to obtain the links...")
+                    self.log.info('REQUEST: links; OS: %s; LC: %s' %
+                                  req['os '], req['lc'])
+
                     try:
                         links = self.core.get_links(
                             'SMTP', req['os'], req['lc']
                         )
                     # if core fails, we fail too
                     except (core.InternalError, core.ConfigError) as e:
-                        status = 'core_error'
                         self.log.debug("FAILED: %s" % str(e))
                         # something went wrong with the core
                         raise InternalError("Error obtaining the links")
@@ -535,19 +524,8 @@ class SMTP(object):
                     try:
                         self._send_links(links, req['lc'], req['os'], our_addr,
                                          norm_from_addr)
-                        status = 'success'
                     except SendEmailError as e:
-                        status = 'internal_error'
                         self.log.debug("FAILED: %s" % str(e))
                         raise SendEmailError("Something's wrong with the SMTP "
                                              "server: %s" % str(e))
                 self.log.debug("Mail sent!")
-        finally:
-            # keep stats
-            if req:
-                self.log.debug("Adding request to database... ")
-                try:
-                    self.core.add_request_to_db()
-                    self.log.debug("Request added")
-                except InternalError as e:
-                    self.log.debug("FAILED: %s" % str(e))
