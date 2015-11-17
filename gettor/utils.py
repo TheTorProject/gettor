@@ -16,7 +16,7 @@ import hashlib
 """Common utilities for GetTor modules."""
 
 
-LOGGING_FORMAT = "[%(levelname)s] DATE: %(asctime)s; %(message)s"
+LOGGING_FORMAT = "[%(levelname)s] %(asctime)s; %(message)s"
 DATE_FORMAT = "%Y-%m-%d"  # %H:%M:%S
 
 

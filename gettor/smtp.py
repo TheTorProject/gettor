@@ -504,7 +504,7 @@ class SMTP(object):
 
                 elif req['type'] == 'links':
                     self.log.debug("Trying to obtain the links...")
-                    self.log.info('links; %s; %s' % (req['os '], req['lc']))
+                    self.log.info('links; %s; %s' % (req['os'], req['lc']))
 
                     try:
                         links = self.core.get_links(
@@ -525,4 +525,5 @@ class SMTP(object):
                         self.log.debug("FAILED: %s" % str(e))
                         raise SendEmailError("Something's wrong with the SMTP "
                                              "server: %s" % str(e))
-                self.log.debug("Mail sent!")
+        finally:
+            self.log.debug("Request processed")
