@@ -462,14 +462,14 @@ class SMTP(object):
                 norm_from_addr = self._get_normalized_address(from_addr)
             except AddressError as e:
                 bogus_request = True
-                self.log.info('REQUEST: invalid; OS: none; LC: none')
+                self.log.info('invalid; none; none')
 
             if norm_from_addr:
                 anon_addr = utils.get_sha256(norm_from_addr)
 
                 if self._is_blacklisted(anon_addr):
                     bogus_request = True
-                    self.log.info('REQUEST: blacklist; OS: none; LC: none')
+                    self.log.info('blacklist; none; none')
 
             if not bogus_request:
                 # try to figure out what the user is asking
@@ -482,8 +482,7 @@ class SMTP(object):
                 # possible options: help, links, mirrors
                 if req['type'] == 'help':
                     self.log.debug("Trying to send help...")
-                    self.log.info('REQUEST: help; OS: none; LC: %s' %
-                                  req['lc'])
+                    self.log.info('help; none; %s' % req['lc'])
                     # make sure we can send emails
                     try:
                         self._send_help('en', our_addr, norm_from_addr)
@@ -494,8 +493,7 @@ class SMTP(object):
 
                 elif req['type'] == 'mirrors':
                     self.log.debug("Trying to send the mirrors...")
-                    self.log.info('REQUEST: mirrors; OS: none; LC: %s' %
-                                  req['lc'])
+                    self.log.info('mirrors; none; %s' % req['lc'])
                     # make sure we can send emails
                     try:
                         self._send_mirrors('en', our_addr, norm_from_addr)
@@ -506,8 +504,7 @@ class SMTP(object):
 
                 elif req['type'] == 'links':
                     self.log.debug("Trying to obtain the links...")
-                    self.log.info('REQUEST: links; OS: %s; LC: %s' %
-                                  req['os '], req['lc'])
+                    self.log.info('links; %s; %s' % (req['os '], req['lc']))
 
                     try:
                         links = self.core.get_links(

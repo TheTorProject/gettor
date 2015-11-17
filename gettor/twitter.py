@@ -218,7 +218,7 @@ class TwitterBot(object):
 
         try:
             if self._is_blacklisted(str(sender_id)):
-                self.log.info('REQUEST: blacklist; OS: none; LC: none')
+                self.log.info('blacklist; none; none')
                 bogus_request = True
 
             if not bogus_request:
@@ -228,8 +228,7 @@ class TwitterBot(object):
 
                 # possible options: links, mirrors, help
                 if request['type'] == 'links':
-                    self.log.info('REQUEST: links; OS: %s; LC: %s' %
-                                  (req['os'], req['lc']))
+                    self.log.info('links; %s; %s' % (req['os'], req['lc']))
                     links = self.core.get_links(
                         'Twitter',
                         request['os'],
@@ -240,8 +239,7 @@ class TwitterBot(object):
                     reply = reply % (request['os'], request['lc'], links)
 
                 elif request['type'] == 'mirrors':
-                    self.log.info('REQUEST: mirrors; OS: none; LC: %s' %
-                                  req['lc'])
+                    self.log.info('mirrors; none; %s' % req['lc'])
                     reply = self._get_msg('mirrors', 'en')
                     try:
                         with open(self.mirrors, "r") as list_mirrors:
@@ -252,8 +250,7 @@ class TwitterBot(object):
                         reply = self._get_msg('mirrors_unavailable', 'en')
 
                 else:
-                    self.log.info('REQUEST: help; OS: none; LC: %s' %
-                                  req['lc'])
+                    self.log.info('help; none; %s' % req['lc'])
                     reply = self._get_msg('help', 'en')
 
                 self.api.send_direct_message(

@@ -277,7 +277,7 @@ class XMPP(object):
         self.log.debug("Parsing request")
         try:
             if self._is_blacklisted(str(account)):
-                self.log.info('REQUEST: blacklist; OS: none; LC: none')
+                self.log.info('blacklist; none; none')
                 bogus_request = True
 
             # first let's find out how many words are in the message
@@ -286,7 +286,7 @@ class XMPP(object):
             if len(words) > self.max_words:
                 bogus_request = True
                 self.log.info("Message way too long")
-                self.log.info('REQUEST: invalid; OS: none; LC: none')
+                self.log.info('invalid; none; none')
                 reply = self._get_msg('message_error', 'en')
 
             if not bogus_request:
@@ -295,13 +295,11 @@ class XMPP(object):
                 req = self._parse_text(str(msg))
 
                 if req['type'] == 'help':
-                    self.log.info('REQUEST: help; OS: none; LC: %s' %
-                                  req['lc'])
+                    self.log.info('help; none; %s' % req['lc'])
                     reply = self._get_msg('help', 'en')
 
                 elif req['type'] == 'mirrors':
-                    self.log.info('REQUEST: mirrors; OS: none; LC: %s' %
-                                  req['lc'])
+                    self.log.info('mirrors; none; %s' % req['lc'])
                     reply = self._get_msg('mirrors', 'en')
                     try:
                         with open(self.mirrors, "r") as list_mirrors:
@@ -311,8 +309,7 @@ class XMPP(object):
                         reply = self._get_msg('mirrors_unavailable', 'en')
 
                 elif req['type'] == 'links':
-                    self.log.info('REQUEST: links; OS: %s; LC: %s' %
-                                  (req['os'], req['lc']))
+                    self.log.info('links; %s; %s' % (req['os'], req['lc']))
                     links = self.core.get_links(
                         "XMPP",
                         req['os'],
