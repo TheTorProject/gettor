@@ -16,24 +16,27 @@ import hashlib
 """Common utilities for GetTor modules."""
 
 
-LOGGING_FORMAT = "[%(levelname)s] %(asctime)s - %(message)s"
-DATE_FORMAT = "%Y-%m-%d" # %H:%M:%S
+LOGGING_FORMAT = "[%(levelname)s] %(asctime)s; %(message)s"
+DATE_FORMAT = "%Y-%m-%d"  # %H:%M:%S
+
 
 def get_logging_format():
     """Get the logging format.
-    
+
     :return: (string) the logging format.
-    
+
     """
     return LOGGING_FORMAT
 
+
 def get_date_format():
     """Get the date format for logging.
-    
+
     :return: (string) the date format for logging.
-    
+
     """
     return DATE_FORMAT
+
 
 def get_sha256(string):
     """Get sha256 of a string.

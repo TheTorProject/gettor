@@ -469,14 +469,3 @@ class Core(object):
         else:
             self.log.debug("FAILED (links file doesn't seem legit)")
             raise LinkFileError("No links file for %s" % provider)
-
-    def add_request_to_db(self):
-        """Add request to database."""
-        self.log.debug("Trying to add request to database")
-        try:
-            self.db.connect()
-            self.db.add_request()
-            self.log.debug("Request added!")
-        except db.DBError as e:
-            self.log.debug("FAILED %s" % str(e))
-            raise InternalError("Couldn't add request to database %s" % str(e))

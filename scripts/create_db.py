@@ -38,15 +38,16 @@ def main():
         with con:
             cur = con.cursor()
             # table for handling users (i.e. blacklist)
-            cur.execute("CREATE TABLE users(id TEXT, service TEXT, times INT,"
-                        " blocked INT, last_request TEXT)")
-            # table for stats
-            # cur.execute("CREATE TABLE requests(service TEXT, type TEXT,"
-            #            " os TEXT, lc TEXT, pt INT, year INT, month INT,"
-            #            " day INT, status TEXT, logfile TEXT)")
+            cur.execute(
+                "CREATE TABLE users(id TEXT, service TEXT, times INT,"
+                "blocked INT, last_request TEXT)"
+            )
+            
+            cur.execute(
+                "CREATE TABLE requests(date TEXT, request TEXT, os TEXT,"
+                " locale TEXT, channel TEXT, PRIMARY KEY (date, channel))"
+            )
 
-            # for now we will use a counter
-            cur.execute("CREATE TABLE requests(id INT, counter INT)")
         print "Database %s created" % os.path.abspath(args.create)
     elif args.delete:
         os.remove(os.path.abspath(args.delete))
