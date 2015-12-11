@@ -253,43 +253,49 @@ class Core(object):
                     t32, t64 = [t for t in providers[pname].split(",") if t]
                     
                     link, signature, chs32 = [l for l in t32.split("$") if l]
+                    link = "%s: %s" % (pname, link)
                     links32[link] = signature
 
                     link, signature, chs64 = [l for l in t64.split("$") if l]
+                    link = "%s: %s" % (pname, link.lstrip())
                     links64[link] = signature
                     
                 else:
                     link, signature, chs32 = [l for l in providers[pname].split("$") if l]
+                    link = "%s: %s" % (pname, link)
                     links32[link] = signature
                     
                 #providers[pname] = providers[pname].replace(",", "")
                 #providers[pname] = providers[pname].replace("$", "\n\n")
 
+                ### We will improve and add the verification section soon ###
                 # all packages are signed with same key
                 # (Tor Browser developers)
-                fingerprint = config.get('key', 'fingerprint')
+                # fingerprint = config.get('key', 'fingerprint')
                 # for now, english messages only
-                fingerprint_msg = self._get_msg('fingerprint', 'en')
-                fingerprint_msg = fingerprint_msg % fingerprint
+                # fingerprint_msg = self._get_msg('fingerprint', 'en')
+                # fingerprint_msg = fingerprint_msg % fingerprint
             except ConfigParser.Error as e:
                 raise InternalError("%s" % str(e))
 
         # create the final links list with all providers
         all_links = []
 
-        msg = "Tor Browser %s-bit:" % arch
+        msg = "Tor Browser %s-bit:\n" % arch
         for link in links32:
             msg = "%s\n%s" % (msg, link)
             
         all_links.append(msg)
         
         if osys == 'linux':
-            msg = "\n\n\nTor Browser 64-bit:"
+            msg = "\n\n\nTor Browser 64-bit:\n"
             for link in links64:
                 msg = "%s\n%s" % (msg, link)
         
             all_links.append(msg)
         
+        ### We will improve and add the verification section soon ###
+        """
         msg = "\n\n\nTor Browser's signature %s-bit:" %\
               arch
         for link in links32:
@@ -313,6 +319,9 @@ class Core(object):
             all_links.append(msg)
 
         """
+        ### end verification ###
+
+        """
         for key in providers.keys():
             # get more friendly description of the provider
             try:
@@ -328,8 +337,9 @@ class Core(object):
                 raise InternalError("%s" % str(e))
         """
 
+        ### We will improve and add the verification section soon ###
         # add fingerprint after the links
-        all_links.append(fingerprint_msg)
+        # all_links.append(fingerprint_msg)
 
         if all_links:
             return "".join(all_links)
