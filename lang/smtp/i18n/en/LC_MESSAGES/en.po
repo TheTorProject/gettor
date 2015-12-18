@@ -30,9 +30,8 @@ does not work for you, try the next one.\n\
 %s\n\
 \n\
 \n\
-All the best.\n\
 --\n\
-GetTor team"
+GetTor"
 
 #: Mirrors message
 msgid "mirrors_msg"
