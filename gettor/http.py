@@ -19,9 +19,6 @@ import ConfigParser
 
 from time import gmtime, strftime
 
-from flask import Flask
-from flask_restful import Api, Resource, reqparse
-
 import core
 import utils
 
@@ -65,10 +62,6 @@ URL = {
     'asc': 'https://www.torproject.org/dist/torbrowser/%s/%s.asc'
 }
 
-# filters for API resources
-parser = reqparse.RequestParser()
-parser.add_argument('os', type=str, help='Operating System')
-parser.add_argument('lc', type=str, help='Locale')
 
 
 class ConfigError(Exception):
@@ -100,8 +93,10 @@ class HTTP(object):
             raise ConfigError("File %s not found!" % cfg)
 
         try:
+            # path to static tree of API
+            self.tree = config.get('general', 'tree')
             # server that provides the RESTful API
-            self.server = config.get('general', 'server')
+            self.server = config.get('general', 'url')
             # path to the links files
             self.links_path = config.get('general', 'links')
             # path to mirrors in json
@@ -129,6 +124,29 @@ class HTTP(object):
         except ValueError, e:
             return False
         return True
+    
+    def _write_json(self, path, content):
+        """
+        """
+        try:
+            with codecs.open(
+                path,
+                "w",
+                "utf-8"
+            ) as jsonfile:
+                # Make pretty json
+                json.dump(
+                    content,
+                    jsonfile,
+                    sort_keys=True,
+                    indent=4,
+                    separators=(',', ': '),
+                    encoding="utf-8",
+                )
+        except IOError as e:
+            #logging.error("Couldn't write json: %s" % str(e))
+            print "Error building %s: %s" % (path, str(e))
+        print "%s built" % path
 
     def _get_provider_name(self, p):
         """ Return simplified version of provider's name.
@@ -373,121 +391,116 @@ class HTTP(object):
         self._load_resources()
         self._load_latest_version()
 
-    def run(self):
-        """ Run RESTful API. """
-        app = Flask(__name__)
-        api = Api(app)
-
-        api.add_resource(
-            AvailableResources,
-            '/',
-            resource_class_kwargs={
-                'resources': self.resources
-            }
+    def build(self):
+        """ Build RESTful API. """
+        
+        print "Building API"
+        
+        # resources
+        self._write_json(
+            os.path.join(self.tree, 'api'),
+            self.resources
         )
 
-        api.add_resource(
-            Providers,
-            '/providers',
-            '/providers/<string:provider>',
-            resource_class_kwargs={
-                'links': self.links,
-                'providers': self.providers
-            }
+        api_path = os.path.join(self.tree, 'api-content')
+        if not os.path.isdir(api_path):
+            os.mkdir(api_path)
+        
+        # providers
+        self._write_json(
+            os.path.join(api_path, 'providers'),
+            self.providers
         )
 
-        api.add_resource(
-            LatestVersion,
-            '/latest',
-            '/latest/<string:release>',
-            resource_class_kwargs={
-                'latest_version': self.lv,
-                'releases': self.releases
-            }
+        providers_path = os.path.join(api_path, 'providers-content')
+        if not os.path.isdir(providers_path):
+            os.mkdir(providers_path)
+
+        for provider in self.links:
+            if provider == 'updated_at':
+                continue
+
+            self._write_json(
+                os.path.join(providers_path, provider),
+                self.links[provider]
+            )
+
+            provider_path = os.path.join(
+                providers_path,
+                "%s-content" % provider
+            )
+
+            if not os.path.isdir(provider_path):
+                os.mkdir(provider_path)
+            
+            for osys in self.links[provider]:
+                self._write_json(
+                    os.path.join(provider_path, osys),
+                    self.links[provider][osys]
+                )
+
+                provider_os_path = os.path.join(
+                    provider_path, "%s-content" % osys
+                )            
+
+                if not os.path.isdir(provider_os_path):
+                    os.mkdir(provider_os_path)
+                
+                for lc in self.links[provider][osys]:
+                    self._write_json(
+                        os.path.join(provider_os_path, lc),
+                        self.links[provider][osys][lc]
+                    )
+
+        # latest version
+        self._write_json(
+            os.path.join(api_path, 'latest'),
+            self.lv
         )
+        
+        lv_path = os.path.join(api_path, 'latest-content')
+        if not os.path.isdir(lv_path):
+            os.mkdir(lv_path)
 
-        api.add_resource(
-            Mirrors,
-            '/mirrors',
-            resource_class_kwargs={
-                'mirrors': self.mirrors
-            }
+        for release in self.lv:
+            if release == 'updated_at':
+                continue
+
+            self._write_json(
+                os.path.join(lv_path, release),
+                self.lv[release]
+            )
+            
+            release_path = os.path.join(
+                lv_path,
+                "%s-content" % release
+            )
+
+            if not os.path.isdir(release_path):
+                os.mkdir(release_path)
+            
+            for osys in self.lv[release]['downloads']:
+                self._write_json(
+                    os.path.join(release_path, osys),
+                    self.lv[release]['downloads'][osys]
+                )
+
+                release_os_path = os.path.join(
+                    release_path,
+                    "%s-content" % osys
+                )
+
+                if not os.path.isdir(release_os_path):
+                    os.mkdir(release_os_path)
+                
+                for lc in self.lv[release]['downloads'][osys]:
+                    self._write_json(
+                        os.path.join(release_os_path, lc),
+                        self.lv[release]['downloads'][osys][lc]
+                    )
+
+        # mirrors
+        self._write_json(
+            os.path.join(api_path, 'mirrors'),
+            self.mirrors
         )
-
-        app.run(debug=True)
-
-
-class AvailableResources(Resource):
-    def __init__(self, resources):
-        """ Set initial data. """
-        self.resources = resources
-
-    def get(self):
-        """ Return available resources on the API. """
-        return self.resources
-
-
-class Providers(Resource):
-    def __init__(self, providers, links):
-        """ Set initial data. """
-        self.providers = providers
-        self.links = links
-
-    def get(self, provider=None):
-        """ Return providers and links data. """
-
-        # we use arg to filter results by os and lc (in that order)
-        arg = parser.parse_args()
-
-        if provider:
-            if arg['os']:
-                if arg['lc']:
-                    # links by provider, os, and lc (in that order)
-                    return self.links[provider][arg['os']][arg['lc']]
-                else:
-                    # links by provider and os (in that order)
-                    return self.links[provider][arg['os']]
-            else:
-                # links by provider
-                return self.links[provider]
-        else:
-            # list of providers
-            return self.providers
-
-
-class LatestVersion(Resource):
-    def __init__(self, latest_version, releases):
-        """ Set initial data. """
-        self.lv = latest_version
-        self.releases = releases
-
-    def get(self, release=None):
-        """ Return latest version data. """
-
-        # we use arg to filter results by os and lc (in that order)
-        arg = parser.parse_args()
-
-        if release:
-            if arg['os']:
-                if arg['lc']:
-                    # tpo links by release, os and lc (in that order)
-                    return self.lv[release]['downloads'][arg['os']][arg['lc']]
-                else:
-                    # tpo links by release and os (in that order)
-                    return self.lv[release]['downloads'][arg['os']]
-            else:
-                # version and tpo links by release
-                return self.lv[release]
-        else:
-            # list of releases
-            return self.releases
-
-
-class Mirrors(Resource):
-    def __init__(self, mirrors):
-        """ Set initial data. """
-        self.mirrors = mirrors
-
-    def get(self):
-        """ Return mirrors data. """
-        return self.mirrors
