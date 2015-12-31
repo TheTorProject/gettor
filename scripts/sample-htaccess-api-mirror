@@ -1,0 +1,21 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+# Operating System and Locale filters for providers
+RewriteCond %{QUERY_STRING} os=([a-z]+)&lc=([a-z]+)
+RewriteRule ^api/providers/([a-z\-]+)$ api-content/providers-content/$1-content/%1-content/%2.json
+RewriteCond %{QUERY_STRING} os=([a-z]+)
+RewriteRule ^api/providers/([a-z\-]+)$ api-content/providers-content/$1-content/%1
+
+# Operating System and Locale filters for TPO downloads
+RewriteCond %{QUERY_STRING} os=([a-z]+)&lc=([a-zA-Z\-]+)
+RewriteRule ^api/latest/([a-z]+)$ api-content/latest-content/$1-content/%1-content/%2.json
+RewriteCond %{QUERY_STRING} os=([a-z]+)
+RewriteRule ^api/latest/([a-z]+)$ api-content/latest-content/$1-content/%1
+
+# General rules
+RewriteRule ^api/providers/([a-z\-]+)$ api-content/providers-content/$1 [NC]
+RewriteRule ^api/latest/([a-z]+)$ api-content/latest-content/$1 [NC]
+RewriteRule ^api/([a-z]+)$ api-content/$1 [NC]
+
+ErrorDocument 404 404-file
