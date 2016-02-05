@@ -39,25 +39,19 @@ def upload_files(basedir, client):
     """
     files = []
 
-    p = re.compile('.*\.tar.xz$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
-        if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'linux'):
+        if os.path.isfile(path) and valid_format(name, 'linux'):
             files.append(name)
 
-    p = re.compile('.*\.exe$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
-        if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'windows'):
+        if os.path.isfile(path) and valid_format(name, 'windows'):
             files.append(name)
 
-    p = re.compile('.*\.dmg$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
-        if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'osx'):
+        if os.path.isfile(path) and valid_format(name, 'osx'):
             files.append(name)
 
     for file in files:
