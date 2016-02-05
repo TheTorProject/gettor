@@ -53,7 +53,7 @@ if __name__ == '__main__':
     gh_token = ''
 
     # path to the fingerprint that signed the packages
-    tb_key = os.path.abspath('tbb-key-torbrowserteam.asc')
+    tb_key = os.path.abspath('torbrowser-key.asc')
 
     # path to the latest version of Tor Browser
     tb_path = os.path.abspath('upload/latest')
