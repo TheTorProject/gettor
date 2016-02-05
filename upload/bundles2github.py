@@ -23,62 +23,8 @@ import argparse
 from libsaas.services import github
 import gnupg
 import gettor.core
+from gettor.utils import get_bundle_info, get_file_sha256
 
-
-def get_file_sha256(file):
-    """Get the sha256 of a file.
-
-    :param: file (string) the path of the file.
-
-    :return: (string) the sha256 hash.
-
-    """
-    # as seen on the internetz
-    BLOCKSIZE = 65536
-    hasher = hashlib.sha256()
-    with open(file, 'rb') as afile:
-        buf = afile.read(BLOCKSIZE)
-        while len(buf) > 0:
-            hasher.update(buf)
-            buf = afile.read(BLOCKSIZE)
-    return hasher.hexdigest()
-
-
-def get_bundle_info(file, osys):
-    """Get the os, arch and lc from a bundle string.
-
-    :param: file (string) the name of the file.
-    :param: osys (string) the OS.
-
-    :raise: ValueError if the bundle doesn't have a valid bundle format.
-
-    :return: (list) the os, arch and lc.
-
-    """
-    if(osys == 'windows'):
-        m = re.search(
-            'torbrowser-install-\d\.\d\.\d_(\w\w)(-\w\w)?\.exe',
-            file)
-        if m:
-            lc = m.group(1)
-            return 'windows', '32/64', lc
-    elif(osys == 'linux'):
-        m = re.search(
-            'tor-browser-linux(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
-            file)
-        if m:
-            arch = m.group(1)
-            lc = m.group(2)
-            return 'linux', arch, lc
-    elif(osys == 'osx'):
-        m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx(\d\d)_(\w\w)(-\w\w)?\.dmg',
-            file)
-        if m:
-            os = 'osx'
-            arch = m.group(1)
-            lc = m.group(2)
-            return 'osx', arch, lc
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
