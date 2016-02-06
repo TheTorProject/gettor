@@ -13,24 +13,51 @@
 
 import os
 import re
-import sh
 import sys
-import time
-import shutil
-import hashlib
 import argparse
+import ConfigParser
 
-from libsaas.services import github
+import github3
 import gnupg
 import gettor.core
-from gettor.utils import get_bundle_info, get_file_sha256
+from gettor.utils import (get_bundle_info, get_file_sha256,
+                          find_files_to_upload)
+
+import urllib3
+
+# Actually verify Github's cert!
+urllib3.disable_warnings()
+
+
+def upload_new_release(github_repo, version, upload_dir):
+    """
+    Returns a Release object
+    """
+
+    # Create a new release of this TBB
+    release = target_repo.create_release(
+        'v{}'.format(version),
+        target_commitish="master",
+        name='Tor Browser Bundle {}'.format(version),
+        body='',
+        draft=True,
+    )
+
+    for filename in find_files_to_upload(upload_dir):
+        # Upload each file for this release
+        file_path = os.path.join(upload_dir, filename)
+        print("Uploading file {}".format(filename))
+        release.upload_asset('application/zip',
+                             filename, open(file_path, 'rb'))
+
+    return release
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Utility to upload Tor Browser to Github.'
     )
-    
+
     # with this we only get the links of files already uploaded
     # useful when somethings fail after uploading
     parser.add_argument(
@@ -45,24 +72,33 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    config = ConfigParser.ConfigParser()
+    config.read('github-local.cfg')
+
     # this script should be called after fetching the latest Tor Browser,
     # and specifying the latest version
-    version = args.version
+    if args.version:
+        version = args.version
+    else:
+        tbb_version_config = ConfigParser.ConfigParser()
+        tbb_version_config.read('latest_torbrowser.cfg')
+        version = tbb_version_config.get('version', 'current')
 
     # the token allow us to run this script without GitHub user/pass
-    gh_token = ''
+    github_access_token = config.get('app', 'access_token')
 
     # path to the fingerprint that signed the packages
-    tb_key = os.path.abspath('torbrowser-key.asc')
+    tb_key = os.path.abspath('tbb-key-torbrowserteam.asc')
 
     # path to the latest version of Tor Browser
-    tb_path = os.path.abspath('upload/latest')
+    tb_path = os.path.abspath('latest')
 
-    # path to the repository where we upload Tor Browser
-    repo_path = os.path.abspath('gettorbrowser')
+    # user and repository where we upload Tor Browser
+    github_user = config.get('app', 'user')
+    github_repo = config.get('app', 'repo')
 
-    # wait time between pushing the files to GH and asking for its links
-    wait_time = 10
+    gh = github3.login(token=github_access_token)
+    target_repo = gh.repository(github_user, github_repo)
 
     # import key fingerprint
     gpg = gnupg.GPG()
@@ -74,86 +110,52 @@ if __name__ == '__main__':
     # e.g. 123A 456B 789C 012D 345E 678F 901G 234H 567I 890J
     readable_fp = ' '.join(fp[i:i+4] for i in xrange(0, len(fp), 4))
 
-    # we should have previously created a repository on GitHub where we
-    # want to push the files using an SSH key (to avoid using user/pass)
-    remote = 'origin'
-    branch = 'master'
-    user = 'TheTorProject'
-    repo = 'gettorbrowser'
-    raw_content = 'https://raw.githubusercontent.com/%s/%s/%s/' %\
-                  (user, repo, branch)
+    # Find any published releases with this version number
+    for release in target_repo.iter_releases():
+        if release.tag_name == 'v{}'.format(version) and not release.draft:
+            print("Found an existing published release with this version. "
+                  "Not uploading again unless you delete the published "
+                  "release '{}'.".format(release.tag_name))
+            break
+    else:
+        release = None
 
-    # steps:
-    # 1) copy folder with latest version of Tor Browser
-    # 2) add files via sh.git
-    # 3) make a commit for the new version
-    # 4) push the changes
+    if args.links or release:
+        # Only generating link file, should use previously published release
+        if not release:
+            print("Error occured! Could not find a published release for "
+                  "version {}".format(version))
+            sys.exit(1)
 
-    if not args.links:
-        shutil.copytree(
-            tb_path,
-            os.path.abspath('%s/%s' % (repo_path, version))
-        )
+    else:
+        # Remove any drafts to clean broken uploads
+        print('Uploading release, please wait, this might take a while!')
+        # Upload the latest browser bundles to a new release
+        release = upload_new_release(target_repo, version, tb_path)
 
-        git = sh.git.bake(_cwd=repo_path)
-        git.add('%s' % version)
-        git.commit(m=version)
-        git.push()
+        # Upload success, publish the release
+        release.edit(draft=False)
 
-        # it takes a while to process the recently pushed files
-        print "Wait a few seconds before asking for the links to Github..."
-        time.sleep(wait_time)
+    # Create the links file for this release
+    core = gettor.core.Core(os.path.abspath('../core.cfg'))
 
-    print "Trying to get the links"
-    gh = github.GitHub(gh_token, None)
-    repocontent = gh.repo(
-        user,
-        repo
-    ).contents().get('%s' % version)
-
-    core = gettor.core.Core(
-        os.path.abspath('core.cfg')
-    )
-
-    # erase old links, if any
+    # Erase old links if any and create a new empty one
     core.create_links_file('GitHub', readable_fp)
 
-    for file in repocontent:
-        # e.g. https://raw.githubusercontent.com/gettorbrowser/dl/master/4.0.7/TorBrowser-4.0.4-osx32_en-US.dmg
-        m = re.search('%s.*\/(.*)' % raw_content, file[u'download_url'])
-        if m:
-            filename = m.group(1)
-            # get bundle info according to its OS
-            if re.match('.*\.exe$', filename):
-                osys, arch, lc = get_bundle_info(filename, 'windows')
-                filename_asc = filename.replace('exe', 'exe.asc')
+    print("Creating releases")
+    for asset in release.assets:
+        filename = asset.download_url.split('/')[-1]
+        osys, arch, lc = get_bundle_info(asset.download_url)
+        sha256 = get_file_sha256(
+            os.path.abspath(os.path.join(tb_path, filename))
+        )
 
-            elif re.match('.*\.dmg$', filename):
-                osys, arch, lc = get_bundle_info(filename, 'osx')
-                filename_asc = filename.replace('dmg', 'dmg.asc')
-
-            elif re.match('.*\.tar.xz$', filename):
-                osys, arch, lc = get_bundle_info(filename, 'linux')
-                filename_asc = filename.replace('tar.xz', 'tar.xz.asc')
-
-            else:
-                # don't care about other files (asc or txt)
-                continue
-
-            sha256 = get_file_sha256(
-                os.path.abspath(
-                    '%s/%s/%s' % (repo, version, filename)
-                )
-            )
-
-            # since the url is easy to construct and it doesn't involve any
-            # kind of unique hash or identifier, we get the link for the
-            # asc signature just by adding '.asc'
-            link_asc = file[u'download_url'].replace(filename, filename_asc)
-
-            link = "%s$%s$%s$" % (file[u'download_url'], link_asc, sha256)
-
-            print "Adding %s" % file[u'download_url']
-            core.add_link('GitHub', osys, lc, link)
+        link = "{}${}${}$".format(
+            asset.download_url,
+            asset.download_url+".asc",
+            sha256,
+        )
+        print("Adding {}".format(asset.download_url))
+        core.add_link('GitHub', osys, lc, link)
 
     print "Github links updated!"
