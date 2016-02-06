@@ -142,20 +142,23 @@ if __name__ == '__main__':
     # Erase old links if any and create a new empty one
     core.create_links_file('GitHub', readable_fp)
 
-    print("Creating releases")
+    print("Creating links file")
     for asset in release.assets:
-        filename = asset.download_url.split('/')[-1]
-        osys, arch, lc = get_bundle_info(asset.download_url)
+        url = ("https://github.com/{user}/{repo}/releases/download/"
+               "v{tag}/{file}".format(
+                user=github_user,
+                repo=github_repo,
+                tag=version,
+                file=asset.name,
+                ))
+        osys, arch, lc = get_bundle_info(asset.name)
         sha256 = get_file_sha256(
-            os.path.abspath(os.path.join(tb_path, filename))
+            os.path.abspath(os.path.join(tb_path, asset.name))
         )
 
-        link = "{}${}${}$".format(
-            asset.download_url,
-            asset.download_url+".asc",
-            sha256,
-        )
-        print("Adding {}".format(asset.download_url))
+        link = "{}${}${}$".format(url, url + ".asc", sha256)
+
+        print("Adding {}".format(url))
         core.add_link('GitHub', osys, lc, link)
 
     print "Github links updated!"
