@@ -27,6 +27,14 @@ class BlacklistError(Exception):
     pass
 
 
+class ConfigError(Exception):
+    pass
+
+
+class InternalError(Exception):
+    pass
+
+
 class Blacklist(object):
     """Manage blacklisting of users.
 
@@ -38,6 +46,7 @@ class Blacklist(object):
 
          ConfigurationError: Bad configuration.
          BlacklistError: User is blacklisted.
+         InternalError: Something went wrong internally.
 
     """
 
@@ -47,44 +56,46 @@ class Blacklist(object):
         :param: cfg (string) path of the configuration file.
 
         """
-        # define a set of default values
-        DEFAULT_CONFIG_FILE = 'blacklist.cfg'
-
-        logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s',
-                            datefmt="%Y-%m-%d %H:%M:%S")
-        log = logging.getLogger(__name__)
+        default_cfg = 'blacklist.cfg'
         config = ConfigParser.ConfigParser()
 
         if cfg is None or not os.path.isfile(cfg):
-            cfg = DEFAULT_CONFIG_FILE
+            cfg = default_cfg
 
-        config.read(cfg)
+        try:
+            with open(cfg) as f:
+                config.readfp(f)
+        except IOError:
+            raise ConfigError("File %s not found!" % cfg)
 
         try:
             dbname = config.get('general', 'db')
-            self.db = db.DB(dbname)
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'db' from 'general'")
-
-        try:
             logdir = config.get('log', 'dir')
             logfile = os.path.join(logdir, 'blacklist.log')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'dir' from 'log'")
-
-        try:
             loglevel = config.get('log', 'level')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'level' from 'log'")
+            self.db = db.DB(dbname)
 
-        # establish log level and redirect to log file
-        log.info('Redirecting logging to %s' % logfile)
+        except ConfigParser.Error as e:
+            raise ConfigError("%s" % e)
+        except db.Exception as e:
+            raise ConfigError("%s" % e)
+
+        # logging
+        log = logging.getLogger(__name__)
+
+        logging_format = utils.get_logging_format()
+        date_format = utils.get_date_format()
+        formatter = logging.Formatter(logging_format, date_format)
+
+        log.info('Redirecting BLACKLIST logging to %s' % logfile)
         logfileh = logging.FileHandler(logfile, mode='a+')
+        logfileh.setFormatter(formatter)
         logfileh.setLevel(logging.getLevelName(loglevel))
         log.addHandler(logfileh)
 
         # stop logging on stdout from now on
         log.propagate = False
+        self.log = log
 
     def is_blacklisted(self, user, service, max_req, wait_time):
         """Check if a user is blacklisted.
@@ -109,28 +120,41 @@ class Blacklist(object):
         :raise: BlacklistError if the user is blacklisted
 
         """
-        r = self.db.get_user(user, service)
-        if r:
-            # permanently blacklisted
-            if r['blocked']:
-                self.db.update_user(user, service, r['times']+1, 1)
-                raise BlacklistError("Blocked user")
-            # don't be greedy
-            elif r['times'] >= max_req:
-                last = datetime.datetime.fromtimestamp(float(
-                                                       r['last_request']))
-                next = last + datetime.timedelta(minutes=wait_time)
+        try:
+            self.log.info("Trying to get info from user")
+            self.db.connect()
+            r = self.db.get_user(user, service)
+            if r:
+                # permanently blacklisted
+                if r['blocked']:
+                    self.log.warning("Request from user permanently blocked")
+                    self.db.update_user(user, service, r['times']+1, 1)
+                    raise BlacklistError("Blocked user")
+                # don't be greedy
+                elif r['times'] >= max_req:
+                    last = datetime.datetime.fromtimestamp(
+                        float(r['last_request'])
+                    )
+                    next = last + datetime.timedelta(minutes=wait_time)
 
-                if datetime.datetime.now() < next:
-                    # too many requests from the same user
-                    self.db.update_user(user, service, r['times']+1, 0)
-                    raise BlacklistError("Too many requests")
+                    if datetime.datetime.now() < next:
+                        self.log.warning("Too many requests from same user")
+                        self.db.update_user(user, service, r['times']+1, 0)
+                        raise BlacklistError("Too many requests")
+                    else:
+                        # fresh user again!
+                        self.log.info("Updating counter for existing user")
+                        self.db.update_user(user, service, 1, 0)
                 else:
-                    # fresh user again!
-                    self.db.update_user(user, service, 1, 0)
+                    # adding up a request for user
+                    self.log.info("Request from existing user")
+                    self.db.update_user(user, service, r['times']+1, 0)
             else:
-                # adding up a request for user
-                self.db.update_user(user, service, r['times']+1, 0)
-        else:
-            # new request for user
-            self.db.add_user(user, service, 0)
+                # new request for user
+                self.log.info("Request from new user")
+                self.db.add_user(user, service, 0)
+        except db.DBError as e:
+            self.log.error("Something failed!")
+            raise InternalError("Error with database (%s)" % str(e))
+        except BlacklistError as e:
+            raise BlacklistError(e)

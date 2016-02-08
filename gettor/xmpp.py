@@ -5,8 +5,8 @@
 # :authors: Israel Leiva <ilv@riseup.net>
 #           see also AUTHORS file
 #
-# :copyright:   (c) 2008-2014, The Tor Project, Inc.
-#               (c) 2014, Israel Leiva
+# :copyright:   (c) 2008-2015, The Tor Project, Inc.
+#               (c) 2015, Israel Leiva
 #
 # :license: This is Free Software. See LICENSE for license information.
 
@@ -20,6 +20,7 @@ import logging
 import ConfigParser
 
 from sleekxmpp import ClientXMPP
+from sleekxmpp.xmlstream.stanzabase import JID
 from sleekxmpp.exceptions import IqError, IqTimeout
 
 import core
@@ -28,6 +29,14 @@ import blacklist
 
 
 """XMPP module for processing requests."""
+
+
+class ConfigError(Exception):
+    pass
+
+
+class InternalError(Exception):
+    pass
 
 
 class Bot(ClientXMPP):
@@ -52,10 +61,11 @@ class Bot(ClientXMPP):
             self.get_roster()
         except IqError as err:
             # error getting the roster
-            # logging.error(err.iq['error']['condition'])
+            self.xmpp.log.error(err.iq['error']['condition'])
             self.disconnect()
         except IqTimeout:
             # server is taking too long to respond
+            self.xmpp.log.error("Server is taking too long to respond")
             self.disconnect()
 
     def message(self, msg):
@@ -63,14 +73,6 @@ class Bot(ClientXMPP):
             msg_to_send = self.xmpp.parse_request(msg['from'], msg['body'])
             if msg_to_send:
                 msg.reply(msg_to_send).send()
-
-
-class ConfigError(Exception):
-    pass
-
-
-class InternalError(Exception):
-    pass
 
 
 class XMPP(object):
@@ -95,75 +97,63 @@ class XMPP(object):
 
         """
         # define a set of default values
-        DEFAULT_CONFIG_FILE = 'xmpp.cfg'
-
-        logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s',
-                            datefmt="%Y-%m-%d %H:%M:%S")
-        log = logging.getLogger(__name__)
+        default_cfg = 'xmpp.cfg'
         config = ConfigParser.ConfigParser()
 
         if cfg is None or not os.path.isfile(cfg):
-            cfg = DEFAULT_CONFIG_FILE
+            cfg = default_cfg
 
-        config.read(cfg)
+        try:
+            with open(cfg) as f:
+                config.readfp(f)
+        except IOError:
+            raise ConfigError("File %s not found!" % cfg)
 
         try:
             self.user = config.get('account', 'user')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'user' from 'account'")
-
-        try:
             self.password = config.get('account', 'password')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'password' from 'account'")
 
-        try:
-            self.core_cfg = config.get('general', 'core_cfg')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'core_cfg' from 'general'")
+            self.mirrors = config.get('general', 'mirrors')
+            self.max_words = config.get('general', 'max_words')
+            self.max_words = int(self.max_words)
+            core_cfg = config.get('general', 'core_cfg')
+            self.core = core.Core(core_cfg)
+            self.i18ndir = config.get('i18n', 'dir')
 
-        try:
             blacklist_cfg = config.get('blacklist', 'cfg')
-            self.bl = blacklist_cfg
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'cfg' from 'blacklist'")
-
-        try:
+            self.bl = blacklist.Blacklist(blacklist_cfg)
             self.bl_max_req = config.get('blacklist', 'max_requests')
             self.bl_max_req = int(self.bl_max_req)
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'max_requests' from 'blacklist'")
-
-        try:
             self.bl_wait_time = config.get('blacklist', 'wait_time')
             self.bl_wait_time = int(self.bl_wait_time)
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'wait_time' from 'blacklist'")
 
-        try:
-            self.i18ndir = config.get('i18n', 'dir')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'dir' from 'i18n'")
-
-        try:
             logdir = config.get('log', 'dir')
             logfile = os.path.join(logdir, 'xmpp.log')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'dir' from 'log'")
-
-        try:
             loglevel = config.get('log', 'level')
-        except ConfigParser.Error as e:
-            raise ConfigError("Couldn't read 'level' from 'log'")
 
-        # establish log level and redirect to log file
-        log.info('Redirecting logging to %s' % logfile)
+        except ConfigParser.Error as e:
+            raise ConfigError("Configuration error: %s" % str(e))
+        except blacklist.ConfigError as e:
+            raise InternalError("Blacklist error: %s" % str(e))
+        except core.ConfigError as e:
+            raise InternalError("Core error: %s" % str(e))
+
+        # logging
+        log = logging.getLogger(__name__)
+
+        logging_format = utils.get_logging_format()
+        date_format = utils.get_date_format()
+        formatter = logging.Formatter(logging_format, date_format)
+
+        log.info('Redirecting XMPP logging to %s' % logfile)
         logfileh = logging.FileHandler(logfile, mode='a+')
+        logfileh.setFormatter(formatter)
         logfileh.setLevel(logging.getLevelName(loglevel))
         log.addHandler(logfileh)
 
         # stop logging on stdout from now on
         log.propagate = False
+        self.log = log
 
     def start_bot(self):
         """Start the bot for handling requests.
@@ -171,6 +161,7 @@ class XMPP(object):
         Start a new sleekxmpp bot.
 
         """
+        self.log.info("Starting the bot with account %s" % self.user)
         xmpp = Bot(self.user, self.password, self)
         xmpp.connect()
         xmpp.process(block=True)
@@ -184,11 +175,11 @@ class XMPP(object):
 
         """
         anon_acc = utils.get_sha256(account)
-        bl = blacklist.Blacklist(self.bl)
 
         try:
-            bl.is_blacklisted(anon_acc, 'XMPP', self.bl_max_req,
-                              self.bl_wait_time)
+            self.bl.is_blacklisted(
+                anon_acc, 'XMPP', self.bl_max_req, self.bl_wait_time
+            )
             return False
         except blacklist.BlacklistError as e:
             return True
@@ -203,13 +194,17 @@ class XMPP(object):
 
         """
         # obtain the content in the proper language
-        t = gettext.translation(lc, self.i18ndir, languages=[lc])
-        _ = t.ugettext
+        self.log.debug("Trying to get translated text")
+        try:
+            t = gettext.translation(lc, self.i18ndir, languages=[lc])
+            _ = t.ugettext
 
-        msgstr = _(msgid)
-        return msgstr
+            msgstr = _(msgid)
+            return msgstr
+        except IOError as e:
+            raise ConfigError("%s" % str(e))
 
-    def _parse_text(self, msg, core_obj):
+    def _parse_text(self, msg):
         """Parse the text part of a message.
 
         Split the message in words and look for patterns for locale,
@@ -223,20 +218,21 @@ class XMPP(object):
 
         """
         # core knows what OS are supported
-        supported_os = core_obj.get_supported_os()
-        supported_lc = core_obj.get_supported_lc()
+        supported_os = self.core.get_supported_os()
+        supported_lc = self.core.get_supported_lc()
 
+        self.log.debug("Parsing text")
         # default values
         req = {}
         req['lc'] = 'en'
         req['os'] = None
         req['type'] = 'help'
+
         found_lc = False
         found_os = False
+        found_mirrors = False
 
         # analyze every word
-        # request shouldn't be more than 10 words long, so there should
-        # be a limit for the amount of words
         for word in msg.split(' '):
             # look for lc and os
             if not found_lc:
@@ -250,6 +246,14 @@ class XMPP(object):
                         found_os = True
                         req['os'] = os
                         req['type'] = 'links'
+            # mirrors
+            if not found_mirrors:
+                if re.match("mirrors?", word, re.IGNORECASE):
+                    found_mirrors = True
+                    req['type'] = 'mirrors'
+            if (found_lc and found_os) or (found_lc and found_mirrors):
+                break
+
         return req
 
     def parse_request(self, account, msg):
@@ -269,36 +273,55 @@ class XMPP(object):
         reply = ''
         status = ''
         req = None
-        core_obj = core.Core(self.core_cfg)
 
+        self.log.debug("Parsing request")
         try:
             if self._is_blacklisted(str(account)):
-                status = 'blacklisted'
+                self.log.info('blacklist; none; none')
                 bogus_request = True
 
+            # first let's find out how many words are in the message
+            # request shouldn't be longer than 3 words, but just in case
+            words = re.split('\s+', msg.strip())
+            if len(words) > self.max_words:
+                bogus_request = True
+                self.log.info("Message way too long")
+                self.log.info('invalid; none; none')
+                reply = self._get_msg('message_error', 'en')
+
             if not bogus_request:
+                self.log.debug("Request seems legit, let's parse it")
                 # let's try to guess what the user is asking
-                req = self._parse_text(str(msg), core_obj)
+                req = self._parse_text(str(msg))
 
                 if req['type'] == 'help':
-                    status = 'success'
-                    reply = self._get_msg('help', req['lc'])
-                elif req['type'] == 'links':
+                    self.log.info('help; none; %s' % req['lc'])
+                    reply = self._get_msg('help', 'en')
+
+                elif req['type'] == 'mirrors':
+                    self.log.info('mirrors; none; %s' % req['lc'])
+                    reply = self._get_msg('mirrors', 'en')
                     try:
-                        links = core_obj.get_links("XMPP", req['os'],
-                                                   req['lc'])
-                        reply = self._get_msg('links', req['lc'])
-                        reply = reply % (req['os'], req['lc'], links)
+                        with open(self.mirrors, "r") as list_mirrors:
+                            mirrors = list_mirrors.read()
+                        reply = reply % mirrors
+                    except IOError as e:
+                        reply = self._get_msg('mirrors_unavailable', 'en')
 
-                        status = 'success'
-                    except (core.ConfigError, core.InternalError) as e:
-                        # if core failes, send the user an error message, but
-                        # keep going
-                        status = 'core_error'
-                        reply = self._get_msg('internal_error', req['lc'])
+                elif req['type'] == 'links':
+                    self.log.info('links; %s; %s' % (req['os'], req['lc']))
+                    links = self.core.get_links(
+                        "XMPP",
+                        req['os'],
+                        req['lc']
+                    )
+                    reply = self._get_msg('links', 'en')
+                    reply = reply % (req['os'], req['lc'], links)
+
+        except (core.ConfigError, core.InternalError) as e:
+            # if core failes, send the user an error message, but keep going
+            self.log.error("Something went wrong internally: %s" % str(e))
+            reply = self._get_msg('internal_error', req['lc'])
+
         finally:
-            # keep stats
-            if req:
-                core_obj.add_request_to_db()
-
             return reply

@@ -17,6 +17,10 @@ import datetime
 """DB interface for comunicating with sqlite3"""
 
 
+class DBError(Exception):
+    pass
+
+
 class DB(object):
     """
 
@@ -27,6 +31,11 @@ class DB(object):
         add_user(): add a user to the database (users table).
         update_user(): update a user on the database (users table).
 
+    Exceptions:
+
+         DBError: Something went wrong when trying to connect/interact
+         with the database.
+
     """
 
     def __init__(self, dbname):
@@ -35,8 +44,16 @@ class DB(object):
         :param: dbname (string) the path of the database.
 
         """
-        self.con = sqlite3.connect(dbname)
-        self.con.row_factory = sqlite3.Row
+        self.dbname = dbname
+
+
+    def connect(self):
+        """ """
+        try:
+            self.con = sqlite3.connect(self.dbname)
+            self.con.row_factory = sqlite3.Row
+        except sqlite3.Error as e:
+            raise DBError("%s" % str(e))
 
     def add_request(self):
         """Add a request to the database.
@@ -44,15 +61,18 @@ class DB(object):
         For now we just count the number of requests we have received so far.
 
         """
-        with self.con:
-            cur = self.con.cursor()
-            cur.execute("SELECT counter FROM requests WHERE id = 1")
-            row = cur.fetchone()
-            if row:
-                cur.execute("UPDATE requests SET counter=? WHERE id=?",
-                            (row['counter']+1, 1))
-            else:
-                cur.execute("INSERT INTO requests VALUES(?, ?)", (1, 1))
+        try:
+            with self.con:
+                cur = self.con.cursor()
+                cur.execute("SELECT counter FROM requests WHERE id = 1")
+                row = cur.fetchone()
+                if row:
+                    cur.execute("UPDATE requests SET counter=? WHERE id=?",
+                                (row['counter']+1, 1))
+                else:
+                    cur.execute("INSERT INTO requests VALUES(?, ?)", (1, 1))
+        except sqlite3.Error as e:
+            raise DBError("%s" % str(e))
 
     def get_user(self, user, service):
         """Get user info from the database.
@@ -64,13 +84,16 @@ class DB(object):
                  (e.g. row['user']).
 
         """
-        with self.con:
-            cur = self.con.cursor()
-            cur.execute("SELECT * FROM users WHERE id =? AND service =?",
-                        (user, service))
+        try:
+            with self.con:
+                cur = self.con.cursor()
+                cur.execute("SELECT * FROM users WHERE id =? AND service =?",
+                            (user, service))
 
-            row = cur.fetchone()
-            return row
+                row = cur.fetchone()
+                return row
+        except sqlite3.Error as e:
+            raise DBError("%s" % str(e))
 
     def add_user(self, user, service, blocked):
         """Add a user to the database.
@@ -83,10 +106,13 @@ class DB(object):
         :param: blocked (int) one if user is blocked, zero otherwise.
 
         """
-        with self.con:
-            cur = self.con.cursor()
-            cur.execute("INSERT INTO users VALUES(?,?,?,?,?)",
-                        (user, service, 1, blocked, str(time.time())))
+        try:
+            with self.con:
+                cur = self.con.cursor()
+                cur.execute("INSERT INTO users VALUES(?,?,?,?,?)",
+                            (user, service, 1, blocked, str(time.time())))
+        except sqlite3.Error as e:
+            raise DBError("%s" % str(e))
 
     def update_user(self, user, service, times, blocked):
         """Update a user on the database.
@@ -99,8 +125,11 @@ class DB(object):
         :param: blocked (int) one if user is blocked, zero otherwise.
 
         """
-        with self.con:
-            cur = self.con.cursor()
-            cur.execute("UPDATE users SET times =?, blocked =?,"
-                        " last_request =? WHERE id =? AND service =?",
-                        (times, blocked, str(time.time()), user, service))
+        try:
+            with self.con:
+                cur = self.con.cursor()
+                cur.execute("UPDATE users SET times =?, blocked =?,"
+                            " last_request =? WHERE id =? AND service =?",
+                            (times, blocked, str(time.time()), user, service))
+        except sqlite3.Error as e:
+            raise DBError("%s" % str(e))

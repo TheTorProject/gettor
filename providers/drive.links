@@ -2,24 +2,27 @@
 name = Drive
 
 [key]
-fingerprint = A3C4 F0F9 79CA A22C DBA8 F512 EE8C BC9E 886D DD89
+fingerprint = EF6E 286D DA85 EA2A 4BA7 DE68 4E2C 6E87 9329 8290
 
 [linux]
-en = Package (32-bit): https://docs.google.com/uc?id=0B7humfJYX-LjNTJPanBRekI5Slk&export=download
-	ASC signature (32-bit): https://docs.google.com/uc?id=0B7humfJYX-LjTXVONkhvZ1VRY2c&export=download
-	Package SHA256 checksum (32-bit): 03a4ecab9ffb4b579c9d03a0f800d9bcd4446b49eff21eb3e1db255fa9d9b930,
-	Package (64-bit): https://docs.google.com/uc?id=0B7humfJYX-LjbXp2MUh5RmxTa28&export=download
-	ASC signature (64-bit): https://docs.google.com/uc?id=0B7humfJYX-LjNTVZVnJUTnNCOEk&export=download
-	Package SHA256 checksum (64-bit): 03a4ecab9ffb4b579c9d03a0f800d9bcd4446b49eff21eb3e1db255fa9d9b930
+fa = https://docs.google.com/uc?id=0B76pDbk5No54eDRRUXdHcGIxMUU&export=download$https://docs.google.com/uc?id=0B76pDbk5No54amdUbGZNdnM5bjA&export=download$40ade5f6883a70af77de37da8a50bd72b533b1b65d198a0d8f02c2d5f4791355,
+	https://docs.google.com/uc?id=0B76pDbk5No54ZmFjRUs3VG9nZDA&export=download$https://docs.google.com/uc?id=0B76pDbk5No54TTBMYmwtdFVROEk&export=download$5666669aaeb695045a9263775d108a9fbe04899d3ef70aa27906a58245d713f4
+en = https://docs.google.com/uc?id=0B76pDbk5No54bm1DdFZqRGZ6aFk&export=download$https://docs.google.com/uc?id=0B76pDbk5No54a2tKbXExaXpBdm8&export=download$0e94498cb83a07895bf8becf76d3c3b071d8cfadd50048971f701819f80a56aa,
+	https://docs.google.com/uc?id=0B76pDbk5No54SnBWZ3FYWDFZbnc&export=download$https://docs.google.com/uc?id=0B76pDbk5No54NldQSWpUODBNUW8&export=download$4b7fed9499915fd95497ccf13af00f6b5226d7066d24f6396d00666a5b8c1ad3
+zh = https://docs.google.com/uc?id=0B76pDbk5No54VmV6TkcxVDl0eHc&export=download$https://docs.google.com/uc?id=0B76pDbk5No54Ymo5NFpuUmVjd1k&export=download$f1d5a0084d06e838a5acfe4352995c40c54ac4488006acb014ab7cf81360f62e,
+	https://docs.google.com/uc?id=0B76pDbk5No54R1lRbTM3bzJrQzQ&export=download$https://docs.google.com/uc?id=0B76pDbk5No54ZjJYTlRJS0ZoVjQ&export=download$d35a2f1dca74428f167bea96cc49c0c7351274904fafc30194592aa74201376a
+tr = https://docs.google.com/uc?id=0B76pDbk5No54STZDTXYzUl9IbFU&export=download$https://docs.google.com/uc?id=0B76pDbk5No54ZHNIWV84RXZ5ZjQ&export=download$44bdcd53aaefc894f8556258b42fadc5fd10458db01f568734a47a9f6d070e5c,
+	https://docs.google.com/uc?id=0B76pDbk5No54MXFjaU9NbkVqS0k&export=download$https://docs.google.com/uc?id=0B76pDbk5No54VGhOaU1jLWlTWVk&export=download$79270b1cdcf41a251eb980281c29c2465ac06f299e0bacb9fd0190f87338d167
 	
 
 [windows]
-en = Package (32/64-bit): https://docs.google.com/uc?id=0B7humfJYX-LjakM4a21iRlQzQVE&export=download
-	ASC signature (32/64-bit): https://docs.google.com/uc?id=0B7humfJYX-LjZy1FLVpTLW9INFU&export=download
-	Package SHA256 checksum (32/64-bit): 21e54d964366e8a67f379ed402007f59cb3aebfddbc3a30dacc3ac64171145a6
+zh = https://docs.google.com/uc?id=0B76pDbk5No54SndJVTJkZkprLUk&export=download$https://docs.google.com/uc?id=0B76pDbk5No54dHduYlFHRkJrczg&export=download$54443a66e16c8ffe02d10fe00e3bec50800eb4a93e2360a7d1b8a10f3bb77c0e
+fa = https://docs.google.com/uc?id=0B76pDbk5No54OFlHX1Rybmc4b3c&export=download$https://docs.google.com/uc?id=0B76pDbk5No54Y19UdnMyVE5jMUk&export=download$15f06a3ad256042dde071690f4d4e53a5952fe9260592d5546cabda779eb8a47
+en = https://docs.google.com/uc?id=0B76pDbk5No54OEQ1aG5DNXY2N00&export=download$https://docs.google.com/uc?id=0B76pDbk5No54YWp2alZKQ1hkNWs&export=download$443b38f4aa1194125ca3c79157272d5c64006928c9128127788c1cdefa642d85
+tr = https://docs.google.com/uc?id=0B76pDbk5No54cUtBeUt4RmEtWVk&export=download$https://docs.google.com/uc?id=0B76pDbk5No54V1ZOcUotdjh2T2s&export=download$eff7885186fe3e5fc3bcc404d671175d279707d8e1e05d203a12a176aa4ea189
 
 [osx]
-en = Package (32-bit): https://docs.google.com/uc?id=0B7humfJYX-LjenRobzJtcWw0UnM&export=download
-	ASC signature (32-bit): https://docs.google.com/uc?id=0B7humfJYX-LjZ0R4Z0I1ZlBRUHc&export=download
-	Package SHA256 checksum (32-bit): dd86727270ba236d85673194782b4cc9860bd886e4abdf2dfc6d716dabddb68f
-
+en = https://docs.google.com/uc?id=0B76pDbk5No54Z0oxUnFuaHBpX00&export=download$https://docs.google.com/uc?id=0B76pDbk5No54ZXZqSFp5dngwN0E&export=download$f6a38fa3a72c9c60a457be6412f79e1efacd7ff5d993c48791550cc285ff164a
+zh = https://docs.google.com/uc?id=0B76pDbk5No54cnhFUXFBaXJWUnM&export=download$https://docs.google.com/uc?id=0B76pDbk5No54U0h5UUp3QVI4eFE&export=download$eda5b7377b1a24fc918d9b16d4400a8b64975e57649623aea1e5e8b6b4f27dc6
+fa = https://docs.google.com/uc?id=0B76pDbk5No54X2lraEZLM3p2Mk0&export=download$https://docs.google.com/uc?id=0B76pDbk5No54WV9vbUZlQ0FtcWM&export=download$5af13ce9f4d71195a204491ac30dea0a1cf75de41533fb2c3281fd7cbc3fb55d
+tr = https://docs.google.com/uc?id=0B76pDbk5No54N2JYLU5MUXhXREU&export=download$https://docs.google.com/uc?id=0B76pDbk5No54eVFDLUJOLWlXemM&export=download$9363e252cee1a783a85dbdb000fc403da57cf2e32d63cf60d4e6f8a508e4bec4

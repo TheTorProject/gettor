@@ -2,21 +2,77 @@ domain "en"
 
 #: Links
 msgid "links"
-msgstr "Links %s-%s:\n %s"
+msgstr "Hello there! this is the 'GetTor' robot.\n\
+\n\
+Below are the links for your request (Tor Browser for %s, %s package):\n\
+\n\
+%s\n\
+\n\
+===========================================================================\n\
+Still need help? If you have any questions, trouble connecting to Tor\n\
+network, or need to talk to a human, please contact our support team at:\n\
+\n\
+    help@rt.torproject.org\n\
+\n\
+We are ready to answer your queries in English, Farsi, Chinese, Arabic,\n\
+French and Spanish."
 
-#: Links
-msgid "links_pt"
-msgstr "Links-PT for %s-%s:\n %s"
+#: Mirrors message
+msgid "mirrors"
+msgstr "Hello there! this is the 'GetTor' robot.\n\
+\n\
+Thank you for your request. Below you will find an updated list of mirrors\n\
+of Tor Project's website.\n\
+\n\
+%s\n\
+\n\
+Still need help? If you have any questions, trouble connecting to Tor\n\
+network, or need to talk to a human, please contact our support team at:\n\
+\n\
+    help@rt.torproject.org\n\
+\n\
+We are ready to answer your queries in English, Farsi, Chinese, Arabic,\n\
+French and Spanish."
 
 #: Help
 msgid "help"
-msgstr "*help*"
+msgstr "Hello there! this is the 'GetTor' robot.\n\
+\n\
+Thank you for your request. I am here to help you download the latest\n\
+Tor Browser.\n\
+\n\
+Please reply to this message with one of the options below (where lc stands\n\
+for the locale of the package you want e.g. en):\n\
+\n\
+    windows lc\n\
+    linux lc\n\
+    osx lc\n\
+    mirrors\n\
+\n\
+The currently supported locales are:\n\
+\n\
+    en: English\n\
+\n\
+And I will send you the download/access instructions quickly."
 
-#: Unsupported locale
-msgid "unsupported_lc"
-msgstr "Unsupported locale"
+#: Mirrors unavailable message
+msgid "mirrors_unavailable"
+msgstr "Hello there! this is the 'GetTor' robot.\n\
+\n\
+I'm sorry, I can't send you mirrors right now, please try again later.\n\
+\n\
+Still need help? If you have any questions, trouble connecting to Tor\n\
+network, or need to talk to a human, please contact our support team at:\n\
+\n\
+    help@rt.torproject.org\n\
+\n\
+We are ready to answer your queries in English, Farsi, Chinese, Arabic,\n\
+French and Spanish."
 
 #: Internal error
 msgid "internal_error"
 msgstr "Internal error"
 
+#: Internal error
+msgid "message_error"
+msgstr "Message too long."
