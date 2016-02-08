@@ -18,97 +18,7 @@ import ConfigParser
 
 import dropbox
 import gettor.core
-
-def valid_format(file, osys):
-    """Check for valid bundle format
-
-    Check if the given file has a valid bundle format
-    (e.g. tor-browser-linux32-3.6.2_es-ES.tar.xz)
-
-    :param: file (string) the name of the file.
-    :param: osys (string) the OS.
-
-    :return: (boolean) true if the bundle format is valid, false otherwise.
-
-    """
-    if(osys == 'windows'):
-        m = re.search(
-            'torbrowser-install-\d\.\d\.\d_\w\w(-\w\w)?\.exe',
-            file)
-    elif(osys == 'linux'):
-        m = re.search(
-            'tor-browser-linux\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
-            file)
-    elif(osys == 'osx'):
-        m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx\d\d_(\w\w)(-\w\w)?\.dmg',     
-            file)
-    if m:
-        return True
-    else:
-        return False
-
-
-def get_bundle_info(file, osys):
-    """Get the os, arch and lc from a bundle string.
-
-    :param: file (string) the name of the file.
-    :param: osys (string) the OS.
-
-    :raise: ValueError if the bundle doesn't have a valid bundle format.
-
-    :return: (list) the os, arch and lc.
-
-    """
-    if(osys == 'windows'):
-        m = re.search(
-            'torbrowser-install-\d\.\d\.\d_(\w\w)(-\w\w)?\.exe',
-            file)
-        if m:
-            lc = m.group(1)
-            return 'windows', '32/64', lc
-        else:
-            raise ValueError("Invalid bundle format %s" % file)
-    elif(osys == 'linux'):
-        m = re.search(
-            'tor-browser-linux(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
-            file)
-        if m:
-            arch = m.group(1)
-            lc = m.group(2)
-            return 'linux', arch, lc
-        else:
-            raise ValueError("Invalid bundle format %s" % file)
-    elif(osys == 'osx'):
-        m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx(\d\d)_(\w\w)(-\w\w)?\.dmg',
-            file)
-        if m:
-            os = 'osx'
-            arch = m.group(1)
-            lc = m.group(2)
-            return 'osx', arch, lc
-        else:
-            raise ValueError("Invalid bundle format %s" % file)
-
-
-def get_file_sha256(file):
-    """Get the sha256 of a file.
-
-    :param: file (string) the path of the file.
-
-    :return: (string) the sha256 hash.
-
-    """
-    # as seen on the internetz
-    BLOCKSIZE = 65536
-    hasher = hashlib.sha256()
-    with open(file, 'rb') as afile:
-        buf = afile.read(BLOCKSIZE)
-        while len(buf) > 0:
-            hasher.update(buf)
-            buf = afile.read(BLOCKSIZE)
-    return hasher.hexdigest()
+from gettor.utils import get_bundle_info, get_file_sha256, valid_format
 
 
 def upload_files(basedir, client):
@@ -129,25 +39,19 @@ def upload_files(basedir, client):
     """
     files = []
 
-    p = re.compile('.*\.tar.xz$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
-        if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'linux'):
+        if os.path.isfile(path) and valid_format(name, 'linux'):
             files.append(name)
 
-    p = re.compile('.*\.exe$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
-        if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'windows'):
+        if os.path.isfile(path) and valid_format(name, 'windows'):
             files.append(name)
 
-    p = re.compile('.*\.dmg$')
     for name in os.listdir(basedir):
         path = os.path.abspath(os.path.join(basedir, name))
-        if os.path.isfile(path) and p.match(path)\
-        and valid_format(name, 'osx'):
+        if os.path.isfile(path) and valid_format(name, 'osx'):
             files.append(name)
 
     for file in files:
