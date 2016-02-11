@@ -1,0 +1,83 @@
+/* Fonts */
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/lato-regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/lato-bold.woff') format('woff');
+}
+@font-face {
+    font-family: 'Lato';
+    font-style: italic;
+    font-weight: 400;
+    src: local('Lato Italic'), local('Lato-Italic'), url('../fonts/lato-italic.woff') format('woff');
+}
+
+body {
+    padding-bottom: 20px;
+    /*background-color: #4ba027;*/
+}
+
+footer {
+    color: #aaa;
+}
+
+a:link, a:visited {
+    color: #AF02D7;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #65007D;
+}
+
+#main {
+    background-color: #fff;
+    margin: 5% 0;
+    font-family: "Lato";
+    font-size: 16px;
+    font-weight: lighter;
+}
+
+#main h2 {
+    color: #8500A3;
+}
+
+#head-title {
+    color: #fff !important;
+    font-size: 23px;
+}
+
+#head-link {
+    text-align: right;
+}
+
+#head-link a:link {
+    color: #ccc;
+}
+
+#head-link a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar {
+    background-color: #770093 !important;
+}
+
+.pad-big-left {
+    padding-left: 110px;
+}
+
+.pad-big-right {
+    padding-right: 110px;
+}
+
+.big-link {
+    font-size: 26px;
+}
