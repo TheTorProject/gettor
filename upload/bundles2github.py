@@ -11,22 +11,24 @@
 # :license: This is Free Software. See LICENSE for license information.
 #
 
+# Use pyopenssl to verify TLS certifcates
+try:
+    import urllib3.contrib.pyopenssl
+    urllib3.contrib.pyopenssl.inject_into_urllib3()
+except ImportError:
+    pass
+
 import os
-import re
 import sys
 import argparse
 import ConfigParser
+import gnupg
 
 import github3
-import gnupg
+
 import gettor.core
 from gettor.utils import (get_bundle_info, get_file_sha256,
                           find_files_to_upload)
-
-import urllib3
-
-# Actually verify Github's cert!
-urllib3.disable_warnings()
 
 
 def upload_new_release(github_repo, version, upload_dir):
@@ -144,13 +146,10 @@ if __name__ == '__main__':
 
     print("Creating links file")
     for asset in release.assets:
-        url = ("https://github.com/{user}/{repo}/releases/download/"
-               "v{tag}/{file}".format(
-                user=github_user,
-                repo=github_repo,
-                tag=version,
-                file=asset.name,
-                ))
+        url = asset.browser_download_url
+        if url.endswith('.asc'):
+            continue
+
         osys, arch, lc = get_bundle_info(asset.name)
         sha256 = get_file_sha256(
             os.path.abspath(os.path.join(tb_path, asset.name))
