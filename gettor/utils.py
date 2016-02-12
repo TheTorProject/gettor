@@ -11,6 +11,7 @@
 # :license: This is Free Software. See LICENSE for license information.
 
 import os
+import re
 import hashlib
 
 """Common utilities for GetTor modules."""
@@ -18,6 +19,10 @@ import hashlib
 
 LOGGING_FORMAT = "[%(levelname)s] %(asctime)s; %(message)s"
 DATE_FORMAT = "%Y-%m-%d"  # %H:%M:%S
+
+windows_regex = '^torbrowser-install-\d\.\d\.\d_\w\w(-\w\w)?\.exe$'
+linux_regex = '^tor-browser-linux\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz$'
+osx_regex = '^TorBrowser-\d\.\d\.\d-osx\d\d_(\w\w)(-\w\w)?\.dmg$'
 
 
 def get_logging_format():
@@ -49,7 +54,7 @@ def get_sha256(string):
     return str(hashlib.sha256(string).hexdigest())
 
 
-def get_bundle_info(file, osys):
+def get_bundle_info(filename, osys=None):
     """Get the os, arch and lc from a bundle string.
 
     :param: file (string) the name of the file.
@@ -60,63 +65,35 @@ def get_bundle_info(file, osys):
     :return: (list) the os, arch and lc.
 
     """
-    if(osys == 'windows'):
-        m = re.search(
-            'torbrowser-install-\d\.\d\.\d_(\w\w)(-\w\w)?\.exe',
-            file)
-        if m:
-            lc = m.group(1)
-            return 'windows', '32/64', lc
-        else:
-            raise ValueError("Invalid bundle format %s" % file)
-    elif(osys == 'linux'):
-        m = re.search(
-            'tor-browser-linux(\d\d)-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
-            file)
-        if m:
-            arch = m.group(1)
-            lc = m.group(2)
-            return 'linux', arch, lc
-        else:
-            raise ValueError("Invalid bundle format %s" % file)
-    elif(osys == 'osx'):
-        m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx(\d\d)_(\w\w)(-\w\w)?\.dmg',
-            file)
-        if m:
-            os = 'osx'
-            arch = m.group(1)
-            lc = m.group(2)
-            return 'osx', arch, lc
-        else:
-            raise ValueError("Invalid bundle format %s" % file)
+    m_windows = re.search(windows_regex, filename)
+    m_linux = re.search(linux_regex, filename)
+    m_osx = re.search(osx_regex, filename)
+
+    if m_windows:
+        return 'windows', '32/64', m_windows.group(1)
+    elif m_linux:
+        return 'linux', m_linux.group(1), m_linux.group(2)
+    elif m_osx:
+        return 'osx', m_osx.group(1), m_osx.group(2)
+    else:
+        raise ValueError("Invalid bundle format %s" % file)
 
 
-def valid_format(file, osys):
+def valid_format(filename, osys=None):
     """Check for valid bundle format
 
     Check if the given file has a valid bundle format
     (e.g. tor-browser-linux32-3.6.2_es-ES.tar.xz)
 
     :param: file (string) the name of the file.
-    :param: osys (string) the OS.
 
     :return: (boolean) true if the bundle format is valid, false otherwise.
 
     """
-    if(osys == 'windows'):
-        m = re.search(
-            'torbrowser-install-\d\.\d\.\d_\w\w(-\w\w)?\.exe',
-            file)
-    elif(osys == 'linux'):
-        m = re.search(
-            'tor-browser-linux\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz',
-            file)
-    elif(osys == 'osx'):
-        m = re.search(
-            'TorBrowser-\d\.\d\.\d-osx\d\d_(\w\w)(-\w\w)?\.dmg',
-            file)
-    if m:
+    m_windows = re.search(windows_regex, filename)
+    m_linux = re.search(linux_regex, filename)
+    m_osx = re.search(osx_regex, filename)
+    if any((m_windows, m_linux, m_osx)):
         return True
     else:
         return False
@@ -139,3 +116,16 @@ def get_file_sha256(file):
             hasher.update(buf)
             buf = afile.read(BLOCKSIZE)
     return hasher.hexdigest()
+
+
+def find_files_to_upload(upload_dir):
+    """
+    Find the files which are named correctly and have a .asc file
+    """
+    files = []
+    for name in os.listdir(upload_dir):
+        asc_file = os.path.join(upload_dir, "{}.asc".format(name))
+        if valid_format(name) and os.path.isfile(asc_file):
+            files.extend([name, "{}.asc".format(name)])
+
+    return files
