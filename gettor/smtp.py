@@ -33,6 +33,12 @@ import blacklist
 
 """SMTP module for processing email requests."""
 
+OS = {
+    'osx': 'Mac OS X',
+    'linux': 'Linux',
+    'windows': 'Windows'
+}
+
 
 class ConfigError(Exception):
     pass
@@ -368,7 +374,7 @@ class SMTP(object):
         try:
             links_subject = self._get_msg('links_subject', 'en')
             links_msg = self._get_msg('links_msg', 'en')
-            links_msg = links_msg % (os, lc, links)
+            links_msg = links_msg % (os, links)
 
             self._send_email(
                 from_addr,

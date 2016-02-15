@@ -22,42 +22,28 @@ msgstr "The locale you requested '%s' is not supported."
 
 #: Links message
 msgid "links_msg"
-msgstr "Hello there! this is the 'GetTor' robot.\n\
+msgstr "You requested Tor Browser for %s.\n\
 \n\
-Below are the links for your request (Tor Browser for %s, %s package):\n\
+You will need only one of the links below to download the bundle. If a link\n\
+does not work for you, try the next one.\n\
 \n\
 %s\n\
 \n\
-===========================================================================\n\
-Still need help? If you have any questions, trouble connecting to Tor\n\
-network, or need to talk to a human, please contact our support team at:\n\
 \n\
-    help@rt.torproject.org\n\
-\n\
-We are ready to answer your queries in English, Farsi, Chinese, Arabic,\n\
-French and Spanish."
+--\n\
+GetTor"
 
 #: Mirrors message
 msgid "mirrors_msg"
-msgstr "Hello there! this is the 'GetTor' robot.\n\
+msgstr "Hi! this is the GetTor robot.\n\
 \n\
 Thank you for your request. Attached to this email you will find\n\
-an updated list of mirrors of Tor Project's website.\n\
-\n\
-Still need help? If you have any questions, trouble connecting to Tor\n\
-network, or need to talk to a human, please contact our support team at:\n\
-\n\
-    help@rt.torproject.org\n\
-\n\
-We are ready to answer your queries in English, Farsi, Chinese, Arabic,\n\
-French and Spanish."
+an updated list of mirrors of Tor Project's website."
 
 #: Help message
 msgid "help_msg"
-msgstr "Hello there! this is the 'GetTor' robot.\n\
-\n\
-Thank you for your request. I am here to help you download the latest\n\
-Tor Browser.\n\
+msgstr "Hi! This is the GetTor robot. I am here to help you download the\n\
+latest version of Tor Browser.\n\
 \n\
 Please reply to this message with one of the options below:\n\
 \n\
@@ -66,6 +52,6 @@ Please reply to this message with one of the options below:\n\
     osx\n\
     mirrors\n\
 \n\
-And I will send you the download/access instructions quickly.\n\
+I will then send you the download instructions.\n\
 \n\
-Tip: Just send a blank reply to this message if you are not sure."
+If you are unsure, just send a blank reply to this message."
