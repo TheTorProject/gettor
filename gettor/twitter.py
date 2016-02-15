@@ -212,33 +212,31 @@ class TwitterBot(object):
 
         sender_id = dm['sender']['id_str']
         msg = dm['text'].strip().lower()
-        bogus_request = False
-        request = None
+        bogus_req = False
+        req = None
         status = ''
 
         try:
             if self._is_blacklisted(str(sender_id)):
                 self.log.info('blacklist; none; none')
-                bogus_request = True
+                bogus_req = True
 
-            if not bogus_request:
+            if not bogus_req:
                 self.log.debug("Request seems legit, let's parse it")
                 # let's try to guess what the user is asking
-                request = self.parse_text(str(msg))
+                req = self.parse_text(str(msg))
 
                 # possible options: links, mirrors, help
-                if request['type'] == 'links':
+                if req['type'] == 'links':
                     self.log.info('links; %s; %s' % (req['os'], req['lc']))
                     links = self.core.get_links(
-                        'Twitter',
-                        request['os'],
-                        request['lc']
+                        'twitter', req['os'], req['lc']
                     )
 
                     reply = self._get_msg('links', 'en')
-                    reply = reply % (request['os'], request['lc'], links)
+                    reply = reply % (req['os'], req['lc'], links)
 
-                elif request['type'] == 'mirrors':
+                elif req['type'] == 'mirrors':
                     self.log.info('mirrors; none; %s' % req['lc'])
                     reply = self._get_msg('mirrors', 'en')
                     try:
