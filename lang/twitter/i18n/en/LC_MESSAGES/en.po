@@ -1,0 +1,55 @@
+domain "en"
+
+#: Links
+msgid "links"
+msgstr "You requested Tor Browser for %s.\n\
+\n\
+You will need only one of the links below to download the bundle. If a link\n\
+does not work for you, try the next one.\n\
+\n\
+%s"
+
+#: Mirrors message
+msgid "mirrors"
+msgstr "Hi! this is the GetTor robot.\n\
+\n\
+Thank you for your request. Below you will find an updated list of\n\
+mirrors of Tor Project's website.\n\
+\n\
+%s"
+
+#: Help
+msgid "help"
+msgstr "Hi! This is the GetTor robot. I am here to help you download the\n\
+latest version of Tor Browser.\n\
+\n\
+Please reply to this message with one of the options below:\n\
+\n\
+    windows\n\
+    linux\n\
+    osx\n\
+    mirrors\n\
+\n\
+I will then send you the download instructions."
+
+#: Mirrors unavailable message
+msgid "mirrors_unavailable"
+msgstr "Hello there! this is the 'GetTor' robot.\n\
+\n\
+I'm sorry, I can't send you mirrors right now, please try again later.\n\
+\n\
+Still need help? If you have any questions, trouble connecting to Tor\n\
+network, or need to talk to a human, please contact our support team at:\n\
+\n\
+    help@rt.torproject.org\n\
+\n\
+We are ready to answer your queries in English, Farsi, Chinese, Arabic,\n\
+French and Spanish."
+
+#: Internal error
+msgid "internal_error"
+msgstr "Internal error"
+
+#: Internal error
+msgid "message_error"
+msgstr "Message too long."
