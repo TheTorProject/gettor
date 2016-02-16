@@ -108,7 +108,7 @@ if __name__ == '__main__':
     readable_fp = ' '.join(fp[i:i+4] for i in xrange(0, len(fp), 4))
 
     # Find any published releases with this version number
-    for release in target_repo.iter_releases():
+    for release in target_repo.releases():
         if release.tag_name == 'v{}'.format(version) and not release.draft:
             print("Found an existing published release with this version. "
                   "Not uploading again unless you delete the published "
