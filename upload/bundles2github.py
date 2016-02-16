@@ -40,7 +40,7 @@ def upload_new_release(github_repo, version, upload_dir):
     release = target_repo.create_release(
         'v{}'.format(version),
         target_commitish="master",
-        name='Tor Browser Bundle {}'.format(version),
+        name='Tor Browser {}'.format(version),
         body='',
         draft=True,
     )
