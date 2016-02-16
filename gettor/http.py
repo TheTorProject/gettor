@@ -44,7 +44,6 @@ OS = {
 RE = {
     'os': '(.*)-(\w+)',
     'alpha': '\d\.\d(\.\d)*a\d+',
-    'beta': '\d\.\d(\.\d)*b\d+',
     'stable': '\d\.\d(\.\d)*'
 }
 
@@ -214,16 +213,11 @@ class HTTP(object):
             'alpha': {
                 'latest_version': '',
                 'downloads': {}
-            },
-            'beta': {
-                'latest_version': '',
-                'downloads': {}
             }
         }
 
         self.releases = {
             'alpha': '%s/latest/alpha' % self.server,
-            'beta': '%s/latest/beta' % self.server,
             'stable': '%s/latest/stable' % self.server,
             'updated_at': strftime("%Y-%m-%d %H:%M:%S", gmtime())
         }
@@ -237,18 +231,12 @@ class HTTP(object):
                         # we'll use the latest one
                         lv['alpha']['latest_version'] = v
 
-                elif re.match(RE['beta'], v):
-                    if v > lv['beta']['latest_version']:
-                        # we'll use the latest one
-                        lv['beta']['latest_version'] = v
-
                 elif re.match(RE['stable'], v):
                     if v > lv['stable']['latest_version']:
                         # we'll use the latest one
                         lv['stable']['latest_version'] = v
 
         latest_alpha = lv['alpha']['latest_version']
-        latest_beta = lv['beta']['latest_version']
         latest_stable = lv['stable']['latest_version']
 
         # another iteration to add the links
@@ -265,11 +253,6 @@ class HTTP(object):
                             and re.match(RE['alpha'], version):
                         lv['alpha']['downloads'][OS[osys]] = {}
                         self._add_links(lv, 'alpha', version, OS[osys])
-
-                    elif latest_beta and version == latest_beta \
-                            and re.match(RE['beta'], version):
-                        lv['beta']['downloads'][OS[osys]] = {}
-                        self._add_links(lv, 'beta', version, OS[osys])
 
                     elif latest_stable and version == latest_stable \
                             and re.match(RE['stable'], version):
