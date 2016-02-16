@@ -253,16 +253,16 @@ class Core(object):
                     t32, t64 = [t for t in providers[pname].split(",") if t]
                     
                     link, signature, chs32 = [l for l in t32.split("$") if l]
-                    link = "%s: %s" % (pname, link)
+                    link = "    %s: %s" % (pname, link)
                     links32[link] = signature
 
                     link, signature, chs64 = [l for l in t64.split("$") if l]
-                    link = "%s: %s" % (pname, link.lstrip())
+                    link = "    %s: %s" % (pname, link.lstrip())
                     links64[link] = signature
                     
                 else:
                     link, signature, chs32 = [l for l in providers[pname].split("$") if l]
-                    link = "%s: %s" % (pname, link)
+                    link = "    %s: %s" % (pname, link)
                     links32[link] = signature
                     
                 #providers[pname] = providers[pname].replace(",", "")
