@@ -374,7 +374,7 @@ class SMTP(object):
         try:
             links_subject = self._get_msg('links_subject', 'en')
             links_msg = self._get_msg('links_msg', 'en')
-            links_msg = links_msg % (os, links)
+            links_msg = links_msg % (OS[os], links)
 
             self._send_email(
                 from_addr,
