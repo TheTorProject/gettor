@@ -20,9 +20,9 @@ import hashlib
 LOGGING_FORMAT = "[%(levelname)s] %(asctime)s; %(message)s"
 DATE_FORMAT = "%Y-%m-%d"  # %H:%M:%S
 
-windows_regex = '^torbrowser-install-\d\.\d\.\d_\w\w(-\w\w)?\.exe$'
-linux_regex = '^tor-browser-linux\d\d-\d\.\d\.\d_(\w\w)(-\w\w)?\.tar\.xz$'
-osx_regex = '^TorBrowser-\d\.\d\.\d-osx\d\d_(\w\w)(-\w\w)?\.dmg$'
+windows_regex = '^torbrowser-install-\d\.\d(\.\d)?_(\w\w)(-\w\w)?\.exe$'
+linux_regex = '^tor-browser-linux(\d\d)-\d\.\d(\.\d)?_(\w\w)(-\w\w)?\.tar\.xz$'
+osx_regex = '^TorBrowser-\d\.\d(\.\d)?-osx\d\d_(\w\w)(-\w\w)?\.dmg$'
 
 
 def get_logging_format():
@@ -70,11 +70,11 @@ def get_bundle_info(filename, osys=None):
     m_osx = re.search(osx_regex, filename)
 
     if m_windows:
-        return 'windows', '32/64', m_windows.group(1)
+        return 'windows', '32/64', m_windows.group(2)
     elif m_linux:
-        return 'linux', m_linux.group(1), m_linux.group(2)
+        return 'linux', m_linux.group(1), m_linux.group(3)
     elif m_osx:
-        return 'osx', m_osx.group(1), m_osx.group(2)
+        return 'osx', '64', m_osx.group(2)
     else:
         raise ValueError("Invalid bundle format %s" % file)
 

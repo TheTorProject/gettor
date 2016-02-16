@@ -67,33 +67,28 @@ if __name__ == '__main__':
         help='Create links file with files already uploaded.'
     )
 
-    parser.add_argument(
-        '-v', '--version', default=None,
-        help='Version of Tor Browser.'
-    )
-
     args = parser.parse_args()
 
     config = ConfigParser.ConfigParser()
-    config.read('github-local.cfg')
+    config.read('github.cfg')
 
-    # this script should be called after fetching the latest Tor Browser,
-    # and specifying the latest version
-    if args.version:
-        version = args.version
-    else:
-        tbb_version_config = ConfigParser.ConfigParser()
-        tbb_version_config.read('latest_torbrowser.cfg')
-        version = tbb_version_config.get('version', 'current')
+    tbb_version_path = config.get('general', 'version_cfg_path')
+    
+    tbb_version_config = ConfigParser.ConfigParser()
+    tbb_version_config.read(tbb_version_path)
+    version = tbb_version_config.get('version', 'current')
 
     # the token allow us to run this script without GitHub user/pass
     github_access_token = config.get('app', 'access_token')
 
     # path to the fingerprint that signed the packages
-    tb_key = os.path.abspath('tbb-key-torbrowserteam.asc')
+    tb_key = config.get('general', 'tbb_key_path')
 
     # path to the latest version of Tor Browser
-    tb_path = os.path.abspath('latest')
+    tb_path = config.get('general', 'latest_path')
+    
+    # path to gettor code configuration
+    core_path = config.get('general', 'core_path')
 
     # user and repository where we upload Tor Browser
     github_user = config.get('app', 'user')
@@ -139,13 +134,13 @@ if __name__ == '__main__':
         release.edit(draft=False)
 
     # Create the links file for this release
-    core = gettor.core.Core(os.path.abspath('../core.cfg'))
+    core = gettor.core.Core(core_path)
 
     # Erase old links if any and create a new empty one
     core.create_links_file('GitHub', readable_fp)
 
     print("Creating links file")
-    for asset in release.assets:
+    for asset in release.assets():
         url = asset.browser_download_url
         if url.endswith('.asc'):
             continue
