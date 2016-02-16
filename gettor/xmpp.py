@@ -30,6 +30,12 @@ import blacklist
 
 """XMPP module for processing requests."""
 
+OS = {
+    'osx': 'Mac OS X',
+    'linux': 'Linux',
+    'windows': 'Windows'
+}
+
 
 class ConfigError(Exception):
     pass
@@ -316,7 +322,7 @@ class XMPP(object):
                         req['lc']
                     )
                     reply = self._get_msg('links', 'en')
-                    reply = reply % (req['os'], req['lc'], links)
+                    reply = reply % (OS[req['os']], links)
 
         except (core.ConfigError, core.InternalError) as e:
             # if core failes, send the user an error message, but keep going

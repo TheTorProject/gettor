@@ -24,6 +24,12 @@ import blacklist
 
 """Twitter channel for distributing links to download Tor Browser."""
 
+OS = {
+    'osx': 'Mac OS X',
+    'linux': 'Linux',
+    'windows': 'Windows'
+}
+
 
 class ConfigError(Exception):
     pass
@@ -234,7 +240,7 @@ class TwitterBot(object):
                     )
 
                     reply = self._get_msg('links', 'en')
-                    reply = reply % (req['os'], req['lc'], links)
+                    reply = reply % (OS[req['os']], links)
 
                 elif req['type'] == 'mirrors':
                     self.log.info('mirrors; none; %s' % req['lc'])
