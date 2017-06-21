@@ -1,0 +1,56 @@
+domain "ar"
+
+#: Links subject
+msgid "links_subject"
+msgstr "[GetTor] روابط تخصّ طلبك"
+
+#: Mirrors subject
+msgid "mirrors_subject"
+msgstr "[GetTor] بدائل"
+
+#: Help subject
+msgid "help_subject"
+msgstr "[GetTor] شرح الاستخدام"
+
+# Unsupported locale subject
+msgid "unsupported_locale_subject"
+msgstr "[GetTor] لغة غير مدعومة"
+
+# Unsupported locale message
+msgid "unsupported_locale_msg"
+msgstr "اللغة المطلوبة '%s' غير مدعومة."
+
+#: Links message
+msgid "links_msg"
+msgstr "لقد طلبت متصفّح تور لأجل %s.\n\
+\n\
+يمكنك تنزيل الحزمة من أيِّ من الروابط التالية\n\
+إذا كان أحدها لا يعمل فلربما عمل غيره.\n\
+\n\
+%s\n\
+\n\
+\n\
+--\n\
+GetTor"
+
+#: Mirrors message
+msgid "mirrors_msg"
+msgstr "مرحبا! أنا روبوت GetTor.\n\
+\n\
+شكرا لطلبك. مرفق بهذه الرسالة قائمة محدّثة ببدائل موقع تور."
+
+#: Help message
+msgid "help_msg"
+msgstr "مرحبا! أنا روبوت GetTor، و هدفي مساعدتك\n\
+على تنزيل أحدث إصدارة من متصفّح تور.\n\
+\n\
+أنتظر منك ردًّا على هذه الرسالة بإحدى الاختيارات التالية:\n\
+\n\
+    windows\n\
+    linux\n\
+    osx\n\
+    mirrors\n\
+\n\
+و سأرسل إليك توجيهات التنزيل.\n\
+\n\
+إذا وقعت في حيرة فيمكنك إرسال ردٍّ خالٍ على هذه الرسالة."
